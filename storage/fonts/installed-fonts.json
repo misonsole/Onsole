@@ -1,0 +1,27 @@
+{
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_466cd5b5d00d3b88ee22cc7221cec9a1"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\Onsole\\storage\\fonts\/font_awesome_5_free_normal_786e8fe0bd5e3e19a50d73c254c7682e",
+        "900": "font_awesome_5_free_900_29924633c113f1d9ff35596feaf03246"
+    },
+    "lineawesome": {
+        "normal": "lineawesome_normal_434c7ee34b691002caaf85164d2f697b"
+    },
+    "material design icons": {
+        "normal": "material_design_icons_normal_c43dda95877344a96287fd049ec8a0b9"
+    },
+    "dripicons-v2": {
+        "normal": "dripicons_v2_normal_a4a706f9eb16bc3e6dfed2e594618b36"
+    },
+    "themify": {
+        "normal": "themify_normal_eef52f99c2cd21f712548c13d9d205b6"
+    },
+    "typicons": {
+        "normal": "typicons_normal_460bb4701e9b6c49657c7c349d4813a0"
+    },
+    "dropify": {
+        "normal": "dropify_normal_0777f1ab86d71de9c2abfea7400edb34"
+    }
+}
