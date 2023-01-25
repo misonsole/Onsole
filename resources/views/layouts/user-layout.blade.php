@@ -513,7 +513,7 @@
                         @endif
                         @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']) || isset($storeData['Pricing-Sheet Production']) && !empty($storeData['Pricing-Sheet Production']) || isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List']) || isset($storeData['Quality-Control']) && !empty($storeData['Quality-Control']) || isset($storeData['Production-Planning-Control']) && !empty($storeData['Production-Planning-Control'])) 
                             @if(isset($storeData['Pricing-Sheet Sales']) == 1 || isset($storeData['Pricing-Sheet Production']) == 1 || isset($storeData['Pricing-Sheet Costing']) == 1 || isset($storeData['Pricing-Sheet List']) == 1 || isset($storeData['Quality-Control']) == 1 || isset($storeData['Production-Planning-Control']) == 1)
-                            <li class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">
+                            <li hidden class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">
                                 <a href="javascript: void(0);" class="{{ Request::path() == 'specification-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>Specification Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
                                     @if(isset($storeData['Pricing-Sheet Create']) && !empty($storeData['Pricing-Sheet Create'])) 

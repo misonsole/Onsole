@@ -251,7 +251,7 @@
                 <a href="javascript: void(0);" class="{{ Request::path() == 'job-order-table' ? 'active' : Request::path() == 'job-order-view' ? 'active' : Request::path() == 'job-order-edit' ? 'active' : Request::path() == 'pricing-sheet-edit' ? 'active' : Request::path() == 'pricing-sheet-view' ? 'active' : '' }}"><i class="ti-files"></i><span>PDL</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level p-0" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link"  href="{{url('master-data-plc')}}"><i class="ti-control-record"></i>Master Data</a></li>
-                    <li>
+                    <li hidden>
                         <a href="javascript: void(0);"><i class="ti-control-record"></i>Job Order <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li hidden class="nav-item"><a class="nav-link" href="{{url('pricing-sheet')}}"><i class="ti-control-record"></i>Create</a></li>
@@ -272,7 +272,7 @@
                             <li class="{{ Request::path() == 'formula-sheet-view' ? 'nav-item active' : Request::path() == 'formula-sheet-edit' ? 'nav-item active' : Request::path() == 'formula-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'formula-sheet-edit' ? 'nav-link active' : Request::path() == 'formula-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('formula-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                         </ul>
                     </li>
-                    <li class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">
+                    <li hidden class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">
                         <a href="javascript: void(0);" class="{{ Request::path() == 'specification-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>Specification Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="nav-item"><a class="nav-link" href="{{url('specification-sheet')}}"><i class="ti-control-record"></i>Create</a></li> 

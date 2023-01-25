@@ -1740,22 +1740,46 @@ class PricingController extends Controller
             $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
             foreach($data3 as $value){
                 if($value->material == "cutting"){
-                    $cuttingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $cuttingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "insole"){
-                    $InsoleData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $InsoleData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "lamination"){
-                    $LaminationData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LaminationData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "closing"){
-                    $ClosingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $ClosingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "lasting"){
-                    $LastingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LastingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "packing"){
-                    $PackingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $PackingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
             }
             foreach($data1 as $value){
@@ -1957,22 +1981,46 @@ class PricingController extends Controller
             $userprogress = $data1[0]->progress;        
             foreach($data2 as $value){
                 if($value->material == "cutting"){
-                    $cuttingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $cuttingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "insole"){
-                    $InsoleData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $InsoleData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "lamination"){
-                    $LaminationData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LaminationData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "closing"){
-                    $ClosingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $ClosingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "lasting"){
-                    $LastingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LastingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "packing"){
-                    $PackingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $PackingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
             }
             $category = PlcCategory::orderBy('id','DESC')->get();
