@@ -185,10 +185,10 @@
                                             <td class="text-center">
                                                 <form id="myForm">
                                                     <input type="text" value="{{$user->id}}" name="id" hidden> 
-                                                    @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']))
-                                                        @if(isset($storeData['Pricing-Sheet Sales']) == 1)                                                        
-                                                            <!-- <a href="pricing-sheet-edit-sales?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}}  style="background: none; border: none; margin-right: -2px;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #1eca7b;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="plus"></i></span></button></a> -->
-                                                            <!-- <a href="pricing-sheet-update-sales?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                  -->
+                                                    @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']))
+                                                        @if(isset($storeData['Job-Order Create']) == 1)
+                                                            <a href="{{url('job-order')}}" target="_blank"><span id="view" data-id={{$user->id}} style="cursor: pointer; background: #202020;" class="badge badge-info p-0 rounded-circle cursor-pointer SessionIdC ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
+                                                            <!-- <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Job Order&nbsp;" data-id={{$user->design_no}} id={{$user->id}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                  -->
                                                         @endif
                                                     @endif
                                                     <a href="pricing-sheet-view?id={{$user->id}}" target="_blank"><span id="view" data-id={{$user->id}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
@@ -227,6 +227,15 @@
 <script>
 $(document).ready(function(){ 
 	$("#loader1").fadeOut(1200);
+});
+$(".SessionIdC").click(function(){
+    var id = $(this).attr("data-id");
+    document.cookie='CID='+id; 
+    // location.href = "job-order";
+    var url = 'job-order';
+    console.log("id-url");
+    console.log(id,url);
+    window.open(url, '_blank');
 });
 @if(Session::has('message'))
     var type = "{{ Session::get('alert-type', 'info') }}";

@@ -76,9 +76,9 @@ class ComplaintController extends Controller
         try{
             $user = user::orderBy('id','DESC')->get();
             $dep = Department::orderBy('id','DESC')->get();
-            $Category = Category::orderBy('id','DESC')->limit(5)->get();
-            $allCategory = Category::orderBy('id','ASC')->get();
-            $SubCategory = SubCategory::orderBy('id','DESC')->get();
+            $Category = Category::orderBy('category','ASC')->get();
+            $allCategory = Category::orderBy('category','ASC')->get();
+            $SubCategory = SubCategory::orderBy('category','ASC')->get();
             return view('admin.master-settings')->with([
                 'i' => 1, 'j' => 1, 'z' => 1, 'dep'=> $dep, 'data'=> $user, 'count' => count($allCategory), 'category'=>
                 $Category, 'allCategory'=> $allCategory, 'SubCategory'=> $SubCategory 

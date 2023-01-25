@@ -35,7 +35,7 @@ class RoleController extends Controller
     public function roleManage(Request $request)
     {
         try{
-            $userRoles = RoleName::orderBy('id','DESC')->get();
+            $userRoles = RoleName::orderBy('name','ASC')->get();
             return view('role.manage-role')->with(['data' => $userRoles]);
         }
         catch(Exception $e){
@@ -99,7 +99,11 @@ class RoleController extends Controller
             $Role = array("Role-List" => 0, "Role-Create" => 0, "Role-Edit" => 0, "Role-Delete" => 0);
             $Objective = array("Objective-List" => 0, "Objective-Create" => 0, "Objective-Edit" => 0, "Objective-Delete" => 0, "Objective-Status" => 0, "Objective-Revision" => 0, "Director-Objective" => 0);
             $User = array("User-List" => 0, "User-Create" => 0, "User-Edit" => 0, "User-Delete" => 0);
-            $JobOrder = array("Job-Order List" => 0, "Job-Order Create" => 0, "Job-Order Delete" => 0, "Job-Order Edit" => 0, "Job-Order Transfer" => 0, "Pricing-Sheet List" => 0, "Pricing-Sheet Create" => 0, "Pricing-Sheet Delete" => 0, "Pricing-Sheet Edit" => 0, "Pricing-Sheet Transfer" => 0, "Pricing-Sheet Costing" => 0, "Pricing-Sheet Sales" => 0, "Pricing-Sheet Production" => 0);
+            $JobOrder = array("Job-Order List" => 0, "Job-Order Create" => 0, "Job-Order Delete" => 0, "Job-Order Edit" => 0, 
+                                "Job-Order Transfer" => 0, "Pricing-Sheet List" => 0, "Pricing-Sheet Create" => 0, "Pricing-Sheet Delete" => 0, 
+                                "Pricing-Sheet Edit" => 0, "Pricing-Sheet Transfer" => 0, "Pricing-Sheet Costing" => 0, "Pricing-Sheet Sales" => 0, 
+                                "Pricing-Sheet Production" => 0, "PDL Master Data" => 0, "Formula-Sheet List" => 0, "Formula-Sheet Create" => 0, 
+                                "Formula-Sheet Delete" => 0, "Formula-Sheet Edit" => 0);
             $Others = array("Complaint" => 0, "Attendance" => 0, "Quality-Control" => 0, "Production-Planning-Control" => 0, "Super-Admin" => 0);
             $Reports = array("RMA Report" => 0, "Sales Issue" => 0, "Item Adjustment" => 0, "Help Desk Report" => 0, "Job Order Report" => 0, "Job Order Journey" => 0, "Sales Order Report" => 0, 
                             "Transfer Issue Report" => 0, "Item Purchase Report" => 0, "Purchase Rate History" => 0, "M Transfer Against JO" => 0, "Material Consumption" => 0, 
@@ -201,10 +205,18 @@ class RoleController extends Controller
                     if($request['JobOrder'][$i] == "Pricing-Sheet Costing") $JobOrder['Pricing-Sheet Costing'] = 1;
                     if($request['JobOrder'][$i] == "Pricing-Sheet Sales") $JobOrder['Pricing-Sheet Sales'] = 1;
                     if($request['JobOrder'][$i] == "Pricing-Sheet Production") $JobOrder['Pricing-Sheet Production'] = 1;
+                    if($request['JobOrder'][$i] == "PDL Master Data") $JobOrder['PDL Master Data'] = 1;                    
+                    if($request['JobOrder'][$i] == "Formula-Sheet List") $JobOrder['Formula-Sheet List'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Create") $JobOrder['Formula-Sheet Create'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Delete") $JobOrder['Formula-Sheet Delete'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Edit") $JobOrder['Formula-Sheet Edit'] = 1;
                 }
             }
             else{
-                $JobOrder = array("Job-Order List", "Job-Order Create", "Job-Order Delete", "Job-Order Edit", "Job-Order Transfer", "Pricing-Sheet List", "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", "Pricing-Sheet Sales", "Pricing-Sheet Production");
+                $JobOrder = array("Job-Order List", "Job-Order Create", "Job-Order Delete", "Job-Order Edit", "Job-Order Transfer", "Pricing-Sheet List", 
+                                    "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", 
+                                    "Pricing-Sheet Sales", "Pricing-Sheet Production", "PDL Master Data", "Formula-Sheet List",  "Formula-Sheet Create", "Formula-Sheet Delete", 
+                                    "Formula-Sheet Edit");
             }
 
             if($request->Reports != NULL){
@@ -239,7 +251,7 @@ class RoleController extends Controller
                 }
             }
             else{
-                for($i=0; $i<13; $i++){
+                for($i=0; $i<18; $i++){
                     $Joborderdata[] = [
                         'name' => $name,
                         'role_name' => $JobOrder[$i],
@@ -341,7 +353,7 @@ class RoleController extends Controller
             Newrole::insert($Otherdata);
             Newrole::insert($Reportdata);
             $notification = array(
-                'message' => 'Roles Updated Successfully!',
+                'message' => 'Role Updated',
                 'alert-type' => 'success'
             );
             return redirect()->route('role-manage-new')->with($notification);
@@ -369,7 +381,11 @@ class RoleController extends Controller
             $Role = array("Role-List" => 0, "Role-Create" => 0, "Role-Edit" => 0, "Role-Delete" => 0);
             $Objective = array("Objective-List" => 0, "Objective-Create" => 0, "Objective-Edit" => 0, "Objective-Delete" => 0, "Objective-Status" => 0, "Objective-Revision" => 0, );
             $User = array("User-List" => 0, "User-Create" => 0, "User-Edit" => 0, "User-Delete" => 0);
-            $JobOrder = array("Job-Order List" => 0, "Job-Order Create" => 0, "Job-Order Delete" => 0, "Job-Order Edit" => 0, "Job-Order Transfer" => 0, "Pricing-Sheet List" => 0, "Pricing-Sheet Create" => 0, "Pricing-Sheet Delete" => 0, "Pricing-Sheet Edit" => 0, "Pricing-Sheet Transfer" => 0, "Pricing-Sheet Costing" => 0, "Pricing-Sheet Sales" => 0, "Pricing-Sheet Production" => 0);
+            $JobOrder = array("Job-Order List" => 0, "Job-Order Create" => 0, "Job-Order Delete" => 0, "Job-Order Edit" => 0, 
+                            "Job-Order Transfer" => 0, "Pricing-Sheet List" => 0, "Pricing-Sheet Create" => 0, "Pricing-Sheet Delete" => 0, 
+                            "Pricing-Sheet Edit" => 0, "Pricing-Sheet Transfer" => 0, "Pricing-Sheet Costing" => 0, "Pricing-Sheet Sales" => 0, 
+                            "Pricing-Sheet Production" => 0, "PDL Master Data" => 0, "Formula-Sheet List" => 0, "Formula-Sheet Create" => 0, "Formula-Sheet Delete" => 0, 
+                            "Formula-Sheet Edit" => 0);
             $Others = array("Complaint" => 0, "Attendance" => 0, "Quality-Control" => 0, "Production-Planning-Control" => 0, "Super-Admin" => 0);
             $Reports = array("RMA Report" => 0, "Sales Issue" => 0, "Item Adjustment" => 0, "Help Desk Report" => 0, "Job Order Report" => 0, "Job Order Journey" => 0, "Sales Order Report" => 0, 
                             "Transfer Issue Report" => 0, "Item Purchase Report" => 0, "Purchase Rate History" => 0, "M Transfer Against JO" => 0, "Material Consumption" => 0, 
@@ -470,10 +486,18 @@ class RoleController extends Controller
                     if($request['JobOrder'][$i] == "Pricing-Sheet Costing") $JobOrder['Pricing-Sheet Costing'] = 1;
                     if($request['JobOrder'][$i] == "Pricing-Sheet Sales") $JobOrder['Pricing-Sheet Sales'] = 1;
                     if($request['JobOrder'][$i] == "Pricing-Sheet Production") $JobOrder['Pricing-Sheet Production'] = 1;
+                    if($request['JobOrder'][$i] == "PDL Master Data") $JobOrder['PDL Master Data'] = 1;                    
+                    if($request['JobOrder'][$i] == "Formula-Sheet List") $JobOrder['Formula-Sheet List'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Create") $JobOrder['Formula-Sheet Create'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Delete") $JobOrder['Formula-Sheet Delete'] = 1;
+                    if($request['JobOrder'][$i] == "Formula-Sheet Edit") $JobOrder['Formula-Sheet Edit'] = 1;
                 }
             }
             else{
-                $JobOrder = array("Job-Order List", "Job-Order Create", "Job-Order Delete", "Job-Order Edit", "Job-Order Transfer", "Pricing-Sheet List", "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", "Pricing-Sheet Sales", "Pricing-Sheet Production");
+                $JobOrder = array("Job-Order List", "Job-Order Create", "Job-Order Delete", "Job-Order Edit", "Job-Order Transfer", "Pricing-Sheet List", 
+                                    "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", 
+                                    "Pricing-Sheet Sales", "Pricing-Sheet Production",  "PDL Master Data", "Formula-Sheet List",  "Formula-Sheet Create", 
+                                    "Formula-Sheet Delete", "Formula-Sheet Edit");
             }
 
             if($request->Reports != NULL){
@@ -490,7 +514,7 @@ class RoleController extends Controller
                 for($i=0; $i<17; $i++){
                     $Reportdata[] = [
                         'name' => $name,
-                        'role_name' => $JobOrder[$i],
+                        'role_name' => $Reportss[$i],
                         'role' => "Report",
                         'value' => 0,
                     ];
@@ -508,7 +532,7 @@ class RoleController extends Controller
                 }
             }
             else{
-                for($i=0; $i<13; $i++){
+                for($i=0; $i<18; $i++){
                     $Joborderdata[] = [
                         'name' => $name,
                         'role_name' => $JobOrder[$i],

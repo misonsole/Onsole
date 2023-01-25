@@ -207,7 +207,7 @@
                 <a href="javascript: void(0);"><i class="ti-target"></i><span>Roles</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level" aria-expanded="false">
                     <li class="nav-item"><a class="nav-link" href="{{url('role-create')}}"><i class="ti-control-record"></i>Create Role</a></li>  
-                    <li class="nav-item"><a class="nav-link" href="{{url('role-manage-new')}}"><i class="ti-control-record"></i>Manage Roles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url('role-manage-new')}}"><i class="ti-control-record"></i>Manage Role</a></li>
                 </ul>
             </li>
             <li class="{{ Request::path() == 'comparison-report' ? 'mm-active active' : Request::path() == 'item-purchase-report' ? 'mm-active active' : Request::path() == 'joborder-report' ? 'mm-active active' : Request::path() == 'purchase-invoice-report' ? 'mm-active active' : Request::path() == 'consumption-comparison' ? 'mm-active active' : Request::path() == 'consumption-report' ? 'mm-active active' : Request::path() == 'rma-report' ? 'mm-active active' : Request::path() == 'transferagainst-report' ? 'mm-active active' : Request::path() == 'joborder-journey' ? 'mm-active active' : Request::path() == 'purchase-order-report' ? 'mm-active active' : Request::path() == 'sales-order-report' ? 'mm-active active' : Request::path() == 'sales-report' ? 'mm-active active' : Request::path() == 'purchase-report' ? 'mm-active active' : Request::path() == 'transfer-report' ? 'mm-active active' : Request::path() == 'helpdesk-report' ? 'mm-active active' : Request::path() == 'adjustment-report' ? 'mm-active active' : Request::path() == 'material-report' ? 'mm-active active' : Request::path() == 'workorder-report' ? 'mm-active active' : '' }}">
@@ -263,6 +263,13 @@
                         <ul class="nav-second-level" aria-expanded="false">
                             <li class="nav-item"><a class="nav-link" href="{{url('pricing-sheet')}}"><i class="ti-control-record"></i>Create</a></li>
                             <li class="{{ Request::path() == 'pricing-sheet-edit' ? 'nav-item active' : Request::path() == 'pricing-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'pricing-sheet-edit' ? 'nav-link active' : Request::path() == 'pricing-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('pricing-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
+                        </ul>
+                    </li>
+                    <li class="{{ Request::path() == 'formula-sheet-edit' ? 'mm-active active' : Request::path() == 'formula-sheet-view' ? 'mm-active active' : '' }}">
+                        <a href="javascript: void(0);" class="{{ Request::path() == 'formula-sheet-edit' ? 'active' : Request::path() == 'formula-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>OH Formula Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li class="{{ Request::path() == 'formula-sheet' ? 'nav-item active' : Request::path() == 'formula-sheet' ? 'nav-item active' : Request::path() == 'formula-sheet' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'formula-sheet' ? 'nav-link active' : Request::path() == 'formula-sheet' ? 'nav-link active' : 'nav-link' }}" href="{{url('formula-sheet')}}"><i class="ti-control-record"></i>Create</a></li>
+                            <li class="{{ Request::path() == 'formula-sheet-view' ? 'nav-item active' : Request::path() == 'formula-sheet-edit' ? 'nav-item active' : Request::path() == 'formula-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'formula-sheet-edit' ? 'nav-link active' : Request::path() == 'formula-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('formula-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                         </ul>
                     </li>
                     <li class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">

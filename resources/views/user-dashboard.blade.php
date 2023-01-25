@@ -403,14 +403,14 @@
                                     <th data-orderable="false">Name</th>
                                     <th data-orderable="false">Employee Code</th>
                                     <th>Date</th>
-                                    <th class="text-center">Status</th>
+                                    <th data-orderable="false" class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($name as $data)
                                 <tr class="table_row">
                                     <td style="width: 5%;">{{$count++}}</td>
-                                    <td>
+                                    <td style="width: 35%;">
                                     @if(isset($UserImage) && !empty($UserImage)) 
                                     <img id="image321" style="transition: transform .5s;" src="{{asset('uploads/appsetting/'.$UserImage)}}" alt="user" class="rounded-circle thumb-sm mr-1 ml-3"> 
                                     @else

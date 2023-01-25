@@ -47,7 +47,7 @@
                             <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Manage Pricing Sheet</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Manage Pricing Sheet</h4>
+                    <h4 class="page-title">Manage Pricing Sheet (Admin)</h4>
                 </div>
             </div>
         </div>
@@ -162,9 +162,6 @@
                                                                 @elseif($user->status == 'PD')                                                                                                        
                                                                     <option <?php if ($user->status == "Update") echo "selected"; ?> value="0">Update</option>
                                                                     <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Costing</option>
-                                                                @elseif($user->status == 'Update')                                                                                                        
-                                                                    <option <?php if ($user->status == "Update") echo "selected"; ?> value="0">Update</option>
-                                                                    <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Costing</option>
                                                                 @elseif($user->status == 'Sales')                                                                                                        
                                                                     <option selected disabled>approved</option>
                                                                 @endif
@@ -259,27 +256,26 @@
                                             <td class="text-center">
                                                 <form>
                                                     <input type="text" value="{{$user->id}}" name="id" hidden> 
-                                                    @if(isset($storeData['Pricing-Sheet Edit']) && !empty($storeData['Pricing-Sheet Edit'])) 
-                                                        @if(isset($storeData['Pricing-Sheet Edit']) == 1)
-                                                            @if($user->status === 'Pending' || $user->status === 'PD' || $user->status === 'Update')                                                            
-                                                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" href="pricing-sheet-edit?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
+                                                    @if(isset($storeData['Pricing-Sheet Edit']) && !empty($storeData['Pricing-Sheet Edit']) || isset($storeData['Super-Admin']) && !empty($storeData['Super-Admin'])) 
+                                                        @if(isset($storeData['Pricing-Sheet Edit']) == 1 || isset($storeData['Super-Admin']) == 1)
+                                                            @if($user->status === 'Pending' || $user->status != 'Costing' || $user->status === 'Update' || isset($storeData['Super-Admin']) == 1)                                                            
+                                                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;PD Edit&nbsp;&nbsp;" href="pricing-sheet-edit?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
+                                                            @endif
+                                                            @if(isset($storeData['Super-Admin']) == 1)                                                            
+                                                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Costing Edit&nbsp;&nbsp;" href="pricing-sheet-update-costing?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0 ml-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-warning p-0 rounded-circle" type="submit" style="background: #ffb822;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
                                                             @endif
                                                         @endif
                                                     @endif
-                                                    @if(isset($storeData['Pricing-Sheet Delete']) && !empty($storeData['Pricing-Sheet Delete'])) 
-                                                        @if(isset($storeData['Pricing-Sheet Delete']) == 1)
-                                                            @if($user->status === 'PD')
+                                                    @if(isset($storeData['Pricing-Sheet Delete']) && !empty($storeData['Pricing-Sheet Delete']) || isset($storeData['Super-Admin']) && !empty($storeData['Super-Admin'])) 
+                                                        @if(isset($storeData['Pricing-Sheet Delete']) == 1 || isset($storeData['Super-Admin']) == 1)
+                                                            @if($user->status === 'PD' || isset($storeData['Super-Admin']) == 1)
                                                                 <span data-id={{$user['id']}} style="cursor: pointer;" class="badge badge-danger p-0 rounded-circle cursor-pointer viewweye ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="trash"></i></span>
                                                             @endif
                                                         @endif
                                                     @endif
-                                                    <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;View&nbsp;&nbsp;" href="pricing-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
-                                                    <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Print&nbsp;&nbsp;" href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>
-                                                    @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])) 
-                                                        @if(isset($storeData['Job-Order Create']) == 1)
-                                                            <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Job Order&nbsp;" data-id={{$user['design_no']}} id={{$user['id']}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #818181;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                 
-                                                        @endif
-                                                    @endif
+                                                    <a href="pricing-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
+                                                    <a href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>
+                                                    <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Job Order&nbsp;" data-id={{$user['design_no']}} id={{$user['id']}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #818181;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                 
                                                 </form>
                                             </td>  
                                             <div class="modal fade" id="exampleModalCenter99" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

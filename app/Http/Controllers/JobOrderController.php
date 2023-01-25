@@ -31,8 +31,55 @@ use App\Models\notification_details;
 
 class JobOrderController extends Controller
 {
+    public function joborderdata(Request $request)
+    {
+        $last = array();
+        $color = array();
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $sql2 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26 ORDER BY SEGMENT_VALUE_DESC ASC";
+        $result2 = oci_parse($connPRL, $sql2);
+        oci_execute($result2);
+        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $color[] = ucfirst(strtolower($row2['SEGMENT_VALUE_DESC']));
+        }
+        $last = PlcLastNumber::orderBy('id','ASC')->pluck('last_no');
+        $data = array(
+            'color' => $color,
+            'last' => $last,
+        );
+        return response()->json($data);
+    }
+
+    public function Companydata($id,$sono,$season)
+    {
+        $last = array();
+        $color = array();
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $sql2 = "SELECT BB.COMPANY_NAME, AA.SALES_ORDER_NO, AA.CUST_PO_DATE, DD.ITEM_DESC, DD.OLD_ART_NO, AA.CUST_PO_NO, AA.CUST_PO_DATE, SO_TYPE_MT.SO_TYPE_DESC
+                    FROM SALES_ORDER_MT AA
+                    JOIN CUSTOMER_MT BB ON BB.CUSTOMER_ID = AA.CUSTOMER_ID
+                    AND BB.COMPANY_NAME LIKE '$cmp_name' AND AA.SALES_ORDER_NO = '$sono'
+                    JOIN SO_TYPE_MT ON SO_TYPE_MT.SO_TYPE_ID = AA.SO_TYPE_ID
+                    JOIN SALES_ORDER_DET CC ON CC.SALES_ORDER_ID = AA.SALES_ORDER_ID JOIN ITEMS_MT DD ON DD.ITEM_ID = CC.ITEM_ID AND CC.ITEM_DESC LIKE '%$art%'";
+
+        $result2 = oci_parse($connPRL, $sql2);
+        oci_execute($result2);
+        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $color[] = ucfirst(strtolower($row2['SEGMENT_VALUE_DESC']));
+        }
+        $last = PlcLastNumber::orderBy('id','ASC')->pluck('last_no');
+        $data = array(
+            'color' => $color,
+            'last' => $last,
+        );
+        return response()->json($data);
+    }
+
     public function jobOrder(Request $request)
     {
+        $id = $_COOKIE["CID"];
         $store = 001;
         $season = array();
         $season5 = array();
@@ -52,7 +99,7 @@ class JobOrderController extends Controller
         while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
             $season[] = $row['SEASON_DEF_DESC'];
         }
-        $sql1 = "SELECT COMPANY_NAME FROM CUSTOMER_MT";
+        $sql1 = "SELECT COMPANY_NAME FROM CUSTOMER_MT ORDER BY COMPANY_NAME ASC";
         $result1 = oci_parse($connPRL, $sql1);
         oci_execute($result1);
         while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
@@ -65,8 +112,12 @@ class JobOrderController extends Controller
             $color[] = ucfirst(strtolower($row2['SEGMENT_VALUE_DESC']));
         }
         $sizerange = PlcSizeRange::orderBy('id','DESC')->get();
+        $last = PlcLastNumber::orderBy('id','ASC')->get();
+        $jobOrder = DB::table('plc_joborders')->where('id',$id)->get();
         return view('joborder.job-order')->with([
             'season'=> $season,
+            'joborderseason'=> $jobOrder[0]->season,
+            'jobordersono'=> $jobOrder[0]->sono,
             'location'=> $location, 
             'company'=> $company, 
             'sizerange'=> $sizerange, 
@@ -88,25 +139,6 @@ class JobOrderController extends Controller
         else{
             $sq_no = $store + $Support[0]->sq_no;
         }
-        $DB_Server = "localhost";
-        $DB_User = "root";
-        $DB_Pass = "";
-        $DB_Name = "onsoleportal";
-
-        // $link = mysqli_connect($DB_Server, $DB_User, $DB_Pass, $DB_Name);
-        // if(!$link){
-        //     die("Connection failed: " . mysqli_connect_error());
-        // }
-
-        // $sql3 = "SELECT distinct Location FROM job_sheet_order_det";
-        // $result3 = $link->query($sql3);
-        // if($result3->num_rows>0){
-        //     while($row3 = $result3->fetch_assoc())
-        //     {
-        //         $location[] = $row3['Location'];
-        //     }
-        // }
-
 
         $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
         $result1 = oci_parse($connPRL, $sql1);

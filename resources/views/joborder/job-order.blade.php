@@ -106,24 +106,19 @@
                                 <div class="form-group row py-0">
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d;">Season</b></label>
-                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="select2 form-control mb-3 custom-select" required>
-                                            <option selected disabled>Select Season</option> 
-                                            @foreach($season as $names)
-                                                <option style="text-transform: capitalize" value="{{$names }}">{{$names}}</option>
-                                            @endforeach  
-                                        </select>
+                                        <input type="text" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" value="{{$joborderseason}}" id="season" name="season" readonly>
                                     </div>
                                     <div class="col-sm-5 py-1">
                                         <label><b style="color: #6c757d">Company</b></label>
-                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="select2 form-control mb-3 custom-select" required>
+                                        <select id="company" name="company" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="select2 form-control mb-3 custom-select" required>
                                             <option selected disabled>Select Company</option> 
                                             @foreach($company as $names)
-                                                <option style="text-transform: capitalize" value="{{$names }}">{{$names}}</option>
+                                                <option style="text-transform: capitalize" value="{{$names}}">{{$names}}</option>
                                             @endforeach  
                                         </select>
                                     </div>
                                     <div class="col-sm-2 col-md-2 py-1"><label><b style="color: #6c757d">Sales Order No</b></label>
-                                        <select id="color" name="color" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
+                                        <select id="sono" name="sono" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
                                             <option selected disabled>Sales Order No</option> 
                                             @foreach($color as $val)
                                                 <option style="text-transform: capitalize;" value="{{$val}}">{{$val}}</option>
@@ -132,7 +127,7 @@
                                     </div>
                                     <div class="col-sm-2 col-md-2 py-1">
                                         <label><b style="color: #6c757d">Article No</b></label>
-                                        <select id="color" name="color" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
+                                        <select id="article" name="article" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
                                             <option selected disabled>Article No</option> 
                                             @foreach($color as $val)
                                                 <option style="text-transform: capitalize;" value="{{$val}}">{{$val}}</option>
@@ -143,7 +138,7 @@
                                 <div class="form-group row py-0">
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Department</b></label>
-                                        <select id="color" name="color" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
+                                        <select id="department" name="department" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select" required>
                                             <option selected disabled>Select Department</option> 
                                             <option value="Cutting">Cutting</option>
                                             <option value="Closing">Closing</option>
@@ -195,7 +190,7 @@
                             </div>
                         </div>
                         <div id="JobOrderDiv">
-                            <div class="form-group row py-2 px-2 mb-5 bg-dark">
+                            <div id="JobOrderDiv66" class="form-group row py-2 px-2 mb-5 bg-dark" style="border-radius: 4px;">
                                 <div class="col-sm-12 col-md-12 py-0 mt-3">
                                     <div class="form-group row mb-0">
                                         <div class="col-sm-2 text-center">
@@ -212,30 +207,30 @@
                                     <div class="form-group row py-0">
                                         <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                             <thead class="bg-dark text-white">
-                                                <tr>
+                                                <tr id="ccolorDivtr1">
                                                     <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Status</b></label></th>
                                                     <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Color</b></label></th>
                                                     <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Last No.</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">36</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">37</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">38</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">39</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">40</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">41</b></label></th>
-                                                    <th class="text-white" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Total</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">36</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">37</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">38</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">39</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">40</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">41</b></label></th>
+                                                    <th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Total</b></label></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr id="ccolorDivtr">
                                                     <td style="border-top: none; width: 12%;">
-                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: auto;" class="select2 form-control mb-3 custom-select" required>
+                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: -webkit-fill-available;" class="form-control custom-select" required>
                                                             <option selected disabled>Status</option> 
                                                             <option value="On Hold" style="color: red;">On Hold</option>
                                                             <option value="Good To Go" selected="selected">Good To Go</option>                                                    
                                                         </select>
                                                     </td>
                                                     <td style="border-top: none; width: 12%;">
-                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: auto;" class="select2 form-control mb-3 custom-select" required>
+                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: -webkit-fill-available;" class="form-control custom-select" required>
                                                             <option selected disabled>Select color</option> 
                                                             @foreach($color as $names)
                                                                 <option style="text-transform: capitalize" value="{{$names}}">{{$names}}</option>
@@ -243,33 +238,33 @@
                                                         </select>
                                                     </td>
                                                     <td style="border-top: none; width: 12%;">
-                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: auto;" class="select2 form-control mb-3 custom-select" required>
+                                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize; width: -webkit-fill-available;" class="form-control custom-select" required>
                                                             <option selected disabled>Select Last No</option> 
-                                                            @foreach($season as $names)
-                                                                <option style="text-transform: capitalize" value="{{$names}}">{{$names}}</option>
+                                                            @foreach($last as $names)
+                                                                <option style="text-transform: capitalize" value="{{$names['last_no']}}">{{$names['last_no']}}</option>
                                                             @endforeach  
                                                         </select>
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence">
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6">
                                                     </td>
-                                                    <td style="border-top: none;">
-                                                        <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence" readonly>
+                                                    <td class="tdDiv" style="border-top: none;">
+                                                        <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence6" readonly>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -310,8 +305,8 @@
                                                     <td style="border-top: none; width: 12%;">
                                                         <select id="tool" name="tool[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
                                                             <option selected disabled>Select Tool</option> 
-                                                            <option value="DYE">DYE</option>
-                                                            <option value="LASER">LASER</option>
+                                                            <option value="DYE">Dye</option>
+                                                            <option value="LASER">Laser</option>
                                                         </select>
                                                     </td>
                                                     <td style="border-top: none;">
@@ -324,6 +319,7 @@
                                                         <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" placeholder="Remarks" id="remarks" name="remarks[]">
                                                     </td>
                                                     <td style="border-top: none; width: 8%;">
+                                                        <button hidden style="box-shadow: none; margin-top: -3px;" type="button" class="btn btn-dark btn-round px-4 w-100" id="addColor43"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                                         <button style="box-shadow: none; margin-top: -3px;" type="button" class="btn btn-success btn-round px-4 w-100" id="addColor"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                                     </td>
                                                 </tr>
@@ -339,7 +335,8 @@
                             <div class="col-sm-6">
                                 <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">Submit</button>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-3" id="Hye">
+                            <table><tbody></tbody></table>
                             </div>
                         </div>
                     </form>
@@ -350,12 +347,18 @@
 </div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
+<script src="assets/js/jobordernew.js"></script>
 @include('model/upper')
 @include('model/jorder')
 <script>
 $(document).ready(function(){ 
 	$("#loader1").fadeOut(1200);
+    window.sessionStorage.setItem("items", JSON.stringify(0));
+    console.log(sessionStorage.getItem("items"));
     var i = 1;
+    $('#addColor43').click(function(){
+        $("#JobOrderDiv66").clone().attr('id','h2').appendTo('#JobOrderDiv');    
+    });
     $('#addColor').click(function(){
         i++;
         $('#colorDiv').append(
@@ -472,7 +475,6 @@ $(document).ready(function(){
     });
 });
 </script>
-<script src="assets/js/jobordernew.js"></script>
 <script>
     $(".ModelBtn").click(function(){
         var id = $(this).attr("data-id");
@@ -580,19 +582,64 @@ $(document).ready(function(){
 </script>
 <script>
     $('#sizeRange').on('change', function(){
+        $('.tdDiv').remove();
+        $('.tdDiv1').remove();
         var sizeRange = $(this).val();
-        console.log(sizeRange);
         const myArray = sizeRange.split("-");
-        const Sizelenght = Math.abs(myArray[1] - myArray[0]);
-        console.log("lenght");
-        console.log(Sizelenght);
-        for(let i=1; i<=Sizelenght.length; i++){
-            var all = new Array();
-            text[i] = myArray[0] + i;
+        const Sizelength = Math.abs(myArray[1] - myArray[0]);
+        var all = [];
+        for(i = 0; i <= Sizelength; i++){
+            let element = Number(myArray[0])+i;
+            all.push(element);
+            $('#ccolorDivtr1').append('<th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">'+element+'</b></label></th>');
+            $('#ccolorDivtr').append('<td class="tdDiv" style="border-top: none;">'+
+                                        '<input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence7">'+
+                                    '</td>');
         }
-        console.log("text");
-        console.log(text);
-        console.log("text");
+        $('#ccolorDivtr1').append('<th class="text-white tdDiv" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Total</b></label></th>');
+        $('#ccolorDivtr').append('<td class="tdDiv" style="border-top: none;">'+
+                                    '<input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence2">'+
+                                '</td>');
+        const total = Number(sessionStorage.getItem("items"))+1;
+        const length = sessionStorage.getItem("items");
+        if(sessionStorage.getItem("items") != 0){
+            for(ii = length; ii <= total; ii++){
+                for(i = 0; i <= Sizelength; i++){
+                    let element = Number(myArray[0])+i;
+                    all.push(element);
+                    $('#colorDivtr1'+ii+'').append('<th class="text-white tdDiv1" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">'+element+'</b></label></th>');
+                    $('#colorDivtr'+ii+'').append('<td class="tdDiv1" style="border-top: none;">'+
+                                                    '<input type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence1">'+
+                                                '</td>');
+                }
+                $('#colorDivtr1'+ii+'').append('<th class="text-white tdDiv1" data-orderable="false" style="border: none; padding-bottom: 0px;"><label><b style="color: #ffffff;">Total</b></label></th>');
+                $('#colorDivtr'+ii+'').append('<td class="tdDiv1" style="border-top: none;">'+
+                                                '<input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf;" id="sequence" name="sequence5">'+
+                                            '</td>');
+            }
+        }
+    });
+    $('#company').on('change', function(){
+        var company = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: 'companydata/'+company,
+            dataType: "json",
+            success: function(data){
+                if(data){
+                    console.log("Data");
+                    console.log(data);
+                    for(j=1; j<=data.color.length; j++){
+                        var $dataToBeAppended = `<option>`+data.color[j]+`</option>`;
+                        $("#seasonyes"+i).append($dataToBeAppended);
+                    }
+                    for(j=1; j<=data.last.length; j++){
+                        var $dataToBeAppended1 = `<option>`+data.last[j]+`</option>`;
+                        $("#seasonyes1"+i).append($dataToBeAppended1);
+                    }
+                }
+            }
+        });
     });
 </script>
 @endsection

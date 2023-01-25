@@ -214,17 +214,23 @@
                             <div class="col-sm-2 py-1">
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Material Code</b></label>
                             </div>
-                            <div class="col-sm-3 py-1">
+                            <div class="col-sm-2 py-1">
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Description</b></label>
                             </div>
                             <div class="col-sm-1 py-1">
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Unit</b></label>
                             </div>
-                            <div class="col-sm-2 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Component</b></label>
+                            <div class="col-sm-1 py-1">
+                                <label class="mb-0"><b style="color: white; font-weight: 500;">Division</b></label>
                             </div>
                             <div class="col-sm-2 py-1">
+                                <label class="mb-0"><b style="color: white; font-weight: 500;">Sub Division</b></label>
+                            </div>
+                            <div class="col-sm-1 py-1">
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Output</b></label>
+                            </div>
+                            <div class="col-sm-1 py-1">
+                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process <br> Code</b></label>
                             </div>
                             <div class="col-sm-1 py-1" hidden>
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Factor</b></label>
@@ -233,7 +239,7 @@
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Quantity</b></label>
                             </div>
                             <div class="col-sm-1 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process Loss %</b></label>
+                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process <br> Loss %</b></label>
                             </div>
                             <div class="col-sm-1 py-1" hidden>
                                 <label class="mb-0"><b style="color: white; font-weight: 500;">Total Consumption</b></label>
@@ -256,22 +262,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'cutting')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2 uitooltip"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description1" name="cut_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_uom1" name="cut_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="cut_component" name="cut_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="cut_division" name="cut_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
                                         @endforeach     
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                    <select id="cut_subdivision" name="cut_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">                                         
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_output" name="cut_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_cut_code" name="cut_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_fac" name="cut_fac[]" placeholder="Factor">
@@ -286,7 +299,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="cutting">
@@ -309,22 +322,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'insole')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description1" name="i_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom1" name="i_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="i_component" name="i_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="i_division" name="i_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="insole">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach    
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                        @endforeach  
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisioninsolediv">
+                                    <select id="i_subdivision" name="i_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioninsole">  
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_output" name="i_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_cut_code" name="i_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_fac" name="i_fac[]" placeholder="Factor">
@@ -339,7 +359,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="insole" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="insole" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="insole">
@@ -362,22 +382,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'lamination')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description1" name="lam_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom1" name="lam_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="lam_component" name="lam_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="lam_division" name="lam_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="lam">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach    
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                        @endforeach   
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisionlamdiv">
+                                    <select id="lam_subdivision" name="lam_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionlam">  
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_output" name="lam_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_cut_code" name="lam_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_fac" name="lam_fac[]" placeholder="Factor">
@@ -392,7 +419,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="lamination" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="lamination" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="lamination">
@@ -415,22 +442,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'closing')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description1" name="clo_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom1" name="clo_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="clo_component" name="clo_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="clo_division" name="clo_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="clo">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                        @endforeach 
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisionclodiv">
+                                    <select id="clo_subdivision" name="clo_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionclo"> 
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_output" name="clo_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_cut_code" name="clo_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_fac" name="clo_fac[]" placeholder="Factor">
@@ -445,7 +479,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="closing" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="closing" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="closing">
@@ -468,22 +502,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'lasting')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description1" name="last_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom1" name="last_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="last_component" name="last_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="last_division" name="last_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="last">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                        @endforeach 
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisionlastdiv">
+                                    <select id="last_subdivision" name="last_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionlast">    
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_output" name="last_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_cut_code" name="last_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_fac" name="last_fac[]" placeholder="Factor">
@@ -498,7 +539,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="lasting" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="lasting" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="lasting">
@@ -521,22 +562,29 @@
                                         <a data-toggle="modal" onclick="myFunction1('1', 'packing')" data-id="1" data-toggle="tooltip" data-placement="top" title="Select Material Code" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
                                     </span>
                                 </div>
-                                <div class="col-sm-3 py-1">
+                                <div class="col-sm-2 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description1" name="p_description[]" placeholder="Description">
                                 </div>
                                 <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_uom1" name="p_uom[]" placeholder="Unit">
                                 </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="p_component" name="p_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
+                                <div class="col-sm-1 py-1">
+                                    <select id="p_division" name="p_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="p">
                                     <option selected value="null">None</option>
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach   
+                                        @foreach($division as $names)
+                                            <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="col-sm-2 py-1">
+                                <div class="col-sm-2 py-1" id="divisionpdiv">
+                                    <select id="p_subdivision" name="p_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionp">    
+                                    </select>
+                                </div>
+                                <div class="col-sm-1 py-1">
                                     <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_output" name="p_output[]" placeholder="Output">
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_cut_code" name="p_cut_code[]" placeholder="Code">
                                 </div>
                                 <div class="col-sm-1 py-1" hidden>
                                     <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_fac" name="p_fac[]" placeholder="Factor">
@@ -551,7 +599,7 @@
                                     <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
                                 </div>
                                 <div class="col-sm-1 py-1 text-center">
-                                    <button id="packing" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    <button id="packing" type="button" class="btn btn-outline-primary btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
                                 </div>
                             </div>
                             <div name="packing">
@@ -690,7 +738,7 @@ $(document).ready(function(){
             $("#p_item_code"+count).prop('readonly', true);
             code = document.getElementById('p_item_code'+count).value;
         }
-            $.ajax({
+        $.ajax({
             type: 'GET',
             url: 'itemcode/'+code,
             dataType: "json",
@@ -761,6 +809,28 @@ $(document).ready(function(){
             $("#name21").val(name12.id);
         }
     } 
+</script>
+<script>
+    function getval(input,id,value){
+        id = id.id.replace(/(^"|"$)/g, '');
+        $.ajax({
+                type: 'GET',
+                url: 'getSubDivision/'+value,
+                dataType: "json",
+                success: function(data){
+                    if(data){
+                        console.log("Dataaaaa");
+                        console.log(data);
+                        console.log("Dataaaaa");
+                        $("#division"+id+"1div"+input).find('select').find('option').remove();
+                        for(i=0; i<data.length; i++){
+                            var $dataToBeAppended = `<option>`+data[i].description+`</option>`;
+                            $(".division"+id+"1"+input).append($dataToBeAppended);
+                        }
+                    }
+                }
+            });
+    }
 </script>
 <script>
 @if(Session::has('message'))
@@ -899,6 +969,24 @@ $(document).ready(function(){
 });
 </script> -->
 <script>
+    $('.division').on('change', function(){
+        var value = $(this).val();
+        var id = $(this).attr("data-id");
+        $.ajax({
+                type: 'GET',
+                url: 'getSubDivision/'+value,
+                dataType: "json",
+                success: function(data){
+                    if(data){
+                        $("#division"+id+"div").find('select').find('option').remove();
+                        for(i=0; i<data.length; i++){
+                            var $dataToBeAppended = `<option>`+data[i].description+`</option>`;
+                            $(".division"+id).append($dataToBeAppended);
+                        }
+                    }
+                }
+            });
+    });
     $('#design').on('change', function(){
         var design = $(this).val();
         $("#description").val(design);

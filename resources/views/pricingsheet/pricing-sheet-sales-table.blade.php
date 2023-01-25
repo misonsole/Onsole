@@ -63,14 +63,15 @@
                                         <!-- <th>Season</th> -->
                                         <!-- <th>Sequence</th> -->
                                         <!-- <th>Category</th> -->
-                                        <th>Design No.</th>
-                                        <th>Progress</th>
-                                        <th>Status</th>
-                                        <th>Remarks</th>
-                                        <th>Transfer</th>
+                                        <th data-orderable="false">Design No.</th>
+                                        <th data-orderable="false">Progress</th>
+                                        <th data-orderable="false">Status</th>
+                                        <th data-orderable="false">Remarks</th>
+                                        <th style="text-align: start;" data-orderable="false">Sales Order No.</th>
+                                        <th data-orderable="false">Transfer</th>
                                         <!-- <th>Purpose</th> -->
-                                        <th>Date & Time</th>
-                                        <th>Action</th>
+                                        <th data-orderable="false">Date & Time</th>
+                                        <th data-orderable="false">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -124,6 +125,30 @@
                                                 @else
                                                     <span data-id={{$user['remarks']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
                                                 @endif
+                                            </td>
+                                            <td style="width: 10%;" class="text-center">
+                                                <span class="py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input id="sonoNum{{$user['id']}}" name="sonoNum" type="text" value="{{$user['sono']}}" class="form-control yourclass text-center" style="border: 1px solid #bfbfbf;" readonly>
+                                                    </span>
+                                                    @if($user->status == 'Rejected') 
+                                                        <span>
+                                                            <a class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: small; color: transparent;" class="mdi mdi-finance"></i></a>
+                                                        </span> 
+                                                    @elseif($user->status == 'Final') 
+                                                        <span>
+                                                            <a class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: small; color: transparent;" class="mdi mdi-finance"></i></a>
+                                                        </span> 
+                                                    @elseif($user->status == 'Costing') 
+                                                        <span>
+                                                            <a class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: small; color: transparent;" class="mdi mdi-finance"></i></a>
+                                                        </span> 
+                                                    @else
+                                                        <span>
+                                                            <a data-id={{$user['id']}} style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle calculate"> <i style="font-size: large;" class="mdi mdi-finance"></i></a>
+                                                        </span> 
+                                                    @endif                                                                         
+                                                </span>
                                             </td>
                                             @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])) 
                                                 @if(isset($storeData['Pricing-Sheet Sales']) == 1)
@@ -188,7 +213,7 @@
                                                 <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
                                                 <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$words[0]}} <br><i class="mdi mdi-timer text-dark"></i> {{$newDate}}
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center" style="width: 10%;">
                                                 <form id="myForm">
                                                     <input type="text" value="{{$user->id}}" name="id" hidden> 
                                                     @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']))
@@ -216,6 +241,30 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="modal fade" id="exampleModalCenter102" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: transparent">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Sales Order No.</h5>
+                                                        </div>
+                                                        <form id="Chatform" class="adminForm">
+                                                        @csrf
+                                                            <div class="modal-body">
+                                                                <div class="form-group"> 
+                                                                    <div class="input-group">
+                                                                        <input hidden type="text" class="form-control yourclass" name="calculateId" id="calculateId">                                                                     
+                                                                        <input type="text" placeholder="Sales Order No" class="form-control class1 yourclass" id="sono" name="sono" required>
+                                                                    </div>                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer text-center" style="background-color: transparent">
+                                                                <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                                                <button type="submit" style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3">Submit</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div> 
                                         </tr>
                                     @endforeach
@@ -228,11 +277,81 @@
         </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter10" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: none;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Sales Order No.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="row_callback" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <input hidden type="text" class="form-control yourclass" name="calculateId1" id="calculateId1"> 
+                            <th class="text-center">Sr No.</th>
+                            <th class="text-center">Sales Order No</th>
+                            <th class="text-center">Action</th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for($i=1; $i<$lenght; $i++)
+                        <tr>
+                            <td class="text-center">{{$i}}</td>
+                            <td class="text-center">{{$sono[$i]}}</td>
+                            <td hidden>Edinburgh</td>
+                            <td hidden></td>
+                            <td hidden></td>
+                            <td class="text-center"><button class="btn btnSelectuser py-0 text-white w-50" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;">Select</button></td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table> 
+            </div>
+            <div class="modal-footer" style="background: none;">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
 <script>
 $(document).ready(function(){ 
 	$("#loader1").fadeOut(1200);
+    $(".btnSelectuser").on('click',function(){
+		var currentRow = $(this).closest("tr");
+        var id = $("#calculateId1").val();
+		var value = currentRow.find("td:eq(1)").html();
+        var store = $("#sonoNum"+id).val(value);
+        $.ajax({
+                type: 'GET',
+                url: 'storesono/'+value+'/'+id,
+                dataType: "json",
+                success: function(data){
+                    if(data == 1){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sales Order Stored',
+                            showConfirmButton: false,
+			                timer: 2000
+                        });
+                    }
+                    else if(data == 400){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong!',
+                        });
+                    }
+                }
+            });
+        $("#exampleModalCenter10").modal('hide');
+    });
 });
 @if(Session::has('message'))
     var type = "{{ Session::get('alert-type', 'info') }}";
@@ -326,9 +445,9 @@ $(document).ready(function(){
         var id = $(this).attr("data-id");
         deleteuser(id);
     });
-    $("#calculate").click(function(){
+    $(".calculate").click(function(){
         var id = $(this).attr("data-id");
-        $("#calculateId").val(id);
+        $("#calculateId1").val(id);
         $('#exampleModalCenter10').modal('show');
     });
     $(".viewweye11").click(function(){
@@ -391,28 +510,5 @@ $(document).ready(function(){
                 }
             });
         }
-</script>
-<script>
-    $(function(){
-        $('.adminForm').on('submit', function (e){
-            e.preventDefault();
-            $('#exampleModalCenter10').modal('hide');
-            $.ajax({
-                type: 'post',
-                url: 'calculate/',
-                data: $('#Chatform').serialize(),
-                success: function()
-                {
-                    Swal.fire({
-                        icon: 'success',
-                        title: "Calculated",
-                        showConfirmButton: false,
-                        timer: 4000
-                    });
-                    location.reload();
-                }
-            });
-        });
-      });
 </script>
 @endsection

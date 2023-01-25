@@ -114,6 +114,7 @@
                                                             <h6 class="mb-0" style="font-size: small;"><b>Actual Cost  :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Desgin No :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Description :</b></h6>
+                                                            <h6 class="mb-0" style="font-size: small;"><b>Sales Order No :</b></h6>
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else
@@ -137,6 +138,13 @@
                                                             </h6>
                                                             <h6 style="font-size: small;" class="mb-0">{{$data1->design_no}}</h6>
                                                             <h6 style="font-size: small;" class="mb-0">{{$data1->description}}</h6>
+                                                            <h6 style="font-size: small;" class="mb-0">
+                                                                @if($data1->sono)
+                                                                    {{$data1->sono}}
+                                                                @else
+                                                                    &nbsp;
+                                                                @endif
+                                                            </h6>                                                            
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else
@@ -152,6 +160,7 @@
                                                             <h6 class="mb-0" style="font-size: small;"><b>Status :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Season :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Category :</b></h6>
+                                                            <h6 class="mb-0" style="font-size: small;"><b>Overhead No :</b></h6>
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else
@@ -163,6 +172,13 @@
                                                             <h6 class="mb-0" style="font-size: small;">{{$data1->season}}</h6>
                                                             <h6 class="mb-0" style="font-size: small;">{{$data1->status}}</h6>
                                                             <h6 class="mb-0" style="font-size: small;">{{$data1->category}}</h6>
+                                                            <h6 style="font-size: small;" class="mb-0">
+                                                                @if($data1->overhead_id)
+                                                                    {{$data1->overhead_id}}
+                                                                @else
+                                                                    &nbsp;
+                                                                @endif
+                                                            </h6>
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else

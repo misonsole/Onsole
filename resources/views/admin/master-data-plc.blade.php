@@ -340,7 +340,7 @@
             </div>
         </div>
     </div>
-    <div class="row mt-2 mb-5">
+    <div class="row mt-2 mb-2">
         <div class="col-lg-4 mb-5">
             <div class="card h-100">
                 <div class="card-body p-5">
@@ -480,6 +480,113 @@
             </div>
         </div>
     </div>
+    <div class="row mt-2 mb-5">
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body p-5">
+                    <div class="text-center mt-1">
+                        <h3 class="py-3">Create Division</h3>
+                    </div>
+                    <form action="{{url('add-division')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                        <div class="form-group row py-2">
+                            <div class="col-sm-9">
+                                <label><b style="color: #6c757d">Division</b></label>
+                                <input type="text" class="form-control py-0 yourclass" style="border: 1px solid #bfbfbf;" id="division" name="division" placeholder="Enter Division" required>
+                            </div>
+                            <div class="col-sm-3 py-4">
+                                <button type="submit" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn py-2 btn-lg btn-block text-white">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group row py-2 px-2">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr class="text-center">
+                                        <th>#</th>
+                                        <th>Division</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($divisionPlc as $num)
+                                    <tr class="text-center">
+                                        <td>{{$j++}}</td>
+                                        <td>{{$num['description']}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group row py-2">
+                        <div class="col-sm-12">
+                            <button data-toggle="modal" data-target="#exampleModalCenterDivision" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">View All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body p-5">
+                    <div class="text-center mt-1">
+                        <h3 class="py-3">Create Sub Division</h3>
+                    </div>
+                    <form action="{{url('add-sub-division')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                        <div class="form-group row py-2">
+                            <div class="col-sm-12">
+                                <label><b style="color: #6c757d">Divison</b></label>
+                                <select style="border: 1px solid #bfbfbf;" id="division" name="division" class="form-control select.custom-select" required>
+                                    <option selected disabled>Select Divison</option>                                            
+                                    @foreach($divisionPlc as $name)
+                                        <option value="{{ $name->id }}">{{ $name->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row py-2">
+                            <div class="col-sm-9">
+                                <label><b style="color: #6c757d">Sub Division</b></label>
+                                <input type="text" class="form-control py-0 yourclass" style="border: 1px solid #bfbfbf;" id="subdivision" name="subdivision" placeholder="Enter Sub Division" required>
+                            </div>
+                            <div class="col-sm-3 py-4">
+                                <button type="submit" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn py-2 btn-lg btn-block text-white">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group row py-2 px-2">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr class="text-center">
+                                        <th>#</th>
+                                        <th>Division</th>
+                                        <th>Sub Division</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($subdivision as $num)
+                                    <tr class="text-center">
+                                        <td>{{$k++}}</td>
+                                        <td>{{$num['result']}}</td>
+                                        <td>{{$num['data']['description']}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group row py-2">
+                        <div class="col-sm-12">
+                            <button data-toggle="modal" data-target="#exampleModalCenterSubDivision" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">View All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
 </div>
 <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -507,7 +614,7 @@
                             <td class="py-0"><input readonly class="form-control form-control-sm w-25 py-0 text-center" id="last{{$num['id']}}" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$num['last_no']}}"></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$num['id']}}" class="mr-1 lastEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$num['id']}}" class="mr-1 lastDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$num['id']}}" class="mr-1 lastDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -551,7 +658,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allshape[$i]['id']}}" class="mr-1 shapeEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allshape[$i]['id']}}" class="mr-1 shapeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allshape[$i]['id']}}" class="mr-1 shapeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -595,7 +702,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allsole[$i]['id']}}" class="mr-1 soleEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsole[$i]['id']}}" class="mr-1 soleDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsole[$i]['id']}}" class="mr-1 soleDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -639,7 +746,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allproject[$i]['id']}}" class="mr-1 projectEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allproject[$i]['id']}}" class="mr-1 projectDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allproject[$i]['id']}}" class="mr-1 projectDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -683,7 +790,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allpurpose[$i]['id']}}" class="mr-1 purposeEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allpurpose[$i]['id']}}" class="mr-1 purposeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allpurpose[$i]['id']}}" class="mr-1 purposeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -727,7 +834,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Alllocation[$i]['id']}}" class="mr-1 locEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Alllocation[$i]['id']}}" class="mr-1 locDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Alllocation[$i]['id']}}" class="mr-1 locDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -771,7 +878,97 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allrange[$i]['id']}}" class="mr-1 rangeEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allrange[$i]['id']}}" class="mr-1 rangeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allrange[$i]['id']}}" class="mr-1 rangeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                            </td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background: none;">
+                <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenterDivision" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header" style="background: none;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Division</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="row_callback" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Division</th>
+                            <th class="text-center">Action</th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for($i=0; $i<$divisionPlccount; $i++)
+                        <tr>
+                            <td class="text-center py-0">{{$jj++}}</td>
+                            <td class="py-0"><input readonly class="form-control form-control-sm w-50 py-0 text-center" id="division{{$AlldivisionPlc[$i]['id']}}" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$AlldivisionPlc[$i]['description']}}"></td>
+                            <td hidden>Edinburgh</td>
+                            <td hidden></td>
+                            <td hidden></td>
+                            <td class="py-0">                                                       
+                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$AlldivisionPlc[$i]['id']}}" class="mr-1 divisionEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$AlldivisionPlc[$i]['id']}}" class="mr-1 divisionDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                            </td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background: none;">
+                <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenterSubDivision" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header" style="background: none;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Sub Division</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="row_callback" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Division</th>
+                            <th class="text-center">Sub Division</th>
+                            <th class="text-center">Action</th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for($i=0; $i<$subdivisioncount; $i++)
+                        <tr>
+                            <td class="text-center py-0">{{$kk++}}</td>
+                            <td class="py-0"><input readonly class="form-control form-control-sm py-0 text-center" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$Allsubdivision[$i]['result']}}"></td>
+                            <td class="py-0"><input readonly class="form-control form-control-sm py-0 text-center" id="subdivision{{$Allsubdivision[$i]['data']['id']}}" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$Allsubdivision[$i]['data']['description']}}"></td>
+                            <td hidden>Edinburgh</td>
+                            <td hidden></td>
+                            <td hidden></td>
+                            <td class="py-0">                                                       
+                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allsubdivision[$i]['data']['id']}}" class="mr-1 subdivisionEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsubdivision[$i]['data']['id']}}" class="mr-1 subdivisionDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -815,7 +1012,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allsizerange[$i]['id']}}" class="mr-1 sizerangeEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsizerange[$i]['id']}}" class="mr-1 sizerangeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsizerange[$i]['id']}}" class="mr-1 sizerangeDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -859,7 +1056,7 @@
                             <td hidden></td>
                             <td class="py-0">                                                       
                                 <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$AllcategoryPlc[$i]['id']}}" class="mr-1 catEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
-                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$AllcategoryPlc[$i]['id']}}" class="mr-1 cateDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$AllcategoryPlc[$i]['id']}}" class="mr-1 cateDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
                             </td>
                         </tr>
                         @endfor
@@ -1070,6 +1267,50 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModalCenter9Division" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{url('division')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group row py-2 text-center">
+                    <div class="col-sm-12 mb-1 mb-sm-0">
+                        <label for=""><h4 style="color: #6c757d">Edit Division</h4></label>
+                        <input id="divisionId" name="divisionId" class="form-control py-0" type="text" hidden>
+                        <input id="divisionNum" name="divisionNum" class="form-control py-0 text-center" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center" style="background-color: transparent">
+                <button type="submit" style="box-shadow: none;" class="btn btn-success">Update</button>
+                <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenter9SubDivision" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{url('subdivision')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group row py-2 text-center">
+                    <div class="col-sm-12 mb-1 mb-sm-0">
+                        <label for=""><h4 style="color: #6c757d">Edit Sub Division</h4></label>
+                        <input id="subdivisionId" name="subdivisionId" class="form-control py-0" type="text" hidden>
+                        <input id="subdivisionNum" name="subdivisionNum" class="form-control py-0 text-center" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center" style="background-color: transparent">
+                <button type="submit" style="box-shadow: none;" class="btn btn-success">Update</button>
+                <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
 <script>
@@ -1087,6 +1328,72 @@
         $.ajax({
                 type: 'GET',
                 url: 'lastdel/'+id,
+                dataType: "json",
+                success: function(data){
+                    if(data == 1){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted',
+                        });
+                        location.reload();
+                    }
+                    else if(data == 400){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong!',
+                        });
+                    }
+                }
+            })
+    });
+
+    //Division
+    $(".divisionEdit").click(function(){
+        var id = $(this).attr("data-id");
+        var last = $('#division'+id).val();
+        $('#divisionId').val(id);
+        $('#divisionNum').val(last);
+        $('#exampleModalCenter9Division').modal('show');
+        $('#exampleModalCenterDivision').modal('hide');
+    });
+    $(".divisionDel").click(function(){
+        var id = $(this).attr("data-id");
+        $.ajax({
+                type: 'GET',
+                url: 'divisiondel/'+id,
+                dataType: "json",
+                success: function(data){
+                    if(data == 1){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted',
+                        });
+                        location.reload();
+                    }
+                    else if(data == 400){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong!',
+                        });
+                    }
+                }
+            })
+    });
+
+    //SubDivision
+    $(".subdivisionEdit").click(function(){
+        var id = $(this).attr("data-id");
+        var last = $('#subdivision'+id).val();
+        $('#subdivisionId').val(id);
+        $('#subdivisionNum').val(last);
+        $('#exampleModalCenter9SubDivision').modal('show');
+        $('#exampleModalCenterSubDivision').modal('hide');
+    });
+    $(".subdivisionDel").click(function(){
+        var id = $(this).attr("data-id");
+        $.ajax({
+                type: 'GET',
+                url: 'subdivisiondel/'+id,
                 dataType: "json",
                 success: function(data){
                     if(data == 1){

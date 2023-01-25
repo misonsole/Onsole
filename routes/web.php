@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\SpecificationController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\FormulaController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -46,6 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('add-project', [AdminController::class, 'addProject'])->name('add-project');
     Route::post('add-category-plc', [AdminController::class, 'addCategory'])->name('add-category-plc');
     Route::post('add-sizerange-plc', [AdminController::class, 'addSizeRange'])->name('add-sizerange-plc');
+    Route::post('add-division', [AdminController::class, 'addDivision'])->name('add-division');
+    Route::post('add-sub-division', [AdminController::class, 'addSubDivision'])->name('add-sub-division');
     Route::post('last', [AdminController::class, 'Last'])->name('last');
     Route::post('location', [AdminController::class, 'Location'])->name('location');
     Route::post('shape', [AdminController::class, 'Shape'])->name('shape');
@@ -56,6 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('export', [AdminController::class, 'exportData'])->name('export');
     Route::post('purpose', [AdminController::class, 'Purpose'])->name('purpose');
     Route::post('cat', [AdminController::class, 'Category'])->name('cat');
+    Route::post('division', [AdminController::class, 'Division'])->name('division');
+    Route::post('subdivision', [AdminController::class, 'SubDivision'])->name('subdivision');
     Route::get('lastdel/{id}', [AdminController::class, 'lastDel']);
     Route::get('locdel/{id}', [AdminController::class, 'locDel']);
     Route::get('shapedel/{id}', [AdminController::class, 'shapeDel']);
@@ -64,6 +69,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('sizerangedel/{id}', [AdminController::class, 'sizerangeDel']);
     Route::get('projectdel/{id}', [AdminController::class, 'projectDel']);
     Route::get('purposedel/{id}', [AdminController::class, 'purposeDel']);
+    Route::get('divisiondel/{id}', [AdminController::class, 'divisionDel']);
+    Route::get('subdivisiondel/{id}', [AdminController::class, 'subdivisionDel']);
     Route::get('UserAttendance', [AdminController::class, 'Attendance'])->name('UserAttendance');
     Route::post('get-attendance', [AdminController::class, 'GetAttendance'])->name('get-attendance');
     Route::post('get-user-attendance', [AdminController::class, 'GetUserAttendance'])->name('get-user-attendance');
@@ -142,6 +149,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('manageuserbook', [BookController::class, 'UserBook'])->name('manageuserbook');
     Route::get('books/{id}', [BookController::class, 'books']);
 
+    //Formula
+    Route::get('formula-sheet', [FormulaController::class, 'Formula'])->name('formula-sheet');
+    Route::post('formula-sheet-create', [FormulaController::class, 'Create'])->name('formula-sheet-create');
+    Route::get('formula-sheet-table', [FormulaController::class, 'All'])->name('formula-sheet-table');
+    Route::get('formula-sheet-edit', [FormulaController::class, 'Edit'])->name('formula-sheet-edit');
+    Route::get('formula-sheet-view', [FormulaController::class, 'View'])->name('formula-sheet-view');
+    Route::post('formula-sheet-update', [FormulaController::class, 'Update'])->name('formula-sheet-update');
+    Route::get('deleteformula/{id}', [FormulaController::class, 'Delete']);
+    Route::get('formulasheetstatus/{id}/{status}', [FormulaController::class, 'Status']);
+
     //Pricing
     Route::get('pricing-sheet', [PricingController::class, 'Costing'])->name('pricing-sheet');
     Route::get('pricing-sheet-view', [PricingController::class, 'View'])->name('pricing-sheet-view');
@@ -164,6 +181,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('FetchUser', [PricingController::class, 'Users'])->name('FetchUser');
     Route::get('pricingsheetstatus/{id}/{status}/{remarks}', [PricingController::class, 'Status']);
     Route::get('remarks/{id}', [PricingController::class, 'Remarks']);
+    Route::get('storesono/{value}/{id}', [PricingController::class, 'StoreSono']);
+    Route::get('getSubDivision/{value}', [PricingController::class, 'GetSubDivision']);
+    Route::get('GetDivision', [PricingController::class, 'GetDivision']);
 
     //Specification
     Route::get('specification-sheet', [SpecificationController::class, 'Specification'])->name('specification-sheet');
@@ -256,6 +276,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('job-order-table', [JobOrderController::class, 'All'])->name('job-order-table');
     Route::get('pricingsheetduplicate/{desgin}/{id}', [JobOrderController::class, 'Duplicate']);
     Route::get('job-order', [JobOrderController::class, 'jobOrder'])->name('job-order');
+    Route::get('joborderdata', [JobOrderController::class, 'joborderdata'])->name('joborderdata');
+    Route::get('companydata/{id}', [JobOrderController::class, 'Companydata']);
 
     Route::get('job-order', [JobOrderController::class, 'jobOrder'])->name('job-order');
     Route::get('job-order-view', [JobOrderController::class, 'Display'])->name('job-order-view');

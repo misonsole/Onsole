@@ -14,8 +14,11 @@ use App\Models\PlcRange;
 use App\Models\PlcShape;
 use App\Models\PlcManual;
 use App\Models\PlcPurpose;
+use App\Models\Division;
+use App\Models\PlcFormula;
 use App\Models\PlcPricing;
 use App\Models\PlcProject;
+use App\Models\SubDivision;
 use App\Models\PlcLocation;
 use App\Models\PlcCategory;
 use Illuminate\Http\Request;
@@ -40,7 +43,7 @@ class PricingController extends Controller
             $article_code = array();
             $location = array();
             date_default_timezone_set('Asia/Karachi');
-            $date = date('l d F Y - h:i');
+            $date = date('d F Y');
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $connPRL = oci_connect("onsole","s",$wizerp);
             $sql = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION";
@@ -78,6 +81,7 @@ class PricingController extends Controller
             $range = PlcRange::orderBy('id','DESC')->get();
             $shape = PlcShape::orderBy('id','DESC')->get();
             $sole = PlcSole::orderBy('id','DESC')->get();
+            $division = Division::orderBy('id','DESC')->get();
             $Support = PlcPricing::orderBy('id','DESC')->limit(1)->get();
             if(count($Support) == 0){
                 $result = $store + 0;
@@ -88,7 +92,7 @@ class PricingController extends Controller
             return view('pricingsheet.pricing-sheet')->with([
                 'i'=> 1, 'j'=> 1, 'last'=> $last, 'date'=> $date, 'sole'=> $sole, 'range'=> $range,'range'=> $range, 'shape'=> $shape, 'season'=> $season,
                 'project'=> $project, 'purpose'=> $purpose, 'sequence'=> $result, 'location'=> $location, 'category'=> $category, 'itemcode'=> $item_code, 
-                'articlecode'=> $article_code, 
+                'articlecode'=> $article_code, 'division'=> $division, 
             ]);
         }
         catch(Exception $e){
@@ -104,7 +108,7 @@ class PricingController extends Controller
     {
         try{
             date_default_timezone_set('Asia/Karachi');
-            $date = date('l d F Y - h:i');
+            $date = date('d F Y');
             $filename = "0";
             if($request->image){
                 $file = $request->file('image');
@@ -151,8 +155,10 @@ class PricingController extends Controller
                         'item_code' => $request->cut_item_code[$i] ? $request->cut_item_code[$i] : '-',
                         'description' => $request->cut_description[$i] ? ucwords($request->cut_description[$i]) : '-',
                         'uom' => isset($request->cut_uom[$i]) ? $request->cut_uom[$i] : '-',
-                        'component' => isset($request->cut_component[$i]) ? $request->cut_component[$i] : '-',
+                        'division' => isset($request->cut_division[$i]) ? $request->cut_division[$i] : '-',
+                        'subdivision' => isset($request->cut_subdivision[$i]) ? $request->cut_subdivision[$i] : '-',
                         'output' => isset($request->cut_output[$i]) ? $request->cut_output[$i] : '0',
+                        'cut_code' => isset($request->cut_cut_code[$i]) ? $request->cut_cut_code[$i] : '0',
                         'fac_qty' => isset($request->cut_output[$i]) ? round(1/$request->cut_output[$i],4) : '0',
                         'total_qty' => isset($request->cut_qty[$i]) ? $request->cut_qty[$i] : '0',
                         'process' => isset($request->cut_process[$i]) ? $request->cut_process[$i] : '0',
@@ -170,8 +176,10 @@ class PricingController extends Controller
                         'item_code' => $request->i_item_code[$i] ? $request->i_item_code[$i] : '-',
                         'description' => $request->i_description[$i] ? ucwords($request->i_description[$i]) : '-',
                         'uom' => isset($request->i_uom[$i]) ? $request->i_uom[$i] : '-',
-                        'component' => isset($request->i_component[$i]) ? $request->i_component[$i] : '-',
+                        'division' => isset($request->i_division[$i]) ? $request->i_division[$i] : '-',
+                        'subdivision' => isset($request->i_subdivision[$i]) ? $request->i_subdivision[$i] : '-',
                         'output' => isset($request->i_output[$i]) ? $request->i_output[$i] : '0',
+                        'cut_code' => isset($request->i_cut_code[$i]) ? $request->i_cut_code[$i] : '0',
                         'fac_qty' => isset($request->i_output[$i]) ? round(1/$request->i_output[$i],4) : '0',
                         'total_qty' => isset($request->i_qty[$i]) ? $request->i_qty[$i] : '0',
                         'process' => isset($request->i_process[$i]) ? $request->i_process[$i] : '0',
@@ -190,8 +198,10 @@ class PricingController extends Controller
                         'item_code' => $request->lam_item_code[$i] ? $request->lam_item_code[$i] : '-',
                         'description' => $request->lam_description[$i] ? ucwords($request->lam_description[$i]) : '-',
                         'uom' => isset($request->lam_uom[$i]) ? $request->lam_uom[$i] : '-',
-                        'component' => isset($request->lam_component[$i]) ? $request->lam_component[$i] : '-',
+                        'division' => isset($request->lam_division[$i]) ? $request->lam_division[$i] : '-',
+                        'subdivision' => isset($request->lam_subdivision[$i]) ? $request->lam_subdivision[$i] : '-',
                         'output' => isset($request->lam_output[$i]) ? $request->lam_output[$i] : '0',
+                        'cut_code' => isset($request->lam_cut_code[$i]) ? $request->lam_cut_code[$i] : '0',
                         'fac_qty' => isset($request->lam_output[$i]) ? round(1/$request->lam_output[$i],4) : '0',
                         'total_qty' => isset($request->lam_qty[$i]) ? $request->lam_qty[$i] : '0',
                         'process' => isset($request->lam_process[$i]) ? $request->lam_process[$i] : '0',
@@ -210,8 +220,10 @@ class PricingController extends Controller
                         'item_code' => $request->clo_item_code[$i] ? $request->clo_item_code[$i] : '-',
                         'description' => $request->clo_description[$i] ? ucwords($request->clo_description[$i]) : '-',
                         'uom' => isset($request->clo_uom[$i]) ? $request->clo_uom[$i] : '-',
-                        'component' => isset($request->clo_component[$i]) ? $request->clo_component[$i] : '-',
+                        'division' => isset($request->clo_division[$i]) ? $request->clo_division[$i] : '-',
+                        'subdivision' => isset($request->clo_subdivision[$i]) ? $request->clo_subdivision[$i] : '-',
                         'output' => isset($request->clo_output[$i]) ? $request->clo_output[$i] : '0',
+                        'cut_code' => isset($request->clo_cut_code[$i]) ? $request->clo_cut_code[$i] : '0',                        
                         'fac_qty' => isset($request->clo_output[$i]) ? round(1/$request->clo_output[$i],4) : '0',
                         'total_qty' => isset($request->clo_qty[$i]) ? $request->clo_qty[$i] : '0',
                         'process' => isset($request->clo_process[$i]) ? $request->clo_process[$i] : '0',
@@ -229,8 +241,10 @@ class PricingController extends Controller
                         'item_code' => $request->last_item_code[$i] ? $request->last_item_code[$i] : '-',
                         'description' => $request->last_description[$i] ? ucwords($request->last_description[$i]) : '-',
                         'uom' => isset($request->last_uom[$i]) ? $request->last_uom[$i] : '-',
-                        'component' => isset($request->last_component[$i]) ? $request->last_component[$i] : '-',
+                        'division' => isset($request->last_division[$i]) ? $request->last_division[$i] : '-',
+                        'subdivision' => isset($request->last_subdivision[$i]) ? $request->last_subdivision[$i] : '-',
                         'output' => isset($request->last_output[$i]) ? $request->last_output[$i] : '0',
+                        'cut_code' => isset($request->last_cut_code[$i]) ? $request->last_cut_code[$i] : '0',                        
                         'fac_qty' => isset($request->last_output[$i]) ? round(1/$request->last_output[$i],4) : '0',
                         'total_qty' => isset($request->last_qty[$i]) ? $request->last_qty[$i] : '0',
                         'process' => isset($request->last_process[$i]) ? $request->last_process[$i] : '0',
@@ -248,8 +262,10 @@ class PricingController extends Controller
                         'item_code' => $request->p_item_code[$i] ? $request->p_item_code[$i] : '-',
                         'description' => $request->p_description[$i] ? ucwords($request->p_description[$i]) : '-',
                         'uom' => isset($request->p_uom[$i]) ? $request->p_uom[$i] : '-',
-                        'component' => isset($request->p_component[$i]) ? $request->p_component[$i] : '-',
+                        'division' => isset($request->p_division[$i]) ? $request->p_division[$i] : '-',
+                        'subdivision' => isset($request->p_subdivision[$i]) ? $request->p_subdivision[$i] : '-',
                         'output' => isset($request->p_output[$i]) ? $request->p_output[$i] : '0',
+                        'cut_code' => isset($request->p_cut_code[$i]) ? $request->p_cut_code[$i] : '0',                        
                         'fac_qty' => isset($request->p_output[$i]) ? round(1/$request->p_output[$i],4) : '0',
                         'total_qty' => isset($request->p_qty[$i]) ? $request->p_qty[$i] : '0',
                         'process' => isset($request->p_process[$i]) ? $request->p_process[$i] : '0',
@@ -379,7 +395,7 @@ class PricingController extends Controller
 
     public function View(Request $request)
     {
-        try{
+        // try{
             $id = $_GET['id'];
             //Material
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = []; 
@@ -405,31 +421,80 @@ class PricingController extends Controller
             $CloTotalValue_r = 0; $CloTotalRate_r = 0; $CloTotal_r = 0; $CloTotalFac_r = 0; $CloTotalQty_r = 0; $DataClosing_r = 0;
             $LastTotalValue_r = 0; $LastTotalRate_r = 0; $LastTotal_r = 0; $LastTotalFac_r = 0; $LastTotalQty_r = 0; $DataLasting_r = 0;
             $PTotalValue_r = 0; $PTotalRate_r = 0; $PTotal_r = 0; $PTotalFac_r = 0; $PTotalQty_r = 0; $DataPacking_r = 0;
+
+            //Overhead
+            $cuttingDataF = []; $StitchingDataF = []; $LaminationDataF = []; $ClosingDataF = []; $LastingDataF = []; $PackingDataF = [];
             $data12 = DB::table('plc_pricings')->where('id', $id)->get();
+            $overhead_id = $data12[0]->overhead_id;
             $DateTime = $data12[0]->created_at;
             $DateTime = explode(' ', $DateTime);
             $data1 = DB::table('plc_pricing_overheads')->where('costing_id', $id)->get();
             $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
             $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
+            $formulaData = PlcFormula::orderBy('id','DESC')->where('oh_id', $overhead_id)->get();
+            foreach($formulaData as $value){
+                if($value->dep == "Cutting"){
+                    $cuttingDataF[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $StitchingDataF[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $LaminationDataF[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $ClosingDataF[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $LastingDataF[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $PackingDataF[] = $value;
+                }
+            }
             foreach($data3 as $value){
                 if($value->material == "cutting"){
-                    $cuttingData[] = $value;
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $cuttingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
                 }
                 elseif($value->material == "insole"){
-                    $InsoleData[] = $value;
+                    $result2 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $InsoleData[] = array(
+                        'value' => $value,
+                        'result' => $result2[0]['description'],
+                    );
                 }
                 elseif($value->material == "lamination"){
-                    $LaminationData[] = $value;
+                    $result = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LaminationData[] = array(
+                        'value' => $value,
+                        'result' => $result[0]['description'],
+                    );
                 }
                 elseif($value->material == "closing"){
-                    $ClosingData[] = $value;
+                    $result = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $ClosingData[] = array(
+                        'value' => $value,
+                        'result' => $result[0]['description'],
+                    );
                 }
                 elseif($value->material == "lasting"){
-                    $LastingData[] = $value;
+                    $result = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LastingData[] = array(
+                        'value' => $value,
+                        'result' => $result[0]['description'],
+                    );
                 }
                 elseif($value->material == "packing"){
-                    $PackingData[] = $value;
+                    $result = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $PackingData[] = array(
+                        'value' => $value,
+                        'result' => $result[0]['description'],
+                    );
                 }
             }
             foreach($data1 as $value){
@@ -477,11 +542,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($cuttingData as $value){
-                    $CutTotalValue = $CutTotalValue + $value->value;
-                    $CutTotalRate = $CutTotalRate + $value->rate;
-                    $CutTotalQty = $CutTotalQty + $value->total_qty;
-                    $CutTotalFac = $CutTotalFac + $value->fac_qty;
-                    $CutTotal = $CutTotal + $value->total;
+                    $CutTotalValue = $CutTotalValue + $value['value']->value;
+                    $CutTotalRate = $CutTotalRate + $value['value']->rate;
+                    $CutTotalQty = $CutTotalQty + $value['value']->total_qty;
+                    $CutTotalFac = $CutTotalFac + $value['value']->fac_qty;
+                    $CutTotal = $CutTotal + $value['value']->total;
                 }
                 $DataCutting = [ 
                     'Value'=> $CutTotalValue,
@@ -495,11 +560,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($InsoleData as $value){
-                    $ITotalValue = $ITotalValue + $value->value;
-                    $ITotalRate = $ITotalRate + $value->rate;
-                    $ITotalQty = $ITotalQty + $value->total_qty;
-                    $ITotalFac = $ITotalFac + $value->fac_qty;
-                    $ITotal = $ITotal + $value->total;
+                    $ITotalValue = $ITotalValue + $value['value']->value;
+                    $ITotalRate = $ITotalRate + $value['value']->rate;
+                    $ITotalQty = $ITotalQty + $value['value']->total_qty;
+                    $ITotalFac = $ITotalFac + $value['value']->fac_qty;
+                    $ITotal = $ITotal + $value['value']->total;
                 }
                 $DataInsole = [ 
                     'Value'=> $ITotalValue,
@@ -513,11 +578,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($LaminationData as $value){
-                    $LamTotalValue = $LamTotalValue + $value->value;
-                    $LamTotalRate = $LamTotalRate + $value->rate;
-                    $LamTotalQty = $LamTotalQty + $value->total_qty;
-                    $LamTotalFac = $LamTotalFac + $value->fac_qty;
-                    $LamTotal = $LamTotal + $value->total;
+                    $LamTotalValue = $LamTotalValue + $value['value']->value;
+                    $LamTotalRate = $LamTotalRate + $value['value']->rate;
+                    $LamTotalQty = $LamTotalQty + $value['value']->total_qty;
+                    $LamTotalFac = $LamTotalFac + $value['value']->fac_qty;
+                    $LamTotal = $LamTotal + $value['value']->total;
                 }
                 $DataLamination = [ 
                     'Value'=> $LamTotalValue,
@@ -531,11 +596,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($ClosingData as $value){
-                    $CloTotalValue = $CloTotalValue + $value->value;
-                    $CloTotalRate = $CloTotalRate + $value->rate;
-                    $CloTotalQty = $CloTotalQty + $value->total_qty;
-                    $CloTotalFac = $CloTotalFac + $value->fac_qty;
-                    $CloTotal = $CloTotal + $value->total;
+                    $CloTotalValue = $CloTotalValue + $value['value']->value;
+                    $CloTotalRate = $CloTotalRate + $value['value']->rate;
+                    $CloTotalQty = $CloTotalQty + $value['value']->total_qty;
+                    $CloTotalFac = $CloTotalFac + $value['value']->fac_qty;
+                    $CloTotal = $CloTotal + $value['value']->total;
                 }
                 $DataClosing = [ 
                     'Value'=> $CloTotalValue,
@@ -549,11 +614,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($LastingData as $value){
-                    $LastTotalValue = $LastTotalValue + $value->value;
-                    $LastTotalRate = $LastTotalRate + $value->rate;
-                    $LastTotalQty = $LastTotalQty + $value->total_qty;
-                    $LastTotalFac = $LastTotalFac + $value->fac_qty;
-                    $LastTotal = $LastTotal + $value->total;
+                    $LastTotalValue = $LastTotalValue + $value['value']->value;
+                    $LastTotalRate = $LastTotalRate + $value['value']->rate;
+                    $LastTotalQty = $LastTotalQty + $value['value']->total_qty;
+                    $LastTotalFac = $LastTotalFac + $value['value']->fac_qty;
+                    $LastTotal = $LastTotal + $value['value']->total;
                 }
                 $DataLasting = [ 
                     'Value'=> $LastTotalValue,
@@ -567,11 +632,11 @@ class PricingController extends Controller
             }
             else{
                 foreach($PackingData as $value){
-                    $PTotalValue = $PTotalValue + $value->value;
-                    $PTotalRate = $PTotalRate + $value->rate;
-                    $PTotalQty = $PTotalQty + $value->total_qty;
-                    $PTotalFac = $PTotalFac + $value->fac_qty;
-                    $PTotal =  $PTotal + $value->total;
+                    $PTotalValue = $PTotalValue + $value['value']->value;
+                    $PTotalRate = $PTotalRate + $value['value']->rate;
+                    $PTotalQty = $PTotalQty + $value['value']->total_qty;
+                    $PTotalFac = $PTotalFac + $value['value']->fac_qty;
+                    $PTotal =  $PTotal + $value['value']->total;
                 }
                 $DataPacking = [ 
                     'Value'=> $PTotalValue,
@@ -718,6 +783,8 @@ class PricingController extends Controller
                 'data1' => $data12[0], 'i' => 1,'j' => 1,'k' => 1,'l' => 1,'m' => 1,'n' => 1, 'date' => $DateTime[0], 'manual' => $data4,
                 'cuttingData' => $cuttingData, 'InsoleData' => $InsoleData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 
                 'LastingData'=> $LastingData, 'PackingData' => $PackingData,
+                'cuttingDataF' => $cuttingDataF, 'StitchingDataF' => $StitchingDataF, 'LaminationDataF' => $LaminationDataF, 'ClosingDataF' => $ClosingDataF, 
+                'LastingDataF' => $LastingDataF, 'PackingDataF' => $PackingDataF,
                 'cuttingData_o' => $cuttingData_o, 'InsoleData_o' => $InsoleData_o, 'LaminationData_o' => $LaminationData_o, 'ClosingData_o' => $ClosingData_o, 
                 'LastingData_o' => $LastingData_o, 'PackingData_o' => $PackingData_o,
                 'cuttingData_r' => $cuttingData_r, 'InsoleData_r' => $InsoleData_r, 'LaminationData_r' => $LaminationData_r, 'ClosingData_r' => $ClosingData_r,
@@ -726,14 +793,14 @@ class PricingController extends Controller
                 'DataCutting_o' => $DataCutting_o, 'DataInsole_o' => $DataInsole_o, 'DataLamination_o' => $DataLamination_o, 'DataClosing_o' => $DataClosing_o, 'DataLasting_o' => $DataLasting_o, 'DataPacking_o' => $DataPacking_o,
                 'DataCutting_r' => $DataCutting_r, 'DataInsole_r' => $DataInsole_r, 'DataLamination_r' => $DataLamination_r, 'DataClosing_r' => $DataClosing_r, 'DataLasting_r' => $DataLasting_r, 'DataPacking_r' => $DataPacking_r, 
             ]);
-        }
-        catch(Exception $e){
-            $notification = array(
-                'message' => $e->getMessage(),
-                'alert-type' => 'error'
-            );
-            return back()->with($notification);
-        }
+        // }
+        // catch(Exception $e){
+        //     $notification = array(
+        //         'message' => $e->getMessage(),
+        //         'alert-type' => 'error'
+        //     );
+        //     return back()->with($notification);
+        // }
     }
 
     public function Print(Request $request)
@@ -1131,7 +1198,7 @@ class PricingController extends Controller
         try{
             $id = $request->id;
             date_default_timezone_set('Asia/Karachi');
-            $date = date('l d F Y - h:i');
+            $date = date('d F Y');
             $sessionImg = Session::get('image');
             $upper = 1; $linning = 2; $stiching = 3; $insole = 4; $outsole = 5; $socks  = 6; $general = 7;
             $costingImage = DB::table('plc_pricings')->where('id', $id)->pluck('image');
@@ -1190,8 +1257,10 @@ class PricingController extends Controller
                             'item_code' => $request->cut_item_code[$i] ? $request->cut_item_code[$i] : '-',
                             'description' => $request->cut_description[$i] ? ucwords($request->cut_description[$i]) : '-',
                             'uom' => isset($request->cut_uom[$i]) ? $request->cut_uom[$i] : '-',
-                            'component' => isset($request->cut_component[$i]) ? $request->cut_component[$i] : '-',
+                            'division' => isset($request->cut_division[$i]) ? $request->cut_division[$i] : '-',
+                            'subdivision' => isset($request->cut_subdivision[$i]) ? $request->cut_subdivision[$i] : '-',
                             'output' => isset($request->cut_output[$i]) ? $request->cut_output[$i] : '0',
+                            'cut_code' => isset($request->cut_cut_code[$i]) ? $request->cut_cut_code[$i] : '0',
                             'fac_qty' => isset($request->cut_output[$i]) ? round(1/$request->cut_output[$i],4) : '0',
                             'total_qty' => isset($request->cut_qty[$i]) ? $request->cut_qty[$i] : '0',
                             'process' => isset($request->cut_process[$i]) ? $request->cut_process[$i] : '0',
@@ -1209,8 +1278,10 @@ class PricingController extends Controller
                             'item_code' => $request->i_item_code[$i] ? $request->i_item_code[$i] : '-',
                             'description' => $request->i_description[$i] ? ucwords($request->i_description[$i]) : '-',
                             'uom' => isset($request->i_uom[$i]) ? $request->i_uom[$i] : '-',
-                            'component' => isset($request->i_component[$i]) ? $request->i_component[$i] : '-',
+                            'division' => isset($request->i_division[$i]) ? $request->i_division[$i] : '-',
+                            'subdivision' => isset($request->i_subdivision[$i]) ? $request->i_subdivision[$i] : '-',
                             'output' => isset($request->i_output[$i]) ? $request->i_output[$i] : '0',
+                            'cut_code' => isset($request->i_cut_code[$i]) ? $request->i_cut_code[$i] : '0',
                             'fac_qty' => isset($request->i_output[$i]) ? round(1/$request->i_output[$i],4) : '0',
                             'total_qty' => isset($request->i_qty[$i]) ? $request->i_qty[$i] : '0',
                             'process' => isset($request->i_process[$i]) ? $request->i_process[$i] : '0',
@@ -1228,8 +1299,10 @@ class PricingController extends Controller
                             'item_code' => $request->lam_item_code[$i] ? $request->lam_item_code[$i] : '-',
                             'description' => $request->lam_description[$i] ? ucwords($request->lam_description[$i]) : '-',
                             'uom' => isset($request->lam_uom[$i]) ? $request->lam_uom[$i] : '-',
-                            'component' => isset($request->lam_component[$i]) ? $request->lam_component[$i] : '-',
+                            'division' => isset($request->lam_division[$i]) ? $request->lam_division[$i] : '-',
+                            'subdivision' => isset($request->lam_subdivision[$i]) ? $request->lam_subdivision[$i] : '-',
                             'output' => isset($request->lam_output[$i]) ? $request->lam_output[$i] : '0',
+                            'cut_code' => isset($request->lam_cut_code[$i]) ? $request->lam_cut_code[$i] : '0',
                             'fac_qty' => isset($request->lam_output[$i]) ? round(1/$request->lam_output[$i],4) : '0',
                             'total_qty' => isset($request->lam_qty[$i]) ? $request->lam_qty[$i] : '0',
                             'process' => isset($request->lam_process[$i]) ? $request->lam_process[$i] : '0',
@@ -1247,8 +1320,10 @@ class PricingController extends Controller
                             'item_code' => $request->clo_item_code[$i] ? $request->clo_item_code[$i] : '-',
                             'description' => $request->clo_description[$i] ? ucwords($request->clo_description[$i]) : '-',
                             'uom' => isset($request->clo_uom[$i]) ? $request->clo_uom[$i] : '-',
-                            'component' => isset($request->clo_component[$i]) ? $request->clo_component[$i] : '-',
+                            'division' => isset($request->clo_division[$i]) ? $request->clo_division[$i] : '-',
+                            'subdivision' => isset($request->clo_subdivision[$i]) ? $request->clo_subdivision[$i] : '-',
                             'output' => isset($request->clo_output[$i]) ? $request->clo_output[$i] : '0',
+                            'cut_code' => isset($request->clo_cut_code[$i]) ? $request->clo_cut_code[$i] : '0',
                             'fac_qty' => isset($request->clo_output[$i]) ? round(1/$request->clo_output[$i],4) : '0',
                             'total_qty' => isset($request->clo_qty[$i]) ? $request->clo_qty[$i] : '0',
                             'process' => isset($request->clo_process[$i]) ? $request->clo_process[$i] : '0',
@@ -1266,8 +1341,10 @@ class PricingController extends Controller
                             'item_code' => $request->last_item_code[$i] ? $request->last_item_code[$i] : '-',
                             'description' => $request->last_description[$i] ? ucwords($request->last_description[$i]) : '-',
                             'uom' => isset($request->last_uom[$i]) ? $request->last_uom[$i] : '-',
-                            'component' => isset($request->last_component[$i]) ? $request->last_component[$i] : '-',
+                            'division' => isset($request->last_division[$i]) ? $request->last_division[$i] : '-',
+                            'subdivision' => isset($request->last_subdivision[$i]) ? $request->last_subdivision[$i] : '-',
                             'output' => isset($request->last_output[$i]) ? $request->last_output[$i] : '0',
+                            'cut_code' => isset($request->last_cut_code[$i]) ? $request->last_cut_code[$i] : '0',
                             'fac_qty' => isset($request->last_output[$i]) ? round(1/$request->last_output[$i],4) : '0',
                             'total_qty' => isset($request->last_qty[$i]) ? $request->last_qty[$i] : '0',
                             'process' => isset($request->last_process[$i]) ? $request->last_process[$i] : '0',
@@ -1285,8 +1362,10 @@ class PricingController extends Controller
                             'item_code' => $request->p_item_code[$i] ? $request->p_item_code[$i] : '-',
                             'description' => $request->p_description[$i] ? ucwords($request->p_description[$i]) : '-',
                             'uom' => isset($request->p_uom[$i]) ? $request->p_uom[$i] : '-',
-                            'component' => isset($request->p_component[$i]) ? $request->p_component[$i] : '-',
+                            'division' => isset($request->p_division[$i]) ? $request->p_division[$i] : '-',
+                            'subdivision' => isset($request->p_subdivision[$i]) ? $request->p_subdivision[$i] : '-',
                             'output' => isset($request->p_output[$i]) ? $request->p_output[$i] : '0',
+                            'cut_code' => isset($request->p_cut_code[$i]) ? $request->p_cut_code[$i] : '0',
                             'fac_qty' => isset($request->p_output[$i]) ? round(1/$request->p_output[$i],4) : '0',
                             'total_qty' => isset($request->p_qty[$i]) ? $request->p_qty[$i] : '0',
                             'process' => isset($request->p_process[$i]) ? $request->p_process[$i] : '0',
@@ -1601,99 +1680,24 @@ class PricingController extends Controller
     {
         try{
             $id = $request->id;
+            $overhead = $request->overhead;
             $fetch = DB::table('plc_pricings')->where('id', $id)->get();
             if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
                 DB::table('plc_pricings')->where('id', $id)->update(['progress' => 80]);
             }
-            PlcPricingOverhead::where('costing_id', $id)->delete();
-            if($request->cut_value_o[0] != null){
-                $count = count($request->cut_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "cutting",
-                        'value_set' => $request->cut_value_o[$i] ? $request->cut_value_o[$i] : '-',
-                        'description' => $request->cut_description_o[$i] ? ucwords($request->cut_description_o[$i]) : '-',
-                        'remarks' => isset($request->cut_remarks_o[$i]) ? $request->cut_remarks_o[$i] : '-',
-                        'pair' => isset($request->cut_rate_o[$i]) ? $request->cut_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
+            $update = DB::table('plc_pricings')->where('id', $id)->update(['overhead_id' => $overhead]);
+            if($update){
+                $notification = array(
+                    'message' => 'Pricing Sheet Overhead Updated',
+                    'alert-type' => 'success'
+                );
             }
-            if($request->i_value_o[0] != null){
-                $count = count($request->i_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "insole",
-                        'value_set' => $request->i_value_o[$i] ? $request->i_value_o[$i] : '-',
-                        'description' => $request->i_description_o[$i] ? ucwords($request->i_description_o[$i]) : '-',
-                        'remarks' => isset($request->i_remarks_o[$i]) ? $request->i_remarks_o[$i] : '-',
-                        'pair' => isset($request->i_rate_o[$i]) ? $request->i_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
+            else{
+                $notification = array(
+                    'message' => 'Something went wrong!',
+                    'alert-type' => 'no'
+                );
             }
-            if($request->lam_value_o[0] != null){
-                $count = count($request->lam_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "lamination",
-                        'value_set' => $request->lam_value_o[$i] ? $request->lam_value_o[$i] : '-',
-                        'description' => $request->lam_description_o[$i] ? ucwords($request->lam_description_o[$i]) : '-',
-                        'remarks' => isset($request->lam_remarks_o[$i]) ? $request->lam_remarks_o[$i] : '-',
-                        'pair' => isset($request->lam_rate_o[$i]) ? $request->lam_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
-            }
-            if($request->clo_value_o[0] != null){
-                $count = count($request->clo_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "closing",
-                        'value_set' => $request->clo_value_o[$i] ? $request->clo_value_o[$i] : '-',
-                        'description' => $request->clo_description_o[$i] ? ucwords($request->clo_description_o[$i]) : '-',
-                        'remarks' => isset($request->clo_remarks_o[$i]) ? $request->clo_remarks_o[$i] : '-',
-                        'pair' => isset($request->clo_rate_o[$i]) ? $request->clo_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
-            }
-            if($request->last_value_o[0] != null){
-                $count = count($request->last_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "lasting",
-                        'value_set' => $request->last_value_o[$i] ? $request->last_value_o[$i] : '-',
-                        'description' => $request->last_description_o[$i] ? ucwords($request->last_description_o[$i]) : '-',
-                        'remarks' => isset($request->last_remarks_o[$i]) ? $request->last_remarks_o[$i] : '-',
-                        'pair' => isset($request->last_rate_o[$i]) ? $request->last_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
-            }
-            if($request->p_value_o[0] != null){
-                $count = count($request->p_value_o);
-                for($i=0; $i<$count; $i++){
-                    $dataArray = array(
-                        'costing_id' => $id,
-                        'material' => "packing",
-                        'value_set' => $request->p_value_o[$i] ? $request->p_value_o[$i] : '-',
-                        'description' => $request->p_description_o[$i] ? ucwords($request->p_description_o[$i]) : '-',
-                        'remarks' => isset($request->p_remarks_o[$i]) ? $request->p_remarks_o[$i] : '-',
-                        'pair' => isset($request->p_rate_o[$i]) ? $request->p_rate_o[$i] : '0',
-                    );
-                    $store = PlcPricingOverhead::insert($dataArray);
-                }
-            }
-            $notification = array(
-                'message' => 'Pricing Sheet Overhead',
-                'alert-type' => 'success'
-            );
             return redirect()->route('pricing-sheet-table')->with($notification);
         }
         catch(Exception $e){
@@ -1712,6 +1716,7 @@ class PricingController extends Controller
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
             $cuttingData_o = []; $InsoleData_o = []; $LaminationData_o = []; $ClosingData_o = []; $LastingData_o = []; $PackingData_o = [];
             $cuttingData_r = []; $InsoleData_r = []; $LaminationData_r = []; $ClosingData_r = []; $LastingData_r = []; $PackingData_r = [];
+            $formulaData = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
             $data = DB::table('plc_pricings')->where('id', $id)->get();
             $userseason = $data[0]->season;
             $userpurpose = $data[0]->purpose;
@@ -1729,6 +1734,7 @@ class PricingController extends Controller
             $userdescription = $data[0]->description;
             $usercategory = $data[0]->category;
             $progress = $data[0]->progress;
+            $overhead_id = $data[0]->overhead_id;
             $data1 = DB::table('plc_pricing_overheads')->where('costing_id', $id)->get();
             $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
@@ -1803,8 +1809,8 @@ class PricingController extends Controller
                 'cuttingData_o'=> $cuttingData_o, 'InsoleData_o'=> $InsoleData_o, 'LaminationData_o'=> $LaminationData_o, 'ClosingData_o'=> $ClosingData_o, 'LastingData_o'=> $LastingData_o, 'PackingData_o'=> $PackingData_o,
                 'cuttingData_r'=> $cuttingData_r, 'InsoleData_r'=> $InsoleData_r, 'LaminationData_r'=> $LaminationData_r, 'ClosingData_r'=> $ClosingData_r, 'LastingData_r'=> $LastingData_r, 'PackingData_r'=> $PackingData_r,
                 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'image'=> $userimage, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole,
-                'userproject'=>$userproject, 'userproduct'=>$userproduct, 'userrange'=>$userrange, 'userdesign'=>$userdesign, 'userdescription'=>$userdescription,
-                'usercategory'=>$usercategory, 'sequence'=>$sequence, 'date'=>$date, 'progress'=>$progress
+                'userproject'=> $userproject, 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription,
+                'usercategory'=> $usercategory, 'sequence'=> $sequence, 'date'=> $date, 'progress'=> $progress, 'formulaData'=> $formulaData, 'overhead_id' => $overhead_id
             ]);
         }
         catch(Exception $e){
@@ -1819,6 +1825,9 @@ class PricingController extends Controller
     public function Edit(Request $request)
     {
         try{
+            $season = array();
+            $item_code = array();
+            $article_code = array();
             $id = $_GET['id'];
             $check = 0;
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
@@ -1898,6 +1907,7 @@ class PricingController extends Controller
             $shape = PlcShape::orderBy('id','DESC')->get();
             $sole = PlcSole::orderBy('id','DESC')->get();
             $last = PlcLastNumber::orderBy('id','DESC')->get();
+            $division = Division::orderBy('id','DESC')->get();
             return view('pricingsheet.pricing-sheet-edit')->with([
                 'id'=> $id,
                 'data1'=> $data1[0], "manual" => $data4,
@@ -1907,7 +1917,8 @@ class PricingController extends Controller
                 'season'=> $season, 'itemcode'=> $item_code, 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'sequence'=> $sequence, 'date'=> $date, 'image'=> $userimage,
                 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
                 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory,
-                'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'last'=> $last, 'userlast'=> $userlast, 'check'=> $check, 'location'=> $location
+                'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'last'=> $last, 'userlast'=> $userlast, 'check'=> $check, 'location'=> $location,
+                'division'=> $division
             ]);
         }
         catch(Exception $e){
@@ -1927,6 +1938,7 @@ class PricingController extends Controller
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
             $data1 = DB::table('plc_pricings')->where('id', $id)->get();
             $data2 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
+            $formulaData = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
             $userseason = $data1[0]->season;
             $userpurpose = $data1[0]->purpose;
             $userimage = $data1[0]->image;
@@ -1978,7 +1990,7 @@ class PricingController extends Controller
                 'season'=> $season, 'itemcode'=> $item_code, 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'sequence'=> $sequence, 'date'=> $date,
                 'image'=> $userimage, 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
                 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory,
-                'userprogress'=> $userprogress, 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose,
+                'userprogress'=> $userprogress, 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'formulaData'=> $formulaData
             ]);
         }
         catch(Exception $e){
@@ -1993,6 +2005,9 @@ class PricingController extends Controller
     public function All(Request $request)
     {
         try{
+            $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $connPRL = oci_connect("onsole","s",$wizerp);
+            $sono = array();
             $id = Auth::user()->id;
             $UserDetail = DB::table("users")->where("id", $id)->pluck('userrole');
             $UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
@@ -2007,11 +2022,22 @@ class PricingController extends Controller
                 }
                 return view('pricingsheet.pricing-sheet-costing-table')->with(['data'=> $data, 'i'=> 1]);
             }
+            elseif($id == 2){
+                $data = PlcPricing::orderBy('id','DESC')->get();
+                return view('pricingsheet.pricing-sheet-admin-table')->with(['data'=> $data, 'i'=> 1]); 
+            }
             elseif(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])){
                 if(isset($storeData['Pricing-Sheet Sales']) == 1){
                     $data = PlcPricing::orderBy('id','DESC')->where('status', "Sales")->Orwhere('status', "Final")->get();
                 }
-                return view('pricingsheet.pricing-sheet-sales-table')->with(['data'=> $data, 'i'=> 1]);
+                $sql = "SELECT SALES_ORDER_ID FROM SALES_ORDER_MT WHERE INV_BOOK_ID = 74 ORDER BY SALES_ORDER_ID ASC";
+                $result = oci_parse($connPRL, $sql);
+                oci_execute($result);
+                while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                    $sono[] = $row['SALES_ORDER_ID'];
+                }
+                $lenght = count($sono);
+                return view('pricingsheet.pricing-sheet-sales-table')->with(['data'=> $data, 'i'=> 1, 'sono'=> $sono, 'lenght'=> $lenght]);
             }
             elseif(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])){
                 if(isset($storeData['Job-Order Create']) == 1){
@@ -2088,6 +2114,69 @@ class PricingController extends Controller
             DB::table('plc_pricings')->where('id', $id)->update(['progress' => 100]);
             if($updatePrice && $updateProfit){
                 return response()->json($updatePrice);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function StoreSono($value,$id)
+    {
+        try{
+            $update = PlcPricing::where('id', $id)->update(['sono' => $value]);
+            if($update){
+                return response()->json($update);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function GetSubDivision($value)
+    {
+        try{
+            $result = SubDivision::where('division_id', $value)->get();
+            if($result){
+                return response()->json($result);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function GetDivision()
+    {
+        try{
+            $result = Division::get();
+            if($result){
+                return response()->json($result);
             }
             else{
                 $error = 400;

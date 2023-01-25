@@ -240,6 +240,28 @@
                                                             <label class="form-check form-check-inline" id="plc13" style="display: none;">
                                                                 <input class="form-check-input name Singlecheck221" id="pricingproduction1" type="checkbox" name="JobOrder[]">
                                                                 <span id="pricingproduction" class="form-check-label"></span>
+                                                            </label>                                                            
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="plc14" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="pdlmasterdata1" type="checkbox" name="JobOrder[]">
+                                                                <span id="pdlmasterdata" class="form-check-label"></span>
+                                                            </label>
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="plc15" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="formulalist1" type="checkbox" name="JobOrder[]">
+                                                                <span id="formulalist" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc16" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="formulacreate1" type="checkbox" name="JobOrder[]">
+                                                                <span id="formulacreate" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc17" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="formulaedit1" type="checkbox" name="JobOrder[]">
+                                                                <span id="formulaedit" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc18" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="formuladelete1" type="checkbox" name="JobOrder[]">
+                                                                <span id="formuladelete" class="form-check-label"></span>
                                                             </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allCheck221" type="checkbox">
@@ -1074,6 +1096,16 @@
                     $("#pricingsales1").attr('value', "Pricing-Sheet Sales");
                     $("#pricingproduction").html("Pricing-Sheet Production");
                     $("#pricingproduction1").attr('value', "Pricing-Sheet Production");
+                    $("#pdlmasterdata").html("PDL Master Data");
+                    $("#pdlmasterdata1").attr('value', "PDL Master Data");
+                    $("#formulalist").html("Formula-Sheet List");
+                    $("#formulalist1").attr('value', "Formula-Sheet List");
+                    $("#formulacreate").html("Formula-Sheet Create");
+                    $("#formulacreate1").attr('value', "Formula-Sheet Create");
+                    $("#formulaedit").html("Formula-Sheet Edit");
+                    $("#formulaedit1").attr('value', "Formula-Sheet Edit");
+                    $("#formuladelete").html("Formula-Sheet Delete");
+                    $("#formuladelete1").attr('value', "Formula-Sheet Delete");
                     $("#joborder").show();
                 }
                 else{
@@ -1215,7 +1247,6 @@
                         $("#pricingdelete1").attr('value', "Pricing-Sheet Delete");
                         $("#pricingdelete1").attr('checked', false);
                     }
-
                     if(data[0].joborder[8]){
                         $("#plc9").show();
                         $("#pricingedit").html(data[0].joborder[8].role_name);
@@ -1233,7 +1264,6 @@
                         $("#pricingedit1").attr('value', "Pricing-Sheet Edit");
                         $("#pricingedit1").attr('checked', false);
                     }
-
                     if(data[0].joborder[9]){
                         $("#plc10").show();
                         $("#pricingtransfer").html(data[0].joborder[9].role_name);
@@ -1300,6 +1330,93 @@
                         $("#pricingproduction").html("Pricing-Sheet Production");
                         $("#pricingproduction1").attr('value', "Pricing-Sheet Production");
                         $("#pricingproduction1").attr('checked', false);
+                    }
+                    if(data[0].joborder[13]){
+                        $("#plc14").show();
+                        $("#pdlmasterdata").html(data[0].joborder[13].role_name);
+                        $("#pdlmasterdata1").attr('value', data[0].joborder[13].role_name);
+                        if(data[0].joborder[13].value == 1){
+                            $("#pdlmasterdata1").attr('checked', true);
+                        }
+                        else{
+                            $("#pdlmasterdata1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc14").show();
+                        $("#pdlmasterdata").html("PDL Master Data");
+                        $("#pdlmasterdata1").attr('value', "PDL Master Data");
+                        $("#pdlmasterdata1").attr('checked', false);
+                    }
+                    if(data[0].joborder[14]){
+                        $("#plc15").show();
+                        $("#formulalist").html(data[0].joborder[14].role_name);
+                        $("#formulalist1").attr('value', data[0].joborder[14].role_name);
+                        if(data[0].joborder[14].value == 1){
+                            $("#formulalist1").attr('checked', true);
+                        }
+                        else{
+                            $("#formulalist1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc15").show();
+                        $("#formulalist").html("Formula-Sheet List");
+                        $("#formulalist1").attr('value', "Formula-Sheet List");
+                        $("#formulalist1").attr('checked', false);
+                    }
+                    if(data[0].joborder[15]){
+                        $("#plc16").show();
+                        $("#formulacreate").html(data[0].joborder[15].role_name);
+                        $("#formulacreate1").attr('value', data[0].joborder[15].role_name);
+                        if(data[0].joborder[15].value == 1){
+                            $("#formulacreate1").attr('checked', true);
+                        }
+                        else{
+                            $("#formulacreate1").attr('checked', false);
+                        }
+                    }
+                    else
+                    {
+                        $("#plc16").show();
+                        $("#formulacreate").html("Formula-Sheet Create");
+                        $("#formulacreate1").attr('value', "Formula-Sheet Create");
+                        $("#formulacreate1").attr('checked', false);
+                    }
+                    if(data[0].joborder[16]){
+                        $("#plc17").show();
+                        $("#formuladelete").html(data[0].joborder[16].role_name);
+                        $("#formuladelete1").attr('value', data[0].joborder[16].role_name);
+                        if(data[0].joborder[16].value == 1){
+                            $("#formuladelete1").attr('checked', true);
+                        }
+                        else{
+                            $("#formuladelete1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc17").show();
+                        $("#formuladelete").html("Formula-Sheet Delete");
+                        $("#formuladelete1").attr('value', "Formula-Sheet Delete");
+                        $("#formuladelete1").attr('checked', false);
+                    }
+
+                    if(data[0].joborder[17]){
+                        $("#plc18").show();
+                        $("#formulaedit").html(data[0].joborder[17].role_name);
+                        $("#formulaedit1").attr('value', data[0].joborder[17].role_name);
+                        if(data[0].joborder[17].value == 1){
+                            $("#formulaedit1").attr('checked', true);
+                        }
+                        else{
+                            $("#formulaedit1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc18").show();
+                        $("#formulaedit").html("Formula-Sheet Edit");
+                        $("#formulaedit1").attr('value', "Formula-Sheet Edit");
+                        $("#formulaedit1").attr('checked', false);
                     }
                     $("#joborder").show();
                 }

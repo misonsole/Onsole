@@ -226,6 +226,28 @@
                                                         <input class="form-check-input name Singlecheck222" type="checkbox" value="Pricing-Sheet Production" name="JobOrder[]">
                                                         <span class="form-check-label">Pricing-Sheet Production</span>
                                                     </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="PDL Master Data" name="JobOrder[]">
+                                                        <span class="form-check-label">PDL Master Data</span>
+                                                    </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Formula-Sheet List" name="JobOrder[]">
+                                                        <span class="form-check-label">Formula-Sheet List</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Formula-Sheet Create" name="JobOrder[]">
+                                                        <span class="form-check-label">Formula-Sheet Create</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Formula-Sheet Delete" name="JobOrder[]">
+                                                        <span class="form-check-label">Formula-Sheet Delete</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Formula-Sheet Edit" name="JobOrder[]">
+                                                        <span class="form-check-label">Formula-Sheet Edit</span>
+                                                    </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allCheck4" type="checkbox">
                                                         <span class="form-check-label">Mark All</span>

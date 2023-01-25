@@ -9,6 +9,8 @@ use DateTime;
 use Exception;
 use App\Models\User;
 use App\Models\PlcSole;
+use App\Models\Division;
+use App\Models\SubDivision;
 use App\Models\PlcShape;
 use App\Models\PlcRange;
 use App\Models\RoleName;
@@ -50,6 +52,8 @@ class AdminController extends Controller
     public function masterDataPlc(Request $request)
     {
         try{
+            $subdivisionA = array();
+            $AllsubdivisionA = array();
             $last = PlcLastNumber::orderBy('id','DESC')->limit(5)->get();
             $Alllast = PlcLastNumber::orderBy('id','DESC')->get();
             $location = PlcLocation::orderBy('id','DESC')->limit(5)->get();
@@ -68,6 +72,25 @@ class AdminController extends Controller
             $AllcategoryPlc = PlcCategory::orderBy('id','DESC')->get();
             $sizerange = PlcSizeRange::orderBy('id','DESC')->limit(5)->get();
             $Allsizerange = PlcSizeRange::orderBy('id','DESC')->get();
+            $divisionPlc = Division::orderBy('id','DESC')->limit(5)->get();
+            $AlldivisionPlc = Division::orderBy('id','DESC')->get();
+            $subdivision = SubDivision::orderBy('id','DESC')->limit(5)->get();
+            $Allsubdivision = SubDivision::orderBy('id','DESC')->get();
+            foreach($subdivision as $data){
+                $result = Division::orderBy('id','DESC')->where('id',$data->division_id)->get();
+                $subdivisionA[] = array(
+                    'data' => $data,
+                    'result' => $result[0]['description'],
+                );
+            }
+            foreach($Allsubdivision as $data){
+                $result = Division::orderBy('id','DESC')->where('id',$data->division_id)->get();
+                $AllsubdivisionA[] = array(
+                    'data' => $data,
+                    'result' => $result[0]['description'],
+                );
+            }
+
             return view('admin.master-data-plc')->with([
                 'i' => 1, 'z' => 1, 'j' => 1, 
                 'a' => 1, 'aa' => 1, 'aaa' => 1, 
@@ -78,6 +101,9 @@ class AdminController extends Controller
                 'f' => 1, 'ff' => 1, 'fff' => 1, 
                 'g' => 1, 'gg' => 1, 'ggg' => 1, 
                 'h' => 1, 'hh' => 1, 'hhh' => 1, 
+                'i' => 1, 'ii' => 1, 'iii' => 1, 
+                'j' => 1, 'jj' => 1, 'jjj' => 1, 
+                'k' => 1, 'kk' => 1, 'kkk' => 1, 
                 'last'=> $last,'allLast'=> $Alllast, 
                 'location' => $location,'Alllocation' => $Alllocation, 
                 'range' => $range,'Allrange' => $Allrange, 
@@ -87,6 +113,8 @@ class AdminController extends Controller
                 'categoryPlc' => $categoryPlc,'AllcategoryPlc' => $AllcategoryPlc, 
                 'sizerange' => $sizerange,'Allsizerange' => $Allsizerange, 
                 'project' => $project,'Allproject' => $Allproject, 
+                'divisionPlc' => $divisionPlc,'AlldivisionPlc' => $AlldivisionPlc,
+                'subdivision' => $subdivisionA,'Allsubdivision' => $AllsubdivisionA,
                 'lastcount' => count($Alllast),
                 'locationcount' => count($Alllocation),
                 'rangecount' => count($Allrange),
@@ -96,6 +124,8 @@ class AdminController extends Controller
                 'purposecount' => count($Allpurpose),
                 'projectcount' => count($Allproject),
                 'categoryPlccount' => count($AllcategoryPlc),
+                'divisionPlccount' => count($AlldivisionPlc),
+                'subdivisioncount' => count($Allsubdivision),
             ]);
         }
         catch(Exception $e){
@@ -261,6 +291,68 @@ class AdminController extends Controller
             if($Add){
                 $notification = array(
                     'message' => 'Last Number Added!',
+                    'alert-type' => 'success'
+                );
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed. Please try again!',
+                    'alert-type' => 'danger'
+                );
+            }
+            return redirect()->route('master-data-plc')->with($notification); 
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function addDivision(Request $request)
+    {
+        try{
+            $data = array([
+                'description' => $request->division,
+            ]);
+            $Add = new Division();
+            $Add->description = $request->division;
+            $result = $Add->save();
+            if($result){
+                $notification = array(
+                    'message' => 'Division Added',
+                    'alert-type' => 'success'
+                );
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed. Please try again!',
+                    'alert-type' => 'danger'
+                );
+            }
+            return redirect()->route('master-data-plc')->with($notification); 
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function addSubDivision(Request $request)
+    {
+        try{
+            $Add = new SubDivision();
+            $Add->division_id = $request->division;
+            $Add->description = $request->subdivision; 
+            $result = $Add->save();
+            if($result){
+                $notification = array(
+                    'message' => 'Sub Division Added',
                     'alert-type' => 'success'
                 );
             }
@@ -2030,6 +2122,66 @@ class AdminController extends Controller
         }
     }
 
+    public function Division(Request $request) 
+    {
+        try{
+            $id = $request->divisionId;
+            $last = $request->divisionNum;
+            $update = DB::table('divisions')->where('id', $id)->update(['description' => $last]);
+            if($update){
+                $notification = array(
+                    'message' => 'Updated',
+                    'alert-type' => 'success'
+                );
+                return back()->with($notification); 
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notification);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function SubDivision(Request $request) 
+    {
+        try{
+            $id = $request->subdivisionId;
+            $last = $request->subdivisionNum;
+            $update = DB::table('sub_divisions')->where('id', $id)->update(['description' => $last]);
+            if($update){
+                $notification = array(
+                    'message' => 'Updated',
+                    'alert-type' => 'success'
+                );
+                return back()->with($notification); 
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notification);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function lastDel($id) 
     {
         try{
@@ -2166,6 +2318,50 @@ class AdminController extends Controller
     {
         try{
             $update = PlcSizeRange::where('id', $id)->delete();
+            if($update){
+                $update = 1;
+                return response()->json($update);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function divisionDel($id) 
+    {
+        try{
+            $update = Division::where('id', $id)->delete();
+            if($update){
+                $update = 1;
+                return response()->json($update);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function subdivisionDel($id) 
+    {
+        try{
+            $update = SubDivision::where('id', $id)->delete();
             if($update){
                 $update = 1;
                 return response()->json($update);

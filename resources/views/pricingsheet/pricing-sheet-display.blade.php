@@ -107,7 +107,7 @@
                             </div>
                             <div class="col-md-6 align-self-center text-center">
                                 <h3>Pricing Sheet</h3>
-                                <h5>Material</h5>
+                                <h4>Material</h4>
                             </div>
                         </div>
                         <div class="row p-5">
@@ -121,6 +121,12 @@
                                     @endif
                                     <h6 class="mb-0 mr-3"><b>Desgin No&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Description&nbsp;:</b></h6>
+                                    @if($data1->overhead_id)
+                                    <h6 class="mb-0 mr-3"><b>Overhead No&nbsp;:</b></h6>
+                                    @endif
+                                    @if($data1->sono)
+                                    <h6 class="mb-0 mr-3"><b>Sales Order No&nbsp;:</b></h6>
+                                    @endif
                                     @if(count($manual) == 0)
                                     &nbsp;
                                     @else
@@ -139,7 +145,17 @@
                                         @endif
                                     </h6> 
                                     <h6 class="mb-0">{{$data1->design_no}}</h6>
-                                    <h6 class="mb-0"> {{$data1->description}}</h6>
+                                    <h6 class="mb-0">{{$data1->description}}</h6> 
+                                    <h6 class="mb-0"> 
+                                        @if($data1->overhead_id)
+                                            Overhead-{{$data1->overhead_id}}
+                                        @endif
+                                    </h6> 
+                                    <h6 class="mb-0"> 
+                                        @if($data1->sono)
+                                            {{$data1->sono}}
+                                        @endif
+                                    </h6>
                                     @if(count($manual) == 0)
                                     &nbsp;
                                     @else
@@ -184,7 +200,8 @@
                                                 <th class="text-center text-white">Material Code</th>
                                                 <th class="text-center text-white">Description</th>
                                                 <th class="text-center text-white">Unit</th>
-                                                <th class="text-center text-white">Component</th>
+                                                <th class="text-center text-white">Division</th>
+                                                <th class="text-center text-white">Sub Division</th>
                                                 <th class="text-center text-white">Output</th>
                                                 <th class="text-center text-white">Consumption <br> Factor</th>
                                                 <!-- <th class="text-center text-white">Consumption <br> Quantity</th> -->
@@ -210,22 +227,24 @@
                                             @foreach($cuttingData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -253,22 +272,24 @@
                                             @foreach($InsoleData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -296,22 +317,24 @@
                                             @foreach($LaminationData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -339,22 +362,24 @@
                                             @foreach($ClosingData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -382,22 +407,24 @@
                                             @foreach($LastingData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -425,22 +452,24 @@
                                             @foreach($PackingData as $value)
                                             <tr>
                                                 <td class="text-center borderTop">{{$i++}}</td>
-                                                <td class="text-center borderTop">{{$value->item_code}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->uom}}</td>
-                                                <td class="text-center borderTop">{{$value->component}}</td>
-                                                <td class="text-center borderTop">{{$value->output}}</td>
-                                                <td class="text-center borderTop">{{substr($value->fac_qty, 0,6)}}</td>
-                                                <!-- <td class="text-center borderTop">{{$value->total_qty}}</td> -->
-                                                <td class="text-center borderTop">{{$value->process}}</td>
-                                                <td class="text-center borderTop">{{substr($value->total, 0,6)}}</td>
-                                                <td class="text-center borderTop">{{$value->rate}}</td>
-                                                <td class="text-center borderTop">{{$value->value}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->item_code}}</td>
+                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value['value']->description}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->uom}}</td>
+                                                <td class="text-center borderTop">{{$value['result']}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->subdivision}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->output}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->fac_qty, 0,6)}}</td>
+                                                <!-- <td class="text-center borderTop">{{$value['value']->total_qty}}</td> -->
+                                                <td class="text-center borderTop">{{$value['value']->process}}</td>
+                                                <td class="text-center borderTop">{{substr($value['value']->total, 0,6)}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->rate}}</td>
+                                                <td class="text-center borderTop">{{$value['value']->value}}</td>
                                             </tr>
                                             @endforeach
                                                 <tr style="background: #cdd3db;" class="rounded">
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #434f5e">Total</th>
+                                                    <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
                                                     <th class="text-center py-1" style="color: #586c85"></th>
@@ -489,7 +518,7 @@
                                 <img src="img/photos/preview.png" alt="logo-small" class="logo-sm mr-2" height="100">
                             </div>
                             <div class="col-md-6 align-self-center text-center">
-                                <h5>Resources</h5>
+                                <h4>Resources</h4>
                             </div>
                         </div>
                         <div class="row p-3">
@@ -714,7 +743,7 @@
                                 <img src="img/photos/preview.png" alt="logo-small" class="logo-sm mr-2" height="100">
                             </div>
                             <div class="col-md-6 align-self-center text-center">
-                                <h5>Overheads</h5>
+                                <h4>Overheads</h4>
                             </div>
                         </div>
                         <div class="row p-3">
@@ -723,11 +752,17 @@
                                     <table class="table mb-0">
                                         <thead class="bg-dark rounded">
                                             <tr>
-                                                <th class="text-center text-white">#</th>
-                                                <th class="text-center text-white">Values Set</th>
-                                                <th class="text-center text-white">Description</th>
-                                                <th class="text-center text-white">Remarks</th>
-                                                <th class="text-center text-white">Rate/Pair</th>
+                                                <th class="text-center text-white">Dept. <br> Daily Salary</th>
+                                                <th class="text-center text-white">Direct <br> Labor OH</th>
+                                                <th class="text-center text-white">Indirect <br> Lab OH</th>
+                                                <th class="text-center text-white">Indirect <br> Lab OH</th>
+                                                <th class="text-center text-white">Total <br> OH</th>
+                                                <th class="text-center text-white">Capacity</th>
+                                                <th class="text-center text-white">Direct <br> Lab OH</th>
+                                                <th class="text-center text-white">In-Direct <br> Lab OH</th>
+                                                <th class="text-center text-white">Direct <br> Lab OH</th>
+                                                <th class="text-center text-white">Total <br> OH</th>
+                                                <th class="text-center text-white">Un-Absorbed <br> OH</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -738,27 +773,26 @@
                                                     </div>
                                                 </td>                                
                                             </tr>
-                                            @if(!$cuttingData_o)
+                                            @if(!$cuttingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($cuttingData_o as $value)
+                                            @foreach($cuttingDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataCutting_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                             <tr>
                                                 <td colspan="1" style="border-top: none;" class="px-0 py-1">
@@ -767,27 +801,26 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$InsoleData_o)
+                                            @if(!$StitchingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($InsoleData_o as $value)
+                                            @foreach($StitchingDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataInsole_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                             <tr>
                                                 <td colspan="1" style="border-top: none;" class="px-0 py-1">
@@ -796,27 +829,26 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$LaminationData_o)
+                                            @if(!$LastingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($LaminationData_o as $value)
+                                            @foreach($LastingDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataLamination_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                             <tr>
                                                 <td colspan="1" style="border-top: none;" class="px-0 py-1">
@@ -825,27 +857,26 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$ClosingData_o)
+                                            @if(!$ClosingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($ClosingData_o as $value)
+                                            @foreach($ClosingDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataClosing_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                             <tr>
                                                 <td colspan="1" style="border-top: none;" class="px-0 py-1">
@@ -854,27 +885,26 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$LastingData_o)
+                                            @if(!$LaminationDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($LastingData_o as $value)
+                                            @foreach($LaminationDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataLasting_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                             <tr>
                                                 <td colspan="1" style="border-top: none;" class="px-0 py-1">
@@ -883,33 +913,43 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$PackingData_o)
+                                            @if(!$PackingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($PackingData_o as $value)
+                                            @foreach($PackingDataF as $data)
                                             <tr>
-                                                <td class="text-center borderTop">{{$k++}}</td>
-                                                <td class="text-center borderTop">{{$value->value_set}}</td>
-                                                <td class="text-center borderTop" style="text-transform: capitalize;">{{$value->description}}</td>
-                                                <td class="text-center borderTop">{{$value->remarks}}</td>
-                                                <td class="text-center borderTop">{{$value->pair}}</td>
+                                                <td class="text-center borderTop">{{$data->pds}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh1}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh1}}</td>
+                                                <td class="text-center borderTop">{{$data->capacity}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh2}}</td>
+                                                <td class="text-center borderTop">{{$data->idloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->dloh3}}</td>
+                                                <td class="text-center borderTop">{{$data->t_oh2}}</td>
+                                                <td class="text-center borderTop">{{$data->un_a_oh}}</td>
                                             </tr>
                                             @endforeach
-                                                <tr style="background: #cdd3db;" class="rounded">
-                                                    <th class="text-center py-1" style="color: #586c85">Total</th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #586c85"></th>
-                                                    <th class="text-center py-1" style="color: #434f5e">{{$DataPacking_o['Pair']}}</th>
-                                                </tr>
                                             @endif
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+                        <!-- <button id="myBtn2" title="Go to top">Overheads</button>
+                        <button id="myBtn3" title="Go to top">Resources</button>
+                        <button id="myBtn4" title="Go to top">Material</button> -->
+                        <ul id="myBtn2">
+                            <li class="mt-3 mr-5">
+                                <a href="#section3" style="font-family: 'Poppins';"><button style="transition: all 0.15s ease-in-out; box-shadow: none;" data-scroll type="button" class="btn btn-dark">Overheads</button></a> 
+                                <a href="#section2" style="font-family: 'Poppins';"><button style="transition: all 0.15s ease-in-out; box-shadow: none;" data-scroll type="button" class="btn btn-dark">Resources</button></a> 
+                                <a onclick="topFunction()" style="font-family: 'Poppins';" data-scroll> <button style="transition: all 0.15s ease-in-out; box-shadow: none;" type="button" class="btn btn-dark">Material</button></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -941,6 +981,7 @@
 <script>
     $(document).ready(function(){ 
 	    $("#loader1").fadeOut(1200);
+        $("body").addClass("enlarge-menu");
     });
     @if(Session::has('message'))
     var type = "{{ Session::get('alert-type', 'info') }}";

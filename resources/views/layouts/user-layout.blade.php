@@ -446,6 +446,11 @@
                                 <li class="nav-item"><a class="nav-link" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Specification Sheet</a></li>
                             @endif
                         @endif -->
+                        @if(isset($storeData['PDL Master Data']) && !empty($storeData['PDL Master Data'])) 
+                            @if(isset($storeData['PDL Master Data']) == 1)
+                                <li class="nav-item"><a class="nav-link"  href="{{url('master-data-plc')}}"><i class="ti-control-record"></i>Master Data</a></li>
+                            @endif
+                        @endif
                         @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']) || isset($storeData['Job-Order List']) && !empty($storeData['Job-Order List'])) 
                             @if(isset($storeData['Job-Order Create']) == 1 || isset($storeData['Job-Order List']) == 1)
                             <li>
@@ -487,6 +492,21 @@
                                         @endif
                                     @endif
                                     <li class="{{ Request::path() == 'pricing-sheet-view' ? 'nav-item active' : Request::path() == 'pricing-sheet-edit' ? 'nav-item active' : Request::path() == 'pricing-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'pricing-sheet-edit' ? 'nav-link active' : Request::path() == 'pricing-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('pricing-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
+                                </ul>
+                            </li> 
+                            @endif
+                        @endif
+                        @if(isset($storeData['Formula-Sheet Create']) && !empty($storeData['Formula-Sheet Create']) || isset($storeData['Formula-Sheet List']) && !empty($storeData['Formula-Sheet List'])) 
+                            @if(isset($storeData['Formula-Sheet Create']) == 1 || isset($storeData['Formula-Sheet List']) == 1)
+                            <li class="{{ Request::path() == 'formula-sheet-edit' ? 'mm-active active' : Request::path() == 'formula-sheet-view' ? 'mm-active active' : '' }}">
+                                <a href="javascript: void(0);" class="{{ Request::path() == 'formula-sheet-edit' ? 'active' : Request::path() == 'formula-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>OH Formula Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                                <ul class="nav-second-level" aria-expanded="false">
+                                    @if(isset($storeData['Formula-Sheet Create']) && !empty($storeData['Formula-Sheet Create'])) 
+                                        @if(isset($storeData['Formula-Sheet Create']) == 1)
+                                            <li class="{{ Request::path() == 'formula-sheet' ? 'nav-item active' : Request::path() == 'formula-sheet' ? 'nav-item active' : Request::path() == 'formula-sheet' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'formula-sheet' ? 'nav-link active' : Request::path() == 'formula-sheet' ? 'nav-link active' : 'nav-link' }}" href="{{url('formula-sheet')}}"><i class="ti-control-record"></i>Create</a></li>
+                                        @endif
+                                    @endif
+                                    <li class="{{ Request::path() == 'formula-sheet-view' ? 'nav-item active' : Request::path() == 'formula-sheet-edit' ? 'nav-item active' : Request::path() == 'formula-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'formula-sheet-edit' ? 'nav-link active' : Request::path() == 'formula-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('formula-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                                 </ul>
                             </li> 
                             @endif
