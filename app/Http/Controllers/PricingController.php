@@ -395,7 +395,7 @@ class PricingController extends Controller
 
     public function View(Request $request)
     {
-        // try{
+        try{
             $id = $_GET['id'];
             //Material
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = []; 
@@ -453,6 +453,128 @@ class PricingController extends Controller
                     $PackingDataF[] = $value;
                 }
             }
+
+            //Calculation
+            $dloh1_total = 0; $idloh1_total = 0; $idloh2_total = 0; $t_oh1_total = 0; $dloh2_total = 0; $idloh3_total = 0; $dloh3_total = 0; $t_oh2_total = 0; $un_a_oh_total = 0;
+            if(!$cuttingDataF){
+                $dloh1_cut = 0; $idloh1_cut = 0; $idloh2_cut = 0; $t_oh1_cut = 0; $dloh2_cut = 0; $idloh3_cut = 0; $dloh3_cut = 0; $t_oh2_cut = 0; $un_a_oh_cut = 0;
+            }
+            else{
+                foreach($cuttingDataF as $value){
+                    $dloh1_cut = $value['dloh1'];
+                    $idloh1_cut = $value['idloh1'];
+                    $idloh2_cut = $value['idloh2'];
+                    $t_oh1_cut = $value['t_oh1'];
+                    $dloh2_cut = $value['dloh2'];
+                    $idloh3_cut = $value['idloh3'];
+                    $dloh3_cut = $value['dloh3'];
+                    $t_oh2_cut = $value['t_oh2'];
+                    $un_a_oh_cut = $value['un_a_oh'];
+                }
+            }
+            if(!$StitchingDataF){
+                $dloh1_sti = 0; $idloh1_sti = 0; $idloh2_sti = 0; $t_oh1_sti = 0; $dloh2_sti = 0; $idloh3_sti = 0; $dloh3_sti = 0; $t_oh2_sti = 0; $un_a_oh_sti = 0;
+            }
+            else{
+                foreach($StitchingDataF as $value){
+                    $dloh1_sti = $value['dloh1'];
+                    $idloh1_sti = $value['idloh1'];
+                    $idloh2_sti = $value['idloh2'];
+                    $t_oh1_sti = $value['t_oh1'];
+                    $dloh2_sti = $value['dloh2'];
+                    $idloh3_sti = $value['idloh3'];
+                    $dloh3_sti = $value['dloh3'];
+                    $t_oh2_sti = $value['t_oh2'];
+                    $un_a_oh_sti = $value['un_a_oh'];
+                }
+            }
+            if(!$LaminationDataF){
+                $dloh1_lam = 0; $idloh1_lam = 0; $idloh2_lam = 0; $t_oh1_lam = 0; $dloh2_lam = 0; $idloh3_lam = 0; $dloh3_lam = 0; $t_oh2_lam = 0; $un_a_oh_lam = 0;
+            }
+            else{
+                foreach($LaminationDataF as $value){
+                    $dloh1_lam = $value['dloh1'];
+                    $idloh1_lam = $value['idloh1'];
+                    $idloh2_lam = $value['idloh2'];
+                    $t_oh1_lam = $value['t_oh1'];
+                    $dloh2_lam = $value['dloh2'];
+                    $idloh3_lam = $value['idloh3'];
+                    $dloh3_lam = $value['dloh3'];
+                    $t_oh2_lam = $value['t_oh2'];
+                    $un_a_oh_lam = $value['un_a_oh'];
+                }
+            }
+            if(!$ClosingDataF){
+                $dloh1_clo = 0; $idloh1_clo = 0; $idloh2_clo = 0; $t_oh1_clo = 0; $dloh2_clo = 0; $idloh3_clo = 0; $dloh3_clo = 0; $t_oh2_clo = 0; $un_a_oh_clo = 0;
+            }
+            else{
+                foreach($ClosingDataF as $value){
+                    $dloh1_clo = $value['dloh1'];
+                    $idloh1_clo = $value['idloh1'];
+                    $idloh2_clo = $value['idloh2'];
+                    $t_oh1_clo = $value['t_oh1'];
+                    $dloh2_clo = $value['dloh2'];
+                    $idloh3_clo = $value['idloh3'];
+                    $dloh3_clo = $value['dloh3'];
+                    $t_oh2_clo = $value['t_oh2'];
+                    $un_a_oh_clo = $value['un_a_oh'];
+                }
+            }
+            if(!$LastingDataF){
+                $dloh1_last = 0; $idloh1_last = 0; $idloh2_last = 0; $t_oh1_last = 0; $dloh2_last = 0; $idloh3_last = 0; $dloh3_last = 0; $t_oh2_last = 0; $un_a_oh_last = 0;
+            }
+            else{
+                foreach($LastingDataF as $value){
+                    $dloh1_last = $value['dloh1'];
+                    $idloh1_last = $value['idloh1'];
+                    $idloh2_last = $value['idloh2'];
+                    $t_oh1_last = $value['t_oh1'];
+                    $dloh2_last = $value['dloh2'];
+                    $idloh3_last = $value['idloh3'];
+                    $dloh3_last = $value['dloh3'];
+                    $t_oh2_last = $value['t_oh2'];
+                    $un_a_oh_last = $value['un_a_oh'];
+                }
+            }
+            if(!$PackingDataF){
+                $dloh1_p = 0; $idloh1_p = 0; $idloh2_p = 0; $t_oh1_p = 0; $dloh2_p = 0; $idloh3_p = 0; $dloh3_p = 0; $t_oh2_p = 0; $un_a_oh_p = 0;
+            }
+            else{
+                foreach($PackingDataF as $value){
+                    $dloh1_p = $value['dloh1'];
+                    $idloh1_p = $value['idloh1'];
+                    $idloh2_p = $value['idloh2'];
+                    $t_oh1_p = $value['t_oh1'];
+                    $dloh2_p = $value['dloh2'];
+                    $idloh3_p = $value['idloh3'];
+                    $dloh3_p = $value['dloh3'];
+                    $t_oh2_p = $value['t_oh2'];
+                    $un_a_oh_p = $value['un_a_oh'];
+                }
+            }
+
+            $dloh1_total = $dloh1_cut + $dloh1_sti + $dloh1_lam + $dloh1_clo + $dloh1_last + $dloh1_p;
+            $idloh1_total = $idloh1_cut + $idloh1_sti + $idloh1_lam + $idloh1_clo + $idloh1_last + $idloh1_p;
+            $idloh2_total = $idloh2_cut + $idloh2_sti + $idloh2_lam + $idloh2_clo + $idloh2_last + $idloh2_p;
+            $t_oh1_total = $t_oh1_cut + $t_oh1_sti + $t_oh1_lam + $t_oh1_clo + $t_oh1_last + $t_oh1_p;
+            $dloh2_total = $dloh2_cut + $dloh2_sti + $dloh2_lam + $dloh2_clo + $dloh2_last + $dloh2_p;
+            $idloh3_total = $idloh3_cut + $idloh3_sti + $idloh3_lam + $idloh3_clo + $idloh3_last + $idloh3_p;
+            $dloh3_total = $dloh3_cut + $dloh3_sti + $dloh3_lam + $dloh3_clo + $dloh3_last + $dloh3_p;
+            $t_oh2_total = $t_oh2_cut + $t_oh2_sti + $t_oh2_lam + $t_oh2_clo + $t_oh2_last + $t_oh2_p;
+            $un_a_oh_total = $un_a_oh_cut + $un_a_oh_sti + $un_a_oh_lam + $un_a_oh_clo + $un_a_oh_last + $un_a_oh_p;
+
+            $AllData = [ 
+                'dloh1_total' => $dloh1_total,
+                'idloh1_total' => $idloh1_total,
+                'idloh2_total' => $idloh2_total,
+                't_oh1_total' => $t_oh1_total,
+                'dloh2_total' => $dloh2_total,
+                'idloh3_total' => $idloh3_total,
+                'dloh3_total' => $dloh3_total,
+                't_oh2_total' => $t_oh2_total,
+                'un_a_oh_total' => $un_a_oh_total,
+            ];
+
             foreach($data3 as $value){
                 if($value->material == "cutting"){
                     $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
@@ -792,15 +914,16 @@ class PricingController extends Controller
                 'DataCutting' => $DataCutting, 'DataInsole' => $DataInsole, 'DataLamination' => $DataLamination, 'DataClosing' => $DataClosing, 'DataLasting' => $DataLasting, 'DataPacking' => $DataPacking, 
                 'DataCutting_o' => $DataCutting_o, 'DataInsole_o' => $DataInsole_o, 'DataLamination_o' => $DataLamination_o, 'DataClosing_o' => $DataClosing_o, 'DataLasting_o' => $DataLasting_o, 'DataPacking_o' => $DataPacking_o,
                 'DataCutting_r' => $DataCutting_r, 'DataInsole_r' => $DataInsole_r, 'DataLamination_r' => $DataLamination_r, 'DataClosing_r' => $DataClosing_r, 'DataLasting_r' => $DataLasting_r, 'DataPacking_r' => $DataPacking_r, 
+                'AllData' => $AllData
             ]);
-        // }
-        // catch(Exception $e){
-        //     $notification = array(
-        //         'message' => $e->getMessage(),
-        //         'alert-type' => 'error'
-        //     );
-        //     return back()->with($notification);
-        // }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
     }
 
     public function Print(Request $request)
@@ -1091,7 +1214,102 @@ class PricingController extends Controller
             }
 
             $sum1 = 0;
+            
+            //Calculation
+            $cuttingDataO = []; $StitchingDataO = []; $LaminationDataO = []; $ClosingDataO = []; $LastingDataO = []; $PackingDataO = [];
+            $OverheadId = $data1[0]->overhead_id;
+            $dataOverhead = PlcFormula::orderBy('id','ASC')->where('oh_id', $OverheadId)->get();
+            foreach($dataOverhead as $value){
+                if($value->dep == "Cutting"){
+                    $cuttingDataO[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $StitchingDataO[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $LaminationDataO[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $ClosingDataO[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $LastingDataO[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $PackingDataO[] = $value;
+                }
+            }
+            $t_oh1_total = 0; $un_a_oh_total = 0;
+            if(!$cuttingDataO){
+                $t_oh1_cut = 0; $un_a_oh_cut = 0;
+            }
+            else{
+                foreach($cuttingDataO as $value){
+                    $t_oh1_cut = $value['t_oh1'];
+                    $un_a_oh_cut = $value['un_a_oh'];
+                }
+            }
+            if(!$StitchingDataO){
+               $t_oh1_sti = 0; $un_a_oh_sti = 0;
+            }
+            else{
+                foreach($StitchingDataO as $value){
+                    $t_oh1_sti = $value['t_oh1'];
+                    $un_a_oh_sti = $value['un_a_oh'];
+                }
+            }
+            if(!$LaminationDataO){
+                $t_oh1_lam = 0; $un_a_oh_lam = 0;
+            }
+            else{
+                foreach($LaminationDataO as $value){
+                    $t_oh1_lam = $value['t_oh1'];
+                    $un_a_oh_lam = $value['un_a_oh'];
+                }
+            }
+            if(!$ClosingDataO){
+                $t_oh1_clo = 0; $un_a_oh_clo = 0;
+            }
+            else{
+                foreach($ClosingDataO as $value){
+                    $t_oh1_clo = $value['t_oh1'];
+                    $un_a_oh_clo = $value['un_a_oh'];
+                }
+            }
+            if(!$LastingDataO){
+                $t_oh1_last = 0; $un_a_oh_last = 0;
+            }
+            else{
+                foreach($LastingDataO as $value){
+                    $t_oh1_last = $value['t_oh1'];
+                    $un_a_oh_last = $value['un_a_oh'];
+                }
+            }
+            if(!$PackingDataO){
+                $t_oh1_p = 0; $un_a_oh_p = 0;
+            }
+            else{
+                foreach($PackingDataO as $value){
+                    $t_oh1_p = $value['t_oh1'];
+                    $un_a_oh_p = $value['un_a_oh'];
+                }
+            }
+
+            $t_oh1_total = $t_oh1_cut + $t_oh1_sti + $t_oh1_lam + $t_oh1_clo + $t_oh1_last + $t_oh1_p;
+            $un_a_oh_total = $un_a_oh_cut + $un_a_oh_sti + $un_a_oh_lam + $un_a_oh_clo + $un_a_oh_last + $un_a_oh_p;
+
+            $AllData = [ 
+                't_oh1_total' => $t_oh1_total,
+                'un_a_oh_total' => $un_a_oh_total,
+            ];
+            
             $OverheadCost = $sum1 + $O1 + $O2 + $O3 + $O4 + $O5 + $O6;
+            $totalOverhead = [];
+            if(count($dataOverhead)<0){
+            }
+            else{
+                $totalOverhead = 100 + $AllData['t_oh1_total'] + $AllData['un_a_oh_total'];
+            }
 
             //Resources
             if(!$CuttingData_r){
@@ -1163,7 +1381,7 @@ class PricingController extends Controller
 
             $sum2 = 0;
             $ResourcesCost = $sum2 + $R1 + $R2 + $R3 + $R4 + $R5 + $R6;
-            $TotalCost = $ResourcesCost + $OverheadCost + $MaterialCost;
+            $TotalCost = $ResourcesCost + $totalOverhead + $MaterialCost;
             $TotalCost1 = $M1 + $M2 + $M3 + $M4 + $M5 + $M6;
 
             $data = [
@@ -1182,6 +1400,7 @@ class PricingController extends Controller
                 'DataCutting' => $DataCutting, 'DataInsole' => $DataInsole, 'DataLamination' => $DataLamination, 'DataClosing' => $DataClosing, 'DataLasting' => $DataLasting, 'DataPacking' => $DataPacking,
                 'DataCutting_o' => $DataCutting_o, 'DataInsole_o' => $DataInsole_o, 'DataLamination_o' => $DataLamination_o, 'DataClosing_o' => $DataClosing_o, 'DataLasting_o' => $DataLasting_o, 'DataPacking_o' => $DataPacking_o,
                 'DataCutting_r' => $DataCutting_r, 'DataInsole_r' => $DataInsole_r, 'DataLamination_r' => $DataLamination_r, 'DataClosing_r' => $DataClosing_r, 'DataLasting_r' => $DataLasting_r, 'DataPacking_r' => $DataPacking_r, 
+                'totalOverhead' => $totalOverhead
             ]);
         }
         catch(Exception $e){
@@ -2159,6 +2378,7 @@ class PricingController extends Controller
             $total = $actualPrice + $profit;
             $updateProfit = DB::table('plc_pricings')->where('id', $id)->update(['profit' => $total]);
             $updatePrice = DB::table('plc_pricings')->where('id', $id)->update(['price' => $result]);
+            $updateValue = DB::table('plc_pricings')->where('id', $id)->update(['profit_price' => $calculateValue]);
             DB::table('plc_pricings')->where('id', $id)->update(['progress' => 100]);
             if($updatePrice && $updateProfit){
                 return response()->json($updatePrice);

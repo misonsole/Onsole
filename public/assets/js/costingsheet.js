@@ -21,7 +21,7 @@ $(document).ready(function(){
                                     '<input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_uom'+i+'" name="cut_uom[]" placeholder="Unit">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1">'+
-                                    '<select id="cut_division" name="cut_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue" onchange="getval('+i+','+typee+',this.value);" data-id="cutting1">'+                                    
+                                    '<select id="cut_division" name="cut_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue'+i+'" onchange="getval('+i+','+typee+',this.value);" data-id="cutting1">'+                                    
                                     '</select>'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1" id="divisioncutting1div'+i+'">'+
@@ -60,7 +60,7 @@ $(document).ready(function(){
                     for(z=0; z<data.length; z++){
                         console.log(data[z].description);
                         var $dataToBeAppended1 = `<option value=`+data[z].id+`>`+data[z].description+`</option>`;
-                        $(".divisionsValue").append($dataToBeAppended1);
+                        $(".divisionsValue"+i).append($dataToBeAppended1);
                     }
                 }
             }
@@ -93,7 +93,7 @@ $(document).ready(function(){
                                     '<input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom'+i+'" name="i_uom[]" placeholder="Unit">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1">'+
-                                    '<select id="i_division" name="i_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue" onchange="getval('+i+','+typee+',this.value);" data-id="insole1">'+ 
+                                    '<select id="i_division" name="i_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue'+i+'" onchange="getval('+i+','+typee+',this.value);" data-id="insole1">'+ 
                                     '</select>'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1" id="divisioninsole1div'+i+'">'+
@@ -131,7 +131,7 @@ $(document).ready(function(){
                 if(data){
                     for(z=0; z<data.length; z++){
                         var $dataToBeAppended1 = `<option value=`+data[z].id+`>`+data[z].description+`</option>`;
-                        $(".divisionsValue").append($dataToBeAppended1);
+                        $(".divisionsValue"+i).append($dataToBeAppended1);
                     }
                 }
             }
@@ -164,7 +164,7 @@ $(document).ready(function(){
                                     '<input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom'+i+'" name="lam_uom[]" placeholder="Unit">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1">'+
-                                    '<select id="lam_division" name="lam_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue" onchange="getval('+i+','+typee+',this.value);" data-id="lamination1">'+
+                                    '<select id="lam_division" name="lam_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue'+i+'" onchange="getval('+i+','+typee+',this.value);" data-id="lamination1">'+
                                     '</select>'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1" id="divisionlamination1div'+i+'">'+
@@ -202,7 +202,7 @@ $(document).ready(function(){
                 if(data){
                     for(z=0; z<data.length; z++){
                         var $dataToBeAppended1 = `<option value=`+data[z].id+`>`+data[z].description+`</option>`;
-                        $(".divisionsValue").append($dataToBeAppended1);
+                        $('.divisionsValue'+i+'').append($dataToBeAppended1);
                     }
                 }
             }
@@ -235,7 +235,7 @@ $(document).ready(function(){
                                     '<input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom'+i+'" name="clo_uom[]" placeholder="Unit">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1">'+
-                                    '<select id="clo_division" name="clo_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue" onchange="getval('+i+','+typee+',this.value);" data-id="closing1">'+
+                                    '<select id="clo_division" name="clo_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue'+i+'" onchange="getval('+i+','+typee+',this.value);" data-id="closing1">'+
                                     '</select>'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1" id="divisionclosing1div'+i+'">'+
@@ -273,7 +273,7 @@ $(document).ready(function(){
                 if(data){
                     for(z=0; z<data.length; z++){
                         var $dataToBeAppended1 = `<option value=`+data[z].id+`>`+data[z].description+`</option>`;
-                        $(".divisionsValue").append($dataToBeAppended1);
+                        $('.divisionsValue'+i+'').append($dataToBeAppended1);
                     }
                 }
             }
@@ -306,7 +306,7 @@ $(document).ready(function(){
                                     '<input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom'+i+'" name="last_uom[]" placeholder="Unit">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1">'+
-                                    '<select id="last_division" name="last_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue" onchange="getval('+i+','+typee+',this.value);" data-id="lasting1">'+
+                                    '<select id="last_division" name="last_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionsValue'+i+'" onchange="getval('+i+','+typee+',this.value);" data-id="lasting1">'+
                                     '</select>'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1" id="divisionlasting1div'+i+'">'+
@@ -344,7 +344,7 @@ $(document).ready(function(){
                 if(data){
                     for(z=0; z<data.length; z++){
                         var $dataToBeAppended1 = `<option value=`+data[z].id+`>`+data[z].description+`</option>`;
-                        $(".divisionsValue").append($dataToBeAppended1);
+                        $('.divisionsValue'+i+'').append($dataToBeAppended1);
                     }
                 }
             }

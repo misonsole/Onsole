@@ -934,6 +934,44 @@
                                             </tr>
                                             @endforeach
                                             @endif
+                                            <tr style="background: #cdd3db;" class="rounded">
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">Total</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['dloh1_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['idloh1_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['idloh2_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['t_oh1_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #586c85; border-top: 2px solid transparent;"></th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['dloh2_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['idloh3_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['dloh3_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['t_oh2_total'], 2, '.', '')}}</th>
+                                                <th class="text-center py-1" style="color: #24282c; border-top: 2px solid transparent;">{{number_format((float)$AllData['un_a_oh_total'], 2, '.', '')}}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row p-3 mt-5">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead class="bg-dark rounded">
+                                            <tr>
+                                                <th class="text-center text-white" style="border: 1px solid #1c2d41;">RMC</th>
+                                                <th class="text-center text-white" style="border: 1px solid #1c2d41;">Total OH</th>
+                                                <th class="text-center text-white" style="border: 1px solid #1c2d41;">Un-Absorbed OH</th>
+                                                <th class="text-center text-white" style="border: 1px solid #1c2d41;">Total Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="color: #5e5e5e; border: 1px solid #919191;" class="text-center"><b>100</b></td>
+                                                <td style="color: #5e5e5e; border: 1px solid #919191;" class="text-center"><b>{{number_format((float)$AllData['t_oh1_total'], 2, '.', '')}}</b></td>
+                                                <td style="color: #5e5e5e; border: 1px solid #919191;" class="text-center"><b>{{number_format((float)$AllData['un_a_oh_total'], 2, '.', '')}}</b></td>
+                                                <?php $result = 100 + $AllData['t_oh1_total'] + $AllData['un_a_oh_total']?> 
+                                                <td style="color: #5e5e5e; border: 1px solid #919191;" class="text-center"><b>{{number_format((float)$result, 2, '.', '')}}</b></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

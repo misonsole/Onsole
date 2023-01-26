@@ -63,15 +63,15 @@
                                         <!-- <th>Season</th> -->
                                         <!-- <th>Sequence</th> -->
                                         <!-- <th>Category</th> -->
-                                        <th>Design No.</th>
-                                        <th>Progress</th>
-                                        <th>Status</th>
-                                        <th>Remarks</th>
-                                        <th>Transfer</th>
+                                        <th data-orderable="false">Design No.</th>
+                                        <th data-orderable="false">Progress</th>
+                                        <th data-orderable="false">Status</th>
+                                        <th data-orderable="false">Remarks</th>
+                                        <th data-orderable="false">Transfer</th>
                                         <!-- <th>Purpose</th> -->
-                                        <th>Date & Time</th>
-                                        <th>Action</th>
-                                        <th>Evaluate Cost</th>
+                                        <th data-orderable="false">Date & Time</th>
+                                        <th data-orderable="false">Action</th>
+                                        <th data-orderable="false">Evaluate Cost</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -277,13 +277,19 @@
                                                     <a href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
                                                 </form>
                                             </td>
-                                            <td>
+                                            <td style="width: 12%;" class="text-center">
                                                 @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
                                                     @if(isset($storeData['Pricing-Sheet Costing']) == 1)
                                                         @if($user->progress == 80 || $user->progress == 100)
                                                             @if($user->status != "Sales")
                                                                 @if($user->status != "Rejected")
-                                                                    <span><a id="calculate" data-id={{$user['id']}} style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a></span>                        
+                                                                <span class="py-1" style="display: inline-flex;">
+                                                                    <span class="w-100">
+                                                                        <input id="sonoNum{{$user['id']}}" name="sonoNum" type="text" value="{{$user['profit_price']}}" class="form-control yourclass text-center" style="border: 1px solid #bfbfbf;" readonly>
+                                                                    </span>
+                                                                    <span>
+                                                                        <a id="calculate" data-id={{$user['id']}} name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a></span>                        
+                                                                    </span>
                                                                 @endif   
                                                             @endif
                                                         @endif    
@@ -415,7 +421,9 @@ $(document).ready(function(){
     });
     $("#calculate").click(function(){
         var id = $(this).attr("data-id");
+        var name = $(this).attr("name");
         $("#calculateId").val(id);
+        $("#calculateValue").val(name);
         $('#exampleModalCenter10').modal('show');
     });
     // $(".viewweye11").click(function(){

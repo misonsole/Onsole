@@ -1473,8 +1473,9 @@ $(document).ready(function(){
             var final = number.toLocaleString();
             $("#cut_pds_"+id).val(final);
             var final1 = number / cut_pcpd;
-            var final1nUm = Math.trunc(final1);
-            $("#cut_dlo_"+id).val(final1nUm);
+            var final1 = parseFloat(final1).toFixed(2);
+            // var final1nUm = Math.trunc(final1);
+            $("#cut_dlo_"+id).val(final1);
         }
         $('#StrengthDisp3').delay(4000).fadeOut(600); 
     });
@@ -1495,6 +1496,7 @@ $(document).ready(function(){
             var dlo = $('#cut_dlo_'+id).val();
             if(dlo.length>0){
                 var final2 = dlo * ilo / 100;
+                var final2 = parseFloat(final2).toFixed(2);
                 $("#cut_cilo_"+id).val(final2);
             }
             else{
@@ -1526,13 +1528,14 @@ $(document).ready(function(){
                 var final3 = 0;
                 var final4 = 0;
                 var final2 = dlo * foh / 100;
+                var final2 = parseFloat(final2).toFixed(2);
                 $("#cut_ilOh_b_"+id).val(final2); 
                 
                 var cut_dlo = $('#cut_dlo_'+id).val();
                 var cut_cilo = $('#cut_cilo_'+id).val();
                 var cut_ilOh_b = $('#cut_ilOh_b_'+id).val();
-                var final3 = parseInt(cut_cilo)+parseInt(cut_dlo)+parseInt(cut_ilOh_b);
-                $("#cut_t_oh_"+id).val(final3);
+                var final3 = parseFloat(cut_cilo)+parseFloat(cut_dlo)+parseFloat(cut_ilOh_b);
+                $("#cut_t_oh_"+id).val(parseFloat(final3).toFixed(2));
             }
             else{
                 var self = $('#cut_cilo_'+id);
@@ -1547,7 +1550,8 @@ $(document).ready(function(){
     // $("#cut_foh").keyup(function(){
         var id = $(this).attr("data-id");
         var ilo = $('#cut_t_oh_'+id).val();
-        var temp = 2500; 
+        // var temp = 2500; 
+        var temp = $('#cut_pcpd_last'+id).val();
         if(ilo.length == 0){
             var timer;
             clearTimeout(timer);
@@ -1564,11 +1568,13 @@ $(document).ready(function(){
             var cut_pds = $("#cut_pds_"+id).val();
             var cut_pds1 = cut_pds.replace(/,/g, '');
             var cal = cut_pds1 / cut_cap;
-            $("#cut_dlo_a_"+id).val(Math.trunc(cal));
+            var cal = parseFloat(cal).toFixed(2);
+            $("#cut_dlo_a_"+id).val(cal);
 
             var cut_dlo_a = $("#cut_dlo_a_"+id).val();
             var cut_ilo = $("#cut_ilo_"+id).val();         
             var final2 = cut_dlo_a * cut_ilo / 100;
+            var final2 = parseFloat(final2).toFixed(2);
             $("#cut_ilo_a_"+id).val(final2);
 
             var cut_dlo_a = $("#cut_dlo_a_"+id).val();
@@ -1579,12 +1585,14 @@ $(document).ready(function(){
             var cut_dlo_a = $("#cut_dlo_a_"+id).val();
             var cut_ilo_a = $("#cut_ilo_a_"+id).val();
             var cut_dlo_b = $("#cut_dlo_b_"+id).val();
-            var final222 = parseInt(cut_dlo_a)+parseInt(cut_ilo_a)+parseInt(cut_dlo_b);
+            var final222 = parseFloat(cut_dlo_a)+parseFloat(cut_ilo_a)+parseFloat(cut_dlo_b);
+            var final222 = parseFloat(final222).toFixed(2);
             $("#cut_toh_"+id).val(final222);
 
             var cut_t_oh = $("#cut_t_oh_"+id).val();
             var cut_toh = $("#cut_toh_"+id).val();
-            var final2222 = parseInt(cut_toh) - parseInt(cut_t_oh);
+            var final2222 = parseFloat(cut_toh) - parseFloat(cut_t_oh);
+            var final2222 = parseFloat(final2222).toFixed(2);
             $("#cut_uaOh_"+id).val(final2222);
         }
         $('#StrengthDisp3').delay(4000).fadeOut(600); 

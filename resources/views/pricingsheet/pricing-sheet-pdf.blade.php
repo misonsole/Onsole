@@ -174,7 +174,7 @@
                                                             <h6 class="mb-0" style="font-size: small;">{{$data1->category}}</h6>
                                                             <h6 style="font-size: small;" class="mb-0">
                                                                 @if($data1->overhead_id)
-                                                                    {{$data1->overhead_id}}
+                                                                    Overhead-{{$data1->overhead_id}}
                                                                 @else
                                                                     &nbsp;
                                                                 @endif
@@ -225,14 +225,14 @@
                                                     <th class="py-2 px-5" style="color: black;  border-top: none;">{{substr($ResourcesCost, 0,6)}} PKR</th>
                                                 </tr>
                                                 @endif
-                                                @if(!$OverheadCost)
+                                                @if(!$totalOverhead)
                                                 <tr class="no-data text-center" style="border-top: none;">
                                                     <td colspan="11" style="border-top: none; font-size: small;">No Data</td>
                                                 </tr>
                                                 @else
                                                 <tr class="rounded">
                                                     <th class="py-2 px-5" style="color: black; border-top: none;">Overhead Cost :</th>
-                                                    <th class="py-2 px-5" style="color: black; border-top: none;">{{substr($OverheadCost, 0,6)}} PKR</th>
+                                                    <th class="py-2 px-5" style="color: black; border-top: none;">{{substr($totalOverhead, 0,6)}} PKR</th>
                                                 </tr>
                                                 @endif
                                                 @if(!$TotalCost)
