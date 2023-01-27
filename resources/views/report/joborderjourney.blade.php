@@ -126,7 +126,11 @@
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date</b></h6>                            
                             @if(!empty($sessionData['thedate']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['thedate'])}}</p>
+                                @if($sessionData['thedate'] == 'Tdate')
+                                <p class="mb-2" style="font-family: 'Poppins';">Transfer Date</p>
+                                @elseif($sessionData['thedate'] == 'jodate')                                
+                                <p class="mb-2" style="font-family: 'Poppins';">Job Order Date</p>
+                                @endif
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -141,9 +145,9 @@
                                         <th class="text-white" data-orderable="false">Job Order</th>
                                         <th class="text-white" data-orderable="false">Department</th>
                                         <th class="text-white" data-orderable="false">Date Created</th>
-                                        <th class="text-white" data-orderable="false">Transform From</th>
-                                        <th class="text-white" data-orderable="false">Transform To</th>
-                                        <th class="text-white" data-orderable="false">Transform Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Transfer From</th>
+                                        <th class="text-white" data-orderable="false">Transfer To</th>
+                                        <th class="text-white" data-orderable="false">Transfer Date & Time</th>
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
@@ -250,8 +254,8 @@
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Date</b></label>
                                 <select id="thedate" name="thedate" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
-                                <option <?php if("tdate" == isset($sessionData['thedate'])) echo 'selected="selected"'; ?> value="tdate">Transfer Date</option>
-                                <option <?php if("jodate" == isset($sessionData['thedate'])) echo 'selected="selected"'; ?> value="jodate">Job Order Date</option>
+                                <option <?php if(isset($sessionData['thedate']) == "tdate") echo 'selected="selected"'; ?> value="tdate">Transfer Date</option>
+                                <option <?php if(isset($sessionData['thedate']) == "jodate") echo 'selected="selected"'; ?> value="jodate">Job Order Date</option>
                                 </select>
                             </div>
                         </div>

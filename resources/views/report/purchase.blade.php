@@ -52,6 +52,19 @@
     select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
         font-weight:bold;
     }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -176,6 +189,23 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <thead class="bg-dark text-white my-2">
+                                        <tr>
+                                            <th hidden class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false">Total</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($t_am,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($p_qty,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($stax_amount,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($pro_qty,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($total_amount,2)}}</th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                        </tr>
+                                    </thead>
                                 @endif
                                 <tbody>
                                 </tbody>
@@ -191,8 +221,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="margin-top: 15%;">
             <div class="modal-header" style="background: transparent !important;">
             <h5 class="modal-title" id="exampleModalLongTitle">Purchase Rate History</h5>
@@ -205,7 +235,7 @@
                     <form method="post" enctype="multipart/form-data" id="myForm">
                         @csrf
                         <div class="form-group row mb-0">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Financial Year</b></label>
                                 <select id="finyr" name="finyr" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
                                     <option selected value="all">All</option>   
@@ -218,15 +248,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                             <label><b style="color: #6c757d">RM Code</b></label>
                                 <input id="rmcode" <?php if(isset($sessionData['rmcode'])) echo "value='{$sessionData['rmcode']}'"; ?>  name="rmcode" type="text" class="typeahead form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="RM Code">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Item Type</b></label>
-                                <select id="typefrom" name="typefrom" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="typefrom" name="typefrom" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected disabled>Item Type</option>   
                                     @foreach($itemtype1 as $value)
                                         @if(!empty($sessionData['fromclass']))
@@ -242,9 +272,9 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Period</b></label>
-                                <select id="period" name="period" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="period" name="period" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected disabled>Select Period</option>   
                                     @foreach($period as $value)
                                         @if(!empty($sessionData['period']))

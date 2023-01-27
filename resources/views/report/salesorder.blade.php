@@ -292,12 +292,12 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Grand Total</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_qty'],2)}}</th> 
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th> 
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_t_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                         </tr>
@@ -342,7 +342,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Season</b></label>
-                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <option selected value="">Select Season</option>
                                     @foreach($season as $value)
                                         @if(!empty($sessionData['season']))
                                             <option <?php if($value == $sessionData['season']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>

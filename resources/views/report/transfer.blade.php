@@ -60,6 +60,22 @@
         z-index: 9999;  
         background: url("/img/avatars/3dgifmaker.gif") 50% 50% no-repeat black;  
     }
+    select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
+        font-weight:bold;
+    }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div id="loader2" class="rotate" width="100" height="100"></div>
@@ -94,48 +110,48 @@
                     <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Book</b></h6>                            
-                            @if(!empty($book))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$book}}</p>
+                            @if(!empty($sessionData['storebook']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['storebook']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date From</b></h6>                            
-                            @if(!empty($book))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$strtdte2}} - {{$strtdte3}}</p>
+                            @if(!empty($sessionData['Storestart']))
+                            <p class="mb-2" style="font-family: 'Poppins';"> {{$sessionData['Storestart']}} - {{$sessionData['Storeend']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>From Locator</b></h6>                            
-                            @if(!empty($from_locator))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$from_locator}}</p>
+                            @if(!empty($sessionData['storefrom_locator']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['storefrom_locator']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>To Locator</b></h6>                            
-                            @if(!empty($to_locator))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$to_locator}}</p>
+                            @if(!empty($sessionData['storeto_locator']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['storeto_locator']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Transaction No</b></h6>                            
-                            @if(!empty($transno))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$transno}}</p>
+                            @if(!empty($sessionData['storetransfer']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['storetransfer']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div>  
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Reference No</b></h6>                            
-                            @if(!empty($refno))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$refno}}</p>
+                            @if(!empty($sessionData['storereference']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['storereference']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -239,7 +255,15 @@
                     <div class="form-group row py-2">
                         <div class="col-sm-6 mb-1 mb-sm-0">
                             <label><b style="color: #6c757d">Select Book</b></label>
-                            <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                            <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select required">
+                            <option selected value="">Select Book</option>
+                                @foreach($books as $value)
+                                    @if(!empty($sessionData['storebook']))
+                                        <option <?php if($value == $sessionData['storebook']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                    @else
+                                        <option value="{{$value}}">{{$value}}</option>
+                                    @endif  
+                                @endforeach   
                             </select>
                         </div>
                         <div class="col-sm-6">
@@ -270,12 +294,28 @@
                     <div class="form-group row py-2">
                         <div class="col-sm-6 mb-1 mb-sm-0">
                             <label><b style="color: #6c757d">From Locator</b></label>
-							<select id="from_locator" name="from_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+							<select id="from_locator" name="from_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
+                            <option selected value="">Select Locator</option>
+                            @foreach($locator as $value)
+                                    @if(!empty($sessionData['storefrom_locator']))
+                                        <option <?php if($value == $sessionData['storefrom_locator']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                    @else
+                                        <option value="{{$value}}">{{$value}}</option>
+                                    @endif  
+                                @endforeach  
                             </select>
                         </div>
                         <div class="col-sm-6 mb-1 mb-sm-0">
                             <label><b style="color: #6c757d">To Locator</b></label>
-							<select id="to_locator" name="to_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+							<select id="to_locator" name="to_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
+                            <option selected value="">Select Locator</option>
+                            @foreach($locator as $value)
+                                    @if(!empty($sessionData['storeto_locator']))
+                                        <option <?php if($value == $sessionData['storeto_locator']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                    @else
+                                        <option value="{{$value}}">{{$value}}</option>
+                                    @endif  
+                                @endforeach  
                             </select>
                         </div>
                     </div>
@@ -365,44 +405,44 @@ $(document).ready(function(){
     });
 });
 $("#loader2").hide();
-    $.ajax({
-        type: 'GET',
-        url: 'transferData',
-        dataType: "json",
-        beforeSend: function(){
-            $("#loader2").show();
-        },
-        success: function(data){
-           var l_no = $("#lNo").val();
-           var t_no = $("#tNo").val();
-           var b_no = $("#bNo").val();
-           console.log(l_no,t_no,b_no);
-            $('#books').find('option').remove();
-            var staticOption = " <option value='none' selected disabled>Select Book</option>"
-            document.getElementById('books').innerHTML += staticOption;
-            for(var d=0;d<data.books.length;d++){
-                var option = "<option value='" + data.books[d] + "'>" + data.books[d] + "</option>"
-                document.getElementById('books').innerHTML += option;
-            }
-            $('#from_locator').find('option').remove();
-            var staticOption = " <option value='none' selected disabled>Select Locator</option>"
-            document.getElementById('from_locator').innerHTML += staticOption;
-            for(var d=0;d<data.locator.length;d++){
-                var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
-                document.getElementById('from_locator').innerHTML += option;
-            }
-            $('#to_locator').find('option').remove();
-            var staticOption = " <option value='none' selected disabled>Select Locator</option>"
-            document.getElementById('to_locator').innerHTML += staticOption;
-            for(var d=0;d<data.locator.length;d++){
-                var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
-                document.getElementById('to_locator').innerHTML += option;
-            }   
-        },
-        complete:function(data){
-            $("#loader2").hide();
-        }
-    });
+    // $.ajax({
+    //     type: 'GET',
+    //     url: 'transferData',
+    //     dataType: "json",
+    //     beforeSend: function(){
+    //         $("#loader2").show();
+    //     },
+    //     success: function(data){
+    //        var l_no = $("#lNo").val();
+    //        var t_no = $("#tNo").val();
+    //        var b_no = $("#bNo").val();
+    //        console.log(l_no,t_no,b_no);
+    //         $('#books').find('option').remove();
+    //         var staticOption = " <option value='none' selected disabled>Select Book</option>"
+    //         document.getElementById('books').innerHTML += staticOption;
+    //         for(var d=0;d<data.books.length;d++){
+    //             var option = "<option value='" + data.books[d] + "'>" + data.books[d] + "</option>"
+    //             document.getElementById('books').innerHTML += option;
+    //         }
+    //         $('#from_locator').find('option').remove();
+    //         var staticOption = " <option value='none' selected disabled>Select Locator</option>"
+    //         document.getElementById('from_locator').innerHTML += staticOption;
+    //         for(var d=0;d<data.locator.length;d++){
+    //             var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
+    //             document.getElementById('from_locator').innerHTML += option;
+    //         }
+    //         $('#to_locator').find('option').remove();
+    //         var staticOption = " <option value='none' selected disabled>Select Locator</option>"
+    //         document.getElementById('to_locator').innerHTML += staticOption;
+    //         for(var d=0;d<data.locator.length;d++){
+    //             var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
+    //             document.getElementById('to_locator').innerHTML += option;
+    //         }   
+    //     },
+    //     complete:function(data){
+    //         $("#loader2").hide();
+    //     }
+    // });
 $("#reportModel").on('click',function(){
     $("#exampleModalCenter").modal('show');
 });

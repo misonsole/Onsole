@@ -68,9 +68,9 @@ class ReportController extends Controller
     public function Transfer(Request $request)
     {
         try{
-            $books = array();
-            $locator = array();
-            $transfer = array();
+            $booksArray = array();
+            $locatorArray = array();
+            $transferArray = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql2 = "SELECT DISTINCT TRANS_DATE, TRANS_NO FROM TRANS_ISSUE_MT ORDER BY TRANS_DATE";
@@ -79,12 +79,26 @@ class ReportController extends Controller
             while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $transfer[] = $row2["TRANS_NO"]." - ".$row2["TRANS_DATE"];
             }
+            $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Internal Transfer%' OR INV_BOOK_DESC LIKE '%Transfer Issue%'";
+            $result1 = oci_parse($conn, $sql1);
+            oci_execute($result1);
+            while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $books[] = $row1["INV_BOOK_DESC"];
+            }    
+            $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
+            $result3 = oci_parse($conn, $sql3);
+            oci_execute($result3);
+            while($row3 =oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $locator[] = $row3["CODE_VALUE"]." - ".strtolower($row3["CODE_DESC"]);
+            }
             $counttransfer = count($transfer);
             return view('report.transfer')->with([
                 "i" => 1, 
                 "dep" => 0, 
                 "Permission" => 0, 
                 "transfer" => $transfer,
+                "books" => $books,
+                "locator" => $locator,
                 "z" => $counttransfer, 
                 "j" => $counttransfer,
             ]);
@@ -202,7 +216,9 @@ class ReportController extends Controller
         try{
             $rate2 = 0;
             $data = array();
-            $transfers = array();
+            $transfersArray = array();
+            $booksArray = array();
+            $locatorArray = array();
             $sum_rate = $sum_qty = $sum_amount = 0;
             $books = $request->books;
             $transfer = $request->transfer;
@@ -263,7 +279,19 @@ class ReportController extends Controller
             $result2 = oci_parse($conn, strtoupper($sql2));
             oci_execute($result2);
             while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                    $transfers[] = $row2["TRANS_NO"]." - ".$row2["TRANS_DATE"];
+                $transfersArray[] = $row2["TRANS_NO"]." - ".$row2["TRANS_DATE"];
+            }
+            $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Internal Transfer%' OR INV_BOOK_DESC LIKE '%Transfer Issue%'";
+            $result1 = oci_parse($conn, $sql1);
+            oci_execute($result1);
+            while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $booksArray[] = $row1["INV_BOOK_DESC"];
+            }    
+            $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
+            $result3 = oci_parse($conn, $sql3);
+            oci_execute($result3);
+            while($row3 =oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $locatorArray[] = $row3["CODE_VALUE"]." - ".strtolower($row3["CODE_DESC"]);
             }
             $sql14 = "SELECT TIM.TRANS_NO, TIM.TRANS_DATE, IBM.INV_BOOK_DESC, IM.ITEM_CODE, IM.ITEM_DESC, TIM.REF_NO,CCV.CODE_VALUE,CCV1.CODE_VALUE, TID.REMARKS,TID.PIRMARY_QTY, TID.AMOUNT, WUM.UOM_SHORT_DESC,TIM.REMARKS AS DETREMARKS, CCV.CODE_VALUE AS FLOC, CCV1.CODE_VALUE AS TLOC
                     FROM TRANS_ISSUE_MT TIM 
@@ -290,12 +318,28 @@ class ReportController extends Controller
             $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3a = date("m/d/Y", strtotime(substr($daterange, 10)));
             $daterangeVal = wordwrap($daterange , 10 , ' ' , true );
-            $counttransfer = count($transfers);
+            $counttransfer = count($transfersArray);
+            $Storedaterange = $request->daterange;
+
+            $sessionData = [
+                'storebook' => $books,
+                'storetransfer' => $transno,
+                'storedaterange' => $daterange,
+                'storereference' => $reference,
+                'storefrom_locator' => $from_locator,
+                'storeto_locator' => $to_locator,
+                'strtdte2a' => $strtdte2a,
+                'strtdte3a' => $strtdte3a,
+                'Storestart' => date("d/m/Y", strtotime(substr($Storedaterange, 0,10))),
+                'Storeend' => date("d/m/Y", strtotime(substr($Storedaterange, -10))),
+            ];
+
             return view('report.transfer')->with([
                 "i" => 1, "dep" => 0, "data" => $data, "book" => $books, "rate2" => $rate2, "Permission" => 1, "refno" => $refno, "z" => $counttransfer, "j" => $counttransfer,
-                "transno" => $transno, "enddte2" => $enddte2, "strtdte2" => $strtdte2, "strtdte3" => $strtdte3, "strtdte2" => $strtdte2, "to_locator" => $to_locator, "transfer" => $transfers,
+                "transno" => $transno, "enddte2" => $enddte2, "strtdte2" => $strtdte2, "strtdte3" => $strtdte3, "strtdte2" => $strtdte2, "to_locator" => $to_locator, "transfer" => $transfersArray,
                 "from_locator" => $from_locator, "sum_qty" => number_format($sum_qty,2), "sum_rate" => number_format($sum_rate,2), "sum_amount" => number_format($sum_amount,2), "transferVal" => $transfer,
-                "daterangeVal" => $daterangeVal, "referenceVal" => $reference, "from_locatorVal" => $from_locator, "to_locatorVal" => $to_locator, "booksVal" => $books, "strtdte2a" => $strtdte2a, "strtdte3a" => $strtdte3a
+                "daterangeVal" => $daterangeVal, "referenceVal" => $reference, "from_locatorVal" => $from_locator, "to_locatorVal" => $to_locator, "booksVal" => $books, "strtdte2a" => $strtdte2a, "strtdte3a" => $strtdte3a,
+                "sessionData" => $sessionData, "locator" => $locatorArray, "books" => $booksArray,
             ]);
         }
         catch(Exception $e){
@@ -408,16 +452,16 @@ class ReportController extends Controller
                 $Storeuser = "-";
                 foreach($data as $key){
                     if($request->category != 'none' && $request->operator != 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category == 'none' && $request->operator == 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category == 'none' && $request->operator != 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category != 'none' && $request->operator == 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     if(count($support1)>0){
                         $present[] = $support1;        
@@ -636,16 +680,16 @@ class ReportController extends Controller
                 $Storeuser = "-";
                 foreach($data as $key){
                     if($request->category != 'none' && $request->operator != 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category == 'none' && $request->operator == 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category == 'none' && $request->operator != 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     elseif($request->category != 'none' && $request->operator == 'none'){
-                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                     }
                     if(count($support1)>0){
                         $present[] = $support1;        
@@ -945,7 +989,7 @@ class ReportController extends Controller
             $rate2 = 0;
             $data = array();
             $books = array(); $adjustment = array();
-            $sum_rate = $sum_qty = $sum_amount = 0;
+            $sum_rate = $sum_qty = $sum_amount = $rate = $line_amount = 0;
             $status = $request->status;
             $transfer = $request->adjustno;
             $daterange = $request->daterange;
@@ -1052,6 +1096,10 @@ class ReportController extends Controller
                 $data[] = array(
                     'data' => $row,
                     'rate' => $rate,
+                    'sum_qty' => $sum_qty, 
+                    'sum_amount' => $sum_amount, 
+                    'sum_rate' => $sum_rate, 
+                    'line_amount' => $line_amount                
                 );
             }
 
@@ -1832,8 +1880,14 @@ class ReportController extends Controller
             }
             $result11 = oci_parse($conn,$sql);
             oci_execute($result11);
+            $t_am = $p_qty = $stax_amount = $pro_qty = $total_amount = 0;
             while($row = oci_fetch_array($result11,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $data[] = $row;
+                $t_am = $t_am + $row["AMOUNT"];
+                $p_qty = $p_qty + $row["PRIMARY_QTY"];
+                $stax_amount = $stax_amount + $row["STAX_AMOUNT"];
+                $pro_qty = $pro_qty + $row["PRO_EXP_AMOUNT"];
+                $total_amount = $total_amount + $row["TOTAL_AMOUNT"];
             }
 
             $sessionData = [
@@ -1846,6 +1900,7 @@ class ReportController extends Controller
             return view('report.purchase')->with([
                 "data" => $data, "Permission" => 1, "sessionData" => $sessionData, "period" => $dataPeriod, 
                 "financial" => $financial, "itemtype1" => $itemtype1, "itemtype2" => $itemtype2, "i" => 1,
+                "t_am" => $t_am, "p_qty" => $p_qty, "stax_amount" => $stax_amount, "pro_qty" => $pro_qty, "total_amount" => $total_amount 
             ]);
         }
         catch(Exception $e){
@@ -2799,6 +2854,9 @@ class ReportController extends Controller
                 "season" => $seasonData,
                 "category" => $categoryData,
                 "subCategory" => $subCategoryData,
+                'sum_qty' => $sum_qty,
+                'sum_amount' => $sum_amount,
+                'sum_t_amount' => $sum_t_amount,
             ]);
         }
         catch(Exception $e){
@@ -4024,7 +4082,8 @@ class ReportController extends Controller
                 $thedate = "";
             } 
             if(!empty($joborder)){
-                $joborder = $joborder;
+                $joborder = explode(' || ', $joborder);
+                $joborder = $joborder[0];
             }
             else{
                 $joborder = "";
@@ -4033,7 +4092,7 @@ class ReportController extends Controller
         
             if($thedate == 'jodate'){
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
-                                                                ->where('job_sheet_order_mt.Job_Id', 'like', '%'.$joborder.'%')
+                                                                ->where('job_sheet_order_mt.Job_Id', 'like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
                                                                 ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
 
@@ -4042,11 +4101,11 @@ class ReportController extends Controller
             }
             else{
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
-                                                                ->where('job_sheet_order_mt.Job_Id', 'like', '%'.$joborder.'%')
+                                                                ->where('job_sheet_order_mt.Job_Id','like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
                                                                 ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
 
-                                                                ->select('job_sheet_order_mt.Job_Id')
+                                                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
                                                                 ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
             }
 
@@ -4126,7 +4185,8 @@ class ReportController extends Controller
                 $thedate = "";
             } 
             if(!empty($joborder)){
-                $joborder = $joborder;
+                $joborder = explode(' || ', $joborder);
+                $joborder = $joborder[0];
             }
             else{
                 $joborder = "";
@@ -4135,7 +4195,7 @@ class ReportController extends Controller
         
             if($thedate == 'jodate'){
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
-                                                                ->where('job_sheet_order_mt.Job_Id', 'like', '%'.$joborder.'%')
+                                                                ->where('job_sheet_order_mt.Job_Id', 'like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
                                                                 ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
 
@@ -4144,11 +4204,11 @@ class ReportController extends Controller
             }
             else{
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
-                                                                ->where('job_sheet_order_mt.Job_Id', 'like', '%'.$joborder.'%')
+                                                                ->where('job_sheet_order_mt.Job_Id','like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
                                                                 ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
 
-                                                                ->select('job_sheet_order_mt.Job_Id')
+                                                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
                                                                 ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
             }
 
@@ -6372,7 +6432,7 @@ class ReportController extends Controller
                                 LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
                                 LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
                                 WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                ORDER BY IM.ITEM_CODE";
+                                ORDER BY POM.ORDER_NO";
                     } 
                     else{ 
                         $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
@@ -6554,7 +6614,7 @@ class ReportController extends Controller
                                 LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
                                 LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
                                 WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                ORDER BY IM.ITEM_CODE";
+                                ORDER BY POM.ORDER_NO";
                     } 
                     else{ 
                         $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,

@@ -163,7 +163,7 @@
                                         <th class="text-white" data-orderable="false">Item <br> Code</th>
                                         <th class="text-white" data-orderable="false">Item <br> Desc</th>
                                         <th class="text-white" data-orderable="false">UOM</th>
-                                        <th class="text-white" data-orderable="false">Supplier</th>
+                                        <th hidden class="text-white" data-orderable="false">Supplier</th>
                                         <th class="text-white" data-orderable="false">PO <br>No</th>
                                         <th class="text-white" data-orderable="false">GRN <br> No </th>
                                         <th class="text-white" data-orderable="false">PO <br> Qty</th>
@@ -200,12 +200,12 @@
                                         ?>
                                         <?php if($tempcode == $row["ITEM_CODE"]) { ?>
                                         <?php if($temppo != $row["PO_NO"]) { ?>
-                                            <tr style="background-color:rgba(0, 0, 0, 0.05);">
+                                            <tr style="background-color:rgba(0, 0, 0, 0.05);" hidden>
                                                 <td hidden>1</td> 
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
-                                                <td class="font-weight-bold" data-orderable="false"></td>
+                                                <td hidden class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>Total6</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($poqtytotal,2)}}</b></td>
@@ -223,10 +223,10 @@
                                                 <td hidden>1</td> 
                                                 <td></td>
                                                 <td></td>
-                                                <td></td>
+                                                <td hidden></td>
                                                 <td></td>
                                                 <td><strong><?php if ($temppo != $row["PO_NO"]){ echo $row["PO_NO"]." <br> ".$row["PO_DATE"];  $poqtytotal = $row["PO_QTY"]; $sumpoqtytotal = $sumpoqtytotal + $poqtytotal; } ?></strong></td>
-                                                <td><?php echo $row["GRN_NO"]." || ".$row["GRN_DATE"]; ?></td>
+                                                <td><?php echo $row["GRN_NO"]." <br> ".$row["GRN_DATE"]; ?></td>
                                                 <td><?php if ($temppo != $row["PO_NO"]){ echo $row["PO_QTY"]; $pendingme = $row["PO_QTY"]; } ?></td>
                                                 <td><?php echo $row["RECEIVED_QTY"]; $poreceivedtotal = $poreceivedtotal + $row["RECEIVED_QTY"]; ?></td>
                                                 <td><?php echo $row["REJECTED_QTY"]; $porejectedtotal = $porejectedtotal + $row["REJECTED_QTY"]; ?></td>
@@ -239,7 +239,7 @@
                                             </tr>
                                         <?php } else { 
                                             if($tempcode != "") { ?>
-                                            <tr style="background-color: white;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                            <tr style="background-color: white;"><td hidden>1</td><td></td><td></td><td></td><td hidden></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                                         <?php } ?>
                                             <tr style="background-color:rgba(0, 0, 0, 0.05);">
                                                 <td hidden>1</td>  
@@ -251,7 +251,7 @@
                                                     @endforeach
                                                 </td>   
                                                 <td><strong><?php echo $row["UOM_DESC"];  ?></strong></td>
-                                                <td>
+                                                <td hidden>
                                                     <?php $explode = explode(" ",$row['COMPANY_NAME']); ?>
                                                     @foreach($explode as $data1)
                                                         <b>{{$data1}}</b><br>
@@ -275,7 +275,7 @@
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
-                                                <td class="font-weight-bold" data-orderable="false"></td>
+                                                <td hidden class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>Total7</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($poqtytotal,2)}}</b></td>
@@ -304,7 +304,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td></td>
+                                                <td hidden></td>
                                                 <td><strong><?php if ($temppo != $row["PO_NO"]){ echo $row["PO_NO"]." || ".$row["PO_DATE"];  $poqtytotal = $row["PO_QTY"]; $sumpoqtytotal = $sumpoqtytotal + $poqtytotal; } ?></strong></td>
                                                 <td><?php echo $row["GRN_NO"]." <br> ".$row["GRN_DATE"]; ?></td>
                                                 <td><?php if ($temppo != $row["PO_NO"]){ echo $row["PO_QTY"]; } ?></td>
@@ -319,12 +319,12 @@
                                             </tr>
                                         <?php } else {
                                         if($tempcode != "") { ?>
-                                            <tr style="background-color:rgba(0, 0, 0, 0.05); font-size: 20px;">
+                                            <tr style="background-color:rgba(0, 0, 0, 0.05); font-size: 20px;" hidden>
                                                 <td hidden>1</td> 
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
-                                                <td class="font-weight-bold" data-orderable="false"></td>
+                                                <td hidden class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"> <b> Total8</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($poqtytotal,2)}}</b></td>
@@ -337,7 +337,7 @@
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($postaxtotal,2)}}</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($pototal,2)}}</b></td>
                                             </tr>
-                                            <tr style="background-color: white;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                            <tr style="background-color: white;"><td hidden>1</td><td></td><td></td><td hidden></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                                         <?php } $poqtytotal = $poreceivedtotal = $porejectedtotal = $poacceptedtotal = $pendingme = $postaxtotal = $pototal = $poamounttotal = 0; ?>
                                             <tr style="background-color:rgba(0, 0, 0, 0.05);">
                                                 <td hidden>1</td> 
@@ -349,7 +349,7 @@
                                                     @endforeach
                                                 </td>
                                                 <td><strong><?php echo $row["UOM_DESC"]; ?></strong></td>
-                                                <td>
+                                                <td hidden>
                                                     <?php $explode = explode(" ",$row['COMPANY_NAME']); ?>
                                                     @foreach($explode as $data1)
                                                         <b>{{$data1}}</b><br>
@@ -373,9 +373,9 @@
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
+                                                <td hidden class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false">Item</td>
                                                 <td class="font-weight-bold" data-orderable="false">Summary</td>
-                                                <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($poqtytotal,2)}}</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($poreceivedtotal,2)}}</b></td>
                                                 <td class="font-weight-bold" data-orderable="false"><b>{{number_format($porejectedtotal,2)}}</b></td>
@@ -395,7 +395,7 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Sum of Sums</th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false" hidden></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">{{number_format($sumpoqtytotal,2)}}</th>

@@ -128,10 +128,18 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Date Range</b></h6>                            
+                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Start Date</b></h6>                            
                             @if(!empty($sessionData['Storestart1']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}}</p>
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
+                        </div>
+                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>End Date</b></h6>                            
+                            @if(!empty($sessionData['Storeend2']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storeend2']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
