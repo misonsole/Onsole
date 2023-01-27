@@ -52,6 +52,19 @@
     select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
         font-weight:bold;
     }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -135,7 +148,7 @@
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" hidden>.</th>
-                                        <th class="text-white" data-orderable="false">SR. <br> No</th>
+                                        <th class="text-white" data-orderable="false">Sr. <br> No</th>
                                         <th class="text-white" data-orderable="false">Agent</th>
                                         <th class="text-white" data-orderable="false">Season</th>
                                         <th class="text-white" data-orderable="false">Region</th>
@@ -172,7 +185,12 @@
                                                     @endforeach
                                                 </td>                                  
                                                 <td>{{$row['data']["REGION"]}}</td>                  
-                                                <td>{{$row['data']["CUST_CAT"]}}</td>   
+                                                <td>
+                                                    <?php $explode = explode("-",$row['data']["CUST_CAT"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>    
                                                 <td>
                                                     <?php $explode = explode(" ",$row['data']["CUSTOMER"]); ?>
                                                     @foreach($explode as $data1)
@@ -181,7 +199,12 @@
                                                 </td>
                                                 <td>{{$row['data']["NTN_NO"]}}</td>                  
                                                 <td>{{$row['data']["INVC_NO"]}}</td>                  
-                                                <td>{{$row['data']["INVC_DATE"]}}</td>   
+                                                <td>
+                                                    <?php $explode = explode("-",$row['data']["INVC_DATE"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>    
                                                 <td>{{$row['data']["SONO"]}}</td>                  
                                                 <td>{{$row['data']["DC_NO"]}}</td>                  
                                                 <td>{{$row['data']["CUST_PO_NO"]}}</td>                                  
@@ -214,7 +237,6 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"> </th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -224,13 +246,14 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">Grand Total</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_qty'],2)}}</th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false">Grand<br>Total</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_t_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_t_amount,2)}}</th>
                                         </tr>
                                     </thead>
                                 @endif
@@ -273,7 +296,8 @@
                             </div>
                             <div class="col-sm-12 mt-3">
                             <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
+                                <option selected value="">Select Book</option>
                                     @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
                                             <option <?php if($value == $sessionData['book']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
@@ -285,7 +309,8 @@
                             </div>
                             <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Season</b></label>
-                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                <option selected value="">Select Season</option>
                                     @foreach($season as $value)
                                         @if(!empty($sessionData['season']))
                                             <option <?php if($value == $sessionData['season']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
@@ -298,8 +323,12 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-12 mt-3">
+                                <label><b style="color: #6c757d">Customer</b></label>
+                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['customer'])) echo "value='{$sessionData['customer']}'"; ?> name="customer" id="customer" placeholder="Customer">
+                            </div>
+                            <div class="col-sm-12 mt-3">
                             <label><b style="color: #6c757d">Agent</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Agent</option>
                                     @foreach($agent as $value)
                                         @if(!empty($sessionData['agent']))
@@ -309,10 +338,6 @@
                                         @endif  
                                     @endforeach                 
                                 </select>
-                            </div>
-                            <div class="col-sm-12 mt-3">
-                                <label><b style="color: #6c757d">Customer</b></label>
-                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['customer'])) echo "value='{$sessionData['customer']}'"; ?> name="customer" id="customer" placeholder="Customer">
                             </div>
                         </div>
                         <div class="form-group row mt-4">

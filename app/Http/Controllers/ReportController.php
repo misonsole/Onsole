@@ -27,6 +27,7 @@ use App\Exports\PurchaseInvoice;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Models\Support;
+use App\Models\Category;
 use App\Models\RoleName;
 use App\Models\LastNumber;
 use App\Models\UserDetail;
@@ -311,8 +312,10 @@ class ReportController extends Controller
         try{
             $departments = Department::orderBy('name','ASC')->get();
             $user = User::orderBy('name','ASC')->get();
+            $category = Category::orderBy('category','ASC')->get();
+            $operator = Support::orderBy('approve_by','ASC')->where('approve_by', '!=', NULL)->get()->unique('approve_by');
             $permission = 0;
-            return view('report.helpdesk',compact('departments','user','permission'));
+            return view('report.helpdesk',compact('departments','user','permission','category','operator'));
         }
         catch(Exception $e){
             $notification = array(
@@ -335,32 +338,87 @@ class ReportController extends Controller
             $Storeuser = $request->user;
             $Storestatus = $request->status;
             $Storedaterange = $request->daterange;
+            $Storecategory = $request->category;
+            $Storeoperator = $request->operator;
             $start = date("Y-m-d", strtotime(substr($Storedaterange, 0,10)));
             $end = date("Y-m-d", strtotime(substr($Storedaterange, -10)));
             $user = User::orderBy('name','ASC')->get();
             $departments = Department::orderBy('name','ASC')->get();
+            $category = Category::orderBy('category','ASC')->get();
+            $thedate = $request->daterange;
+            $operator = Support::orderBy('approve_by','ASC')->where('approve_by', '!=', NULL)->get()->unique('approve_by');
             $data = User::orderBy('id','DESC')->where('department', $request->department)->pluck('id');         
             if($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user != 'none'){
                 $usernName = User::orderBy('name','ASC')->where('id', $request->user)->pluck('emp_name');
                 $Storeuser = $usernName[0];
                 $Storedepartment = "-";
-                $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
             }   
-            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none'){
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->category != 'none'){
+                $support = Support::orderBy('id','DESC')->where('category', $request->category)->whereBetween('created_at', [$start, $end])->get();
+            }
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->operator != 'none'){
+                $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->whereBetween('created_at', [$start, $end])->get();
+            } 
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->category == 'none' && $request->operator == 'none'){
                 $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->get();
             }   
             elseif($request->department == 'All' && $request->status != null && $request->user != 'none'){
-                $support = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();;
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
             }
             elseif($request->department == null || $request->department == 'All' && $request->user == 'none' && $request->status != null){
                 $Storeuser = "-";
-                $support = Support::orderBy('id','DESC')->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
             }
             elseif($request->department != 'All' && $request->status != null){
                 $Storedepartment = $request->department;
                 $Storeuser = "-";
                 foreach($data as $key){
-                    $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    if($request->category != 'none' && $request->operator != 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category == 'none' && $request->operator == 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category == 'none' && $request->operator != 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category != 'none' && $request->operator == 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
                     if(count($support1)>0){
                         $present[] = $support1;        
                     }
@@ -371,7 +429,15 @@ class ReportController extends Controller
                     }
                 }
             }
-            elseif($request->department != 'All' && $request->user != null && $request->user != 'All'){
+            elseif($request->department != 'All' && $request->user != null && $request->user != 'none'){
+                if($request->category != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
+                }
+            }
+            elseif($request->department != 'All' && $request->user != null && $request->user != 'none' && $request->category == 'none'){
                 $support = Support::orderBy('id','DESC')->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
             }
             elseif($request->department != 'All' && $request->user == 'All'){
@@ -391,10 +457,36 @@ class ReportController extends Controller
             elseif($request->department != 'All'){
                 foreach($data as $key){
                     if($request->status != null){
-                        $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        if($request->category != 'none' && $request->operator != 'none'){
+                            dd("I1");
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator == 'none'){
+                            dd("I2");
+                            $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator != 'none'){
+                            dd("I3");
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category != 'none' && $request->operator == 'none'){
+                            dd("I4");
+                            $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
                     }   
                     else{
-                        $result = Support::orderBy('id','DESC')->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        if($request->category != 'none' && $request->operator != 'none'){
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator == 'none'){
+                            $result = Support::orderBy('id','DESC')->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator != 'none'){
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category != 'none' && $request->operator == 'none'){
+                            $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
                     }            
                     if(count($result)>0){
                         $present[] = $result;        
@@ -474,32 +566,87 @@ class ReportController extends Controller
             $Storeuser = $request->user;
             $Storestatus = $request->status;
             $Storedaterange = $request->daterange;
+            $Storecategory = $request->category;
+            $Storeoperator = $request->operator;
             $start = date("Y-m-d", strtotime(substr($Storedaterange, 0,10)));
             $end = date("Y-m-d", strtotime(substr($Storedaterange, -10)));
             $user = User::orderBy('name','ASC')->get();
             $departments = Department::orderBy('name','ASC')->get();
+            $category = Category::orderBy('category','ASC')->get();
+            $thedate = $request->daterange;
+            $operator = Support::orderBy('approve_by','ASC')->where('approve_by', '!=', NULL)->get()->unique('approve_by');
             $data = User::orderBy('id','DESC')->where('department', $request->department)->pluck('id');         
             if($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user != 'none'){
                 $usernName = User::orderBy('name','ASC')->where('id', $request->user)->pluck('emp_name');
                 $Storeuser = $usernName[0];
                 $Storedepartment = "-";
-                $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->whereBetween('created_at', [$start, $end])->where('userid', $request->user)->get();
+                }
             }   
-            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none'){
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->category != 'none'){
+                $support = Support::orderBy('id','DESC')->where('category', $request->category)->whereBetween('created_at', [$start, $end])->get();
+            }
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->operator != 'none'){
+                $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->whereBetween('created_at', [$start, $end])->get();
+            } 
+            elseif($request->department == 'none' || $request->department == 'All' && $request->status == null && $request->user == 'none' && $request->category == 'none' && $request->operator == 'none'){
                 $support = Support::orderBy('id','DESC')->whereBetween('created_at', [$start, $end])->get();
             }   
             elseif($request->department == 'All' && $request->status != null && $request->user != 'none'){
-                $support = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();;
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
             }
             elseif($request->department == null || $request->department == 'All' && $request->user == 'none' && $request->status != null){
                 $Storeuser = "-";
-                $support = Support::orderBy('id','DESC')->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                if($request->category != 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none' && $request->operator != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category != 'none' && $request->operator == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                }
             }
             elseif($request->department != 'All' && $request->status != null){
                 $Storedepartment = $request->department;
                 $Storeuser = "-";
                 foreach($data as $key){
-                    $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    if($request->category != 'none' && $request->operator != 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category == 'none' && $request->operator == 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category == 'none' && $request->operator != 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
+                    elseif($request->category != 'none' && $request->operator == 'none'){
+                        $support1 = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                    }
                     if(count($support1)>0){
                         $present[] = $support1;        
                     }
@@ -510,7 +657,15 @@ class ReportController extends Controller
                     }
                 }
             }
-            elseif($request->department != 'All' && $request->user != null && $request->user != 'All'){
+            elseif($request->department != 'All' && $request->user != null && $request->user != 'none'){
+                if($request->category != 'none'){
+                    $support = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
+                }
+                elseif($request->category == 'none'){
+                    $support = Support::orderBy('id','DESC')->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
+                }
+            }
+            elseif($request->department != 'All' && $request->user != null && $request->user != 'none' && $request->category == 'none'){
                 $support = Support::orderBy('id','DESC')->where('userid', $request->user)->whereBetween('created_at', [$start, $end])->get();
             }
             elseif($request->department != 'All' && $request->user == 'All'){
@@ -530,10 +685,36 @@ class ReportController extends Controller
             elseif($request->department != 'All'){
                 foreach($data as $key){
                     if($request->status != null){
-                        $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        if($request->category != 'none' && $request->operator != 'none'){
+                            dd("I1");
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator == 'none'){
+                            dd("I2");
+                            $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator != 'none'){
+                            dd("I3");
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category != 'none' && $request->operator == 'none'){
+                            dd("I4");
+                            $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
+                        }
                     }   
                     else{
-                        $result = Support::orderBy('id','DESC')->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        if($request->category != 'none' && $request->operator != 'none'){
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator == 'none'){
+                            $result = Support::orderBy('id','DESC')->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category == 'none' && $request->operator != 'none'){
+                            $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
+                        elseif($request->category != 'none' && $request->operator == 'none'){
+                            $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->whereBetween('created_at', [$start, $end])->get();
+                        }
                     }            
                     if(count($result)>0){
                         $present[] = $result;        
@@ -560,16 +741,28 @@ class ReportController extends Controller
                     }
                 }
             }
+            $daterange = str_replace(" - ", "", $request['daterange']);
+            $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
+            $strtdte3a = date("m/d/Y", strtotime(substr($daterange, 10)));
+            if($request->user != 'none'){
+                $usernName = User::orderBy('name','ASC')->where('id', $request->user)->pluck('emp_name');
+                $Storeuser = $usernName[0];
+            }
             $sessionData = [
                 'department' => $Storedepartment,
                 'user' => $Storeuser,
                 'status' => $Storestatus,
                 'start' => $start,
                 'end' => $end,
+                'thedate' => $thedate,
+                'category' => $Storecategory,
+                'operator' => $Storeoperator,
+                'strtdte2a' => $strtdte2a,
+                'strtdte3a' => $strtdte3a,
                 'Storestart' => date("d/m/Y", strtotime(substr($Storedaterange, 0,10))),
                 'Storeend' => date("d/m/Y", strtotime(substr($Storedaterange, -10))),
             ];
-            return view('report.helpdesk',compact('departments','user','permission','supportData','sessionData'));
+            return view('report.helpdesk',compact('departments','user','permission','supportData','sessionData','operator','category'));
         }
         catch(Exception $e){
             $notification = array(
@@ -2101,6 +2294,7 @@ class ReportController extends Controller
             return view('report.sales')->with([
                 "data" => $data, "Permission" => 1, "sessionData" => $sessionData, "period" => $dataPeriod, "financial" => $financial, 
                 "itemtype1" => $itemtype1, "itemtype2" => $itemtype2, "i" => 1, "agent" => $agentData, "book" => $bookData, "season" => $seasonData,
+                'sum_qty' => $sum_qty, 'sum_amount' => $sum_amount, 'sum_t_amount' => $sum_t_amount,
             ]);
         }
         catch(Exception $e){
@@ -3224,7 +3418,7 @@ class ReportController extends Controller
                                                             'job_sheet_order_sbmt.Color','job_sheet_order_sbmt.Last_No','job_sheet_order_sbmt.status','job_sheet_order_sbmt.total',
                                                             'job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_det.Location','job_sheet_order_det.Tool',
                                                             'job_sheet_order_det.Dye_No','job_sheet_order_det.Um','job_sheet_order_det.Qty','job_sheet_order_det.Remarks')
-                                                        ->where('job_sheet_order_mt.Status','!=','HIDE')->get();
+                                                        ->where('job_sheet_order_mt.Status','!=','HIDE')->orderBy('job_sheet_order_mt.Job_Id','DESC')->get();
 
             foreach($Arraydata as $row){
                 $lineData[] = array(
@@ -3377,7 +3571,7 @@ class ReportController extends Controller
                                                             'job_sheet_order_sbmt.Color','job_sheet_order_sbmt.Last_No','job_sheet_order_sbmt.status','job_sheet_order_sbmt.total',
                                                             'job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_det.Location','job_sheet_order_det.Tool',
                                                             'job_sheet_order_det.Dye_No','job_sheet_order_det.Um','job_sheet_order_det.Qty','job_sheet_order_det.Remarks')
-                                                        ->where('job_sheet_order_mt.Status','!=','HIDE')->get();
+                                                        ->where('job_sheet_order_mt.Status','!=','HIDE')->orderBy('job_sheet_order_mt.Job_Id','DESC')->get();
 
             $customer = array(); $status = array(); $season = array();
             $result1 = DB::table('job_sheet_order_mt')->get()->unique('Cust_Name');

@@ -50,6 +50,22 @@
         z-index: 9999;  
         background: url("/img/avatars/3dgifmaker.gif") 50% 50% no-repeat black;  
     }
+    select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
+        font-weight:bold;
+    }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -209,7 +225,7 @@
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Select Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                     <option value="none" selected>None</option>
                                     @foreach($books as $value)
                                         @if(!empty($sessionData['book']))
@@ -224,9 +240,9 @@
                                 <label><b style="color: #6c757d">Status</b></label>
                                 <select id="status" name="status" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
                                         @if(!empty($sessionData['status']))
-                                            <option <?php if($value == $sessionData['status']) echo 'selected="selected"'; ?> value="Both">Both</option>
-                                            <option <?php if($value == $sessionData['status']) echo 'selected="selected"'; ?> value="Posted">Posted</option>
-                                            <option <?php if($value == $sessionData['status']) echo 'selected="selected"'; ?> value="UnPosted">Un-Posted</option>
+                                            <option <?php if("Both" == $sessionData['status']) echo 'selected="selected"'; ?> value="Both">Both</option>
+                                            <option <?php if("Posted" == $sessionData['status']) echo 'selected="selected"'; ?> value="Posted">Posted</option>
+                                            <option <?php if("UnPosted" == $sessionData['status']) echo 'selected="selected"'; ?> value="UnPosted">Un-Posted</option>
                                         @else
                                             <option value="Both">Both</option>   
                                             <option value="Posted">Posted</option>                    
@@ -247,7 +263,7 @@
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Adjustment No</b></label>
-                                <select id="adjustno" name="adjustno" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="adjustno" name="adjustno" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                     <option value="none" selected>None</option>
                                     @foreach($adjustment as $value)                   
                                         @if(!empty($sessionData['adjustno']))

@@ -97,9 +97,9 @@
                     @if($Permission == 1)
                     <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Date Range</b></h6>                            
-                            @if(!empty($sessionData['Storestart1']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
+                            <h6 class="mb-1"><b>Job Order</b></h6>                            
+                            @if(!empty($sessionData['joborder']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['joborder'])}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -129,9 +129,9 @@
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Job Order</b></h6>                            
-                            @if(!empty($sessionData['joborder']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['joborder'])}}</p>
+                            <h6 class="mb-1"><b>Date Range</b></h6>                            
+                            @if(!empty($sessionData['Storestart1']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -180,7 +180,12 @@
                                         <th class="text-white" data-orderable="false">Date</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">Category <br> Type</th>
+                                        @if($Permission == 1)
+                                        <?php if($sessionData['department'] == "Insole") { ?>
                                         <th class="text-white" data-orderable="false">Work <br> Order</th>
+                                        <?php } else { ?>
+                                        <?php } ?>           
+                                        @endif                             
                                         <th class="text-white" data-orderable="false">Sale <br> Order</th>
                                         <th class="text-white" data-orderable="false">Purchase <br> Order</th> 
                                         <th class="text-white" data-orderable="false">Current <br> Status</th>
@@ -204,8 +209,9 @@
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
+                                        <?php $colorchange = ""; ?>
                                         @foreach($data as $row)
-                                            <tr class="table_row">
+                                            <tr class="table_row" style="<?php if($colorchange != $row->Color || $jochange != $row->Job_Id) { ?> background: #d1d1d1; color: black; <?php } ?>">
                                                 <td hidden>1</td>                  
                                                 <td>{{$row->Job_Id}}</td>                  
                                                 <td>
@@ -220,8 +226,13 @@
                                                         {{$data1}}<br>
                                                     @endforeach
                                                 </td>                                              
-                                                <td>{{$row->cat_type}}</td>                  
-                                                <td>{{$row->Work_Order}}</td>                  
+                                                <td>{{$row->cat_type}}</td>
+                                                @if($Permission == 1)                  
+                                                <?php if($sessionData['department'] == "Insole") { ?>
+                                                <td>{{$row->Work_Order}}</td>
+                                                <?php } else { ?>
+                                                <?php } ?>
+                                                @endif
                                                 <td>{{$row->So_No}}</td>    
                                                 <td>{{$row->Po_No}}</td>                  
                                                 <td>{{$row->Status}}</td>
@@ -256,9 +267,18 @@
                                                     @foreach($explode as $data1)
                                                         {{$data1}}<br>
                                                     @endforeach
-                                                </td> 
-                                                <td>{{$row->status}}</td>
+                                                </td>                    
+                                                <td>
+                                                    <?php $explode = explode(" ",$row->status); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>  
+                                                <?php if ($colorchange != $row->Color || $jochange != $row->Job_Id) { ?>
                                                 <td>{{$row->total}}</td>                  
+                                                <?php  } else { ?>
+                                                <td></td>
+                                                <?php } ?>
                                                 <td>{{$row->Rm_Code}}</td>                  
                                                 <td>
                                                     <?php $explode = explode(" ",$row->Job_Desc); ?>
@@ -266,7 +286,7 @@
                                                         {{$data1}}<br>
                                                     @endforeach
                                                 </td>                   
-                                                 <td>
+                                                <td>
                                                     <?php $explode = explode(" ",$row->Location); ?>
                                                     @foreach($explode as $data1)
                                                         {{$data1}}<br>
@@ -274,9 +294,15 @@
                                                 </td>     
                                                 <td>{{$row->Tool}}</td>                  
                                                 <td>{{$row->Dye_No}}</td>                  
-                                                <td>{{$row->Um}}</td>                  
+                                                <td>
+                                                    <?php $explode = explode(" ",$row->Um); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>                  
                                                 <td>{{$row->Qty}}</td>                                    
                                             </tr>
+                                            <?php $colorchange = $row->Color; $jochange = $row->Job_Id; ?>
                                         @endforeach
                                     </tbody>
                                 @else
@@ -336,14 +362,11 @@
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Department</b></label>
                                 <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                    <option value="">All Department</option>
-                                    <option <?php if("PPC" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="PPC">PPC</option>
-                                    <option <?php if("CUTTING" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="CUTTING">Cutting</option> 
-                                    <option <?php if("CLOSING" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="CLOSING">Closing</option>
-                                    <option <?php if("LASTING" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="LASTING">Lasting</option>    
-                                    <option <?php if("STORE" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="STORE">Store</option> 
-                                    <option <?php if("FINALISED" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="FINALISED">Finalised</option>
-                                    <option <?php if("COMPLETE" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="COMPLETE">Complete</option>                 
+                                    <option value="">Select Department</option>
+                                    <option <?php if("Cutting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Cutting">Cutting</option> 
+                                    <option <?php if("Closing" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Closing">Closing</option>
+                                    <option <?php if("Lasting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>    
+                                    <option <?php if("Insole" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Insole">Insole</option> 
                                 </select>
                             </div>
                         </div>

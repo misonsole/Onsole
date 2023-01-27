@@ -60,6 +60,22 @@
         z-index: 9999;  
         background: url("/img/avatars/3dgifmaker.gif") 50% 50% no-repeat black;  
     }
+    select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
+        font-weight:bold;
+    }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div id="loader2" class="rotate" width="100" height="100"></div>
@@ -92,7 +108,17 @@
                     </div>
                     @if($permission == 1)
                     <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Category</b></h6>                            
+                            @if(!empty($sessionData['category']))
+                                @if($sessionData['category'] != 'none')
+                                <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['category']}}</p>
+                                @else
+                                <p class="mb-2">-</p>
+                                @endif
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
                         </div>  
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Department</b></h6>                            
@@ -103,7 +129,7 @@
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>User</b></h6>                            
+                            <h6 class="mb-1"><b>Employee</b></h6>                            
                             @if(!empty($sessionData['user']))
                                 @if($sessionData['user'] != 'none')
                                 <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['user']}}</p>
@@ -131,22 +157,24 @@
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>From Date</b></h6>                            
-                            @if(!empty($sessionData['start']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['start']}}</p>
+                            <h6 class="mb-1"><b>Date</b></h6>                            
+                            @if(!empty($sessionData['thedate']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['thedate']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>To Date</b></h6>                            
-                            @if(!empty($sessionData['end']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['end']}}</p>
+                            <h6 class="mb-1"><b>Operator</b></h6>                            
+                            @if(!empty($sessionData['operator']))
+                                @if($sessionData['operator'] != 'none')
+                                <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['operator']}}</p>
+                                @else
+                                <p class="mb-2">-</p>
+                                @endif
                             @else
                             <p class="mb-2">-</p>
                             @endif
-                        </div>  
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
                         </div>  
                         @if(!empty($from_locatorVal))
                         <input type="text" id="lNo" value="{{$from_locatorVal}}">
@@ -164,7 +192,7 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false">Complaint No</th>
+                                        <th class="text-white" data-orderable="false">No</th>
                                         <th class="text-white" data-orderable="false">Employee</th>
                                         <th class="text-white" data-orderable="false">Department</th>
                                         <th class="text-white" data-orderable="false">Category</th>
@@ -180,22 +208,18 @@
                                         @foreach($supportData as $value)
                                         <tr>
                                             <td>{{$value['data']['id']}}</td>
-                                            <td style="width: 10%;">{{$value['name']}}</td>
+                                            <td style="width: 10%;">
+                                                <?php $explode = explode(" ",$value['name']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td> 
                                             <td style="text-transform: capitalize;">
-                                            <?php
-                                                $pieces = explode(" ", $value['department']);
-                                                echo $pieces[0];
-                                                echo '<br>';
-                                                if(count($pieces) == 2){
-                                                    echo $pieces[1];
-                                                    echo '<br>';
-                                                }
-                                                if(count($pieces) == 3){
-                                                    echo $pieces[2];
-                                                    echo '<br>';
-                                                }
-                                            ?> 
-                                            </td>
+                                                <?php $explode = explode(" ",$value['department']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td> 
                                             <td style="width: 10%;">{{$value['data']['category']}}</td>
                                             <td style="width: 10%;">{{$value['data']['subcategory']}}</td>
                                             <td>
@@ -262,9 +286,9 @@
                     @csrf
                     <div class="form-group row py-2">
                         <div class="col-sm-6 mb-1 mb-sm-0">
-                            <label><b style="color: #6c757d">Select Department</b></label>
-                            <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                <option value="All">All Department</option>
+                            <label><b style="color: #6c757d">Department</b></label>
+                            <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                <option value="All">Select Department</option>
                                 @foreach($departments as $value)
                                     @if(!empty($sessionData['department']))
                                         <option <?php if($value->name == $sessionData['department']) echo 'selected="selected"'; ?> value="{{ $value->name }}">{{ $value->name }}</option>
@@ -275,9 +299,9 @@
                             </select>
                         </div>
                         <div class="col-sm-6" id="userDiv1">
-                            <label><b style="color: #6c757d">Select User</b></label>
-                            <select id="user" name="user" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                <option value="none" selected>None</option>
+                            <label><b style="color: #6c757d">User</b></label>
+                            <select id="user" name="user" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                <option value="none" selected>Select User</option>
                                 @foreach($user as $value)
                                     @if(!empty($sessionData['user']))
                                         <option <?php if($value->emp_name == $sessionData['user']) echo 'selected="selected"'; ?> value="{{ $value->id }}">{{ $value->emp_name }}</option>
@@ -288,16 +312,16 @@
                             </select>
                         </div>
                         <div class="col-sm-6" id="userDiv2">
-                            <label><b style="color: #6c757d">Select User</b></label>
-                            <select id="selectUser" name="user" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                            <label><b style="color: #6c757d">User</b></label>
+                            <select id="selectUser" name="user" style="border: 1px solid #aaa;" class="form-control select.custom-select">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row py-1">
                         <div class="col-sm-6">
-                            <label><b style="color: #6c757d">Select Status</b></label>
-                            <select id="status" name="status" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                <option value="">None</option>
+                            <label><b style="color: #6c757d">Status</b></label>
+                            <select id="status" name="status" style="border: 1px solid #aaa;" class="form-control select.custom-select">
+                                <option value="">Select Status</option>
                                 @if(!empty($sessionData['status']))
                                     <option value="NULL">No Action</option>
                                     <option <?php if($sessionData['status'] == "in process") echo 'selected="selected"'; ?>  value="in process">In Progress</option>
@@ -314,11 +338,39 @@
                         <div class="col-sm-6">
                             <label><b style="color: #6c757d">Select Date</b></label>
                             <div class="input-group" style="border: 1px solid #bfbfbf;">                                            
-                                <input type="text" class="form-control" name="daterange">
+                                <input type="text" class="form-control" <?php if(isset($sessionData['strtdte3a'])) echo "value='{{$sessionData['strtdte2a']}} - {{$sessionData['strtdte3a']}}'"; ?> name="daterange">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="dripicons-calendar"></i></span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group row py-2">
+                        <div class="col-sm-6 mb-1 mb-sm-0">
+                            <label><b style="color: #6c757d">Select Category</b></label>
+                            <select id="category" name="category" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                <option value="none">Select Category</option>
+                                @foreach($category as $value)
+                                    @if(!empty($sessionData['category']))
+                                        <option <?php if($value->category == $sessionData['category']) echo 'selected="selected"'; ?> value="{{ $value->category }}">{{ $value->category }}</option>
+                                    @else
+                                        <option value="{{ $value->category }}">{{ $value->category }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label><b style="color: #6c757d">Select Operator</b></label>
+                            <select id="operator" name="operator" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                <option value="none" selected>Select Operator</option>
+                                @foreach($operator as $value)
+                                    @if(!empty($sessionData['operator']))
+                                        <option <?php if($value->approve_by == $sessionData['operator']) echo 'selected="selected"'; ?> value="{{ $value->approve_by }}">{{ $value->approve_by }}</option>
+                                    @else
+                                        <option value="{{ $value->approve_by }}">{{ $value->approve_by }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row py-1">
@@ -407,7 +459,7 @@ $("#reportModel").on('click',function(){
 <script src="plugins/apexcharts/irregular-data-series.js"></script>
 <script src="plugins/apexcharts/ohlc.js"></script>
 <script src="assets/pages/jquery.apexcharts.init.js"></script> -->
-<script>
+<!-- <script>
     $('#department').on('change', function(){
         var category = $(this).val();
         if(category == 'All'){
@@ -436,5 +488,5 @@ $("#reportModel").on('click',function(){
                 }
             });
     });
-</script>
+</script> -->
 @endsection

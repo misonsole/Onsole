@@ -52,6 +52,19 @@
     select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
         font-weight:bold;
     }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -210,7 +223,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-12">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                     @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
                                             <option <?php if($value == $sessionData['book']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
