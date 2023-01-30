@@ -382,7 +382,7 @@
                         @endif
                         @if(isset($storeData['M Transfer Against JO']) && !empty($storeData['M Transfer Against JO'])) 
                             @if(isset($storeData['M Transfer Against JO']) == 1)
-                                <li class="{{ Request::path() == 'transferagainst-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transferagainst-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transferagainst')}}"><i class="ti-control-record" style="width: 18px;"></i>M Transfer Against JO</a></li>
+                                <li class="{{ Request::path() == 'transferagainst-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transferagainst-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transferagainst')}}"><i class="ti-control-record" style="width: 18px;"></i>Transfer Against JO</a></li>
                             @endif
                         @endif
                         @if(isset($storeData['Material Consumption']) && !empty($storeData['Material Consumption'])) 

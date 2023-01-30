@@ -159,8 +159,8 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Grand Total</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_qty'],2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                         </tr>
@@ -207,10 +207,10 @@
                         <div class="form-group row py-1">
                         </div>
                         <div class="form-group row mt-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <button type="submit" id="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" class="btn px-5 py-1 btn-md btn-block text-white">Show</button>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-12 mt-3">
                                 <button type="submit" id="download" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" class="btn px-5 py-1 btn-md btn-block text-white">Download</button>
                             </div>
                         </div>

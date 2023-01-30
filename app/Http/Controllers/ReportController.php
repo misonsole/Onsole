@@ -1553,6 +1553,7 @@ class ReportController extends Controller
             }
             $result11 = oci_parse($conn,$sql);
             oci_execute($result11);
+            $qrn_qty = 0;
             while($row = oci_fetch_array($result11,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 if($row["PI_QTY"] != 0){
                     $pi_rate = ($row["PI_AMOUNT"]+$row["PI_EXP_TC_AMOUNT"])/$row["PI_QTY"];
@@ -1566,10 +1567,12 @@ class ReportController extends Controller
                 else{
                     $store_rate = 0;
                 }
+                $qrn_qty = $qrn_qty + $row['GRN_QTY'];
                 $data[] = array(
                     'data' => $row,
                     'pi_rate' => $pi_rate,
                     'store_rate' => $store_rate,
+                    'qrn_qty' => $qrn_qty
                 );
             }
 
@@ -1591,12 +1594,12 @@ class ReportController extends Controller
             ];
             if($report == "smry"){
                 return view('report.workordersummary')->with([
-                    "data" => $data, "Permission" => 1, "sessionData" => $sessionData
+                    "data" => $data, "Permission" => 1, "sessionData" => $sessionData, 'qrn_qty' => $qrn_qty
                 ]);
             }
             if($report == "detail"){
                 return view('report.workorderdetail')->with([
-                    "data" => $data, "Permission" => 1, "sessionData" => $sessionData
+                    "data" => $data, "Permission" => 1, "sessionData" => $sessionData, 'qrn_qty' => $qrn_qty
                 ]);
             }
         }
@@ -4000,6 +4003,7 @@ class ReportController extends Controller
 
             return view('report.consumption')->with([
                 "data" => $data, "Permission" => 1, "sessionData" => $sessionData, "i" => 1,
+                'sum_qty' => $sum_qty, 'sum_amount' => $sum_amount,
             ]);
         }
         catch(Exception $e){
@@ -5072,7 +5076,6 @@ class ReportController extends Controller
                     'Quantity' => $value['ISSUE_DATE'],
                     'Category Code' => number_format($value["ISSUE_AMOUNT"],2),
                     'Category Description' => $value['CAT_DESC'],
-                    'Cost Center' => $value['CAT_DESC'],
                     'Contra A/C Code' => $loopData["CODE_VALUE"]." - ".$newcodevalue[0],
                     'Contra A/C DESC' => $loopData["ACCOUNTING_DESC"]." - ".$fromcode[0],
                 );
@@ -5117,7 +5120,7 @@ class ReportController extends Controller
             if(!empty($locator)){
                 $wsarr = explode("-", $locator);
                 $ws1 = $wsarr[0]; $ws2 = $wsarr[1];
-                // $ws2 = trim($ws2," ");
+                $ws2 = trim($ws2," ");
             }
             else{
                 $locator = "";
@@ -5407,6 +5410,7 @@ class ReportController extends Controller
                         ORDER BY IM.ISSUE_DATE";
                 }
             }
+            $sum_qty = 0; $sum_amount = 0; $sum_rate = 0;
             $result11 = oci_parse($conn,$sql1);
             oci_execute($result11);
             while($row = oci_fetch_array($result11,  OCI_ASSOC+OCI_RETURN_NULLS)){
@@ -5473,11 +5477,33 @@ class ReportController extends Controller
                 $subCategory1[] = $row5["SEGMENT_VALUE_DESC"];
             }
 
+            $sessionData = [
+                "requestdepartment" => $request->department,
+                "requestbook" => $request->books,
+                "requestdaterange" => $request->daterange,
+                "requestartcode" => $request->artcode,
+                "requestsono" => $request->sono,
+                "requestsinno" => $request->sinno,
+                "requestrmcode" => $request->rmcode,
+                "requestlocator" => $request->locator,
+                "requestcat" => $request->cat,
+                "requestsubcat" => $request->subcat,
+
+                'Storestart' => date("d/m/Y", strtotime(substr($daterange, 0,10))),
+                'Storeend' => date("d/m/Y", strtotime(substr($daterange, -10))),
+                'Storestart1' => date("d-M-Y", strtotime(substr($daterange, 0,10))),
+                'Storeend2' => date("d-M-Y", strtotime(substr($daterange, -10))),
+                'strtdte2a' => date("m/d/Y", strtotime(substr($daterange, 0,10))),
+                'strtdte3a' => date("m/d/Y", strtotime(substr($daterange, 10))),
+            ];
+
             return view('report.material')->with([
                 "i" => 1, "dep" => 0, "data" => $data, "book" => $books, "subcat" => $subcat, "cat" => $cat, "rate2" => $rate2, "Permission" => 1, "sono" => $sono,
                 "locator" => $locator, "enddte2" => $enddte2, "transfer" => $transfers, "strtdte2" => $strtdte2, "strtdte3" => $strtdte3, "strtdte2" => $strtdte2,
                 "sum_qty" => number_format($sum_qty,2), "sum_rate" => number_format($sum_rate,2), "sum_amount" => number_format($sum_amount,2), "artcode" => $artcode,
                 "daterangeVal" => $daterangeVal, "strtdte" => $strtdte, "locator" => $locator, "booksVal" => $books, "strtdte2a" => $strtdte2a, "strtdte3a" => $strtdte3a,
+                "sessionData" => $sessionData,                     
+                'sum_qty' => $sum_qty, 'sum_amount' => $sum_amount, 'sum_rate' => $sum_rate,
 
                 "Allbooks" => $books1, 
                 "Alllocator" => $locator1,
@@ -5909,7 +5935,7 @@ class ReportController extends Controller
             $transfers = array();
             $sum_t_amount = $sum_qty = $total_amount = $rate = $sum_amount = 0;
             $bookData = array(); $subCategoryData = array(); $categoryData = array();
-            $books = $request->books;
+            $books = $request->book;
             $pinv = $request->pinv;
             $daterange = $request->daterange;
             $supplier = $request->supplier;
@@ -5962,10 +5988,14 @@ class ReportController extends Controller
             if(!empty($pinv)){
                 $pinvarr = explode(" || ", $pinv);
                 $pinv = $pinvarr[0]; $pidate = $pinvarr[1];
+            }else{
+                $pinv = ""; $pidate = "";
             }
             if(!empty($rmcode)){
                 $rmcoarr = explode(" || ", $pinv);
                 $rmcode = $rmcoarr[0];
+            }else{
+                $rmcode = "";
             }
 
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
@@ -6088,7 +6118,7 @@ class ReportController extends Controller
             $transfers = array();
             $sum_t_amount = $sum_qty = $total_amount = $rate = $sum_amount = 0;
             $bookData = array(); $subCategoryData = array(); $categoryData = array();
-            $books = $request->books;
+            $books = $request->book;
             $pinv = $request->pinv;
             $daterange = $request->daterange;
             $supplier = $request->supplier;
@@ -6141,10 +6171,14 @@ class ReportController extends Controller
             if(!empty($pinv)){
                 $pinvarr = explode(" || ", $pinv);
                 $pinv = $pinvarr[0]; $pidate = $pinvarr[1];
+            }else{
+                $pinv = ""; $pidate = "";
             }
             if(!empty($rmcode)){
                 $rmcoarr = explode(" || ", $pinv);
                 $rmcode = $rmcoarr[0];
+            }else{
+                $rmcode = "";
             }
 
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";

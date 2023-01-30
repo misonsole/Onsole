@@ -215,6 +215,30 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
+                                    <thead class="bg-dark text-white my-2">
+                                        <tr>
+                                            <th class="text-white" hidden>.</th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false">Total <br> Qty</th>
+                                            <th class="text-white" data-orderable="false">{{$qrn_qty}}</th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                        </tr>
+                                    </thead>
                                 @endif
                                 <tbody>
                                 </tbody>

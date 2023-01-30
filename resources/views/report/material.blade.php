@@ -156,8 +156,8 @@
                         </div>
                     </div>
                     @if($Permission == 1)
-                    <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                    <div class="row mx-5 text-center py-1" style="border-radius: 5px;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Book</b></h6>                            
                             @if(!empty($book))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$book}}</p>
@@ -165,42 +165,80 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Date From</b></h6>                            
-                            @if(!empty($book))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$strtdte2}} - {{$strtdte3}}</p>
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Date Range</b></h6>                            
+                            @if(!empty($sessionData['Storestart1']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>From Locator</b></h6>                            
-                            @if(!empty($from_locator))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$from_locator}}</p>
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Locator</b></h6>                            
+                            @if(!empty($sessionData['requestlocator']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestlocator']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>To Locator</b></h6>                            
-                            @if(!empty($to_locator))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$to_locator}}</p>
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Department</b></h6>                            
+                            @if(!empty($sessionData['requestdepartment']))
+                                @if($sessionData['requestdepartment'] == 'NULL')
+                                <p class="mb-2" style="font-family: 'Poppins';">-</p>
+                                @else
+                                <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestdepartment']}}</p>
+                                @endif
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Transaction No</b></h6>                            
-                            @if(!empty($transno))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$transno}}</p>
+                    </div>
+                    <div class="row mx-5 text-center pb-4" style="border-radius: 5px;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>SO No</b></h6>                            
+                            @if(!empty($sessionData['requestsono']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestsono']}}</p>
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
+                        </div> 
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>RM Code</b></h6>                            
+                            @if(!empty($sessionData['requestrmcode']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestsono']}}</p>
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
+                        </div> 
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Article Code</b></h6>                            
+                            @if(!empty($sessionData['requestartcode']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestartcode']}}</p>
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
+                        </div> 
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Store Issue Note</b></h6>                            
+                            @if(!empty($sessionData['requestsinno']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestsinno']}}</p>
+                            @else
+                            <p class="mb-2">-</p>
+                            @endif
+                        </div> 
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Category</b></h6>                            
+                            @if(!empty($sessionData['requestcat']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestcat']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div>  
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Reference No</b></h6>                            
-                            @if(!empty($refno))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$refno}}</p>
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
+                            <h6 class="mb-1"><b>Sub Category</b></h6>                            
+                            @if(!empty($sessionData['requestsubcat']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['requestsubcat']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -297,102 +335,47 @@
                                             <td>{{$rate2}}</td>
                                             <td>{{number_format($row['data']["ISSUE_AMOUNT"],2)}}</td>
                                             <td>
-                                                <?php
-                                                    $test = $row['data']["CAT_CODE"];
-                                                    $explode = explode("-",$test);
-                                                    $String = '';
-                                                    $newString = '';
-                                                    $maxCharacterCount = 3;
-                                                    foreach($explode as $key => $value){
-                                                        $strlen=strlen($String);
-                                                        if($strlen<=$maxCharacterCount){
-                                                                $String.='-'.$value;
-                                                            }else{
-                                                                $newString.=$String.'-'.$value.'<br>';
-                                                                $String='';
-                                                            }
-                                                        }
-                                                    $finalString= $newString.$String;
-                                                    echo $finalString;
-                                                ?>
+                                                <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
                                             </td>
                                             <td>
-                                                <?php
-                                                    $test = $row['data']["CAT_DESC"];
-                                                    $explode = explode("-",$test);
-                                                    $String = '';
-                                                    $newString = '';
-                                                    $maxCharacterCount = 3;
-                                                    foreach($explode as $key => $value){
-                                                        $strlen=strlen($String);
-                                                        if($strlen<=$maxCharacterCount){
-                                                                $String.=' '.$value;
-                                                            }else{
-                                                                $newString.=$String.' '.$value.'<br>';
-                                                                $String='';
-                                                            }
-                                                        }
-                                                    $finalString= $newString.$String;
-                                                    echo $finalString;
-                                                ?>
+                                                <?php $explode = explode("-",$row['data']["CAT_DESC"]); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
                                             </td>
                                             <?php
-                                                $newcodevalue = explode("-", $row['data']["CODE_VALUE"]);
-                                                $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+                                                $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
                                                 $conn = oci_connect("onsole","s",$wizerp);
+                                                $newcodevalue = explode("-", $row['data']["CODE_VALUE"]);
                                                 $sql1 = "SELECT DISTINCT IGCC.FROM_CODE, IGCC.PURCH_ACC_CODE FROM INV_GL_CONFIG_CATEGORY IGCC WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10)";
-                                                $result1 = oci_parse($conn, strtoupper($sql1));
+                                                $result1= oci_parse($conn, strtoupper($sql1));
                                                 oci_execute($result1);
-                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)) {
+                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                                                     $fromcode = explode("-", $row1["FROM_CODE"]);
                                                     if($newcodevalue[0] === $fromcode[0]){
                                                         $newpurchid = $row1["PURCH_ACC_CODE"];
                                                         $sql2 = "SELECT DISTINCT CCV.CODE_VALUE, CCV.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES CCV WHERE CCV.CODE_COMBINATION_ID = '$newpurchid'";
                                                         $result2 = oci_parse($conn, strtoupper($sql2));
                                                         oci_execute($result2);
-                                                        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){ ?>
+                                                        $row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS) ?>
                                                             <td>
-                                                                <?php
-                                                                    $test = $row2["CODE_VALUE"]." - ".$newcodevalue[0];
-                                                                    $explode = explode("-",$test);
-                                                                    $String = '';
-                                                                    $newString = '';
-                                                                    $maxCharacterCount = 3;
-                                                                    foreach($explode as $key => $value){
-                                                                        $strlen=strlen($String);
-                                                                        if($strlen<=$maxCharacterCount){
-                                                                                $String.=' '.$value;
-                                                                            }else{
-                                                                                $newString.=$String.'-'.$value.'<br>';
-                                                                                $String='';
-                                                                            }
-                                                                        }
-                                                                    $finalString= $newString.$String;
-                                                                    echo $finalString;
-                                                                ?>
+                                                                <?php $explode = explode("-",$row2["CODE_VALUE"]); ?>
+                                                                @foreach($explode as $data1)
+                                                                    {{$data1}}<br>
+                                                                @endforeach
+                                                                - {{$newcodevalue[0]}}
                                                             </td>
                                                             <td>
-                                                                <?php
-                                                                    $test = $row2["ACCOUNTING_DESC"]." - ".$fromcode[0];
-                                                                    $explode = explode(" ",$test);
-                                                                    $String = '';
-                                                                    $newString = '';
-                                                                    $maxCharacterCount = 2;
-                                                                    foreach($explode as $key => $value){
-                                                                        $strlen=strlen($String);
-                                                                        if($strlen<=$maxCharacterCount){
-                                                                                $String.=' '.$value;
-                                                                            }else{
-                                                                                $newString.=$String.' '.$value.'<br>';
-                                                                                $String='';
-                                                                            }
-                                                                        }
-                                                                    $finalString= $newString.$String;
-                                                                    echo $finalString;
-                                                                ?>
+                                                                <?php $explode = explode(" ",$row2["ACCOUNTING_DESC"]); ?>
+                                                                @foreach($explode as $data1)
+                                                                    {{$data1}}<br>
+                                                                @endforeach
+                                                                - {{$fromcode[0]}}
                                                             </td>
                                                         <?php break; 
-                                                        }
                                                     }
                                                 }
                                             ?>
@@ -412,11 +395,11 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">Grand Total</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_qty'],2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_rate'],2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_amount'],2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false">Grand Total</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_rate,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -457,10 +440,14 @@
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Select Book</b></label>
                                 <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
-                                    <option selected disabled>Select Book</option>   
+                                    <option selected value="">Select Book</option>   
                                     @foreach($books as $value)
-                                        <option value="{{$value}}">{{$value}}</option>
-                                    @endforeach
+                                        @if(!empty($sessionData['requestbook']))
+                                            <option <?php if($value == $sessionData['requestbook']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @else
+                                            <option value="{{$value}}">{{$value}}</option>
+                                        @endif  
+                                    @endforeach 
                                 </select>
                             </div>
                             <div class="col-sm-6" hidden>
@@ -474,11 +461,15 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Select Department</b></label>
-                                <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
-                                    <option value='NULL'>Select Department</option>   
+                                <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                    <option selected value="NULL">Select Department</option>   
                                     @foreach($department as $value)
-                                        <option value="{{$value}}">{{$value}}</option>
-                                    @endforeach
+                                        @if(!empty($sessionData['requestdepartment']))
+                                            <option <?php if($value == $sessionData['requestdepartment']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @else
+                                            <option value="{{$value}}">{{$value}}</option>
+                                        @endif  
+                                    @endforeach 
                                 </select>
                             </div>
                         </div>
@@ -486,7 +477,7 @@
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Select Date</b></label>
                                 <div class="input-group" style="border: 1px solid #bfbfbf;">                                            
-                                    <input type="text" class="form-control" name="daterange">
+                                    <input type="text" class="form-control" <?php if(isset($sessionData['strtdte3a'])) echo "value='{{$sessionData['strtdte2a']}} - {{$sessionData['strtdte3a']}}'"; ?> name="daterange">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i class="dripicons-calendar"></i></span>
                                     </div>
@@ -495,50 +486,62 @@
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Locator</b></label>
                                 <select id="locator" name="locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
-                                    <option selected disabled>Select Locator</option>   
+                                    <option selected value="">Select Locator</option>   
                                     @foreach($locator as $value)
-                                        <option value="{{ $value }}">{{ $value }}</option>
-                                    @endforeach
+                                        @if(!empty($sessionData['requestlocator']))
+                                            <option <?php if($value == $sessionData['requestlocator']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @else
+                                            <option value="{{$value}}">{{$value}}</option>
+                                        @endif  
+                                    @endforeach 
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">SO No</b></label>
-                                <input id="sono" name="sono" type="text" class="typeahead form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="SO Code">
+                                <input id="sono" name="sono" type="text" class="typeahead form-control yourclass" <?php if(isset($sessionData['requestsono'])) echo "value='{$sessionData['requestsono']}'"; ?> style="border: 1px solid #bfbfbf;" placeholder="SO Code">
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">RM Code</b></label>
-                                <input id="rmcode" name="rmcode" type="text" class="typeahead form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="RM Code">
+                                <input id="rmcode" name="rmcode" type="text" class="typeahead form-control yourclass" <?php if(isset($sessionData['requestrmcode'])) echo "value='{$sessionData['requestrmcode']}'"; ?> style="border: 1px solid #bfbfbf;" placeholder="RM Code">
                             </div>
                         </div>
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Article Code</b></label>
-                                <input id="artcode" name="artcode" type="text" class="typeahead form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Article No">
+                                <input id="artcode" name="artcode" type="text" class="typeahead form-control yourclass" <?php if(isset($sessionData['requestartcode'])) echo "value='{$sessionData['requestartcode']}'"; ?> style="border: 1px solid #bfbfbf;" placeholder="Article No">
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Store Issue Note</b></label>
-                                <input id="sinno" name="sinno" type="text" class="typeahead form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Store Issue No">
+                                <input id="sinno" name="sinno" type="text" class="typeahead form-control yourclass" <?php if(isset($sessionData['requestsinno'])) echo "value='{$sessionData['requestsinno']}'"; ?> style="border: 1px solid #bfbfbf;" placeholder="Store Issue No">
                             </div>
                         </div>
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Category</b></label>
                                 <select id="cat" name="cat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
-                                    <option selected disabled>Select Category</option>   
+                                    <option selected value="">Select Category</option>   
                                     @foreach($category as $value)
-                                        <option value="{{$value}}">{{$value}}</option>
-                                    @endforeach
+                                        @if(!empty($sessionData['requestcat']))
+                                            <option <?php if($value == $sessionData['requestcat']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @else
+                                            <option value="{{$value}}">{{$value}}</option>
+                                        @endif  
+                                    @endforeach 
                                 </select>
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Sub Category</b></label>
                                 <select id="subcat" name="subcat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
-                                    <option selected disabled>Select Sub Category</option>   
+                                    <option selected value="">Select Sub Category</option> 
                                     @foreach($subCategory as $value)
-                                        <option value="{{$value}}">{{$value}}</option>
-                                    @endforeach
+                                        @if(!empty($sessionData['requestsubcat']))
+                                            <option <?php if($value == $sessionData['requestsubcat']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @else
+                                            <option value="{{$value}}">{{$value}}</option>
+                                        @endif  
+                                    @endforeach 
                                 </select>
                             </div>
                         </div>
