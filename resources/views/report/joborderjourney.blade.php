@@ -93,16 +93,16 @@
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Status From</b></h6>                            
-                            @if(!empty($sessionData['statusfrom']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['statusfrom']}}</p>
+                            @if(!empty($sessionData['statusf']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['statusf']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Status To</b></h6>                            
-                            @if(!empty($sessionData['statusto']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['statusto']}}</p>
+                            @if(!empty($sessionData['statust']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['statust']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -126,7 +126,7 @@
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date</b></h6>                            
                             @if(!empty($sessionData['thedate']))
-                                @if($sessionData['thedate'] == 'Tdate')
+                                @if($sessionData['thedate'] == 'tdate')
                                 <p class="mb-2" style="font-family: 'Poppins';">Transfer Date</p>
                                 @elseif($sessionData['thedate'] == 'jodate')                                
                                 <p class="mb-2" style="font-family: 'Poppins';">Job Order Date</p>
@@ -142,18 +142,21 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
+                                        <th class="text-white" hidden>Job</th>
                                         <th class="text-white" data-orderable="false">Job Order</th>
                                         <th class="text-white" data-orderable="false">Department</th>
                                         <th class="text-white" data-orderable="false">Date Created</th>
                                         <th class="text-white" data-orderable="false">Transfer From</th>
                                         <th class="text-white" data-orderable="false">Transfer To</th>
-                                        <th class="text-white" data-orderable="false">Transfer Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Transfer Date</th>
+                                        <th class="text-white" data-orderable="false">Transfer Time</th>
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">                
+                                                <td hidden>1</td>
                                                 <td>{{$row->Job_Id}}</td>                  
                                                 <td>{{$row->Department}}</td>   
                                                 <td>{{$row->User_Date}}</td>                  
@@ -161,10 +164,16 @@
                                                 <td>{{$row->transfer_to}}</td>                    
                                                 <td>
                                                     @if($row->timed != NULL)
-                                                        <?php $delimiter = ' '; $words = explode($delimiter, $row->timed); ?>
-                                                        <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
+                                                        <?php $delimiter = ' '; $words = explode($delimiter, $row->timed); $newDate1 = date("d-M-Y", strtotime($words[0]));?>
+                                                        <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$newDate1}} 
                                                     @endif
-                                                </td>                    
+                                                </td>        
+                                                <td>
+                                                    @if($row->timed != NULL)
+                                                        <?php $delimiter = ' '; $words = explode($delimiter, $row->timed); $newDate = date("h:i A", strtotime($words[1]));?>
+                                                        <i class="mdi mdi-timer text-dark"></i> {{$newDate}}
+                                                    @endif
+                                                </td>             
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -211,13 +220,23 @@
                             <label><b style="color: #6c757d">Status From</b></label>
                                 <select id="statusf" name="statusf" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
                                     <option value="" selected>Select Status</option>
-                                    <option <?php if("PPC" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="PPC">PPC</option>
-                                    <option <?php if("CUTTING" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="CUTTING">Cutting</option> 
-                                    <option <?php if("CLOSING" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="CLOSING">Closing</option>
-                                    <option <?php if("LASTING" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="LASTING">Lasting</option>    
-                                    <option <?php if("STORE" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="STORE">Store</option> 
-                                    <option <?php if("FINALISED" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="FINALISED">Finalised</option>
-                                    <option <?php if("COMPLETE" == isset($sessionData['statusfrom'])) echo 'selected="selected"'; ?> value="COMPLETE">Complete</option>              
+                                    @if(!empty($sessionData['statusf']))
+                                        <option <?php if("PPC" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="PPC">PPC</option>
+                                        <option <?php if("CUTTING" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="CUTTING">Cutting</option> 
+                                        <option <?php if("CLOSING" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="CLOSING">Closing</option>
+                                        <option <?php if("LASTING" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="LASTING">Lasting</option>    
+                                        <option <?php if("STORE" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="STORE">Store</option> 
+                                        <option <?php if("FINALISED" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="FINALISED">Finalised</option>
+                                        <option <?php if("COMPLETE" == $sessionData['statusf']) echo 'selected="selected"'; ?> value="COMPLETE">Complete</option>        
+                                    @else
+                                        <option value="PPC">PPC</option>
+                                        <option value="CUTTING">Cutting</option> 
+                                        <option value="CLOSING">Closing</option>
+                                        <option value="LASTING">Lasting</option>    
+                                        <option value="STORE">Store</option> 
+                                        <option value="FINALISED">Finalised</option>
+                                        <option value="COMPLETE">Complete</option> 
+                                    @endif         
                                 </select>
                             </div>
                         </div>
@@ -226,23 +245,40 @@
                             <label><b style="color: #6c757d">Status To</b></label>
                                 <select id="statust" name="statust" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
                                     <option value="" selected>Select Status</option>
-                                    <option <?php if("PPC" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="PPC">PPC</option>
-                                    <option <?php if("CUTTING" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="CUTTING">Cutting</option> 
-                                    <option <?php if("CLOSING" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="CLOSING">Closing</option>
-                                    <option <?php if("LASTING" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="LASTING">Lasting</option>    
-                                    <option <?php if("STORE" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="STORE">Store</option> 
-                                    <option <?php if("FINALISED" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="FINALISED">Finalised</option>
-                                    <option <?php if("COMPLETE" == isset($sessionData['statusto'])) echo 'selected="selected"'; ?> value="COMPLETE">Complete</option>             
+                                    @if(!empty($sessionData['statust']))
+                                        <option <?php if("PPC" == $sessionData['statust']) echo 'selected="selected"'; ?> value="PPC">PPC</option>
+                                        <option <?php if("CUTTING" == $sessionData['statust']) echo 'selected="selected"'; ?> value="CUTTING">Cutting</option> 
+                                        <option <?php if("CLOSING" == $sessionData['statust']) echo 'selected="selected"'; ?> value="CLOSING">Closing</option>
+                                        <option <?php if("LASTING" == $sessionData['statust']) echo 'selected="selected"'; ?> value="LASTING">Lasting</option>    
+                                        <option <?php if("STORE" == $sessionData['statust']) echo 'selected="selected"'; ?> value="STORE">Store</option> 
+                                        <option <?php if("FINALISED" == $sessionData['statust']) echo 'selected="selected"'; ?> value="FINALISED">Finalised</option>
+                                        <option <?php if("COMPLETE" == $sessionData['statust']) echo 'selected="selected"'; ?> value="COMPLETE">Complete</option>
+                                    @else
+                                        <option value="PPC">PPC</option>
+                                        <option value="CUTTING">Cutting</option> 
+                                        <option value="CLOSING">Closing</option>
+                                        <option value="LASTING">Lasting</option>    
+                                        <option value="STORE">Store</option> 
+                                        <option value="FINALISED">Finalised</option>
+                                        <option value="COMPLETE">Complete</option> 
+                                    @endif             
                                 </select>
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Department</b></label>
                                 <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                    <option value="" selected>Select Department</option>
-                                    <option <?php if("Cutting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Cutting">Cutting</option>
-                                    <option <?php if("Closing" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Closing">Closing</option> 
-                                    <option <?php if("Lasting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>
-                                    <option <?php if("Insole" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Insole">Insole</option>                
+                                    <option value="" selected>Select Department</option>                                
+                                    @if(!empty($sessionData['department']))
+                                        <option <?php if("Cutting" == $sessionData['department']) echo 'selected="selected"'; ?> value="Cutting">Cutting</option>
+                                        <option <?php if("Closing" == $sessionData['department']) echo 'selected="selected"'; ?> value="Closing">Closing</option> 
+                                        <option <?php if("Lasting" == $sessionData['department']) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>
+                                        <option <?php if("Insole" == $sessionData['department']) echo 'selected="selected"'; ?> value="Insole">Insole</option>    
+                                    @else
+                                        <option value="Cutting">Cutting</option>
+                                        <option value="Closing">Closing</option> 
+                                        <option value="Lasting">Lasting</option>
+                                        <option value="Insole">Insole</option>    
+                                    @endif
                                 </select>
                             </div>
                         </div>
@@ -254,8 +290,13 @@
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Date</b></label>
                                 <select id="thedate" name="thedate" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
-                                <option <?php if(isset($sessionData['thedate']) == "tdate") echo 'selected="selected"'; ?> value="tdate">Transfer Date</option>
-                                <option <?php if(isset($sessionData['thedate']) == "jodate") echo 'selected="selected"'; ?> value="jodate">Job Order Date</option>
+                                @if(!empty($sessionData['thedate']))
+                                    <option <?php if($sessionData['thedate'] == "tdate") echo 'selected="selected"'; ?> value="tdate">Transfer Date</option>
+                                    <option <?php if($sessionData['thedate'] == "jodate") echo 'selected="selected"'; ?> value="jodate">Job Order Date</option>
+                                @else
+                                    <option value="tdate">Transfer Date</option>
+                                    <option value="jodate">Job Order Date</option>
+                                @endif
                                 </select>
                             </div>
                         </div>

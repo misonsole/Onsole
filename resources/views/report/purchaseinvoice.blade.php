@@ -480,6 +480,7 @@ $("#reportModel").on('click',function(){
     var path1 = "{{route('pono')}}";
     var path2 = "{{route('supplier')}}";
     var path3 = "{{route('itemcode')}}";  
+    var path4 = "{{route('purchaseinvno')}}";  
     $("#pono").autocomplete({
         source: function(request, response){
             $.ajax({
@@ -536,6 +537,26 @@ $("#reportModel").on('click',function(){
         },
         select: function(event, ui){
             $('#itemcode').val(ui.item.label);
+            console.log(ui.item); 
+            return false;
+        }
+    });
+    $("#pinv").autocomplete({
+        source: function(request, response){
+            $.ajax({
+                url: path4,
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    search: request.term
+                },
+                success: function(data){
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui){
+            $('#pinv').val(ui.item.label);
             console.log(ui.item); 
             return false;
         }

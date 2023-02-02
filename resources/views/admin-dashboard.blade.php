@@ -234,11 +234,11 @@
 <script src="plugins/lightpick/lightpick.js"></script>
 <script src="assets/pages/jquery.sales_dashboard.init.js"></script>
 <script>
-    $(document).ready( function () {
-  var table = $('#datatable2').DataTable( {
-    pageLength : 5,
-  } )
-} );
+$(document).ready(function(){
+    var table = $('#datatable2').DataTable({
+        pageLength : 5,
+    })
+});
 $(document).ready(function(){ 
 	$("#loader1").fadeOut(500);
 });

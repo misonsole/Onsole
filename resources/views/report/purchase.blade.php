@@ -132,7 +132,7 @@
                     @endif
                     <div class="row p-3">
                         <div class="w-100">
-                            <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" data-orderable="false" hidden>.</th>
@@ -257,7 +257,7 @@
                             <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Item Type</b></label>
                                 <select id="typefrom" name="typefrom" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
-                                    <option selected disabled>Item Type</option>   
+                                    <option selected value="">Item Type</option> 
                                     @foreach($itemtype1 as $value)
                                         @if(!empty($sessionData['fromclass']))
                                             <option <?php if($value == $sessionData['fromclass']) echo 'selected="selected"'; ?> value="{{$value}}">All {{$value}}</option>
@@ -275,7 +275,7 @@
                             <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Period</b></label>
                                 <select id="period" name="period" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
-                                    <option selected disabled>Select Period</option>   
+                                    <option selected value="">Select Period</option>   
                                     @foreach($period as $value)
                                         @if(!empty($sessionData['period']))
                                             <option <?php if($value == $sessionData['period']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>

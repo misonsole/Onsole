@@ -365,6 +365,11 @@
                                 <li class="{{ Request::path() == 'sales-order-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'sales-order-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('sales-order')}}"><i class="ti-control-record" style="width: 18px;"></i>Sales Order Report</a></li>
                             @endif
                         @endif
+                        @if(isset($storeData['M Transfer Against JO']) && !empty($storeData['M Transfer Against JO'])) 
+                            @if(isset($storeData['M Transfer Against JO']) == 1)
+                                <li class="{{ Request::path() == 'transferagainst-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transferagainst-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transferagainst')}}"><i class="ti-control-record" style="width: 18px;"></i>Transfer Against JO</a></li>
+                            @endif
+                        @endif
                         @if(isset($storeData['Transfer Issue Report']) && !empty($storeData['Transfer Issue Report'])) 
                             @if(isset($storeData['Transfer Issue Report']) == 1)
                                 <li class="{{ Request::path() == 'transfer-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transfer-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transfer')}}"><i class="ti-control-record" style="width: 18px;"></i>Transfer Issue Report</a></li>
@@ -378,11 +383,6 @@
                         @if(isset($storeData['Purchase Rate History']) && !empty($storeData['Purchase Rate History'])) 
                             @if(isset($storeData['Purchase Rate History']) == 1)
                                 <li class="{{ Request::path() == 'purchase-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'purchase-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('purchase')}}"><i class="ti-control-record" style="width: 18px;"></i>Purchase Rate History</a></li>
-                            @endif
-                        @endif
-                        @if(isset($storeData['M Transfer Against JO']) && !empty($storeData['M Transfer Against JO'])) 
-                            @if(isset($storeData['M Transfer Against JO']) == 1)
-                                <li class="{{ Request::path() == 'transferagainst-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transferagainst-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transferagainst')}}"><i class="ti-control-record" style="width: 18px;"></i>Transfer Against JO</a></li>
                             @endif
                         @endif
                         @if(isset($storeData['Material Consumption']) && !empty($storeData['Material Consumption'])) 

@@ -66,7 +66,7 @@
         width: 20px;
     }
 </style>
-<div id="loader1" class="rotate" width="100" height="100"></div>
+<!-- <div id="loader1" class="rotate" width="100" height="100"></div> -->
 <div class="container-fluid px-5">
     <div class="row">
         <div class="col-sm-12">
@@ -210,9 +210,12 @@
                                             $pidate2 = array(); $arrayhe = array(); $sumof = array(0,0,0,0,0,0,0,0,0);  $rmcoarr = array(); $tnoBreak = array(); $tnoDate = array();
                                             $poqtytotal = $poreceivedtotal = $porejectedtotal = $poacceptedtotal = $popendingtotal = $poamounttotal = $postaxtotal = $pototal = 0;
                                             $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = 0;
+                                            $strtdte2 = $sessionData['Storestart1'];
+                                            $enddte2 = $sessionData['Storeend2'];
                                         ?> 
                                         @foreach($data as $row)
                                         <?php
+                                            // $item_code = array();
                                             $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $tno = $row->Transfer_Id; $tdt = $row->Transfer_Date_Mt;
                                             if($tempcode != $row->Job_Id){
                                                 if($rem_check == 1){
@@ -237,6 +240,8 @@
                                                             $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
                                                         }
                                                         $printok = 1;
+                                                        // echo "P 1";
+                                                        // print_r($item_code);
                                                         for($keycode = 0; $keycode < count($item_code); $keycode++){
                                                             if($row5["ITEM_CODE"] == $item_code[$keycode]) { $printok = 0; }
                                                         }
@@ -250,7 +255,12 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td style="color: maroon;"><strong><?php echo $row5["ITEM_CODE"]; ?></strong></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_DESC"]; ?></strong></td>
+                                                            <td style="color: maroon;">
+                                                                <?php $explode = explode(" ",$row5["ITEM_DESC"]); ?>
+                                                                @foreach($explode as $data1)
+                                                                   <b>{{$data1}}</b><br>
+                                                                @endforeach
+                                                            </td> 
                                                             <td><?php echo number_format($row5["QUANTITY"],2); ?></td>
                                                             <td><?php echo number_format($rateof,2); ?></td>
                                                             <td><?php echo number_format($row5["AMOUNT"],2); ?></td>
@@ -277,14 +287,16 @@
                                                                 @endforeach
                                                             </td> 
                                                             <td style="color: darkblue;"><strong><?php echo $row->Rm_Code;  $item_code[0] = $row->Rm_Code; ?></strong></td>
-                                                            <td>
+                                                            <td style="color: darkblue;">
                                                                 <?php $explode = explode(" ",$row->Job_Desc); ?>
                                                                 @foreach($explode as $data1)
                                                                    <b>{{$data1}}</b><br>
                                                                 @endforeach
-                                                            </td>  
-                                                                <?php $item_code_now = $row->Rm_Code;
-                                                                    $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                                                            </td> 
+                                                                <?php   $item_code_now = $row->Rm_Code;
+                                                                        $tnoBreak = explode(',', $tno);  
+                                                                        $tno_check = implode("','", $tnoBreak);
+                                                                        $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
                                                                                 FROM TRANS_ISSUE_MT TIM
                                                                                 JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
                                                                                 JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
@@ -322,14 +334,19 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td style="color: darkblue;"><strong><?php echo $row->Rm_Code; ?></strong></td>
-                                                            <td>
+                                                            <td style="color: darkblue;">
                                                                 <?php $explode = explode(" ",$row->Job_Desc); ?>
                                                                 @foreach($explode as $data1)
                                                                    <b>{{$data1}}</b><br>
                                                                 @endforeach
                                                             </td> 
-                                                                <?php $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
-                                                                    $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                                                                <?php                                                                  
+                                                                        $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
+                                                                        // echo "P 3";
+                                                                        // print_r($item_code);  
+                                                                        $tnoBreak = explode(',', $tno);
+                                                                        $tno_check = implode("','", $tnoBreak);
+                                                                        $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
                                                                                 FROM TRANS_ISSUE_MT TIM
                                                                                 JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
                                                                                 JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
@@ -363,7 +380,9 @@
                                                             <?php } ?>
                                                             <td><?php echo number_format($diffamt,2); ?></td>
                                                         </tr>
-                                                    <?php   }  $article0 = $row->Onsole_Art_No; $department0 = $row->Department;  $sono0 = $row->So_No; $tno2 = $tno; $tdt2 = $tdt;
+                                                    <?php   }  $article0 = $row->Onsole_Art_No; $department0 = $row->Department;  $sono0 = $row->So_No; $tno2 = $tno; $tdt2 = $tdt; ?>
+                                                    @endforeach
+                                                    <?php
 
                                                     $tnoBreak = explode(',', $tno);
                                                     $tno_check = implode("','", $tnoBreak);
@@ -375,6 +394,8 @@
                                                                 GROUP BY IMT.ITEM_CODE, IMT.ITEM_DESC";
                                                     $result5 = oci_parse($conn,$sql5);
                                                     oci_execute($result5);
+                                                    // echo "P 2";
+                                                    // print_r($item_code);
                                                     while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
                                                         if($tnoBreak[0] == NULL){
                                                             break;
@@ -397,7 +418,12 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td style="color: maroon;"><strong><?php echo $row5["ITEM_CODE"]; ?></strong></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_DESC"]; ?></strong></td>
+                                                            <td style="color: maroon;">
+                                                                <?php $explode = explode(" ",$row5["ITEM_DESC"]); ?>
+                                                                @foreach($explode as $data1)
+                                                                   <b>{{$data1}}</b><br>
+                                                                @endforeach
+                                                            </td>
                                                             <td><?php echo number_format($row5["QUANTITY"],2); ?></td>
                                                             <td><?php echo number_format($rateof,2); ?></td>
                                                             <td><?php echo number_format($row5["AMOUNT"],2); ?></td>
@@ -411,7 +437,6 @@
                                                         }
                                                     } 
                                                     unset($item_code); ?>
-                                        @endforeach
                                     </tbody>
                                 @endif
                                 <tbody>
@@ -622,6 +647,7 @@ $("#reportModel").on('click',function(){
     var path1 = "{{route('salesorderno')}}";
     var path2 = "{{route('jobordernums')}}";
     var path3 = "{{route('itemcode')}}";  
+    var path4 = "{{route('artcode')}}";      
     $("#salesorder").autocomplete({
         source: function(request, response){
             $.ajax({
@@ -678,6 +704,26 @@ $("#reportModel").on('click',function(){
         },
         select: function(event, ui){
             $('#rawmaterial').val(ui.item.label);
+            console.log(ui.item); 
+            return false;
+        }
+    });
+    $("#articleno").autocomplete({
+        source: function(request, response){
+            $.ajax({
+                url: path4,
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    search: request.term
+                },
+                success: function(data){
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui){
+            $('#articleno').val(ui.item.label);
             console.log(ui.item); 
             return false;
         }

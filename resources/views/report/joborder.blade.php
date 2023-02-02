@@ -234,7 +234,12 @@
                                                         {{$data1}}<br>
                                                     @endforeach
                                                 </td>                                              
-                                                <td>{{$row->cat_type}}</td>
+                                                <td>
+                                                    <?php $explode = explode(" ",$row->cat_type); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td> 
                                                 @if($Permission == 1)                  
                                                 <?php if($sessionData['department'] == "Insole") { ?>
                                                 <td>{{$row->Work_Order}}</td>
@@ -356,7 +361,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Customer</b></label>
-                                <select id="customer" name="customer" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
+                                <select id="customer" name="customer" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Customer</option>
                                     @foreach($customer as $value)
                                         @if(!empty($sessionData['customer']))
@@ -371,10 +376,17 @@
                             <label><b style="color: #6c757d">Department</b></label>
                                 <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
                                     <option value="">Select Department</option>
-                                    <option <?php if("Cutting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Cutting">Cutting</option> 
-                                    <option <?php if("Closing" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Closing">Closing</option>
-                                    <option <?php if("Lasting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>    
-                                    <option <?php if("Insole" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Insole">Insole</option> 
+                                    @if(!empty($sessionData['department']))
+                                        <option <?php if("Cutting" == $sessionData['department']) echo 'selected="selected"'; ?> value="Cutting">Cutting</option> 
+                                        <option <?php if("Closing" == $sessionData['department']) echo 'selected="selected"'; ?> value="Closing">Closing</option>
+                                        <option <?php if("Lasting" == $sessionData['department']) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>    
+                                        <option <?php if("Insole" == $sessionData['department']) echo 'selected="selected"'; ?> value="Insole">Insole</option> 
+                                    @else
+                                        <option value="Cutting">Cutting</option> 
+                                        <option value="Closing">Closing</option>
+                                        <option value="Lasting">Lasting</option>    
+                                        <option value="Insole">Insole</option> 
+                                    @endif
                                 </select>
                             </div>
                         </div>

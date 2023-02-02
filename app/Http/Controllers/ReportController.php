@@ -1212,6 +1212,12 @@ class ReportController extends Controller
                     $var2 = 15;
                 }
             }
+            if(!empty($workorder)){
+                $workorder = explode(" || ", $workorder);            
+                $worder = $workorder[0];
+            }else{
+                $worder = "";
+            }  
             
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
@@ -1245,7 +1251,7 @@ class ReportController extends Controller
                             JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = ISM.ISSUE_ID AND ISD.JOB_CARD_DET_ID = OSJCD.JOB_CARD_DET_ID AND ISM.ISSUE_DATE BETWEEN '$strtdte2' AND '$enddte2'                        
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')                
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')                
                             GROUP BY OSJCM.DOC_NO, OSJCM.DOC_DATE, IM.ITEM_CODE, IM.ITEM_DESC, OSJCD.QUANTITY , OSJCD.CONVERSION_RATE, GD.PRIMARY_QTY,
                             PID.PRIMARY_QTY, PID.TC_AMOUNT, PID.PRO_EXP_TC_AMOUNT, GM.GRN_NO, GM.GRN_DATE, ISM.ISSUE_NO, ISM.ISSUE_DATE
                             ORDER BY GM.GRN_NO";
@@ -1267,7 +1273,7 @@ class ReportController extends Controller
                             LEFT JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = ISM.ISSUE_ID AND ISD.JOB_CARD_DET_ID = OSJCD.JOB_CARD_DET_ID
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             GROUP BY OSJCM.DOC_NO, OSJCM.DOC_DATE, IM.ITEM_CODE, IM.ITEM_DESC, OSJCD.QUANTITY , OSJCD.CONVERSION_RATE, GD.PRIMARY_QTY  ,
                             PID.PRIMARY_QTY, PID.TC_AMOUNT, PID.PRO_EXP_TC_AMOUNT, GM.GRN_NO, GM.GRN_DATE, ISM.ISSUE_NO, ISM.ISSUE_DATE
                             ORDER BY GM.GRN_NO";
@@ -1291,7 +1297,7 @@ class ReportController extends Controller
                             JOIN ITEMS_MT IMI ON IMI.ITEM_ID = ISD.ITEM_ID
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             ORDER BY GM.GRN_NO,IMI.ITEM_CODE";
                 } 
                 else{
@@ -1312,7 +1318,7 @@ class ReportController extends Controller
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
                             LEFT JOIN ITEMS_MT IMPI ON IMPI.ITEM_ID = PID.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             ORDER BY GM.GRN_NO,IMI.ITEM_CODE";
                 }
             }
@@ -1447,6 +1453,12 @@ class ReportController extends Controller
                     $var2 = 15;
                 }
             }
+            if(!empty($workorder)){
+                $workorder = explode(" || ", $workorder);            
+                $worder = $workorder[0];
+            }else{
+                $worder = "";
+            }            
             
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
@@ -1480,7 +1492,7 @@ class ReportController extends Controller
                             JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = ISM.ISSUE_ID AND ISD.JOB_CARD_DET_ID = OSJCD.JOB_CARD_DET_ID AND ISM.ISSUE_DATE BETWEEN '$strtdte2' AND '$enddte2'                        
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')                
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')                
                             GROUP BY OSJCM.DOC_NO, OSJCM.DOC_DATE, IM.ITEM_CODE, IM.ITEM_DESC, OSJCD.QUANTITY , OSJCD.CONVERSION_RATE, GD.PRIMARY_QTY,
                             PID.PRIMARY_QTY, PID.TC_AMOUNT, PID.PRO_EXP_TC_AMOUNT, GM.GRN_NO, GM.GRN_DATE, ISM.ISSUE_NO, ISM.ISSUE_DATE
                             ORDER BY GM.GRN_NO";
@@ -1502,7 +1514,7 @@ class ReportController extends Controller
                             LEFT JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = ISM.ISSUE_ID AND ISD.JOB_CARD_DET_ID = OSJCD.JOB_CARD_DET_ID
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             GROUP BY OSJCM.DOC_NO, OSJCM.DOC_DATE, IM.ITEM_CODE, IM.ITEM_DESC, OSJCD.QUANTITY , OSJCD.CONVERSION_RATE, GD.PRIMARY_QTY  ,
                             PID.PRIMARY_QTY, PID.TC_AMOUNT, PID.PRO_EXP_TC_AMOUNT, GM.GRN_NO, GM.GRN_DATE, ISM.ISSUE_NO, ISM.ISSUE_DATE
                             ORDER BY GM.GRN_NO";
@@ -1526,7 +1538,7 @@ class ReportController extends Controller
                             JOIN ITEMS_MT IMI ON IMI.ITEM_ID = ISD.ITEM_ID
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             ORDER BY GM.GRN_NO,IMI.ITEM_CODE";
                 } 
                 else{
@@ -1547,7 +1559,7 @@ class ReportController extends Controller
                             LEFT JOIN PURCHASE_INVOICE_MT PIM ON PIM.JOB_CARD_ID = OSJCM.JOB_CARD_ID
                             LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.PURCH_INVOICE_ID = PIM.PURCH_INVOICE_ID AND PID.ITEM_ID = GD.ITEM_ID
                             LEFT JOIN ITEMS_MT IMPI ON IMPI.ITEM_ID = PID.ITEM_ID
-                            WHERE OSJCM.DOC_NO LIKE NVL('$workorder', '%')
+                            WHERE OSJCM.DOC_NO LIKE NVL('$worder', '%')
                             ORDER BY GM.GRN_NO,IMI.ITEM_CODE";
                 }
             }
@@ -2388,13 +2400,13 @@ class ReportController extends Controller
             while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $agent[] =  $row3['SALES_PERSON_DESC'];
             }
-            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 WHERE W1.STRUCTURE_ID = 26";
             $result4 = oci_parse($conn, $sql4);
             oci_execute($result4);
             while($row4 =oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $category[] = $row4["SEGMENT_VALUE_DESC"];
             }
-            $sql5 = "SELECT W2.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT02 W2 ORDER BY W2.SEGMENT_VALUE_DESC";
+            $sql5 = "SELECT W2.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT02 W2 WHERE W2.STRUCTURE_ID = 26";
             $result5 = oci_parse($conn, $sql5);
             oci_execute($result5);
             while($row5 =oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
@@ -2701,11 +2713,11 @@ class ReportController extends Controller
                 $customer = "";
             }
             if(!empty($sono)){
-                $sonoarr = explode(" || ", $_GET['sono']);
+                $sonoarr = explode(" || ", $sono);
                 $sono = $sonoarr[0];
             }
             if(!empty($articlecode)){
-                $rmcoarr = explode(" || ", $_GET['rmcode']);
+                $rmcoarr = explode(" || ", $articlecode);
                 $articlecode = $rmcoarr[0];
             }
 
@@ -2729,16 +2741,16 @@ class ReportController extends Controller
             while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $agentData[] =  $row3['SALES_PERSON_DESC'];
             }
-            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 WHERE W1.STRUCTURE_ID = 26";
             $result4 = oci_parse($conn, $sql4);
             oci_execute($result4);
-            while($row4 =oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            while($row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $categoryData[] = $row4["SEGMENT_VALUE_DESC"];
             }
-            $sql5 = "SELECT W2.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT02 W2 ORDER BY W2.SEGMENT_VALUE_DESC";
+            $sql5 = "SELECT W2.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT02 W2 WHERE W2.STRUCTURE_ID = 26";
             $result5 = oci_parse($conn, $sql5);
             oci_execute($result5);
-            while($row5 =oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $subCategoryData[] = $row5["SEGMENT_VALUE_DESC"];
             }
             if(!empty($suno)) {
@@ -3339,7 +3351,7 @@ class ReportController extends Controller
             $customer = array(); $status = array(); $season = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
-            $result1 = DB::table('job_sheet_order_mt')->get()->unique('Cust_Name');
+            $result1 = DB::table('job_sheet_order_mt')->orderBy('Cust_Name', 'asc')->get()->unique('Cust_Name');
             foreach($result1 as $data){
                 $customer[] = $data->Cust_Name;
             }
@@ -3528,12 +3540,13 @@ class ReportController extends Controller
             $bookData = array(); $categoryData = array(); $subCategoryData = array();
             $sum_qty = $sum_amount = $sum_t_amount = $total_amount = $rate = 0;
             $book = $request->book;
-            $pono = $request->salesorder;
+            $pono = $request->purchaseorder;
             $customer = $request->customer;
             $articleno = $request->articleno;
             $salesorder = $request->salesorder;
             $joborder = $request->joborder;
             $season = $request->season;
+            $status = $request->status;
             $department = $request->department;
             $subCategory = $request->subCategory;
             $Storedaterange = $request->daterange;
@@ -3611,20 +3624,28 @@ class ReportController extends Controller
             else{
                 $department = "";
             }
-            $statuso = "";
+            if(!empty($status)){
+                $statuso = $status;
+            }
+            else{
+                $statuso = "";
+            }
+
+            // dd($customer,$articleno,$salesorder,$department,$pono,$season,$joborder,$statuso,$strtdte,$enddte);
         
             $Arraydata = DB::table('job_sheet_order_mt')->join('job_sheet_order_sbmt', 'job_sheet_order_sbmt.Job_Id', '=', 'job_sheet_order_mt.Job_Id')
-                                                            ->where('job_sheet_order_mt.Cust_Name', 'like', '%'.$customer.'%')
-                                                            ->where('job_sheet_order_mt.Onsole_Art_No', 'like', '%'.$articleno.'%')
-                                                            ->where('job_sheet_order_mt.So_No', 'like', '%'.$salesorder.'%')
-                                                            ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
+                                                            ->where('job_sheet_order_mt.Cust_Name', 'like', $customer.'%')
+                                                            ->where('job_sheet_order_mt.Onsole_Art_No', 'like', $articleno.'%')
+                                                            ->where('job_sheet_order_mt.So_No', 'like', $salesorder.'%')
+                                                            ->where('job_sheet_order_mt.Department', 'like', $department.'%')
 
                                                         ->join('job_sheet_order_det', 'job_sheet_order_det.Color_Id', '=', 'job_sheet_order_sbmt.Id')
-                                                            ->where('job_sheet_order_mt.Po_No', 'like', '%'.$pono.'%')
-                                                            ->where('job_sheet_order_mt.Season', 'like', '%'.$season.'%')
-                                                            ->where('job_sheet_order_mt.Unique_Id', 'like', '%'.$joborder.'%')
-                                                            ->where('job_sheet_order_mt.Status', 'like', '%'.$statuso.'%')
+                                                            ->where('job_sheet_order_mt.Po_No', 'like', $pono.'%')
+                                                            ->where('job_sheet_order_mt.Season', 'like', $season.'%')
+                                                            ->where('job_sheet_order_mt.Unique_Id', 'like', $joborder.'%')
+                                                            ->where('job_sheet_order_mt.Status', 'like', $statuso.'%')
                                                             ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
+                                                            ->where('job_sheet_order_mt.Status','!=','HIDE')
 
                                                         ->select('job_sheet_order_mt.cat_type','job_sheet_order_mt.Job_Id','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Cust_Name',
                                                             'job_sheet_order_mt.So_No','job_sheet_order_mt.Po_No','job_sheet_order_mt.Status','job_sheet_order_mt.Department','job_sheet_order_mt.Onsole_Art_No',
@@ -3632,10 +3653,10 @@ class ReportController extends Controller
                                                             'job_sheet_order_sbmt.Color','job_sheet_order_sbmt.Last_No','job_sheet_order_sbmt.status','job_sheet_order_sbmt.total',
                                                             'job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_det.Location','job_sheet_order_det.Tool',
                                                             'job_sheet_order_det.Dye_No','job_sheet_order_det.Um','job_sheet_order_det.Qty','job_sheet_order_det.Remarks')
-                                                        ->where('job_sheet_order_mt.Status','!=','HIDE')->orderBy('job_sheet_order_mt.Job_Id','DESC')->get();
+                                                        ->orderBy('job_sheet_order_mt.Job_Id','DESC')->get();
 
             $customer = array(); $status = array(); $season = array();
-            $result1 = DB::table('job_sheet_order_mt')->get()->unique('Cust_Name');
+            $result1 = DB::table('job_sheet_order_mt')->orderBy('Cust_Name', 'asc')->get()->unique('Cust_Name');
             foreach($result1 as $data){
                 $customer[] = $data->Cust_Name;
             }
@@ -4098,7 +4119,7 @@ class ReportController extends Controller
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
                                                                 ->where('job_sheet_order_mt.Job_Id', 'like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
-                                                                ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
+                                                                ->whereBetween('job_sheet_order_mt.date_created', [$strtdte, $enddte])
 
                                                                 ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
                                                                 ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->orderBy('job_sheet_order_logs.timed', 'asc')->get();
@@ -4106,11 +4127,10 @@ class ReportController extends Controller
             else{
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
                                                                 ->where('job_sheet_order_mt.Job_Id','like',$joborder.'%')
-                                                                ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
-                                                                ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
+                                                                ->where('job_sheet_order_mt.Department', 'like', $department.'%')
 
                                                                 ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
-                                                                ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
+                                                                ->where('job_sheet_order_logs.fromd','like',$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like',$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
             }
 
             foreach($Arraydata as $row){
@@ -4201,7 +4221,7 @@ class ReportController extends Controller
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
                                                                 ->where('job_sheet_order_mt.Job_Id', 'like',$joborder.'%')
                                                                 ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
-                                                                ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
+                                                                ->whereBetween('job_sheet_order_mt.date_created', [$strtdte, $enddte])
 
                                                                 ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
                                                                 ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->orderBy('job_sheet_order_logs.timed', 'asc')->get();
@@ -4209,11 +4229,10 @@ class ReportController extends Controller
             else{
                 $Arraydata = DB::table('job_sheet_order_logs')->join('job_sheet_order_mt', 'job_sheet_order_mt.Job_Id', '=', 'job_sheet_order_logs.Job_Id')
                                                                 ->where('job_sheet_order_mt.Job_Id','like',$joborder.'%')
-                                                                ->where('job_sheet_order_mt.Department', 'like', '%'.$department.'%')
-                                                                ->whereBetween('job_sheet_order_mt.Date_Created', [$strtdte, $enddte])
+                                                                ->where('job_sheet_order_mt.Department', 'like', $department.'%')
 
                                                                 ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Department','job_sheet_order_mt.User_Date','job_sheet_order_logs.fromd','job_sheet_order_logs.transfer_to','job_sheet_order_logs.timed')
-                                                                ->where('job_sheet_order_logs.fromd','like','%'.$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like','%'.$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
+                                                                ->where('job_sheet_order_logs.fromd','like',$statusfrom.'%')->where('job_sheet_order_logs.transfer_to','like',$statusto.'%')->whereBetween('job_sheet_order_logs.timed', [$strtdte, $enddte])->orderBy('job_sheet_order_logs.timed', 'asc')->get();
             }
 
             $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
@@ -4225,8 +4244,8 @@ class ReportController extends Controller
                 'department' => $request->department,
                 'thedate' => $request->thedate,
                 'joborder' => $request->joborder,
-                'statusfrom' => $request->statusfrom,
-                'statusto' => $request->statusto,
+                'statusf' => $request->statusf,
+                'statust' => $request->statust,
                 'Storestart' => date("d/m/Y", strtotime(substr($Storedaterange, 0,10))),
                 'Storeend' => date("d/m/Y", strtotime(substr($Storedaterange, -10))),
                 'Storestart1' => date("d-M-Y", strtotime(substr($Storedaterange, 0,10))),
@@ -6437,69 +6456,89 @@ class ReportController extends Controller
                 $tcheck = 1;
                 $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                             GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                            PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
-                            FROM PURCHASE_ORDER_MT POM
-                            LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                            LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                            LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
-                            LEFT JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID
-                            LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                            LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                            LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                            PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                            
+                        FROM PURCHASE_ORDER_MT POM
+                        LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                        LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                        LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
+                        LEFT JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID
+                        LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                        LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                        LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                        LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
                             LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')                        
-                            WHERE POM.ORDER_NO = '$purchaseorder' AND POM.ORDER_DATE = '$pidate'                        
-                            ORDER BY IM.ITEM_CODE";
+                        LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
+                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
+                            WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'                        
+                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
+                        ORDER BY IM.ITEM_CODE";
             } 
             else{
                 if(empty($rmcodet)){
                     if($thedate == "po"){
-                    $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
-                                GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                  
+                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, SUM(POD.PRIMARY_QTY) AS PO_QTY,
+                                    GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
+                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                        
                                 FROM PURCHASE_ORDER_MT POM
-                                LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID AND POM.ORDER_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                            
+                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID AND POM.ORDER_DATE BETWEEN '$strtdte2' AND '$enddte2'
                                 JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
                                 LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
                                 LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
                                 JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
                                 LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
                                 LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
+                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                            
+                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+                            
+                                GROUP BY IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO, POM.ORDER_DATE,
+                                                GD.PRIMARY_QTY, GD.PRIMARY_ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY),
+                                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY), PID.STAX_AMOUNT, PID.STAX_AMOUNT+PID.AMOUNT, GD.REMARKS
+                                
                                 ORDER BY POM.ORDER_NO";
                     } 
                     else{ 
-                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
+                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                                     GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                    
-                                    FROM PURCHASE_ORDER_MT POM                        
-                                    LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                                    JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
-                                    LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                                    LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
-                                    JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
-                                    LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                                    LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                    LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                    WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                    ORDER BY IM.ITEM_CODE";
+                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                                    
+                                FROM PURCHASE_ORDER_MT POM
+
+                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                                JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
+                                LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                                JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                                JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
+                                JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                                LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+
+                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+
+                                ORDER BY IM.ITEM_CODE";
                     }
                 } 
                 else{
                     $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                                 GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                
-                                FROM PURCHASE_ORDER_MT POM                        
-                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                                JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
-                                JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                                JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
-                                JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID BETWEEN '$rmcodef' AND '$rmcodet'
-                                JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                                LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                ORDER BY IM.ITEM_CODE";
+                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                                
+                            FROM PURCHASE_ORDER_MT POM
+                        
+                            JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                            JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
+                            JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                            JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                            JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID BETWEEN '$rmcodef' AND '$rmcodet'
+                            JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                            LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                            JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                        
+                            WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+                        
+                            ORDER BY IM.ITEM_CODE";
                 }
             }
             $result11 = oci_parse($conn,$sql);
@@ -6617,71 +6656,91 @@ class ReportController extends Controller
             $conn = oci_connect("onsole","s",$wizerp);
             if(!empty($purchaseorder)){
                 $tcheck = 1;
-                $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
+                $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                             GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                            PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
-                            FROM PURCHASE_ORDER_MT POM
-                            LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                            LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                            LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
-                            LEFT JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID
-                            LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                            LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                            LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                            PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                            
+                        FROM PURCHASE_ORDER_MT POM
+                        LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                        LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                        LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
+                        LEFT JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID
+                        LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                        LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                        LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                        LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
                             LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')                        
+                        LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
+                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
                             WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'                        
-                            ORDER BY IM.ITEM_CODE";
+                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
+                        ORDER BY IM.ITEM_CODE";
             } 
             else{
                 if(empty($rmcodet)){
                     if($thedate == "po"){
-                    $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
-                                GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                  
+                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, SUM(POD.PRIMARY_QTY) AS PO_QTY,
+                                    GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
+                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                        
                                 FROM PURCHASE_ORDER_MT POM
-                                LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID AND POM.ORDER_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                            
+                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID AND POM.ORDER_DATE BETWEEN '$strtdte2' AND '$enddte2'
                                 JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
                                 LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
                                 LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID
                                 JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
                                 LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
                                 LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
+                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                            
+                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+                            
+                                GROUP BY IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO, POM.ORDER_DATE,
+                                                GD.PRIMARY_QTY, GD.PRIMARY_ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY),
+                                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY), PID.STAX_AMOUNT, PID.STAX_AMOUNT+PID.AMOUNT, GD.REMARKS
+                                
                                 ORDER BY POM.ORDER_NO";
                     } 
                     else{ 
-                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, SM.COMPANY_NAME, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
+                        $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                                     GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                    
-                                    FROM PURCHASE_ORDER_MT POM                        
-                                    LEFT JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                                    JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
-                                    LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                                    LEFT JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
-                                    JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
-                                    LEFT JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                                    LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                    LEFT JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                    WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                    ORDER BY IM.ITEM_CODE";
+                                    PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                                    
+                                FROM PURCHASE_ORDER_MT POM
+
+                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                                JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
+                                LEFT JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                                JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                                JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID  LIKE NVL('$rmcodef','%')
+                                JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                                LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+
+                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+
+                                ORDER BY IM.ITEM_CODE";
                     }
                 } 
                 else{
                     $sql = "SELECT DISTINCT IM.ITEM_CODE, IM.ITEM_DESC, UOM.UOM_DESC, GM.GRN_NO, GM.GRN_DATE, POM.ORDER_NO AS PO_NO, POM.ORDER_DATE AS PO_DATE, POD.PRIMARY_QTY AS PO_QTY,
                                 GD.PRIMARY_QTY AS RECEIVED_QTY, GD.PRIMARY_ACCEPTED_QTY AS ACCEPTED_QTY, (GD.PRIMARY_QTY-GD.PRIMARY_ACCEPTED_QTY) AS REJECTED_QTY,
-                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS                                
-                                FROM PURCHASE_ORDER_MT POM                        
-                                JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
-                                JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
-                                JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
-                                JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
-                                JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID BETWEEN '$rmcodef' AND '$rmcodet'
-                                JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
-                                LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
-                                JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID                        
-                                WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')                        
-                                ORDER BY IM.ITEM_CODE";
+                                PID.AMOUNT, (PID.AMOUNT/PID.PRIMARY_QTY) AS UNIT_PRICE, PID.STAX_AMOUNT, (PID.STAX_AMOUNT+PID.AMOUNT) AS STAX_INCLU_AMOUNT, GD.REMARKS
+                                
+                            FROM PURCHASE_ORDER_MT POM
+                        
+                            JOIN PURCHASE_ORDER_DET POD ON POD.ORDER_ID = POM.ORDER_ID
+                            JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = POM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('$book','%')
+                            JOIN GRN_DETAIL GD ON GD.MATCH_WITH_ID = POD.PO_DET_ID
+                            JOIN GRN_MT GM ON GM.GRN_ID = GD.GRN_ID AND GM.GRN_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                            JOIN ITEMS_MT IM ON POD.ITEM_ID = IM.ITEM_ID AND IM.ITEM_ID BETWEEN '$rmcodef' AND '$rmcodet'
+                            JOIN WIZ_UOM_MT UOM ON UOM.UOM_ID = GD.UOM_ID
+                            LEFT JOIN PURCHASE_INVOICE_DETAIL PID ON PID.MATCH_WITH_ID = GD.GRN_DET_ID
+                            JOIN SUPPLIER_MT SM ON SM.SUPPLIER_ID = POM.SUPPLIER_ID
+                        
+                            WHERE SM.COMPANY_NAME LIKE NVL('$supplier','%')
+                        
+                            ORDER BY IM.ITEM_CODE";
                 }
             }
             $result11 = oci_parse($conn,$sql);
@@ -6762,7 +6821,23 @@ class ReportController extends Controller
         $inputcode = '%'.strtoupper($request->get('search')).'%';
         oci_bind_by_name($result, ":inputcode", $inputcode);
         oci_execute($result);
-        while($row=oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+        while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $ItemCode[] = $row["ITEM_CODE"]." || ".$row["ITEM_DESC"]." || ".$row["ITEM_ID"];
+        }
+        return response()->json($ItemCode);
+    }
+
+    public function ItemCode2(Request $request)
+    {
+        $ItemCode = array();
+        $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $conn = oci_connect("onsole","s",$wizerp);
+        $sql = "SELECT IM.ITEM_ID, IM.ITEM_CODE, IM.ITEM_DESC FROM ITEMS_MT IM, ITEMS_CATEGORY IC WHERE IM.ITEM_CODE LIKE :inputcode OR IM.ITEM_DESC LIKE :inputcode AND IC.ITEM_ID = IM.ITEM_ID OFFSET 0 ROWS FETCH NEXT 7 ROWS ONLY";
+        $result= oci_parse($conn, $sql);
+        $inputcode = '%'.strtoupper($request->get('search')).'%';
+        oci_bind_by_name($result, ":inputcode", $inputcode);
+        oci_execute($result);
+        while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
             $ItemCode[] = $row["ITEM_CODE"]." || ".$row["ITEM_DESC"]." || ".$row["ITEM_ID"];
         }
         return response()->json($ItemCode);
@@ -6876,7 +6951,7 @@ class ReportController extends Controller
     {
         $ArticleNo = array();
         $search = $request->get('search');
-        $result = DB::table('job_sheet_order_mt')->where('Onsole_Art_No', 'like', '%'.$search.'%')->skip(0)->take(5)->get()->unique('Onsole_Art_No');
+        $result = DB::table('job_sheet_order_mt')->where('Onsole_Art_No', 'like', $search.'%')->skip(0)->take(5)->get()->unique('Onsole_Art_No');
         foreach($result as $data){
             $ArticleNo[] = $data->Onsole_Art_No;
         }
@@ -6905,12 +6980,45 @@ class ReportController extends Controller
         $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
         $conn = oci_connect("onsole","s",$wizerp);
         $sql = "SELECT IM.ISSUE_NO, IM.ISSUE_DATE FROM ISSUE_MT IM WHERE IM.ISSUE_NO LIKE :inputcode ORDER BY IM.ISSUE_NO, IM.ISSUE_DATE DESC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY";
-        $result= oci_parse($conn, $sql);
+        $result = oci_parse($conn, $sql);
         $inputcode = '%'.strtoupper($request->get('search')).'%';
         oci_bind_by_name($result, ":inputcode", $inputcode);
         oci_execute($result);
         while($row=oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
             $Sono[] = $row["ISSUE_NO"] . " || " . $row["ISSUE_DATE"];
+        }
+        return response()->json($Sono);
+    }
+
+    public function workorderNo(Request $request)
+    {
+        $Sono = array();
+        $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $conn = oci_connect("onsole","s",$wizerp);
+        $sql = "SELECT DISTINCT A.DOC_NO, A.DOC_DATE FROM OUT_SOURCE_JOB_CARD_MT A JOIN OUT_SOURCE_JOB_CARD_DET B ON B.JOB_CARD_ID = A.JOB_CARD_ID JOIN ITEMS_MT C ON C.ITEM_ID = B.ITEM_ID AND A.DOC_NO LIKE :inputcode
+                ORDER BY A.DOC_NO OFFSET 0 ROWS FETCH NEXT 6 ROWS ONLY";
+        $result = oci_parse($conn, $sql);
+        $inputcode = '%'.strtoupper($request->get('search')).'%';
+        oci_bind_by_name($result, ":inputcode", $inputcode);
+        oci_execute($result);
+        while($row=oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $Sono[] = $row["DOC_NO"] . " || " . $row["DOC_DATE"];
+        }
+        return response()->json($Sono);
+    }
+
+    public function purchaseInvNo(Request $request)
+    {
+        $Sono = array();
+        $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $conn = oci_connect("onsole","s",$wizerp);
+        $sql = "SELECT AA.DOCUMENT_NO, AA.GL_DATE FROM PURCHASE_INVOICE_MT AA WHERE AA.DOCUMENT_NO LIKE :inputcode ORDER BY AA.DOCUMENT_NO, AA.GL_DATE DESC OFFSET 0 ROWS FETCH NEXT 15 ROWS ONLY";
+        $result = oci_parse($conn, $sql);
+        $inputcode = '%'.strtoupper($request->get('search')).'%';
+        oci_bind_by_name($result, ":inputcode", $inputcode);
+        oci_execute($result);
+        while($row=oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $Sono[] = $row["DOCUMENT_NO"] . " || " . $row["GL_DATE"];
         }
         return response()->json($Sono);
     }

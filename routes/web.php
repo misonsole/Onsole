@@ -256,6 +256,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('sono', [ReportController::class, 'Sono'])->name('sono');
     Route::get('artcode', [ReportController::class, 'Artcode'])->name('artcode');
     Route::get('itemcode', [ReportController::class, 'ItemCode'])->name('itemcode');
+    Route::get('itemcode2', [ReportController::class, 'ItemCode2'])->name('itemcode2');
     Route::get('pono', [ReportController::class, 'Pono'])->name('pono');
     Route::get('supplier', [ReportController::class, 'Supplier'])->name('supplier');
     Route::get('jobordernum', [ReportController::class, 'JobOrderNum'])->name('jobordernum');
@@ -265,6 +266,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('salesorderno', [ReportController::class, 'SalesOrderNo'])->name('salesorderno');
     Route::get('articleno', [ReportController::class, 'ArticleNo'])->name('articleno');
     Route::get('sinno', [ReportController::class, 'Sinno'])->name('sinno');
+    Route::get('workorderno', [ReportController::class, 'workorderNo'])->name('workorderno');
+    Route::get('purchaseinvno', [ReportController::class, 'purchaseInvNo'])->name('purchaseinvno');    
     Route::get('customer', [ReportController::class, 'Customer'])->name('customer');
     Route::get('transferData', [ReportController::class, 'transferData'])->name('transferData');
     Route::get('helpdesk', [ReportController::class, 'Helpdesk'])->name('helpdesk');

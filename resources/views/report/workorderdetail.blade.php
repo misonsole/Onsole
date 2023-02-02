@@ -100,28 +100,32 @@
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>From Date</b></h6>                            
+                            <h6 class="mb-1"><b>Date Range</b></h6>                            
                             @if(!empty($sessionData['start']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['start']}}</p>
+                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['start']}} - {{$sessionData['end']}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>To Date</b></h6>                            
-                            @if(!empty($sessionData['end']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['end']}}</p>
+                            <h6 class="mb-1"><b>Item Type</b></h6>                            
+                            @if(!empty($sessionData['itemtype']))
+                                @if($sessionData['itemtype'] == 'insole')
+                                    <p class="mb-2" style="font-family: 'Poppins';">Insole</p>
+                                @elseif($sessionData['itemtype'] == 'lami')
+                                    <p class="mb-2" style="font-family: 'Poppins';">Lamination</p>
+                                @endif                            
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
-                            <h6 class="mb-1"><b>Status</b></h6>                            
+                            <h6 class="mb-1"><b>Report</b></h6>                            
                             @if(!empty($sessionData['report']))
                             <p class="mb-2" style="font-family: 'Poppins';">
                                 @if($sessionData['report'] == 'smry')
                                     Summary
-                                @elseif($sessionData['report'] == 'detail'))
+                                @elseif($sessionData['report'] == 'detail')
                                     Detail
                                 @else
                                     {{ucfirst($sessionData['report'])}}
@@ -149,7 +153,6 @@
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" data-orderable="false" hidden>.</th>
-                                        <th hidden class="text-white">WO</th>
                                         <th class="text-white" data-orderable="false">WO <br> No</th>
                                         <th class="text-white" data-orderable="false">WO Date</th>
                                         <th class="text-white" data-orderable="false">Code</th>
@@ -221,7 +224,7 @@
                                                 <td></td>
                                             </tr>
                                             @else
-                                            <tr class="table_row">
+                                            <tr class="table_row" style="color: black; background: #e7e7e7;">
                                                 <td hidden>1</td>
                                                 <td>{{$row['data']["WO_NO"]}}</td>
                                                 <td>{{$row['data']["WO_DATE"]}}</td>
@@ -365,7 +368,7 @@
                             </div>
                             <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Work Order</b></label>
-                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['workorder'])) echo "value='{{$sessionData['workorder']}}'"; ?> name="workorder" placeholder="Work Order">
+                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['workorder'])) echo "value='{$sessionData['workorder']}'"; ?> name="workorder" id="workorder" placeholder="Work Order">
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -395,6 +398,8 @@
 <script src="plugins/chartjs/roundedBar.min.js"></script>
 <script src="plugins/lightpick/lightpick.js"></script>
 <script src="assets/pages/jquery.sales_dashboard.init.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
 $(document).ready(function(){ 
     $("#loader1").fadeOut(1200);
@@ -455,6 +460,28 @@ $(document).ready(function(){
 
 $("#reportModel").on('click',function(){
     $("#exampleModalCenter").modal('show');
+});
+
+var path2 = "{{route('workorderno')}}";
+$("#workorder").autocomplete({
+        source: function(request, response){
+            $.ajax({
+                url: path2,
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    search: request.term
+                },
+                success: function(data){
+                    response(data);
+                }
+            });
+        },
+        select: function(event, ui){
+            $('#workorder').val(ui.item.label);
+            console.log(ui.item); 
+            return false;
+        }
 });
 </script>
 <!-- <script src="plugins/moment/moment.js"></script>

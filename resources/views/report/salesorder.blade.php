@@ -52,6 +52,19 @@
     select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
         font-weight:bold;
     }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -82,8 +95,8 @@
                         </div>
                     </div>
                     @if($Permission == 1)
-                    <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                    <div class="row mx-5 text-center py-2" style="border-radius: 5px;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date Range</b></h6>                            
                             @if(!empty($sessionData['Storestart1']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
@@ -91,7 +104,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Book</b></h6>                            
                             @if(!empty($sessionData['book']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['book']}}</p>
@@ -99,7 +112,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Season</b></h6>                            
                             @if(!empty($sessionData['season']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['season']}}</p>
@@ -107,7 +120,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Agent</b></h6>                            
                             @if(!empty($sessionData['agent']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['agent'])}}</p>
@@ -115,7 +128,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>So. No</b></h6>                            
                             @if(!empty($sessionData['sono']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['sono'])}}</p>
@@ -123,7 +136,9 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div>
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                    </div> 
+                    <div class="row mx-5 text-center py-1" style="border-radius: 5px;">
+                        <div class="col-md-3" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Customer</b></h6>                            
                             @if(!empty($sessionData['customer']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['customer']}}</p>
@@ -131,7 +146,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Article Code</b></h6>                            
                             @if(!empty($sessionData['articlecode']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['articlecode']}}</p>
@@ -139,7 +154,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Item Code</b></h6>                            
                             @if(!empty($sessionData['itemcode']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['itemcode']}}</p>
@@ -147,7 +162,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Category</b></h6>                            
                             @if(!empty($sessionData['agent']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['agent'])}}</p>
@@ -155,7 +170,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Sub Category</b></h6>                            
                             @if(!empty($sessionData['customer']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['customer'])}}</p>
@@ -172,7 +187,7 @@
                                     <tr>
                                         <th hidden>.</th>
                                         <th class="text-white" data-orderable="false">So <br> No</th>
-                                        <th class="text-white" data-orderable="false">Profuct <br> Category</th>
+                                        <th class="text-white" data-orderable="false">Product <br> Category</th>
                                         <th class="text-white" data-orderable="false">So <br> Date</th>
                                         <th class="text-white" data-orderable="false">Customer <br> Category</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
@@ -219,13 +234,18 @@
                                                         {{$data1}}<br>
                                                     @endforeach
                                                 </td>                  
-                                                <td>
+                                                <td style="white-space: inherit;">
                                                     <?php $explode = explode(" ",$row['data']["COMPANY_NAME"]); ?>
                                                     @foreach($explode as $data1)
                                                         {{$data1}}<br>
                                                     @endforeach
                                                 </td>
-                                                <td>{{$row['data']["SALES_PERSON_DESC"]}}</td>                  
+                                                <td style="white-space: inherit;">
+                                                    <?php $explode = explode(" ",$row['data']["SALES_PERSON_DESC"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>
                                                 <td>
                                                     <?php $explode = explode(" ",$row['data']["SEASON_DEF_DESC"]); ?>
                                                     @foreach($explode as $data1)
@@ -257,7 +277,12 @@
                                                 <td>{{number_format($row['data']["PRIMARY_QTY"],2)}}</td>                 
                                                 <td>{{number_format($row['rate'],2)}}</td>                 
                                                 <td>{{number_format($row['data']["TC_AMOUNT"],2)}}</td>               
-                                                <td>{{$row['data']["STAX_GROUP_DESC"]}}</td>                 
+                                                <td>
+                                                    <?php $explode = explode(" ",$row['data']["STAX_GROUP_DESC"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>   
                                                 <td>{{number_format($row['data']['STAX_AMOUNT'],2)}}</td>    
                                                 <td>{{number_format($row['total_amount'],2)}}</td>   
                                                 <td>
@@ -291,7 +316,7 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">Grand Total</th>
+                                            <th class="text-white" data-orderable="false">Total</th>
                                             <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th> 
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
@@ -342,7 +367,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Season</b></label>
-                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="season" name="season" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Season</option>
                                     @foreach($season as $value)
                                         @if(!empty($sessionData['season']))
@@ -357,7 +382,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                 <option selected value="">Select Book</option>
                                     @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
@@ -376,7 +401,7 @@
                         <div class="form-group row">
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Agent</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Agent</option>
                                     @foreach($agent as $value)
                                         @if(!empty($sessionData['agent']))
@@ -405,7 +430,7 @@
                         <div class="form-group row">
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Category</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Category</option>
                                     @foreach($category as $value)
                                         @if(!empty($sessionData['category']))
@@ -418,7 +443,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Sub Category</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Sub Category</option>
                                     @foreach($subCategory as $value)
                                         @if(!empty($sessionData['subCategory']))
