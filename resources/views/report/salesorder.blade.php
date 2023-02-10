@@ -164,16 +164,16 @@
                         </div> 
                         <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Category</b></h6>                            
-                            @if(!empty($sessionData['agent']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['agent'])}}</p>
+                            @if(!empty($sessionData['category']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['category'])}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
                         <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Sub Category</b></h6>                            
-                            @if(!empty($sessionData['customer']))
-                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['customer'])}}</p>
+                            @if(!empty($sessionData['subCategory']))
+                            <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['subCategory'])}}</p>
                             @else
                             <p class="mb-2">-</p>
                             @endif
@@ -382,7 +382,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Book</option>
                                     @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
@@ -395,7 +395,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">So. No</b></label>
-                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['customer'])) echo "value='{$sessionData['customer']}'"; ?> name="sono" id="sono" placeholder="So. No">
+                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['sono'])) echo "value='{$sessionData['sono']}'"; ?> name="sono" id="sono" placeholder="So. No">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -593,7 +593,7 @@ $("#reportModel").on('click',function(){
                 return false;
             }
     });
-    $("#artcode").autocomplete({
+    $("#articlecode").autocomplete({
         source: function(request, response){
             $.ajax({
                 url: path3,
@@ -608,7 +608,7 @@ $("#reportModel").on('click',function(){
             });
         },
         select: function(event, ui){
-            $('#artcode').val(ui.item.label);
+            $('#articlecode').val(ui.item.label);
             console.log(ui.item); 
             return false;
         }

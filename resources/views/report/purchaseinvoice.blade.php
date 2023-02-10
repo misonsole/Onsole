@@ -96,8 +96,6 @@
                     </div>
                     @if($Permission == 1)
                     <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
-                        </div> 
                         <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date Range</b></h6>                            
                             @if(!empty($sessionData['Storestart1']))
@@ -122,7 +120,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Item Code</b></h6>                            
                             @if(!empty($sessionData['itemcode']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{ucfirst($sessionData['itemcode'])}}</p>
@@ -153,8 +151,6 @@
                             @else
                             <p class="mb-2">-</p>
                             @endif
-                        </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
                         </div> 
                     </div>
                     @endif
@@ -275,12 +271,12 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Grand Total</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_qty'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">{{number_format($row['sum_t_amount'],2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($sum_t_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -324,7 +320,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>                                    
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">                                    
                                 <option selected value="">Select Book</option>
                                 @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
@@ -337,7 +333,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Purchase Invoice</b></label>
-                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['pinv'])) echo "value='{$sessionData['pono']}'"; ?> name="pinv" id="pinv" placeholder="Purchase Invoice">
+                                <input type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" <?php if(isset($sessionData['pinv'])) echo "value='{$sessionData['pinv']}'"; ?> name="pinv" id="pinv" placeholder="Purchase Invoice">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -858,7 +858,7 @@ class ReportController extends Controller
             $books = array(); $adjustment = array();
             $sum_rate = $sum_qty = $sum_amount = 0;
             $status = $request->status;
-            $transfer = $request->adjustno;
+            $adjustno = $request->adjustno;
             $daterange = $request->daterange;
             $book = $request->book;
             $daterange = str_replace(" - ", "", $request['daterange']);
@@ -972,7 +972,7 @@ class ReportController extends Controller
                     'Contra A/C Code' => $row['CODE_VALUE'],
                 );
             }
-            return Excel::download(new Helpdesk($lineData), 'Item Adjustment Report.xlsx');
+            return Excel::download(new Adjustment($lineData), 'Item Adjustment Report.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -991,7 +991,7 @@ class ReportController extends Controller
             $books = array(); $adjustment = array();
             $sum_rate = $sum_qty = $sum_amount = $rate = $line_amount = 0;
             $status = $request->status;
-            $transfer = $request->adjustno;
+            $adjustno = $request->adjustno;
             $daterange = $request->daterange;
             $book = $request->book;
             $daterange = str_replace(" - ", "", $request['daterange']);
@@ -1113,7 +1113,7 @@ class ReportController extends Controller
                 'end' => $end,
                 'book' => $book,
                 'start' => $start,
-                'adjustno' => $transfer,
+                'adjustno' => $adjustno,
                 'strtdte2a' => $strtdte2a,
                 'strtdte3a' => $strtdte3a,
                 'status' => $request->status,
@@ -1695,7 +1695,8 @@ class ReportController extends Controller
                 $finyear = "";
             }
             if(!empty($rmcode)){
-                $rmcodeq = $rmcode;
+                $rmcoarr = explode(" || ", $rmcode);
+                $rmcodeq = $rmcoarr[0];
             }
             else{
                 $rmcodeq = "UPRIM-00199";
@@ -1803,7 +1804,8 @@ class ReportController extends Controller
                 $finyear = "";
             }
             if(!empty($rmcode)){
-                $rmcodeq = $rmcode;
+                $rmcoarr = explode(" || ", $rmcode);
+                $rmcodeq = $rmcoarr[0];
             }
             else{
                 $rmcodeq = "UPRIM-00199";
@@ -2509,14 +2511,22 @@ class ReportController extends Controller
                 $customer = "";
             }
             if(!empty($sono)){
-                $sonoarr = explode(" || ", $_GET['sono']);
+                $sonoarr = explode(" || ", $sono);
                 $sono = $sonoarr[0];
-              }
-              if(!empty($articlecode)){
-                $rmcoarr = explode(" || ", $_GET['rmcode']);
-                $articlecode = $rmcoarr[0];
-              }
-
+            }
+            if(!empty($articlecode)){
+                $articlecode = $articlecode;
+            }
+            else{
+                $articlecode = "";
+            }
+            if(!empty($itemcode)){
+                $rmcoarr = explode(" || ", $itemcode);
+                $rmcode = $rmcoarr[0];
+            }
+            else{
+                $rmcode = "";
+            }
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             if(!empty($suno)) {
@@ -2533,7 +2543,7 @@ class ReportController extends Controller
                         JOIN SALES_PERSON_MT SPM ON SPM.SALES_PERSON_ID = SOM.SELLER_ID AND SPM.SALES_PERSON_DESC LIKE NVL('$agent','%')
                         JOIN PAYMENT_TERMS_MT PTM ON PTM.PAYMENT_TERM_ID = SOM.PAYMENT_TERM_ID
                         JOIN ONSOLE_SEASON_DEFINITION OSD ON OSD.SEASON_DEF_ID = SOM.SEASON_DEF_ID AND OSD.SEASON_DEF_DESC LIKE NVL('$season','%')
-                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$articlecode','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$rmcode','%')
                         LEFT JOIN STAX_GROUP_MT SGM ON SGM.STAX_GROUP_ID = SOT.STAX_GROUP_ID
                         JOIN CUST_CATAGORY_MT CCM ON CCM.CATAGORY_ID = CM.CATAGORY_ID
                         LEFT JOIN ONSOLE_CUSTOMER_BRAND OCB ON OCB.CUST_BRAND_ID = SOM.CUST_BRAND_ID
@@ -2563,7 +2573,7 @@ class ReportController extends Controller
                         JOIN SALES_PERSON_MT SPM ON SPM.SALES_PERSON_ID = SOM.SELLER_ID AND SPM.SALES_PERSON_DESC LIKE NVL('$agent','%')
                         JOIN PAYMENT_TERMS_MT PTM ON PTM.PAYMENT_TERM_ID = SOM.PAYMENT_TERM_ID
                         JOIN ONSOLE_SEASON_DEFINITION OSD ON OSD.SEASON_DEF_ID = SOM.SEASON_DEF_ID AND OSD.SEASON_DEF_DESC LIKE NVL('$season','%')
-                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$articlecode','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$rmcode','%')
                         LEFT JOIN STAX_GROUP_MT SGM ON SGM.STAX_GROUP_ID = SOT.STAX_GROUP_ID
                         JOIN CUST_CATAGORY_MT CCM ON CCM.CATAGORY_ID = CM.CATAGORY_ID
                         LEFT JOIN ONSOLE_CUSTOMER_BRAND OCB ON OCB.CUST_BRAND_ID = SOM.CUST_BRAND_ID
@@ -2717,8 +2727,17 @@ class ReportController extends Controller
                 $sono = $sonoarr[0];
             }
             if(!empty($articlecode)){
-                $rmcoarr = explode(" || ", $articlecode);
-                $articlecode = $rmcoarr[0];
+                $articlecode = $articlecode;
+            }
+            else{
+                $articlecode = "";
+            }
+            if(!empty($itemcode)){
+                $rmcoarr = explode(" || ", $itemcode);
+                $rmcode = $rmcoarr[0];
+            }
+            else{
+                $rmcode = "";
             }
 
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
@@ -2767,7 +2786,7 @@ class ReportController extends Controller
                         JOIN SALES_PERSON_MT SPM ON SPM.SALES_PERSON_ID = SOM.SELLER_ID AND SPM.SALES_PERSON_DESC LIKE NVL('$agent','%')
                         JOIN PAYMENT_TERMS_MT PTM ON PTM.PAYMENT_TERM_ID = SOM.PAYMENT_TERM_ID
                         JOIN ONSOLE_SEASON_DEFINITION OSD ON OSD.SEASON_DEF_ID = SOM.SEASON_DEF_ID AND OSD.SEASON_DEF_DESC LIKE NVL('$season','%')
-                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$articlecode','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$rmcode','%')
                         LEFT JOIN STAX_GROUP_MT SGM ON SGM.STAX_GROUP_ID = SOT.STAX_GROUP_ID
                         JOIN CUST_CATAGORY_MT CCM ON CCM.CATAGORY_ID = CM.CATAGORY_ID
                         LEFT JOIN ONSOLE_CUSTOMER_BRAND OCB ON OCB.CUST_BRAND_ID = SOM.CUST_BRAND_ID
@@ -2797,7 +2816,7 @@ class ReportController extends Controller
                         JOIN SALES_PERSON_MT SPM ON SPM.SALES_PERSON_ID = SOM.SELLER_ID AND SPM.SALES_PERSON_DESC LIKE NVL('$agent','%')
                         JOIN PAYMENT_TERMS_MT PTM ON PTM.PAYMENT_TERM_ID = SOM.PAYMENT_TERM_ID
                         JOIN ONSOLE_SEASON_DEFINITION OSD ON OSD.SEASON_DEF_ID = SOM.SEASON_DEF_ID AND OSD.SEASON_DEF_DESC LIKE NVL('$season','%')
-                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$articlecode','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = SOT.ITEM_ID AND IM.ITEM_CODE LIKE NVL('$rmcode','%')
                         LEFT JOIN STAX_GROUP_MT SGM ON SGM.STAX_GROUP_ID = SOT.STAX_GROUP_ID
                         JOIN CUST_CATAGORY_MT CCM ON CCM.CATAGORY_ID = CM.CATAGORY_ID
                         LEFT JOIN ONSOLE_CUSTOMER_BRAND OCB ON OCB.CUST_BRAND_ID = SOM.CUST_BRAND_ID
@@ -2852,7 +2871,7 @@ class ReportController extends Controller
                 'subCategory' => $request->subCategory,
                 'category' => $request->category,
                 'sono' => $request->sono,
-                'itemcode' => $request->itemcode,
+                'itemcode' => $rmcode,
                 'articlecode' => $request->articlecode,
                 'strtdte2a' => $strtdte2a,
                 'strtdte3a' => $strtdte3a,
@@ -6011,7 +6030,7 @@ class ReportController extends Controller
                 $pinv = ""; $pidate = "";
             }
             if(!empty($rmcode)){
-                $rmcoarr = explode(" || ", $pinv);
+                $rmcoarr = explode(" || ", $rmcode);
                 $rmcode = $rmcoarr[0];
             }else{
                 $rmcode = "";
@@ -6194,7 +6213,7 @@ class ReportController extends Controller
                 $pinv = ""; $pidate = "";
             }
             if(!empty($rmcode)){
-                $rmcoarr = explode(" || ", $pinv);
+                $rmcoarr = explode(" || ", $rmcode);
                 $rmcode = $rmcoarr[0];
             }else{
                 $rmcode = "";
@@ -6333,6 +6352,10 @@ class ReportController extends Controller
                 "book" => $bookData,
                 "category" => $categoryData,
                 "subCategory" => $subCategoryData,
+                'sum_qty' => $sum_qty,
+                'total_amount' => $total_amount,
+                'sum_amount' => $sum_amount,
+                'sum_t_amount' => $sum_t_amount,
             ]);
 
         }
@@ -6468,8 +6491,6 @@ class ReportController extends Controller
                         LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
                             LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')                        
                         LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
-                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
-                            WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'                        
                         WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
                         ORDER BY IM.ITEM_CODE";
             } 
@@ -6670,8 +6691,6 @@ class ReportController extends Controller
                         LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
                             LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')                        
                         LEFT JOIN WIZ_PO_STATUS_MT WPSM ON WPSM.PO_STATUS_ID = POM.PO_STATUS_ID AND WPSM.PO_STATUS_DESC LIKE NVL('$postsid','%')
-                        WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
-                            WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'                        
                         WHERE POM.ORDER_NO = '$pino' AND POM.ORDER_DATE = '$pidate'
                         ORDER BY IM.ITEM_CODE";
             } 

@@ -416,7 +416,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-4">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">                                    
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">                                    
                                 <option selected value="">Select Book</option>
                                 @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
