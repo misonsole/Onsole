@@ -7,20 +7,25 @@ use PDF;
 use Auth;
 use Session;
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Newrole;
 use App\Models\PlcSole;
+use App\Models\Division;
 use App\Models\PlcRange;
 use App\Models\PlcShape;
+use App\Models\PlcFormula;
 use App\Models\PlcPurpose;
 use App\Models\PlcProject;
+use App\Models\PlcPricing;
 use App\Models\PlcLocation;
 use App\Models\PlcCategory;
-use App\Models\PlcPricing;
 use Illuminate\Http\Request;
 use App\Models\notifications; 
 use App\Models\PlcLastNumber;
+use App\Models\PlcPricingDetail;
 use App\Models\PlcSpecification;
+use App\Models\PlcPricingResource;
 use App\Models\notification_details;
 use App\Models\PlcSpecificationDetail;
 use App\Models\PlcSpecificationResource;
@@ -397,10 +402,166 @@ class SpecificationController extends Controller
             $PTotalValue_r = 0; $PTotalRate_r = 0; $PTotal_r = 0; $PTotalFac_r = 0; $PTotalQty_r = 0; $DataPacking_r = 0;
 
             $GetPricingProfit = 0; $GetPricingPrice = 0;
+            $colorCounts = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('color');
+
+            //Start
+            //Overhead
+            $cuttingDataF = []; $StitchingDataF = []; $LaminationDataF = []; $ClosingDataF = []; $LastingDataF = []; $PackingDataF = [];
+            $data12 = DB::table('plc_pricings')->where('id', $id)->get();
+            $overhead_id = $data12[0]->overhead_id;
+            $DateTime = $data12[0]->created_at;
+            $DateTime = explode(' ', $DateTime);
+            $data1 = DB::table('plc_pricing_overheads')->where('costing_id', $id)->get();
+            $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
+            $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
+            $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
+            $formulaData = PlcFormula::orderBy('id','DESC')->where('p_id', $id)->get();
+            foreach($formulaData as $value){
+                if($value->dep == "Cutting"){
+                    $cuttingDataF[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $StitchingDataF[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $LaminationDataF[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $ClosingDataF[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $LastingDataF[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $PackingDataF[] = $value;
+                }
+            }
+
+            //Calculation
+            $dloh1_total = 0; $idloh1_total = 0; $idloh2_total = 0; $t_oh1_total = 0; $dloh2_total = 0; $idloh3_total = 0; $dloh3_total = 0; $t_oh2_total = 0; $un_a_oh_total = 0;
+            if(!$cuttingDataF){
+                $dloh1_cut = 0; $idloh1_cut = 0; $idloh2_cut = 0; $t_oh1_cut = 0; $dloh2_cut = 0; $idloh3_cut = 0; $dloh3_cut = 0; $t_oh2_cut = 0; $un_a_oh_cut = 0;
+            }
+            else{
+                foreach($cuttingDataF as $value){
+                    $dloh1_cut = $value['dloh1'];
+                    $idloh1_cut = $value['idloh1'];
+                    $idloh2_cut = $value['idloh2'];
+                    $t_oh1_cut = $value['t_oh1'];
+                    $dloh2_cut = $value['dloh2'];
+                    $idloh3_cut = $value['idloh3'];
+                    $dloh3_cut = $value['dloh3'];
+                    $t_oh2_cut = $value['t_oh2'];
+                    $un_a_oh_cut = $value['un_a_oh'];
+                }
+            }
+            if(!$StitchingDataF){
+                $dloh1_sti = 0; $idloh1_sti = 0; $idloh2_sti = 0; $t_oh1_sti = 0; $dloh2_sti = 0; $idloh3_sti = 0; $dloh3_sti = 0; $t_oh2_sti = 0; $un_a_oh_sti = 0;
+            }
+            else{
+                foreach($StitchingDataF as $value){
+                    $dloh1_sti = $value['dloh1'];
+                    $idloh1_sti = $value['idloh1'];
+                    $idloh2_sti = $value['idloh2'];
+                    $t_oh1_sti = $value['t_oh1'];
+                    $dloh2_sti = $value['dloh2'];
+                    $idloh3_sti = $value['idloh3'];
+                    $dloh3_sti = $value['dloh3'];
+                    $t_oh2_sti = $value['t_oh2'];
+                    $un_a_oh_sti = $value['un_a_oh'];
+                }
+            }
+            if(!$LaminationDataF){
+                $dloh1_lam = 0; $idloh1_lam = 0; $idloh2_lam = 0; $t_oh1_lam = 0; $dloh2_lam = 0; $idloh3_lam = 0; $dloh3_lam = 0; $t_oh2_lam = 0; $un_a_oh_lam = 0;
+            }
+            else{
+                foreach($LaminationDataF as $value){
+                    $dloh1_lam = $value['dloh1'];
+                    $idloh1_lam = $value['idloh1'];
+                    $idloh2_lam = $value['idloh2'];
+                    $t_oh1_lam = $value['t_oh1'];
+                    $dloh2_lam = $value['dloh2'];
+                    $idloh3_lam = $value['idloh3'];
+                    $dloh3_lam = $value['dloh3'];
+                    $t_oh2_lam = $value['t_oh2'];
+                    $un_a_oh_lam = $value['un_a_oh'];
+                }
+            }
+            if(!$ClosingDataF){
+                $dloh1_clo = 0; $idloh1_clo = 0; $idloh2_clo = 0; $t_oh1_clo = 0; $dloh2_clo = 0; $idloh3_clo = 0; $dloh3_clo = 0; $t_oh2_clo = 0; $un_a_oh_clo = 0;
+            }
+            else{
+                foreach($ClosingDataF as $value){
+                    $dloh1_clo = $value['dloh1'];
+                    $idloh1_clo = $value['idloh1'];
+                    $idloh2_clo = $value['idloh2'];
+                    $t_oh1_clo = $value['t_oh1'];
+                    $dloh2_clo = $value['dloh2'];
+                    $idloh3_clo = $value['idloh3'];
+                    $dloh3_clo = $value['dloh3'];
+                    $t_oh2_clo = $value['t_oh2'];
+                    $un_a_oh_clo = $value['un_a_oh'];
+                }
+            }
+            if(!$LastingDataF){
+                $dloh1_last = 0; $idloh1_last = 0; $idloh2_last = 0; $t_oh1_last = 0; $dloh2_last = 0; $idloh3_last = 0; $dloh3_last = 0; $t_oh2_last = 0; $un_a_oh_last = 0;
+            }
+            else{
+                foreach($LastingDataF as $value){
+                    $dloh1_last = $value['dloh1'];
+                    $idloh1_last = $value['idloh1'];
+                    $idloh2_last = $value['idloh2'];
+                    $t_oh1_last = $value['t_oh1'];
+                    $dloh2_last = $value['dloh2'];
+                    $idloh3_last = $value['idloh3'];
+                    $dloh3_last = $value['dloh3'];
+                    $t_oh2_last = $value['t_oh2'];
+                    $un_a_oh_last = $value['un_a_oh'];
+                }
+            }
+            if(!$PackingDataF){
+                $dloh1_p = 0; $idloh1_p = 0; $idloh2_p = 0; $t_oh1_p = 0; $dloh2_p = 0; $idloh3_p = 0; $dloh3_p = 0; $t_oh2_p = 0; $un_a_oh_p = 0;
+            }
+            else{
+                foreach($PackingDataF as $value){
+                    $dloh1_p = $value['dloh1'];
+                    $idloh1_p = $value['idloh1'];
+                    $idloh2_p = $value['idloh2'];
+                    $t_oh1_p = $value['t_oh1'];
+                    $dloh2_p = $value['dloh2'];
+                    $idloh3_p = $value['idloh3'];
+                    $dloh3_p = $value['dloh3'];
+                    $t_oh2_p = $value['t_oh2'];
+                    $un_a_oh_p = $value['un_a_oh'];
+                }
+            }
+
+            $dloh1_total = $dloh1_cut + $dloh1_sti + $dloh1_lam + $dloh1_clo + $dloh1_last + $dloh1_p;
+            $idloh1_total = $idloh1_cut + $idloh1_sti + $idloh1_lam + $idloh1_clo + $idloh1_last + $idloh1_p;
+            $idloh2_total = $idloh2_cut + $idloh2_sti + $idloh2_lam + $idloh2_clo + $idloh2_last + $idloh2_p;
+            $t_oh1_total = $t_oh1_cut + $t_oh1_sti + $t_oh1_lam + $t_oh1_clo + $t_oh1_last + $t_oh1_p;
+            $dloh2_total = $dloh2_cut + $dloh2_sti + $dloh2_lam + $dloh2_clo + $dloh2_last + $dloh2_p;
+            $idloh3_total = $idloh3_cut + $idloh3_sti + $idloh3_lam + $idloh3_clo + $idloh3_last + $idloh3_p;
+            $dloh3_total = $dloh3_cut + $dloh3_sti + $dloh3_lam + $dloh3_clo + $dloh3_last + $dloh3_p;
+            $t_oh2_total = $t_oh2_cut + $t_oh2_sti + $t_oh2_lam + $t_oh2_clo + $t_oh2_last + $t_oh2_p;
+            $un_a_oh_total = $un_a_oh_cut + $un_a_oh_sti + $un_a_oh_lam + $un_a_oh_clo + $un_a_oh_last + $un_a_oh_p;
+
+            $AllData = [ 
+                'dloh1_total' => $dloh1_total,
+                'idloh1_total' => $idloh1_total,
+                'idloh2_total' => $idloh2_total,
+                't_oh1_total' => $t_oh1_total,
+                'dloh2_total' => $dloh2_total,
+                'idloh3_total' => $idloh3_total,
+                'dloh3_total' => $dloh3_total,
+                't_oh2_total' => $t_oh2_total,
+                'un_a_oh_total' => $un_a_oh_total,
+            ];
+            //End
 
             $data12 = DB::table('plc_specifications')->where('id', $id)->get();
             $DateTime = $data12[0]->created_at;
-            $PricingNo = $data12[0]->pricing;
+            $PricingNo = $data12[0]->design_no;
             $GetPricingData = DB::table('plc_pricings')->where('design_no', $PricingNo)->get();
             if($GetPricingData[0]->profit != null){
                 $GetPricingProfit = $GetPricingData[0]->profit;
@@ -416,8 +577,8 @@ class SpecificationController extends Controller
             }
             $DateTime = explode(' ', $DateTime);
             $data1 = DB::table('plc_specification_overheads')->where('specification_id', $id)->get();
-            $data2 = DB::table('plc_specification_resources')->where('specification_id', $id)->get();
-            $data3 = DB::table('plc_specification_details')->where('specification_id', $id)->get();
+            $data2 = DB::table('plc_specification_resources')->where('costing_id', $id)->get();
+            $data3 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
             foreach($data3 as $value){
                 if($value->material == "cutting"){
                     $cuttingData[] = $value;
@@ -727,9 +888,12 @@ class SpecificationController extends Controller
                 'LastingData_o' => $LastingData_o, 'PackingData_o' => $PackingData_o,
                 'cuttingData_r' => $cuttingData_r, 'InsoleData_r' => $InsoleData_r, 'LaminationData_r' => $LaminationData_r, 'ClosingData_r' => $ClosingData_r,
                 'LastingData_r' => $LastingData_r, 'PackingData_r' => $PackingData_r,                           
+                'cuttingDataF' => $cuttingDataF, 'StitchingDataF' => $StitchingDataF, 'LaminationDataF' => $LaminationDataF, 'ClosingDataF' => $ClosingDataF, 
+                'LastingDataF' => $LastingDataF, 'PackingDataF' => $PackingDataF,
                 'DataCutting' => $DataCutting, 'DataInsole' => $DataInsole, 'DataLamination' => $DataLamination, 'DataClosing' => $DataClosing, 'DataLasting' => $DataLasting, 'DataPacking' => $DataPacking,
                 'DataCutting_o' => $DataCutting_o, 'DataInsole_o' => $DataInsole_o, 'DataLamination_o' => $DataLamination_o, 'DataClosing_o' => $DataClosing_o, 'DataLasting_o' => $DataLasting_o, 'DataPacking_o' => $DataPacking_o,
                 'DataCutting_r' => $DataCutting_r, 'DataInsole_r' => $DataInsole_r, 'DataLamination_r' => $DataLamination_r, 'DataClosing_r' => $DataClosing_r, 'DataLasting_r' => $DataLasting_r, 'DataPacking_r' => $DataPacking_r, 
+                'AllData' => $AllData, 'colorCounts' => $colorCounts, 'colorCountsNo1' => 0, 'colorCountsNo2' => 0,  'colorCountsNo3' => 0, 'colorCountsNo4' => 0
             ]);
         }
         catch(Exception $e){
@@ -1119,172 +1283,269 @@ class SpecificationController extends Controller
             $id = $request->id;
             date_default_timezone_set('Asia/Karachi');
             $date = date('l d F Y - h:i');
-            $sessionImg = Session::get('image');
-            $upper = 1; $linning = 2; $stiching = 3; $insole = 4; $outsole = 5; $socks  = 6; $general = 7;
-            $costingImage = DB::table('plc_specifications')->where('id', $id)->pluck('image');
-            $filename = "0";
-            if($request->image){
-                $file = $request->file('image');
-                $extension = $file->getClientOriginalExtension(); 
-                $filename = time() . '.' . $extension;
-                $file->move('uploads/appsetting/', $filename);
-            }
-            else{
-                $filename = $costingImage[0];
-            }
-            $id = $request->id;
-            $season = $request->season;
-            $purpose = $request->purpose;
-            $sequence = $request->sequence;
-            $category = $request->category;
-            $shape = $request->shape;
-            $sole = $request->sole; 
-            $range_no = $request->range; 
-            $design_no = $request->design; 
-            $description = $request->description;
-            $project = $request->project; 
-            $product = $request->product; 
-            $pricing = $request->pricing; 
-            $last = $request->last; 
-            $date = isset($request->date) ? $request->date : $date;
-            $costingImage = DB::table('plc_specifications')->where('id', $id)->pluck('image');
-            $data = array(
-                'season' => $season, 'purpose' => $purpose, 'image' => $filename, 'category' => $category, 'date' => $date, 'shape' => $shape, 'sole' => $sole,
-                'range_no' => $range_no, 'design_no' => $design_no, 'description' => $description, 'project' => $project, 'product' => $product, 'pricing' => $pricing, 'last' => $last,
-            );
-            $update = DB::table('plc_specifications')->where('id', $id)->update($data);
-            if($update){
-                $updatee = PlcSpecificationDetail::where('specification_id', $id)->pluck('id');
-                if(isset($updatee[0]) == $id){
-                    PlcSpecificationDetail::where('specification_id', $id)->delete();
-                }
-                if($request->cut_item_code[0] != null){
-                    $count = count($request->cut_item_code);
-                    for($i=0; $i<$count; $i++){
+            if(isset($request->cut_item_code[0]) != null){
+                $start = 0;
+                foreach($request->cut_item_code as $dataId){
+                    if(isset($request->cut_id1[$start])){
                         $dataArray = array(
-                            'specification_id' => $id,
+                            'item_code' => $request->cut_item_code[$start] ? $request->cut_item_code[$start] : '-',
+                            'description' => $request->cut_description[$start] ? ucwords($request->cut_description[$start]) : '-',
+                            'uom' => isset($request->cut_uom[$start]) ? $request->cut_uom[$start] : '-',
+                            'division' => isset($request->cut_division[$start]) ? $request->cut_division[$start] : '-',
+                            'subdivision' => isset($request->cut_subdivision[$start]) ? $request->cut_subdivision[$start] : '-',
+                            'output' => isset($request->cut_output[$start]) ? $request->cut_output[$start] : '0',
+                            'cut_code' => isset($request->cut_cut_code[$start]) ?  $request->cut_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->cut_output[$start]) ? round(1/$request->cut_output[$start],4) : '0',
+                            'total_qty' => isset($request->cut_qty[$start]) ? $request->cut_qty[$start] : '0',
+                            'process' => isset($request->cut_process[$start]) ? $request->cut_process[$start] : '0',
+                            'total' => isset($request->cut_output[$start]) ? round((round(1/$request->cut_output[$start],4))*($request->cut_process[$start]/100)+round(1/$request->cut_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->cut_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
                             'material' => "cutting",
-                            'item_code' => $request->cut_item_code[$i] ? $request->cut_item_code[$i] : '-',
-                            'description' => $request->cut_description[$i] ? ucwords($request->cut_description[$i]) : '-',
-                            'uom' => isset($request->cut_uom[$i]) ? $request->cut_uom[$i] : '-',
-                            'component' => isset($request->cut_component[$i]) ? $request->cut_component[$i] : '-',
-                            'output' => isset($request->cut_output[$i]) ? $request->cut_output[$i] : '-',
-                            'fac_qty' => isset($request->cut_output[$i]) ? round(1/$request->cut_output[$i],4) : '-',
-                            'total_qty' => isset($request->cut_qty[$i]) ? $request->cut_qty[$i] : '-',
-                            'process' => isset($request->cut_process[$i]) ? $request->cut_process[$i] : '-',
-                            'total' => isset($request->cut_output[$i]) ? round((round(1/$request->cut_output[$i],4))*($request->cut_process[$i]/100)+round(1/$request->cut_output[$i],4),4) : '0',
+                            'color' => $request->cut_color[0],
+                            'item_code' => $request->cut_item_code[$start] ? $request->cut_item_code[$start] : '-',
+                            'description' => $request->cut_description[$start] ? ucwords($request->cut_description[$start]) : '-',
+                            'uom' => isset($request->cut_uom[$start]) ? $request->cut_uom[$start] : '-',
+                            'division' => isset($request->cut_division[$start]) ? $request->cut_division[$start] : '-',
+                            'subdivision' => isset($request->cut_subdivision[$start]) ? $request->cut_subdivision[$start] : '-',
+                            'output' => isset($request->cut_output[$start]) ? $request->cut_output[$start] : '0',
+                            'cut_code' => isset($request->cut_cut_code[$start]) ? $request->cut_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->cut_output[$start]) ? round(1/$request->cut_output[$start],4) : '0',
+                            'total_qty' => isset($request->cut_qty[$start]) ? $request->cut_qty[$start] : '0',
+                            'process' => isset($request->cut_process[$start]) ? $request->cut_process[$start] : '0',
+                            'total' => isset($request->cut_output[$start]) ? round((round(1/$request->cut_output[$start],4))*($request->cut_process[$start]/100)+round(1/$request->cut_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
                         );
                         $store = PlcSpecificationDetail::insert($dataArray);
                     }
+                    $start++;
                 }
-                if($request->i_item_code[0] != null){
-                    $count1 = count($request->i_item_code);
-                    for($i=0; $i<$count1; $i++){
+            }
+            if(isset($request->i_item_code[0]) != null){
+                $start = 0;
+                foreach($request->i_item_code as $dataId){
+                    if(isset($request->i_id1[$start])){
                         $dataArray = array(
-                            'specification_id' => $id,
+                            'item_code' => $request->i_item_code[$start] ? $request->i_item_code[$start] : '-',
+                            'description' => $request->i_description[$start] ? ucwords($request->i_description[$start]) : '-',
+                            'uom' => isset($request->i_uom[$start]) ? $request->i_uom[$start] : '-',
+                            'division' => isset($request->i_division[$start]) ? $request->i_division[$start] : '-',
+                            'subdivision' => isset($request->i_subdivision[$start]) ? $request->i_subdivision[$start] : '-',
+                            'output' => isset($request->i_output[$start]) ? $request->i_output[$start] : '0',
+                            'cut_code' => isset($request->i_cut_code[$start]) ?  $request->i_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->i_output[$start]) ? round(1/$request->i_output[$start],4) : '0',
+                            'total_qty' => isset($request->i_qty[$start]) ? $request->i_qty[$start] : '0',
+                            'process' => isset($request->i_process[$start]) ? $request->i_process[$start] : '0',
+                            'total' => isset($request->i_output[$start]) ? round((round(1/$request->i_output[$start],4))*($request->i_process[$start]/100)+round(1/$request->i_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->i_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
                             'material' => "insole",
-                            'item_code' => $request->i_item_code[$i] ? $request->i_item_code[$i] : '-',
-                            'description' => $request->i_description[$i] ? ucwords($request->i_description[$i]) : '-',
-                            'uom' => isset($request->i_uom[$i]) ? $request->i_uom[$i] : '-',
-                            'component' => isset($request->i_component[$i]) ? $request->i_component[$i] : '-',
-                            'output' => isset($request->i_output[$i]) ? $request->i_output[$i] : '-',
-                            'fac_qty' => isset($request->i_output[$i]) ? round(1/$request->i_output[$i],4) : '-',
-                            'total_qty' => isset($request->i_qty[$i]) ? $request->i_qty[$i] : '-',
-                            'process' => isset($request->i_process[$i]) ? $request->i_process[$i] : '-',
-                            'total' => isset($request->i_output[$i]) ? round((round(1/$request->i_output[$i],4))*($request->i_process[$i]/100)+round(1/$request->i_output[$i],4),4) : '0',
+                            'color' => $request->i_color[0],
+                            'item_code' => $request->i_item_code[$start] ? $request->i_item_code[$start] : '-',
+                            'description' => $request->i_description[$start] ? ucwords($request->i_description[$start]) : '-',
+                            'uom' => isset($request->i_uom[$start]) ? $request->i_uom[$start] : '-',
+                            'division' => isset($request->i_division[$start]) ? $request->i_division[$start] : '-',
+                            'subdivision' => isset($request->i_subdivision[$start]) ? $request->i_subdivision[$start] : '-',
+                            'output' => isset($request->i_output[$start]) ? $request->i_output[$start] : '0',
+                            'cut_code' => isset($request->i_cut_code[$start]) ?  $request->i_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->i_output[$start]) ? round(1/$request->i_output[$start],4) : '0',
+                            'total_qty' => isset($request->i_qty[$start]) ? $request->i_qty[$start] : '0',
+                            'process' => isset($request->i_process[$start]) ? $request->i_process[$start] : '0',
+                            'total' => isset($request->i_output[$start]) ? round((round(1/$request->i_output[$start],4))*($request->i_process[$start]/100)+round(1/$request->i_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
                         );
                         $store = PlcSpecificationDetail::insert($dataArray);
                     }
+                    $start++;
                 }
-                if($request->lam_item_code[0] != null){
-                    $count1 = count($request->lam_item_code);
-                    for($i=0; $i<$count1; $i++){
-                        $dataArray = array(
-                            'specification_id' => $id,
-                            'material' => "lamination",
-                            'item_code' => $request->lam_item_code[$i] ? $request->lam_item_code[$i] : '-',
-                            'description' => $request->lam_description[$i] ? ucwords($request->lam_description[$i]) : '-',
-                            'uom' => isset($request->lam_uom[$i]) ? $request->lam_uom[$i] : '-',
-                            'component' => isset($request->lam_component[$i]) ? $request->lam_component[$i] : '-',
-                            'output' => isset($request->lam_output[$i]) ? $request->lam_output[$i] : '-',
-                            'fac_qty' => isset($request->lam_output[$i]) ? round(1/$request->lam_output[$i],4) : '-',
-                            'total_qty' => isset($request->lam_qty[$i]) ? $request->lam_qty[$i] : '-',
-                            'process' => isset($request->lam_process[$i]) ? $request->lam_process[$i] : '-',
-                            'total' => isset($request->lam_output[$i]) ? round((round(1/$request->lam_output[$i],4))*($request->lam_process[$i]/100)+round(1/$request->lam_output[$i],4),4) : '0',
-                        );
-                        $store = PlcSpecificationDetail::insert($dataArray);
-                    }
-                }
-                if($request->clo_item_code[0] != null){
-                    $count1 = count($request->clo_item_code);
-                    for($i=0; $i<$count1; $i++){
-                        $dataArray = array(
-                            'specification_id' => $id,
-                            'material' => "closing",
-                            'item_code' => $request->clo_item_code[$i] ? $request->clo_item_code[$i] : '-',
-                            'description' => $request->clo_description[$i] ? ucwords($request->clo_description[$i]) : '-',
-                            'uom' => isset($request->clo_uom[$i]) ? $request->clo_uom[$i] : '-',
-                            'component' => isset($request->clo_component[$i]) ? $request->clo_component[$i] : '-',
-                            'output' => isset($request->clo_output[$i]) ? $request->clo_output[$i] : '-',
-                            'fac_qty' => isset($request->clo_output[$i]) ? round(1/$request->clo_output[$i],4) : '-',
-                            'total_qty' => isset($request->clo_qty[$i]) ? $request->clo_qty[$i] : '-',
-                            'process' => isset($request->clo_process[$i]) ? $request->clo_process[$i] : '-',
-                            'total' => isset($request->clo_output[$i]) ? round((round(1/$request->clo_output[$i],4))*($request->clo_process[$i]/100)+round(1/$request->clo_output[$i],4),4) : '0',
-                        );
-                        $store = PlcSpecificationDetail::insert($dataArray);
-                    }
-                }
-                if($request->last_item_code[0] != null){
-                    $count1 = count($request->last_item_code);
-                    for($i=0; $i<$count1; $i++){
-                        $dataArray = array(
-                            'specification_id' => $id,
-                            'material' => "lasting",
-                            'item_code' => $request->last_item_code[$i] ? $request->last_item_code[$i] : '-',
-                            'description' => $request->last_description[$i] ? ucwords($request->last_description[$i]) : '-',
-                            'uom' => isset($request->last_uom[$i]) ? $request->last_uom[$i] : '-',
-                            'component' => isset($request->last_component[$i]) ? $request->last_component[$i] : '-',
-                            'output' => isset($request->last_output[$i]) ? $request->last_output[$i] : '-',
-                            'fac_qty' => isset($request->last_output[$i]) ? round(1/$request->last_output[$i],4) : '-',
-                            'total_qty' => isset($request->last_qty[$i]) ? $request->last_qty[$i] : '-',
-                            'process' => isset($request->last_process[$i]) ? $request->last_process[$i] : '-',
-                            'total' => isset($request->last_output[$i]) ? round((round(1/$request->last_output[$i],4))*($request->last_process[$i]/100)+round(1/$request->last_output[$i],4),4) : '0',
-                        );
-                        $store = PlcSpecificationDetail::insert($dataArray);
-                    }
-                }
-                if($request->p_item_code[0] != null){
-                    $count1 = count($request->p_item_code);
-                    for($i=0; $i<$count1; $i++){
-                        $dataArray = array(
-                            'specification_id' => $id,
-                            'material' => "packing",
-                            'item_code' => $request->p_item_code[$i] ? $request->p_item_code[$i] : '-',
-                            'description' => $request->p_description[$i] ? ucwords($request->p_description[$i]) : '-',
-                            'uom' => isset($request->p_uom[$i]) ? $request->p_uom[$i] : '-',
-                            'component' => isset($request->p_component[$i]) ? $request->p_component[$i] : '-',
-                            'output' => isset($request->p_output[$i]) ? $request->p_output[$i] : '-',
-                            'fac_qty' => isset($request->p_output[$i]) ? round(1/$request->p_output[$i],4) : '-',
-                            'total_qty' => isset($request->p_qty[$i]) ? $request->p_qty[$i] : '-',
-                            'process' => isset($request->p_process[$i]) ? $request->p_process[$i] : '-',
-                            'total' => isset($request->p_output[$i]) ? round((round(1/$request->p_output[$i],4))*($request->p_process[$i]/100)+round(1/$request->p_output[$i],4),4) : '0',
-                        );
-                        $store = PlcSpecificationDetail::insert($dataArray);
-                    }
-                }
-                $notification = array(
-                    'message' => 'Specification Sheet Updated',
-                    'alert-type' => 'success'
-                );
-                return redirect()->route('specification-sheet-table')->with($notification);
             }
-            else{
-                $notification = array(
-                    'message' => 'Something went wrong',
-                    'alert-type' => 'error'
-                );
-                return back()->with($notification);
+            if(isset($request->lam_item_code[0]) != null){
+                $start = 0;
+                foreach($request->lam_item_code as $dataId){
+                    if(isset($request->lam_id1[$start])){
+                        $dataArray = array(
+                            'item_code' => $request->lam_item_code[$start] ? $request->lam_item_code[$start] : '-',
+                            'description' => $request->lam_description[$start] ? ucwords($request->lam_description[$start]) : '-',
+                            'uom' => isset($request->lam_uom[$start]) ? $request->lam_uom[$start] : '-',
+                            'division' => isset($request->lam_division[$start]) ? $request->lam_division[$start] : '-',
+                            'subdivision' => isset($request->lam_subdivision[$start]) ? $request->lam_subdivision[$start] : '-',
+                            'output' => isset($request->lam_output[$start]) ? $request->lam_output[$start] : '0',
+                            'cut_code' => isset($request->lam_cut_code[$start]) ?  $request->lam_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->lam_output[$start]) ? round(1/$request->lam_output[$start],4) : '0',
+                            'total_qty' => isset($request->lam_qty[$start]) ? $request->lam_qty[$start] : '0',
+                            'process' => isset($request->lam_process[$start]) ? $request->lam_process[$start] : '0',
+                            'total' => isset($request->lam_output[$start]) ? round((round(1/$request->lam_output[$start],4))*($request->lam_process[$start]/100)+round(1/$request->lam_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->lam_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
+                            'material' => "insole",
+                            'color' => $request->lam_color[0],
+                            'item_code' => $request->lam_item_code[$start] ? $request->lam_item_code[$start] : '-',
+                            'description' => $request->lam_description[$start] ? ucwords($request->lam_description[$start]) : '-',
+                            'uom' => isset($request->lam_uom[$start]) ? $request->lam_uom[$start] : '-',
+                            'division' => isset($request->lam_division[$start]) ? $request->lam_division[$start] : '-',
+                            'subdivision' => isset($request->lam_subdivision[$start]) ? $request->lam_subdivision[$start] : '-',
+                            'output' => isset($request->lam_output[$start]) ? $request->lam_output[$start] : '0',
+                            'cut_code' => isset($request->lam_cut_code[$start]) ?  $request->lam_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->lam_output[$start]) ? round(1/$request->lam_output[$start],4) : '0',
+                            'total_qty' => isset($request->lam_qty[$start]) ? $request->lam_qty[$start] : '0',
+                            'process' => isset($request->lam_process[$start]) ? $request->lam_process[$start] : '0',
+                            'total' => isset($request->lam_output[$start]) ? round((round(1/$request->lam_output[$start],4))*($request->lam_process[$start]/100)+round(1/$request->lam_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
+                        );
+                        $store = PlcSpecificationDetail::insert($dataArray);
+                    }
+                    $start++;
+                }
             }
+            if(isset($request->clo_item_code[0]) != null){
+                $start = 0;
+                foreach($request->clo_item_code as $dataId){
+                    if(isset($request->clo_id1[$start])){
+                        $dataArray = array(
+                            'item_code' => $request->clo_item_code[$start] ? $request->clo_item_code[$start] : '-',
+                            'description' => $request->clo_description[$start] ? ucwords($request->clo_description[$start]) : '-',
+                            'uom' => isset($request->clo_uom[$start]) ? $request->clo_uom[$start] : '-',
+                            'division' => isset($request->clo_division[$start]) ? $request->clo_division[$start] : '-',
+                            'subdivision' => isset($request->clo_subdivision[$start]) ? $request->clo_subdivision[$start] : '-',
+                            'output' => isset($request->clo_output[$start]) ? $request->clo_output[$start] : '0',
+                            'cut_code' => isset($request->clo_cut_code[$start]) ?  $request->clo_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->clo_output[$start]) ? round(1/$request->clo_output[$start],4) : '0',
+                            'total_qty' => isset($request->clo_qty[$start]) ? $request->clo_qty[$start] : '0',
+                            'process' => isset($request->clo_process[$start]) ? $request->clo_process[$start] : '0',
+                            'total' => isset($request->clo_output[$start]) ? round((round(1/$request->clo_output[$start],4))*($request->clo_process[$start]/100)+round(1/$request->clo_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->clo_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
+                            'material' => "insole",
+                            'color' => $request->clo_color[0],
+                            'item_code' => $request->clo_item_code[$start] ? $request->clo_item_code[$start] : '-',
+                            'description' => $request->clo_description[$start] ? ucwords($request->clo_description[$start]) : '-',
+                            'uom' => isset($request->clo_uom[$start]) ? $request->clo_uom[$start] : '-',
+                            'division' => isset($request->clo_division[$start]) ? $request->clo_division[$start] : '-',
+                            'subdivision' => isset($request->clo_subdivision[$start]) ? $request->clo_subdivision[$start] : '-',
+                            'output' => isset($request->clo_output[$start]) ? $request->clo_output[$start] : '0',
+                            'cut_code' => isset($request->clo_cut_code[$start]) ?  $request->clo_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->clo_output[$start]) ? round(1/$request->clo_output[$start],4) : '0',
+                            'total_qty' => isset($request->clo_qty[$start]) ? $request->clo_qty[$start] : '0',
+                            'process' => isset($request->clo_process[$start]) ? $request->clo_process[$start] : '0',
+                            'total' => isset($request->clo_output[$start]) ? round((round(1/$request->clo_output[$start],4))*($request->clo_process[$start]/100)+round(1/$request->clo_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
+                        );
+                        $store = PlcSpecificationDetail::insert($dataArray);
+                    }
+                    $start++;
+                }
+            }
+            if(isset($request->last_item_code[0]) != null){
+                $start = 0;
+                foreach($request->last_item_code as $dataId){
+                    if(isset($request->last_id1[$start])){
+                        $dataArray = array(
+                            'item_code' => $request->last_item_code[$start] ? $request->last_item_code[$start] : '-',
+                            'description' => $request->last_description[$start] ? ucwords($request->last_description[$start]) : '-',
+                            'uom' => isset($request->last_uom[$start]) ? $request->last_uom[$start] : '-',
+                            'division' => isset($request->last_division[$start]) ? $request->last_division[$start] : '-',
+                            'subdivision' => isset($request->last_subdivision[$start]) ? $request->last_subdivision[$start] : '-',
+                            'output' => isset($request->last_output[$start]) ? $request->last_output[$start] : '0',
+                            'cut_code' => isset($request->last_cut_code[$start]) ?  $request->last_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->last_output[$start]) ? round(1/$request->last_output[$start],4) : '0',
+                            'total_qty' => isset($request->last_qty[$start]) ? $request->last_qty[$start] : '0',
+                            'process' => isset($request->last_process[$start]) ? $request->last_process[$start] : '0',
+                            'total' => isset($request->last_output[$start]) ? round((round(1/$request->last_output[$start],4))*($request->last_process[$start]/100)+round(1/$request->last_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->last_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
+                            'material' => "insole",
+                            'color' => $request->last_color[0],
+                            'item_code' => $request->last_item_code[$start] ? $request->last_item_code[$start] : '-',
+                            'description' => $request->last_description[$start] ? ucwords($request->last_description[$start]) : '-',
+                            'uom' => isset($request->last_uom[$start]) ? $request->last_uom[$start] : '-',
+                            'division' => isset($request->last_division[$start]) ? $request->last_division[$start] : '-',
+                            'subdivision' => isset($request->last_subdivision[$start]) ? $request->last_subdivision[$start] : '-',
+                            'output' => isset($request->last_output[$start]) ? $request->last_output[$start] : '0',
+                            'cut_code' => isset($request->last_cut_code[$start]) ?  $request->last_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->last_output[$start]) ? round(1/$request->last_output[$start],4) : '0',
+                            'total_qty' => isset($request->last_qty[$start]) ? $request->last_qty[$start] : '0',
+                            'process' => isset($request->last_process[$start]) ? $request->last_process[$start] : '0',
+                            'total' => isset($request->last_output[$start]) ? round((round(1/$request->last_output[$start],4))*($request->last_process[$start]/100)+round(1/$request->last_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
+                        );
+                        $store = PlcSpecificationDetail::insert($dataArray);
+                    }
+                    $start++;
+                }
+            }
+            if(isset($request->p_item_code[0]) != null){
+                $start = 0;
+                foreach($request->p_item_code as $dataId){
+                    if(isset($request->p_id1[$start])){
+                        $dataArray = array(
+                            'item_code' => $request->p_item_code[$start] ? $request->p_item_code[$start] : '-',
+                            'description' => $request->p_description[$start] ? ucwords($request->p_description[$start]) : '-',
+                            'uom' => isset($request->p_uom[$start]) ? $request->p_uom[$start] : '-',
+                            'division' => isset($request->p_division[$start]) ? $request->p_division[$start] : '-',
+                            'subdivision' => isset($request->p_subdivision[$start]) ? $request->p_subdivision[$start] : '-',
+                            'output' => isset($request->p_output[$start]) ? $request->p_output[$start] : '0',
+                            'cut_code' => isset($request->p_cut_code[$start]) ?  $request->p_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->p_output[$start]) ? round(1/$request->p_output[$start],4) : '0',
+                            'total_qty' => isset($request->p_qty[$start]) ? $request->p_qty[$start] : '0',
+                            'process' => isset($request->p_process[$start]) ? $request->p_process[$start] : '0',
+                            'total' => isset($request->p_output[$start]) ? round((round(1/$request->p_output[$start],4))*($request->p_process[$start]/100)+round(1/$request->p_output[$start],4),4) : '0',
+                        );
+                        $updatedata = DB::table('plc_specification_details')->where('id', $request->p_id1[$start])->update($dataArray);
+                    }
+                    else{
+                        $dataArray = array(
+                            'costing_id' => $id,
+                            'material' => "insole",
+                            'color' => $request->p_color[0],
+                            'item_code' => $request->p_item_code[$start] ? $request->p_item_code[$start] : '-',
+                            'description' => $request->p_description[$start] ? ucwords($request->p_description[$start]) : '-',
+                            'uom' => isset($request->p_uom[$start]) ? $request->p_uom[$start] : '-',
+                            'division' => isset($request->p_division[$start]) ? $request->p_division[$start] : '-',
+                            'subdivision' => isset($request->p_subdivision[$start]) ? $request->p_subdivision[$start] : '-',
+                            'output' => isset($request->p_output[$start]) ? $request->p_output[$start] : '0',
+                            'cut_code' => isset($request->p_cut_code[$start]) ?  $request->p_cut_code[$start] : '0',
+                            'fac_qty' => isset($request->p_output[$start]) ? round(1/$request->p_output[$start],4) : '0',
+                            'total_qty' => isset($request->p_qty[$start]) ? $request->p_qty[$start] : '0',
+                            'process' => isset($request->p_process[$start]) ? $request->p_process[$start] : '0',
+                            'total' => isset($request->p_output[$start]) ? round((round(1/$request->p_output[$start],4))*($request->p_process[$start]/100)+round(1/$request->p_output[$start],4),4) : '0',
+                            'updated_at' => Carbon::now(),
+                            'created_at' => Carbon::now()
+                        );
+                        $store = PlcSpecificationDetail::insert($dataArray);
+                    }
+                    $start++;
+                }
+            }
+            $notification = array(
+                'message' => 'Specification Sheet Updated',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('specification-sheet-table')->with($notification);
         }
         catch(Exception $e){
             $notification = array(
@@ -1299,71 +1560,70 @@ class SpecificationController extends Controller
     {
         try{
             $id = $request->id;
-            DB::table('plc_specifications')->where('id', $id)->update(['progress' => 80]);
-            if(isset($request->cut_item_code[0]) != null){
+            if(isset($request->cut_rate[0]) != null){
                 $start = 0;
                 foreach($request->cut_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->cut_rate[$start]) ? $request->cut_rate[$start] : '0',
                         'value' => $request->cut_rate[$start] * $request->cut_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->cut_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
-            if(isset($request->i_item_code[0]) != null){
+            if(isset($request->i_rate[0]) != null){
                 $start = 0;
                 foreach($request->i_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->i_rate[$start]) ? $request->i_rate[$start] : '0',
                         'value' => $request->i_rate[$start] * $request->i_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->i_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
-            if(isset($request->lam_item_code[0]) != null){
+            if(isset($request->lam_rate[0]) != null){
                 $start = 0;
                 foreach($request->lam_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->lam_rate[$start]) ? $request->lam_rate[$start] : '0',
                         'value' => $request->lam_rate[$start] * $request->lam_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->lam_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
-            if(isset($request->clo_item_code[0]) != null){
+            if(isset($request->clo_rate[0]) != null){
                 $start = 0;
                 foreach($request->clo_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->clo_rate[$start]) ? $request->clo_rate[$start] : '0',
                         'value' => $request->clo_rate[$start] * $request->clo_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->clo_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
-            if(isset($request->last_item_code[0]) != null){
+            if(isset($request->last_rate[0]) != null){
                 $start = 0;
                 foreach($request->last_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->last_rate[$start]) ? $request->last_rate[$start] : '0',
                         'value' => $request->last_rate[$start] * $request->last_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->last_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
-            if(isset($request->p_item_code[0]) != null){
+            if(isset($request->p_rate[0]) != null){
                 $start = 0;
                 foreach($request->p_id as $dataId){
                     $dataArray = array(
                         'rate' => isset($request->p_rate[$start]) ? $request->p_rate[$start] : '0',
                         'value' => $request->p_rate[$start] * $request->p_total_con[$start],
                     );
+                    $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('id', $request->p_id[$start])->update($dataArray);
                     $start++;
-                    $updatedata = DB::table('plc_specification_details')->where('id', $dataId)->update($dataArray);
                 }
             }
             $notification = array(
@@ -1371,6 +1631,167 @@ class SpecificationController extends Controller
                 'alert-type' => 'success'
             );
             return back()->with($notification);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function UpdateFormula(Request $request)
+    {
+        date_default_timezone_set('Asia/Karachi');
+        $id = $request->id;
+        try{
+            if($request->cut_dep_cutting != null){
+                $dataArray = array(
+                    'dep' =>  $request->cut_dep_cutting ? $request->cut_dep_cutting : '0',
+                    'pcpd' => $request->cut_pcpd_cutting ? $request->cut_pcpd_cutting : '0',
+                    'noe' => $request->cut_noe_cutting ? $request->cut_noe_cutting : '0',
+                    'aspd' => $request->cut_aspd_cutting ? $request->cut_aspd_cutting : '0',
+                    'nowd' => $request->cut_nowd_cutting ? $request->cut_nowd_cutting : '0',
+                    'pds' => $request->cut_pds_cutting ? $request->cut_pds_cutting : '0',
+                    'dloh1' => $request->cut_dlo_cutting ? $request->cut_dlo_cutting : '0',
+                    'ilo' => $request->cut_cilo_cutting ? $request->cut_ilo_cutting : '0',
+                    'idloh1' => $request->cut_dlo_cutting ? $request->cut_dlo_cutting : '0',
+                    'foh' => $request->cut_foh_cutting ? $request->cut_foh_cutting : '0',
+                    'idloh2' => $request->cut_ilOh_b_cutting ? $request->cut_ilOh_b_cutting : '0',
+                    't_oh1' => $request->cut_t_oh_cutting ? $request->cut_t_oh_cutting : '0',
+                    'capacity' => $request->cut_cap_cutting ? $request->cut_cap_cutting : '0',
+                    'dloh2' => $request->cut_dlo_a_cutting ? $request->cut_dlo_a_cutting : '0',
+                    'idloh3' => $request->cut_ilo_a_cutting ? $request->cut_ilo_a_cutting : '0',
+                    'dloh3' => $request->cut_toh_cutting ? $request->cut_toh_cutting : '0',
+                    't_oh2' => $request->cut_toh_cutting ? $request->cut_toh_cutting : '0',
+                    'un_a_oh' => $request->cut_uaOh_cutting ? $request->cut_uaOh_cutting : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Cutting')->update($dataArray);
+            }
+            if($request->cut_dep_sti != null){
+                $dataArray = array(
+                    'dep' =>  $request->cut_dep_sti ? $request->cut_dep_sti : '0',
+                    'pcpd' => $request->cut_pcpd_sti ? $request->cut_pcpd_sti : '0',
+                    'noe' => $request->cut_noe_sti ? $request->cut_noe_sti : '0',
+                    'aspd' => $request->cut_aspd_sti ? $request->cut_aspd_sti : '0',
+                    'nowd' => $request->cut_nowd_sti ? $request->cut_nowd_sti : '0',
+                    'pds' => $request->cut_pds_sti ? $request->cut_pds_sti : '0',
+                    'dloh1' => $request->cut_ilo_sti ? $request->cut_ilo_sti : '0',
+                    'ilo' => $request->cut_ilo_sti ? $request->cut_ilo_sti : '0',
+                    'idloh1' => $request->cut_dlo_sti ? $request->cut_dlo_sti : '0',
+                    'foh' => $request->cut_foh_sti ? $request->cut_foh_sti : '0',
+                    'idloh2' => $request->cut_ilOh_b_sti ? $request->cut_ilOh_b_sti : '0',
+                    't_oh1' => $request->cut_t_oh_sti ? $request->cut_t_oh_sti : '0',
+                    'capacity' => $request->cut_cap_sti ? $request->cut_cap_sti : '0',
+                    'dloh2' => $request->cut_dlo_a_sti ? $request->cut_dlo_a_sti : '0',
+                    'idloh3' => $request->cut_ilo_a_sti ? $request->cut_ilo_a_sti : '0',
+                    'dloh3' => $request->cut_toh_sti ? $request->cut_toh_sti : '0',
+                    't_oh2' => $request->cut_toh_sti ? $request->cut_toh_sti : '0',
+                    'un_a_oh' => $request->cut_uaOh_sti ? $request->cut_uaOh_sti : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Stitching')->update($dataArray);
+
+            }
+            if($request->cut_dep_last != null){
+                $dataArray = array(
+                    'dep' =>  $request->cut_dep_last ? $request->cut_dep_last : '0',
+                    'pcpd' => $request->cut_pcpd_last ? $request->cut_pcpd_last : '0',
+                    'noe' => $request->cut_noe_last ? $request->cut_noe_last : '0',
+                    'aspd' => $request->cut_aspd_last ? $request->cut_aspd_last : '0',
+                    'nowd' => $request->cut_nowd_last ? $request->cut_nowd_last : '0',
+                    'pds' => $request->cut_pds_last ? $request->cut_pds_last : '0',
+                    'dloh1' => $request->cut_ilo_last ? $request->cut_ilo_last : '0',
+                    'ilo' => $request->cut_ilo_last ? $request->cut_ilo_last : '0',
+                    'idloh1' => $request->cut_dlo_last ? $request->cut_dlo_last : '0',
+                    'foh' => $request->cut_foh_last ? $request->cut_foh_last : '0',
+                    'idloh2' => $request->cut_ilOh_b_last ? $request->cut_ilOh_b_last : '0',
+                    't_oh1' => $request->cut_t_oh_last ? $request->cut_t_oh_last : '0',
+                    'capacity' => $request->cut_cap_last ? $request->cut_cap_last : '0',
+                    'dloh2' => $request->cut_dlo_a_last ? $request->cut_dlo_a_last : '0',
+                    'idloh3' => $request->cut_ilo_a_last ? $request->cut_ilo_a_last : '0',
+                    'dloh3' => $request->cut_toh_last ? $request->cut_toh_last : '0',
+                    't_oh2' => $request->cut_toh_last ? $request->cut_toh_last : '0',
+                    'un_a_oh' => $request->cut_uaOh_last ? $request->cut_uaOh_last : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Lasting')->update($dataArray);
+
+            }
+            if($request->cut_dep_clo != null){
+                $dataArray = array(
+                    'dep' =>  $request->cut_dep_clo ? $request->cut_dep_clo : '0',
+                    'pcpd' => $request->cut_pcpd_clo ? $request->cut_pcpd_clo : '0',
+                    'noe' => $request->cut_noe_clo ? $request->cut_noe_clo : '0',
+                    'aspd' => $request->cut_aspd_clo ? $request->cut_aspd_clo : '0',
+                    'nowd' => $request->cut_nowd_clo ? $request->cut_nowd_clo : '0',
+                    'pds' => $request->cut_pds_clo ? $request->cut_pds_clo : '0',
+                    'dloh1' => $request->cut_ilo_clo ? $request->cut_ilo_clo : '0',
+                    'ilo' => $request->cut_ilo_clo ? $request->cut_ilo_clo : '0',
+                    'idloh1' => $request->cut_dlo_clo ? $request->cut_dlo_clo : '0',
+                    'foh' => $request->cut_foh_clo ? $request->cut_foh_clo : '0',
+                    'idloh2' => $request->cut_ilOh_b_clo ? $request->cut_ilOh_b_clo : '0',
+                    't_oh1' => $request->cut_t_oh_clo ? $request->cut_t_oh_clo : '0',
+                    'capacity' => $request->cut_cap_clo ? $request->cut_cap_clo : '0',
+                    'dloh2' => $request->cut_dlo_a_clo ? $request->cut_dlo_a_clo : '0',
+                    'idloh3' => $request->cut_ilo_a_clo ? $request->cut_ilo_a_clo : '0',
+                    'dloh3' => $request->cut_toh_clo ? $request->cut_toh_clo : '0',
+                    't_oh2' => $request->cut_toh_clo ? $request->cut_toh_clo : '0',
+                    'un_a_oh' => $request->cut_uaOh_clo ? $request->cut_uaOh_clo : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Closing')->update($dataArray);
+
+            }
+            if($request->cut_dep_lam != null){
+                $dataArray = array(
+                    'dep' => $request->cut_dep_lam ? $request->cut_dep_lam : '0',
+                    'pcpd' => $request->cut_pcpd_lam ? $request->cut_pcpd_lam : '0',
+                    'noe' => $request->cut_noe_lam ? $request->cut_noe_lam : '0',
+                    'aspd' => $request->cut_aspd_lam ? $request->cut_aspd_lam : '0',
+                    'nowd' => $request->cut_nowd_lam ? $request->cut_nowd_lam : '0',
+                    'pds' => $request->cut_pds_lam ? $request->cut_pds_lam : '0',
+                    'dloh1' => $request->cut_ilo_lam ? $request->cut_ilo_lam : '0',
+                    'ilo' => $request->cut_cilo_lam ? $request->cut_cilo_lam : '0',
+                    'idloh1' => $request->cut_dlo_lam ? $request->cut_dlo_lam : '0',
+                    'foh' => $request->cut_foh_lam ? $request->cut_foh_lam : '0',
+                    'idloh2' => $request->cut_ilOh_b_lam ? $request->cut_ilOh_b_lam : '0',
+                    't_oh1' => $request->cut_t_oh_lam ? $request->cut_t_oh_lam : '0',
+                    'capacity' => $request->cut_cap_lam ? $request->cut_cap_lam : '0',
+                    'dloh2' => $request->cut_dlo_a_lam ? $request->cut_dlo_a_lam : '0',
+                    'idloh3' => $request->cut_ilo_a_lam ? $request->cut_ilo_a_lam : '0',
+                    'dloh3' => $request->cut_toh_lam ? $request->cut_toh_lam : '0',
+                    't_oh2' => $request->cut_toh_lam ? $request->cut_toh_lam : '0',
+                    'un_a_oh' => $request->cut_uaOh_lam ? $request->cut_uaOh_lam : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Lamination')->update($dataArray);
+            }
+            if($request->cut_dep_p != null){
+                $dataArray = array(
+                    'dep' =>  $request->cut_dep_p ? $request->cut_dep_p : '0',
+                    'pcpd' => $request->cut_pcpd_p ? $request->cut_pcpd_p : '0',
+                    'noe' => $request->cut_noe_p ? $request->cut_noe_p : '0',
+                    'aspd' => $request->cut_aspd_p ? $request->cut_aspd_p : '0',
+                    'nowd' => $request->cut_nowd_p ? $request->cut_nowd_p : '0',
+                    'pds' => $request->cut_pds_p ? $request->cut_pds_p : '0',
+                    'dloh1' => $request->cut_ilo_p ? $request->cut_ilo_p : '0',
+                    'ilo' => $request->cut_ilo_p ? $request->cut_ilo_p : '0',
+                    'idloh1' => $request->cut_dlo_p ? $request->cut_dlo_p : '0',
+                    'foh' => $request->cut_foh_p ? $request->cut_foh_p : '0',
+                    'idloh2' => $request->cut_ilOh_b_p ? $request->cut_ilOh_b_p : '0',
+                    't_oh1' => $request->cut_t_oh_p ? $request->cut_t_oh_p : '0',
+                    'capacity' => $request->cut_cap_p ? $request->cut_cap_p : '0',
+                    'dloh2' => $request->cut_dlo_a_p ? $request->cut_dlo_a_p : '0',
+                    'idloh3' => $request->cut_ilo_a_p ? $request->cut_ilo_a_p : '0',
+                    'dloh3' => $request->cut_toh_p ? $request->cut_toh_p : '0',
+                    't_oh2' => $request->cut_toh_p ? $request->cut_toh_p : '0',
+                    'un_a_oh' => $request->cut_uaOh_p ? $request->cut_uaOh_p : '0',
+                );
+                $update =  DB::table('plc_specification_formulas')->where('p_id', $id)->where('dep', 'Packing')->update($dataArray);
+            }
+            $notification = array(
+                'message' => 'Formula Sheet Updated',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
         }
         catch(Exception $e){
             $notification = array(
@@ -1470,97 +1891,86 @@ class SpecificationController extends Controller
     {
         try{
             $id = $request->id;
-            $fetch = DB::table('plc_specifications')->where('id', $id)->get();
-            if($fetch[0]->progress != 90){
-                DB::table('plc_specifications')->where('id', $id)->update(['progress' => 85]);
-            }
-            PlcSpecificationResource::where('specification_id', $id)->delete();
             if($request->cut_value_r[0] != null){
                 $count = count($request->cut_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "cutting",
                         'value_set' => $request->cut_value_r[$i] ? $request->cut_value_r[$i] : '-',
                         'description' => $request->cut_description_r[$i] ? ucwords($request->cut_description_r[$i]) : '-',
                         'remarks' => isset($request->cut_remarks_r[$i]) ? $request->cut_remarks_r[$i] : '-',
                         'pair' => isset($request->cut_rate_r[$i]) ? $request->cut_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'cutting')->where('id', $request->cut_id_r[$i])->update($dataArray);
                 }
             }
             if($request->i_value_r[0] != null){
                 $count = count($request->i_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "insole",
                         'value_set' => $request->i_value_r[$i] ? $request->i_value_r[$i] : '-',
                         'description' => $request->i_description_r[$i] ? ucwords($request->i_description_r[$i]) : '-',
                         'remarks' => isset($request->i_remarks_r[$i]) ? $request->i_remarks_r[$i] : '-',
                         'pair' => isset($request->i_rate_r[$i]) ? $request->i_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'insole')->where('id', $request->i_id_r[$i])->update($dataArray);
+
                 }
             }
             if($request->lam_value_r[0] != null){
                 $count = count($request->lam_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "lamination",
                         'value_set' => $request->lam_value_r[$i] ? $request->lam_value_r[$i] : '-',
                         'description' => $request->lam_description_r[$i] ? ucwords($request->lam_description_r[$i]) : '-',
                         'remarks' => isset($request->lam_remarks_r[$i]) ? $request->lam_remarks_r[$i] : '-',
                         'pair' => isset($request->lam_rate_r[$i]) ? $request->lam_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'lamination')->where('id', $request->lam_id_r[$i])->update($dataArray);
+
                 }
             }
             if($request->clo_value_r[0] != null){
                 $count = count($request->clo_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "closing",
                         'value_set' => $request->clo_value_r[$i] ? $request->clo_value_r[$i] : '-',
                         'description' => $request->clo_description_r[$i] ? ucwords($request->clo_description_r[$i]) : '-',
                         'remarks' => isset($request->clo_remarks_r[$i]) ? $request->clo_remarks_r[$i] : '-',
                         'pair' => isset($request->clo_rate_r[$i]) ? $request->clo_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'closing')->where('id', $request->clo_id_r[$i])->update($dataArray);
+
                 }
             }
             if($request->last_value_r[0] != null){
                 $count = count($request->last_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "lasting",
                         'value_set' => $request->last_value_r[$i] ? $request->last_value_r[$i] : '-',
                         'description' => $request->last_description_r[$i] ? ucwords($request->last_description_r[$i]) : '-',
                         'remarks' => isset($request->last_remarks_r[$i]) ? $request->last_remarks_r[$i] : '-',
                         'pair' => isset($request->last_rate_r[$i]) ? $request->last_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'lasting')->where('id', $request->last_id_r[$i])->update($dataArray);
+
+
                 }
             }
             if($request->p_value_r[0] != null){
                 $count = count($request->p_value_r);
                 for($i=0; $i<$count; $i++){
                     $dataArray = array(
-                        'specification_id' => $id,
-                        'material' => "packing",
                         'value_set' => $request->p_value_r[$i] ? $request->p_value_r[$i] : '-',
                         'description' => $request->p_description_r[$i] ? ucwords($request->p_description_r[$i]) : '-',
                         'remarks' => isset($request->p_remarks_r[$i]) ? $request->p_remarks_r[$i] : '-',
                         'pair' => isset($request->p_rate_r[$i]) ? $request->p_rate_r[$i] : '0',
                     );
-                    $store = PlcSpecificationResource::insert($dataArray);
+                    $store = PlcSpecificationResource::where('costing_id', $id)->where('material', 'packing')->where('id', $request->p_id_r[$i])->update($dataArray);
+
                 }
             }
             $notification = array(
-                'message' => 'Specificatio Sheet Resources Updated',
+                'message' => 'Specification Sheet Resources Updated',
                 'alert-type' => 'success'
             );
             return back()->with($notification);
@@ -1795,8 +2205,10 @@ class SpecificationController extends Controller
         try{
             $id = $_GET['id'];
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $colorCounts = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('color');
             $data1 = DB::table('plc_specifications')->where('id', $id)->get();
-            $data2 = DB::table('plc_specification_details')->where('specification_id', $id)->get();
+            $data2 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
+            $division = Division::orderBy('id','DESC')->get();
             $userseason = $data1[0]->season;
             $userpurpose = $data1[0]->purpose;
             $userimage = $data1[0]->image;
@@ -1812,7 +2224,7 @@ class SpecificationController extends Controller
             $userdesign = $data1[0]->design_no;
             $userdescription = $data1[0]->description;
             $usercategory = $data1[0]->category;
-            $userpricing = $data1[0]->pricing;
+            $userpricing = $data1[0]->price;
             $userlast = $data1[0]->last;
     
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
@@ -1877,6 +2289,7 @@ class SpecificationController extends Controller
                 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
                 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory, 'userlast'=> $userlast,
                 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'userpricing'=> $userpricing, 'designNo'=> $designNo, 'location'=> $location,
+                'division'=> $division, 'colorCounts'=> $colorCounts, 'colorCountsNo1' => 0, 'colorCountsNo2' => 0, 'colorCountsNo3' => 0, 'colorCountsNo4' => 0, 
             ]);
         }
         catch(Exception $e){
@@ -1894,8 +2307,12 @@ class SpecificationController extends Controller
             $id = $_GET['id'];
             $season = []; $item_code = []; $article_code = [];
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $cuttingData_r = []; $InsoleData_r = []; $LaminationData_r = []; $ClosingData_r = []; $LastingData_r = []; $PackingData_r = [];
             $data1 = DB::table('plc_specifications')->where('id', $id)->get();
-            $data2 = DB::table('plc_specification_details')->where('specification_id', $id)->get();
+            $colorCounts = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('color');
+            $data2 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
+            $data5 = DB::table('plc_specification_resources')->where('costing_id', $id)->get();
+            $division = Division::orderBy('id','DESC')->get();
             $userseason = $data1[0]->season;
             $userpurpose = $data1[0]->purpose;
             $userimage = $data1[0]->image;
@@ -1932,6 +2349,48 @@ class SpecificationController extends Controller
                     $PackingData[] = $value;
                 }
             }
+            foreach($data5 as $value){
+                if($value->material == "cutting"){
+                    $cuttingData_r[] = $value;
+                }
+                elseif($value->material == "insole"){
+                    $InsoleData_r[] = $value;
+                }
+                elseif($value->material == "lamination"){
+                    $LaminationData_r[] = $value;
+                }
+                elseif($value->material == "closing"){
+                    $ClosingData_r[] = $value;
+                }
+                elseif($value->material == "lasting"){
+                    $LastingData_r[] = $value;
+                }
+                elseif($value->material == "packing"){
+                    $PackingData_r[] = $value;
+                }
+            }
+            $F_cuttingData = []; $F_StitchingData = []; $F_LaminationData = []; $F_ClosingData = []; $F_LastingData = []; $F_PackingData = [];
+            $dataFormula = DB::table('plc_specification_formulas')->orderBy('id','ASC')->where('p_id', $id)->get();
+            foreach($dataFormula as $value){
+                if($value->dep == "Cutting"){
+                    $F_cuttingData[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $F_StitchingData[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $F_LaminationData[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $F_ClosingData[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $F_LastingData[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $F_PackingData[] = $value;
+                }
+            }
             $category = PlcCategory::orderBy('id','DESC')->get();
             $project = PlcProject::orderBy('id','DESC')->get();
             $purpose = PlcPurpose::orderBy('id','DESC')->get();
@@ -1943,11 +2402,14 @@ class SpecificationController extends Controller
                 'data1'=> $data1[0],
                 'i'=> 1,'j'=> 1,'k'=> 1,'l'=> 1,'m'=> 1,'n'=> 1,
                 'cuttingData'=> $cuttingData, 'InsoleData'=> $InsoleData, 'LaminationData'=> $LaminationData, 'ClosingData'=> $ClosingData, 'LastingData'=> $LastingData, 'PackingData'=> $PackingData,
+                'F_cuttingData'=> $F_cuttingData, 'F_StitchingData'=> $F_StitchingData, 'F_LaminationData'=> $F_LaminationData, 'F_ClosingData'=> $F_ClosingData, 'F_LastingData'=> $F_LastingData, 'F_PackingData'=> $F_PackingData,
                 'a1'=> 1,'a2'=> 1, 'b1'=> 1,'b2'=> 1, 'c1'=> 1,'c2'=> 1, 'd1'=> 1,'d2'=> 1, 'e1'=> 1,'e2'=> 1, 'f1'=> 1,'f2'=> 1,
                 'season'=> $season, 'itemcode'=> $item_code, 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'sequence'=> $sequence, 'date'=> $date,
                 'image'=> $userimage, 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
                 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory,
                 'userprogress'=> $userprogress, 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose,
+                'colorCounts'=> $colorCounts, 'colorCountsNo1' => 0, 'colorCountsNo2' => 0, 'colorCountsNo3' => 0, 'colorCountsNo4' => 0, 'division'=> $division,
+                'cuttingData_r'=> $cuttingData_r, 'InsoleData_r'=> $InsoleData_r, 'LaminationData_r'=> $LaminationData_r, 'ClosingData_r'=> $ClosingData_r, 'LastingData_r'=> $LastingData_r, 'PackingData_r'=> $PackingData_r,
             ]);
         }
         catch(Exception $e){
@@ -1967,14 +2429,45 @@ class SpecificationController extends Controller
             $UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
             $obj = json_decode (json_encode ($UserDetail1), FALSE);
             $storeData = [];
+            $colorData = [];
             foreach($obj as $dataa){
                 $storeData[$dataa->role_name] = $dataa->value; 
             }
-            if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])){
-                if(isset($storeData['Pricing-Sheet Costing']) == 1){
-                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "Costing")->Orwhere('status', "Sales")->Orwhere('status', "Final")->get();
+            if(isset($storeData['Specification-Sheet List']) && !empty($storeData['Specification-Sheet List'])){
+                if(isset($storeData['Specification-Sheet List']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->get();                 
+                    $i = 1;
+                    foreach($data as $value){
+                        $color = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $value['id'])->get()->unique('color');
+                        $count = 0;
+                        if(isset($color)){
+                            $colorData[] = [
+                                'color' => count($color),
+                                'data' => $value
+                            ]; 
+                        }
+                        $i++;
+                    }
                 }
-                return view('specificationsheet.specification-sheet-costing-table')->with(['data'=> $data, 'i'=> 1]);
+                return view('specificationsheet.specification-sheet-pd-table')->with(['data'=> $colorData, 'i'=> 1]);
+            }
+            if(isset($storeData['Specification-Sheet Costing']) && !empty($storeData['Specification-Sheet Costing'])){
+                if(isset($storeData['Specification-Sheet Costing']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "Costing")->get();                 
+                    $i = 1;
+                    foreach($data as $value){
+                        $color = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $value['id'])->get()->unique('color');
+                        $count = 0;
+                        if(isset($color)){
+                            $colorData[] = [
+                                'color' => count($color),
+                                'data' => $value
+                            ]; 
+                        }
+                        $i++;
+                    }
+                }
+                return view('specificationsheet.specification-sheet-costing-table')->with(['data'=> $colorData, 'i'=> 1]);
             }
             elseif(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])){
                 if(isset($storeData['Pricing-Sheet Sales']) == 1){
@@ -2043,33 +2536,120 @@ class SpecificationController extends Controller
         }
     }
 
-    public function Calculate(Request $request)
+    public function Calculate($id, $value)
     {
         try{
-            $id = $request->calculateId;
-            $calculateValue = $request->calculateValue;
+            $id = $id;
+            $calculateValue = $value;
             $total1 = 0; $total2 = 0; $total3 = 0;
-            $data1 = PlcSpecificationDetail::where('specification_id', $id)->pluck('rate');
-            $data2 = PlcSpecificationResource::where('specification_id', $id)->pluck('pair');
-            $data3 = PlcSpecificationOverhead::where('specification_id', $id)->pluck('pair');
+            $data1 = PlcSpecificationDetail::where('costing_id', $id)->pluck('rate');
+            $data2 = PlcSpecificationResource::where('costing_id', $id)->pluck('pair');
+            $formulaData = DB::table('plc_specification_formulas')->where('p_id', $id)->get();
+            foreach($formulaData as $value){
+                if($value->dep == "Cutting"){
+                    $cuttingDataF[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $StitchingDataF[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $LaminationDataF[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $ClosingDataF[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $LastingDataF[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $PackingDataF[] = $value;
+                }
+            }
+
+            $t_oh1_total = 0; $un_a_oh_total = 0;
+            if(!$cuttingDataF){
+                $t_oh1_cut = 0; $un_a_oh_cut = 0;
+            }
+            else{
+                foreach($cuttingDataF as $value){      
+                    $t_oh1_cut = $value->t_oh1;
+                    $un_a_oh_cut = $value->un_a_oh;
+                }
+            }
+            if(!$StitchingDataF){
+                $t_oh1_sti = 0; $un_a_oh_sti = 0;
+            }
+            else{
+                foreach($StitchingDataF as $value){
+                    $t_oh1_sti = $value->t_oh1;
+                    $un_a_oh_sti = $value->un_a_oh;
+                }
+            }
+            if(!$LaminationDataF){
+                $t_oh1_lam = 0; $un_a_oh_lam = 0;
+            }
+            else{
+                foreach($LaminationDataF as $value){
+                    $t_oh1_lam = $value->t_oh1;
+                    $un_a_oh_lam = $value->un_a_oh;
+                }
+            }
+            if(!$ClosingDataF){
+              $t_oh1_clo = 0; $un_a_oh_clo = 0;
+            }
+            else{
+                foreach($ClosingDataF as $value){
+                    $t_oh1_clo = $value->t_oh1;
+                    $un_a_oh_clo = $value->un_a_oh;
+                }
+            }
+            if(!$LastingDataF){
+                $t_oh1_last = 0; $un_a_oh_last = 0;
+            }
+            else{
+                foreach($LastingDataF as $value){
+                    $t_oh1_last = $value->t_oh1;
+                    $un_a_oh_last = $value->un_a_oh;
+                }
+            }
+            if(!$PackingDataF){
+             $t_oh1_p = 0; $un_a_oh_p = 0;
+            }
+            else{
+                foreach($PackingDataF as $value){
+                    $t_oh1_p = $value->t_oh1;
+                    $un_a_oh_p = $value->un_a_oh;
+                }
+            }
+
+            $t_oh1_total = $t_oh1_cut + $t_oh1_sti + $t_oh1_lam + $t_oh1_clo + $t_oh1_last + $t_oh1_p;
+            $un_a_oh_total = $un_a_oh_cut + $un_a_oh_sti + $un_a_oh_lam + $un_a_oh_clo + $un_a_oh_last + $un_a_oh_p;
+
+            $AllData = [ 
+                't_oh1_total' => $t_oh1_total,
+                'un_a_oh_total' => $un_a_oh_total,
+            ];
+            
+            $result1 = 100 + $AllData['t_oh1_total'] + $AllData['un_a_oh_total'];
             foreach($data1 as $value1){
                 $total1 = $total1 + $value1;
             }
             foreach($data2 as $value2){
                 $total2 = $total2 + $value2;
             }
-            foreach($data3 as $value3){
-                $total3 = $total3 + $value3;
-            }
+            $total3 = $result1;
             $result = $total1 + $total2 + $total3;
             $profit = ($result / 100) * $calculateValue;
             $actualPrice = $result;
             $total = $actualPrice + $profit;
-            $updateProfit = DB::table('plc_specifications')->where('id', $id)->update(['profit' => $actualPrice]);
-            $updatePrice = DB::table('plc_specifications')->where('id', $id)->update(['price' => $total]);
-            DB::table('plc_specifications')->where('id', $id)->update(['progress' => 100]);
-            if($updatePrice && $updateProfit){
-                return response()->json($updatePrice);
+            $input1 = array(
+                'profit' => $actualPrice,
+                'price' => $total,
+                'profit_price' => $calculateValue,
+            );
+            $updateData = PlcSpecification::where('id', $id)->update($input1);
+            if($updateData){
+                return response()->json($updateData);
             }
             else{
                 $error = 400;
@@ -2087,214 +2667,477 @@ class SpecificationController extends Controller
 
     public function Status($id,$status,$remarks)
     {
-        try{
-            date_default_timezone_set('Asia/Karachi');
-            $date1 = date("d-F-Y");
-            $msg = 0; $department = 0;
-            if($status == "Costing"){
-                $msg = "Transferred to Costing";
-                $msg1 = "Transferred";
-                $progress = 75;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Costing')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+        date_default_timezone_set('Asia/Karachi');
+        $Currenttime = date("h:i A");
+        $Currentdate = date("d-m-Y");
+        $name = Auth::user()->emp_name;
+        $date1 = date("d-F-Y");
+        $Userdata = [];
+        $item_code = array();
+        $item_code2 = array();
+        $item_code3 = array();
+        $item = 0;
+        $msg = 0; $department = 0;
+        if($status == "Costing"){
+            $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $connPRL = oci_connect("onsole","s",$wizerp);
+            $sql2 = "SELECT IM.ITEM_CODE FROM ITEMS_MT IM, WIZ_UOM_MT U, ITEMS_CATEGORY IC WHERE IM.PRIMARY_UOM = U.UOM_ID AND IC.ITEM_ID = IM.ITEM_ID AND IC.STRUCTURE_ID = 27";
+            $result2 = oci_parse($connPRL, $sql2);
+            oci_execute($result2);
+            while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $item_code[] = $row2['ITEM_CODE'];
             }
-            if($status == "Rejected"){
-                $msg = "Rejected";
-                $msg1 = "Rejected";
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+            $ItemCode = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('item_code')->pluck('item_code');
+            foreach($ItemCode as $data){
+                $item_code2[] = $data;
             }
-            if($status == "QC"){
-                $msg = "QC";
-                $msg1 = "QC";
-                $progress = 25;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Quality-Control')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
+            $count = 0;
+            foreach($item_code2 as $data){
+                if(in_array($data, $item_code)){
+                    $item = "Yes";
                 }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+                else{
+                    $item_code3[] = $data;
+                }
             }
-            if($status == "Production"){
-                $msg = "Production";
-                $msg1 = "Production";
-                $progress = 50;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Production')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+            if(count($item_code3) > 0){
+                $notification = array(
+                    'array' => $item_code3,
+                    'value' => '2'
+                );
+                return response()->json($notification);
             }
-            if($status == "Update"){
-                $msg = "Update";
-                $msg1 = "Update";
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+
+            $msg = "Transferred to Costing";
+            $msg1 = "Transferred";
+            $progress = 75;
+
+            $Userdata = array(
+                'user_id' => $name,
+                'remarks' => $remarks,
+                'ps_id' => $id,
+                'status' => $status,
+                'date' => $Currentdate." ".$Currenttime,
+            );
+            $Insert = DB::table('plc_pricing_process')->insert($Userdata);
+
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Specification-Sheet Costing')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
             }
-            if($status == "PD"){
-                $msg = "PD";
-                $msg1 = "PD";
-                $progress = 25;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
-            }
-            if($status == "Sales"){
-                $msg = "Approved";
-                $msg1 = "Approved";
-                $progress = 100;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Sales')->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
-                            }
-                        }
-                    }       
-                $result = array_unique($result);
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
             } 
-            if($status == "Final"){
-                $msg = "Finalized";
-                $msg1 = "Finalized";
-                $progress = 100;
-                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Sales')
-                                                            ->Orwhere('role_name', 'Pricing-Sheet List')
-                                                            ->Orwhere('role_name', 'Pricing-Sheet Production')
-                                                            ->Orwhere('role_name', 'Pricing-Sheet Costing')
-                                                            ->Orwhere('role_name', 'Quality-Control')
-                                                            ->where('value', 1)->get()->unique('name');
-                foreach($assign_users as $data){
-                    $store[] = $data['name'];
-                }
-                foreach($store as $data){
-                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
-                    $get_users[] = $get_users[0];
-                } 
-                foreach($get_users as $value){
-                    if(count($value) != 0){
-                        foreach($value as $val){
-                            $result[] = $val;
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
                         }
                     }
                 }       
-                $result = array_unique($result);
-            }    
-            $input = array([
-                'data' => $date1,
-                'event_at' => 'Specification Sheet',
-                'complaint_id' => $id
-            ]);
-            $joborder = notifications::create($input[0]);
-            $notification_id = $joborder['id'];
-            $userid = Auth::user()->id;
-            $name = Auth::user()->emp_name;
-            $image = Auth::user()->image;
-            foreach($result as $dataa){
-                $input3 = array([
-                    'notification_id' => $notification_id,
-                    'assign_users' => $dataa,
-                    'event' => 'Specification Sheet '.$msg1,
-                    'url' => 'specification-sheet-view',
-                    'complaint' => $id,
-                    'complaint_id' => $id,
-                    'userid' => $userid,
-                    'name' => $name,
-                    'image' => $image,
-                ]);
-                $user = notification_details::create($input3[0]);
+            $result = array_unique($result);
+        }
+        if($status == "Rejected"){
+            $msg = "Rejected";
+            $msg1 = "Rejected";
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
             }
-    
-            notification_details::where('notification_id', $notification_id)->where('assign_users', Auth::user()->id)->delete();
-            $update = DB::table('plc_specifications')->where('id', $id)->update(['status' => $status, 'progress' => $progress, 'remarks' => $remarks]);
-            if($update){
-                $notification = array(
-                    'msg' => $msg,
-                    'value' => '1'
-                );
-                return response()->json($notification);
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        }
+        if($status == "QC"){
+            $msg = "QC";
+            $msg1 = "QC";
+            $progress = 25;
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Quality-Control')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        }
+        if($status == "Production"){
+            $msg = "Production";
+            $msg1 = "Production";
+            $progress = 50;
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Production')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        }
+        if($status == "Update"){
+            $msg = "Update";
+            $msg1 = "Update";
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        }
+        if($status == "PD"){
+            $msg = "PD";
+            $msg1 = "PD";
+            $progress = 25;
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet List')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        }
+        if($status == "Sales"){
+            $msg = "Approved";
+            $msg1 = "Approved";
+            $progress = 100;
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Sales')->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                        }
+                    }
+                }       
+            $result = array_unique($result);
+        } 
+        if($status == "Final"){
+            $msg = "Finalized";
+            $msg1 = "Finalized";
+            $progress = 100;
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Sales')
+                                                        ->Orwhere('role_name', 'Pricing-Sheet List')
+                                                        ->Orwhere('role_name', 'Pricing-Sheet Production')
+                                                        ->Orwhere('role_name', 'Pricing-Sheet Costing')
+                                                        ->Orwhere('role_name', 'Quality-Control')
+                                                        ->where('value', 1)->get()->unique('name');
+            foreach($assign_users as $data){
+                $store[] = $data['name'];
+            }
+            foreach($store as $data){
+                $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                $get_users[] = $get_users[0];
+            } 
+            foreach($get_users as $value){
+                if(count($value) != 0){
+                    foreach($value as $val){
+                        $result[] = $val;
+                    }
+                }
+            }       
+            $result = array_unique($result);
+        }    
+        $input = array(
+            'data' => $date1,
+            'event_at' => 'Specification Sheet',
+            'complaint_id' => $id
+        );
+        $joborder = notifications::create($input);
+        $notification_id = $joborder['id'];
+        $userid = Auth::user()->id;
+        $name = Auth::user()->emp_name;
+        $image = Auth::user()->image;
+        foreach($result as $dataa){
+            $input3 = array(
+                'notification_id' => $notification_id,
+                'assign_users' => $dataa,
+                'event' => 'Specification Sheet '.$msg1,
+                'url' => 'specification-sheet-view',
+                'complaint' => $id,
+                'complaint_id' => $id,
+                'userid' => $userid,
+                'name' => $name,
+                'image' => $image,
+            );
+            $user = notification_details::create($input3);
+        }
+
+        notification_details::where('notification_id', $notification_id)->where('assign_users', Auth::user()->id)->delete();
+        $update = DB::table('plc_specifications')->where('id', $id)->update(['status' => $status, 'progress' => $progress, 'remarks' => $remarks]);
+        if($update){
+            $notification = array(
+                'msg' => $msg,
+                'value' => '1'
+            );
+            return response()->json($notification);
+        }
+        else{
+            $error = 400;
+            return response()->json($error);
+        }
+    }
+
+    public function Duplicate($desgin,$id)
+    {
+        date_default_timezone_set('Asia/Karachi');
+        try{            
+            $data = PlcPricing::find($id);
+            $data->replicate()->setTable('plc_specifications')->save();
+            $detailData = PlcPricingDetail::orderBy('id','ASC')->where('costing_id', $id)->get();
+            foreach($detailData as $dData){
+                $dData->replicate()->setTable('plc_specification_details')->save();
+            }
+            $detailData = PlcFormula::orderBy('id','ASC')->where('p_id', $id)->get();
+            foreach($detailData as $dData){
+                $dData->replicate()->setTable('plc_specification_formulas')->save();
+            }
+            $detailData = PlcPricingResource::orderBy('id','ASC')->where('costing_id', $id)->get();
+            foreach($detailData as $dData){
+                $dData->replicate()->setTable('plc_specification_resources')->save();
+            }
+            $value = 1;
+            return response()->json($value);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function DuplicateView(Request $request)
+    {
+        $id = $_GET['id'];
+        $data1 = PlcPricing::find($id);
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $color = array();
+        $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
+                    $result1 = oci_parse($connPRL, $sql1);
+                    oci_execute($result1);
+                    while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
+                    }
+        return view('pricingsheet.pricing-sheet-duplicate')->with([            
+            'color' => $color, 'data1' => $data1, 'id' => $id,          
+        ]);
+    }
+
+    public function ColorEdit(Request $request)
+    {
+        $id = $_GET['id'];
+        $data1 = PlcPricing::find($id);
+        $data = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('color');
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $color = array();
+        $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
+                    $result1 = oci_parse($connPRL, $sql1);
+                    oci_execute($result1);
+                    while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
+                    }
+        return view('specificationsheet.specification-sheet-color-edit')->with([            
+            'color' => $color, 'data' => $data, 'data1' => $data1, 'id' => $id, 'id' => $id, 'a1' => 0, 'a2' => 0, 'a3' => 0           
+        ]);
+    }
+
+    public function duplicateSheet(Request $request)
+    {
+        date_default_timezone_set('Asia/Karachi');
+        try{            
+            $id = $request->id;
+            $color = $request->colors;
+            $count = count($color);
+            $data = PlcPricing::find($id);
+            $data->replicate()->setTable('plc_specifications')->save();
+            $detailData = PlcPricingDetail::orderBy('id','ASC')->where('costing_id', $id)->get();
+            $i = 0;
+            do{ 
+                foreach($detailData as $dData){
+                    $replicatedData = $dData->replicate();
+                    $arrayReplicatedData = $replicatedData->toArray();
+                    $newCreatedModel = PlcSpecificationDetail::create($arrayReplicatedData);
+                    $newId = $newCreatedModel->id;
+                    if(str_contains($color[$i], '-') == true){
+                        $string = str_replace("-"," ",$color[$i]);
+                    }
+                    else{
+                        $string = $color[$i];
+                    }
+                    DB::table('plc_specification_details')->where('id', $newId)->update(['color'=> $string, 'color_id'=> $newId."".$newId]);
+                    DB::table('plc_specifications')->where('id', $newId)->update(['status'=> "Pending"]);
+                }
+                $i++;
+            } while($i<$count);
+            $detailData = PlcFormula::orderBy('id','ASC')->where('p_id', $id)->get();
+            foreach($detailData as $dData){
+                $dData->replicate()->setTable('plc_specification_formulas')->save();
+            }
+            $detailData = PlcPricingResource::orderBy('id','ASC')->where('costing_id', $id)->get();
+            foreach($detailData as $dData){
+                $dData->replicate()->setTable('plc_specification_resources')->save();
+            }
+            $notification = array(
+                'message' => 'Specification Sheet Created',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('specification-sheet-table')->with($notification);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function duplicateSheetEdit(Request $request)
+    {
+        $color = $request->colors;
+        $id = $request->id;
+        $dataGet = DB::table('plc_specification_details')->where('costing_id', $id)->get();        
+        $new = array();
+        $get = DB::table('plc_specification_details')->where('costing_id', $id)->get()->unique('color');
+        foreach($get as $data){
+            $new[] = $data->color;
+        }
+        $start = 0;
+        foreach($request->colors as $dataId){
+            if(isset($request->color_id[$start])){
+                $updatedata = DB::table('plc_specification_details')->where('costing_id', $id)->where('color', $new[$start])->update(['color'=> $color[$start]]);
+            }
+            else{
+                foreach($dataGet as $value){
+                    $dataArray = array(
+                        'costing_id' => $id,
+                        'item_code' => $value->item_code,
+                        'description' => $value->description,
+                        'uom' => $value->uom,
+                        'division' => $value->division,
+                        'subdivision' => $value->subdivision,
+                        'output' => $value->output,
+                        'cut_code' => $value->cut_code,
+                        'fac_qty' => $value->fac_qty,
+                        'total_qty' => $value->total_qty,
+                        'process' => $value->process,
+                        'total' => $value->total,
+                        'rate' => $value->rate,
+                        'value' => $value->value,
+                        'material' => $value->material,
+                        'color' => $color[$start],
+                        'color_id' => $value->color_id,
+                        'updated_at' => Carbon::now(),
+                        'created_at' => Carbon::now()
+                    );
+                    $store = PlcSpecificationDetail::insert($dataArray);
+                }
+            }
+            $start++;
+        }
+        $notification = array(
+            'message' => 'Colors Updated',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('specification-sheet-table')->with($notification);
+    }
+
+    public function removeColors(Request $request)
+    {
+        $id = $request->id;
+        $data = $request->data;
+        $newString = str_replace('"', '', $data);
+        $newString1 = str_replace('[', '', $newString);
+        $newString2 = str_replace(']', '', $newString1);
+        if(strpos($newString2, ",") !== false ) {
+            $after = explode(",",$newString2);
+            foreach($after as $value){
+                DB::table('plc_specification_details')->where(['color'=> $value, 'costing_id'=> $id])->delete();
+            }
+        }
+        else{
+            $after = $newString2;
+            DB::table('plc_specification_details')->where(['color'=> $after, 'costing_id'=> $id])->delete();
+        }
+    }
+
+    public function removeSpec(Request $request)
+    {
+        $data = $request->data;
+        preg_match_all('!\d+!', $data, $matches);
+        foreach($matches as $value){
+            DB::table('plc_specification_details')->where(['id'=> $value])->delete();
+        }
+    }
+
+    public function GetColor()
+    {
+        try{
+            $color = array();
+            $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $connPRL = oci_connect("onsole","s",$wizerp);
+            $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
+            $result1 = oci_parse($connPRL, $sql1);
+            oci_execute($result1);
+            while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
+            }
+            if(sizeof($color)>0){
+                return response()->json($color);
             }
             else{
                 $error = 400;

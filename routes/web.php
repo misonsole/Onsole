@@ -174,7 +174,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pricing-sheet-create', [PricingController::class, 'Create'])->name('pricing-sheet-create');
     Route::get('pricing-sheet-table', [PricingController::class, 'All'])->name('pricing-sheet-table');
     Route::get('deletejoborder/{id}', [PricingController::class, 'Delete']);
-    Route::post('calculate', [PricingController::class, 'Calculate']);
+    Route::get('calculate{id}/{value}', [PricingController::class, 'Calculate']);
     Route::get('pricing-sheet-code/{id}', [PricingController::class, 'Detail']);
     Route::get('itemcode/{id}', [PricingController::class, 'ItemCode']);
     Route::get('ArticleCode/{id}', [PricingController::class, 'ArticleCode']);
@@ -200,8 +200,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('specification-sheet-update-resource', [SpecificationController::class, 'UpdateResource'])->name('specification-sheet-update-resource');
     Route::post('specification-sheet-update-overhead', [SpecificationController::class, 'UpdateOverhead'])->name('specification-sheet-update-overhead');
     Route::get('deletespecificationsheet/{id}', [SpecificationController::class, 'Delete']);
-    Route::post('calculateSpecification', [SpecificationController::class, 'Calculate']);
+    Route::get('calculateSpecification/{id}/{value}', [SpecificationController::class, 'Calculate']);
     Route::get('specification-sheet-update-costing', [SpecificationController::class, 'UpdateCosting'])->name('specification-sheet-update-costing');
+    Route::post('specification-formula-sheet-update', [SpecificationController::class, 'UpdateFormula'])->name('specification-formula-sheet-update');
+    Route::get('pricingsheetduplicate/{desgin}/{id}', [SpecificationController::class, 'Duplicate']);
+    Route::get('GetColor', [SpecificationController::class, 'GetColor']);
+    Route::post('duplicatePSS', [SpecificationController::class, 'duplicateSheet'])->name('duplicatePSS');
+    Route::post('duplicatePSSEdit', [SpecificationController::class, 'duplicateSheetEdit'])->name('duplicatePSSEdit'); 
+    Route::get('pricing-sheet-duplicate', [SpecificationController::class, 'DuplicateView'])->name('pricing-sheet-duplicate');
+    Route::get('specification-sheet-color-edit', [SpecificationController::class, 'ColorEdit'])->name('specification-sheet-color-edit');
+    Route::post('removeColors', [SpecificationController::class, 'removeColors'])->name('removeColors');
+    Route::post('removeSpec', [SpecificationController::class, 'removeSpec'])->name('removeSpec');
 
     //Report
     Route::get('transfer', [ReportController::class, 'Transfer'])->name('transfer');
@@ -277,7 +286,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Job Order 
     Route::get('job-order-table', [JobOrderController::class, 'All'])->name('job-order-table');
-    Route::get('pricingsheetduplicate/{desgin}/{id}', [JobOrderController::class, 'Duplicate']);
+    // Route::get('pricingsheetduplicate/{desgin}/{id}', [JobOrderController::class, 'Duplicate']);
     Route::get('job-order', [JobOrderController::class, 'jobOrder'])->name('job-order');
     Route::get('joborderdata', [JobOrderController::class, 'joborderdata'])->name('joborderdata');
     Route::get('companydata/{id}', [JobOrderController::class, 'Companydata']);

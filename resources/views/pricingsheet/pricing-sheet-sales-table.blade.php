@@ -56,36 +56,24 @@
                     <div class="card-body table-responsive p-5">
                         <div class="">
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead class="bg-dark">
                                     <tr>
                                         <th>#</th>
-                                        <!-- <th>Attachment</th> -->
-                                        <!-- <th>Season</th> -->
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Category</th> -->
-                                        <th data-orderable="false">Design No.</th>
-                                        <th data-orderable="false">Progress</th>
-                                        <th data-orderable="false">Status</th>
-                                        <th data-orderable="false">Remarks</th>
-                                        <th style="text-align: start;" data-orderable="false">Sales Order No.</th>
-                                        <th data-orderable="false">Transfer</th>
+                                        <th class="text-white" data-orderable="false">Design No.</th>
+                                        <th class="text-white" data-orderable="false">Progress</th>
+                                        <th class="text-white" data-orderable="false">Status</th>
+                                        <th class="text-white" data-orderable="false">Remarks</th>
+                                        <th class="text-white" style="text-align: start;" data-orderable="false">Sales Order No.</th>
+                                        <th class="text-white" data-orderable="false">Transfer</th>
                                         <!-- <th>Purpose</th> -->
-                                        <th data-orderable="false">Date & Time</th>
-                                        <th data-orderable="false">Action</th>
+                                        <th class="text-white" data-orderable="false">Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>
-                                            @if($user->image == 0)
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('img/photos/10.jpg')}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @else
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('uploads/appsetting/' . $user->image)}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @endif
-                                            <!-- <td>{{$user->season}}</td> -->
-                                            <!-- <td>{{$user->sequence}}</td> -->
-                                            <!-- <td>{{$user->category}}</td> -->
                                             <td>{{$user->design_no}}</td>
                                             <td>
                                                 <div class="progress" style="box-shadow: none;">
@@ -150,7 +138,9 @@
                                                     @endif                                                                         
                                                 </span>
                                             </td>
-                                            @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])) 
+                                            @if($user->sono == NULL)
+                                            <td style="width: 10%;">&nbsp;</td>
+                                            @elseif(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])) 
                                                 @if(isset($storeData['Pricing-Sheet Sales']) == 1)
                                                     <td style="width: 10%;">
                                                         @if($user->status == 'Rejected') 
@@ -341,6 +331,7 @@ $(document).ready(function(){
                             showConfirmButton: false,
 			                timer: 2000
                         });
+                        location.reload();
                     }
                     else if(data == 400){
                         Swal.fire({

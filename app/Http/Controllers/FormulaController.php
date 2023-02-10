@@ -32,6 +32,10 @@ class FormulaController extends Controller
         try{
             $store = 1;
             $Support = PlcFormula::orderBy('id','DESC')->limit(1)->get();
+            $fetch = DB::table('plc_pricings')->where('id', $request->p_id)->get();
+            if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
+                DB::table('plc_pricings')->where('id', $request->p_id)->update(['progress' => 80]);
+            }
             if(count($Support) == 0){
                 $result = $store + 0;
             }
@@ -41,6 +45,7 @@ class FormulaController extends Controller
             if($request->cut_dep_cutting != null){
                 $cutting = new PlcFormula();
                 $cutting->oh_id =  $result;
+                $cutting->p_id =  $request->p_id;
                 $cutting->dep =  $request->cut_dep_cutting ? $request->cut_dep_cutting : '0';
                 $cutting->pcpd = $request->cut_pcpd_cutting ? $request->cut_pcpd_cutting : '0';
                 $cutting->noe = $request->cut_noe_cutting ? $request->cut_noe_cutting : '0';
@@ -65,6 +70,7 @@ class FormulaController extends Controller
             if($request->cut_dep_sti != null){
                 $cutting = new PlcFormula();
                 $cutting->oh_id =  $result;
+                $cutting->p_id =  $request->p_id;
                 $cutting->dep =  $request->cut_dep_sti ? $request->cut_dep_sti : '0';
                 $cutting->pcpd = $request->cut_pcpd_sti ? $request->cut_pcpd_sti : '0';
                 $cutting->noe = $request->cut_noe_sti ? $request->cut_noe_sti : '0';
@@ -89,6 +95,7 @@ class FormulaController extends Controller
             if($request->cut_dep_last != null){
                 $cutting = new PlcFormula();
                 $cutting->oh_id =  $result;
+                $cutting->p_id =  $request->p_id;
                 $cutting->dep =  $request->cut_dep_last ? $request->cut_dep_last : '0';
                 $cutting->pcpd = $request->cut_pcpd_last ? $request->cut_pcpd_last : '0';
                 $cutting->noe = $request->cut_noe_last ? $request->cut_noe_last : '0';
@@ -113,6 +120,7 @@ class FormulaController extends Controller
             if($request->cut_dep_clo != null){
                 $cutting = new PlcFormula();
                 $cutting->oh_id =  $result;
+                $cutting->p_id =  $request->p_id;
                 $cutting->dep =  $request->cut_dep_clo ? $request->cut_dep_clo : '0';
                 $cutting->pcpd = $request->cut_pcpd_clo ? $request->cut_pcpd_clo : '0';
                 $cutting->noe = $request->cut_noe_clo ? $request->cut_noe_clo : '0';
@@ -161,6 +169,7 @@ class FormulaController extends Controller
             if($request->cut_dep_p != null){
                 $cutting = new PlcFormula();
                 $cutting->oh_id =  $result;
+                $cutting->p_id =  $request->p_id;
                 $cutting->dep =  $request->cut_dep_p ? $request->cut_dep_p : '0';
                 $cutting->pcpd = $request->cut_pcpd_p ? $request->cut_pcpd_p : '0';
                 $cutting->noe = $request->cut_noe_p ? $request->cut_noe_p : '0';
@@ -186,7 +195,7 @@ class FormulaController extends Controller
                 'message' => 'Formula Sheet Created',
                 'alert-type' => 'success'
             );
-            return redirect()->route('formula-sheet-table')->with($notification);
+            return redirect()->route('pricing-sheet-table')->with($notification);
         }
         catch(Exception $e){
             $notification = array(
@@ -202,6 +211,10 @@ class FormulaController extends Controller
         date_default_timezone_set('Asia/Karachi');
         $id = $request->id;
         try{
+            $fetch = DB::table('plc_pricings')->where('id', $id)->get();
+            if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
+                DB::table('plc_pricings')->where('id', $id)->update(['progress' => 80]);
+            }
             if($request->cut_dep_cutting != null){
                 $dataArray = array(
                     'dep' =>  $request->cut_dep_cutting ? $request->cut_dep_cutting : '0',
@@ -344,7 +357,7 @@ class FormulaController extends Controller
                 'message' => 'Formula Sheet Updated',
                 'alert-type' => 'success'
             );
-            return redirect()->route('formula-sheet-table')->with($notification);
+            return redirect()->route('pricing-sheet-table')->with($notification);
         }
         catch(Exception $e){
             $notification = array(

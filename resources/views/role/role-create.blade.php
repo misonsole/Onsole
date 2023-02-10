@@ -248,6 +248,40 @@
                                                         <input class="form-check-input name Singlecheck222" type="checkbox" value="Formula-Sheet Edit" name="JobOrder[]">
                                                         <span class="form-check-label">Formula-Sheet Edit</span>
                                                     </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet List" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet List</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Create" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Create</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Delete" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Delete</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Edit" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Edit</span>
+                                                    </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Costing" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Costing</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Sales" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Sales</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet PPC" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet PPC</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Transfer" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet Transfer</span>
+                                                    </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allCheck4" type="checkbox">
                                                         <span class="form-check-label">Mark All</span>

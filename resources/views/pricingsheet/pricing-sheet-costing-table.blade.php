@@ -56,45 +56,29 @@
                     <div class="card-body table-responsive p-5">
                         <div class="">
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead class="bg-dark">
                                     <tr>
-                                        <th>#</th>
-                                        <!-- <th>Attachment</th> -->
-                                        <!-- <th>Season</th> -->
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Category</th> -->
-                                        <th data-orderable="false">Design No.</th>
-                                        <th data-orderable="false">Progress</th>
-                                        <th data-orderable="false">Status</th>
-                                        <th data-orderable="false">Remarks</th>
-                                        <th data-orderable="false">Transfer</th>
+                                        <th class="text-white">#</th>
+                                        <th class="text-white" data-orderable="false">Design No.</th>
+                                        <th class="text-white" data-orderable="false">Status</th>
+                                        <th class="text-white" data-orderable="false">Progress</th>
+                                        <th class="text-white" data-orderable="false">Remarks</th>
+                                        <th class="text-white" data-orderable="false">Transfer</th>
                                         <!-- <th>Purpose</th> -->
-                                        <th data-orderable="false">Date & Time</th>
-                                        <th data-orderable="false">Action</th>
-                                        <th data-orderable="false">Evaluate Cost</th>
+                                        <th class="text-white" data-orderable="false">Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Action</th>
+                                        <th class="text-white" data-orderable="false">Evaluate Cost</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>
-                                            @if($user->image == 0)
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('img/photos/10.jpg')}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @else
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('uploads/appsetting/' . $user->image)}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @endif
-                                            <!-- <td>{{$user->season}}</td> -->
-                                            <!-- <td>{{$user->sequence}}</td> -->
-                                            <!-- <td>{{$user->category}}</td> -->
-                                            <td>{{$user->design_no}}</td>
+                                            <td>{{$user->design_no}}</td>             
                                             <td>
                                                 <div class="progress" style="box-shadow: none;">
-                                                    @if($user->progress == '20')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '40')
+                                                    @if($user->progress == '40')
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '45')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
                                                     @elseif($user->progress == '50')
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
                                                     @elseif($user->progress == '60')
@@ -105,7 +89,7 @@
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
                                                     @endif
                                                 </div>
-                                            </td>
+                                            </td>                              
                                             <td class="text-center" style="width: 10%;">
                                                 @if($user->status == "Costing")
                                                 <span class="badge badge-md badge-boxed badge-soft-secondary p-2 w-75">Costing</span>
@@ -224,8 +208,7 @@
                                                         <div class="modal-header" style="background-color: transparent">
                                                             <h5 class="modal-title" id="exampleModalLongTitle">Percentage</h5>
                                                         </div>
-                                                        <form id="Chatform" class="adminForm">
-                                                        @csrf
+                                                       
                                                             <div class="modal-body">
                                                                 <div class="form-group"> 
                                                                     <div class="input-group">
@@ -239,9 +222,8 @@
                                                             </div>
                                                             <div class="modal-footer text-center" style="background-color: transparent">
                                                                 <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
-                                                                <button type="submit" style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3">Calculate </button>
+                                                                <button style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3 submitCalculate">Calculate </button>
                                                             </div>
-                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -269,9 +251,6 @@
                                                             @endif
                                                         @endif
                                                     @else
-                                                        @if($user->status === 'Costing' || $user->status === 'PD')                                                            
-                                                            <a href="pricing-sheet-edit?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
-                                                        @endif
                                                     @endif
                                                     <a href="pricing-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
                                                     <a href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
@@ -280,19 +259,22 @@
                                             <td style="width: 12%;" class="text-center">
                                                 @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
                                                     @if(isset($storeData['Pricing-Sheet Costing']) == 1)
-                                                        @if($user->progress == 80 || $user->progress == 100)
-                                                            @if($user->status != "Sales")
-                                                                @if($user->status != "Rejected")
+                                                        @if($user->status != "Sales")
+                                                            @if($user->status != "Rejected")
+                                                                @if($user->status != "Final")
                                                                 <span class="py-1" style="display: inline-flex;">
                                                                     <span class="w-100">
                                                                         <input id="sonoNum{{$user['id']}}" name="sonoNum" type="text" value="{{$user['profit_price']}}" class="form-control yourclass text-center" style="border: 1px solid #bfbfbf;" readonly>
                                                                     </span>
                                                                     <span>
-                                                                        <a id="calculate" data-id={{$user['id']}} name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a></span>                        
-                                                                    </span>
+                                                                        <a id="calculate" data-id={{$user['id']}} name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a>
+                                                                    </span>                        
+                                                                </span>
+                                                                @else
+                                                                    {{$user['profit_price']}}
                                                                 @endif   
-                                                            @endif
-                                                        @endif    
+                                                            @endif   
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </td>  
@@ -531,26 +513,34 @@ $(document).ready(function(){
         }
 </script>
 <script>
-    $(function(){
-        $('.adminForm').on('submit', function (e){
-            e.preventDefault();
-            $('#exampleModalCenter10').modal('hide');
-            $.ajax({
-                type: 'post',
-                url: 'calculate/',
-                data: $('#Chatform').serialize(),
-                success: function()
-                {
+    $(".submitCalculate").click(function(){
+        $('#exampleModalCenter10').modal('hide');
+        var id = $("#calculateId").val();
+        var value = $("#calculateValue").val();
+        $.ajax({
+            type: 'GET',
+            url: 'calculate/'+id+'/'+value,
+            dataType: "json",
+            success: function(data){
+                console.log("data");
+                console.log(data);
+                if(data == 1){
                     Swal.fire({
                         icon: 'success',
-                        title: "Calculated",
+                        title: "Evaluate Cost Calculated",
                         showConfirmButton: false,
                         timer: 4000
                     });
                     location.reload();
                 }
-            });
+                else if(data == 400){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something went wrong!',
+                    });
+                }
+            }
         });
-      });
+    });
 </script>
 @endsection

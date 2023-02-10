@@ -24,6 +24,7 @@ use App\Models\PlcCategory;
 use Illuminate\Http\Request;
 use App\Models\PlcLastNumber;
 use App\Models\notifications;
+use App\Models\PlcSpecification;
 use App\Models\PlcPricingDetail;
 use App\Models\PlcPricingProcess;
 use App\Models\PlcPricingResource;
@@ -183,7 +184,6 @@ class PricingController extends Controller
                         'fac_qty' => isset($request->i_output[$i]) ? round(1/$request->i_output[$i],4) : '0',
                         'total_qty' => isset($request->i_qty[$i]) ? $request->i_qty[$i] : '0',
                         'process' => isset($request->i_process[$i]) ? $request->i_process[$i] : '0',
-                        'total' => isset($request->i_total_con[$i]) ? $request->i_total_con[$i] : '0',
                         'total' => isset($request->i_output[$i]) ? round((round(1/$request->i_output[$i],4))*($request->i_process[$i]/100)+round(1/$request->i_output[$i],4),4) : '0',
                     );
                     $store = PlcPricingDetail::insert($dataArray);
@@ -432,7 +432,7 @@ class PricingController extends Controller
             $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
             $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
-            $formulaData = PlcFormula::orderBy('id','DESC')->where('oh_id', $overhead_id)->get();
+            $formulaData = PlcFormula::orderBy('id','DESC')->where('p_id', $id)->get();
             foreach($formulaData as $value){
                 if($value->dep == "Cutting"){
                     $cuttingDataF[] = $value;
@@ -1933,10 +1933,35 @@ class PricingController extends Controller
         try{
             $id = $_GET['id'];
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $F_cuttingData = []; $F_StitchingData = []; $F_LaminationData = []; $F_ClosingData = []; $F_LastingData = []; $F_PackingData = [];
             $cuttingData_o = []; $InsoleData_o = []; $LaminationData_o = []; $ClosingData_o = []; $LastingData_o = []; $PackingData_o = [];
             $cuttingData_r = []; $InsoleData_r = []; $LaminationData_r = []; $ClosingData_r = []; $LastingData_r = []; $PackingData_r = [];
             $formulaData = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
             $data = DB::table('plc_pricings')->where('id', $id)->get();
+
+            $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $data = PlcFormula::orderBy('id','ASC')->where('oh_id', $id)->get();
+            foreach($data as $value){
+                if($value->dep == "Cutting"){
+                    $F_cuttingData[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $F_StitchingData[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $F_LaminationData[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $F_ClosingData[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $F_LastingData[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $F_PackingData[] = $value;
+                }
+            }
+
             $userseason = $data[0]->season;
             $userpurpose = $data[0]->purpose;
             $userimage = $data[0]->image;
@@ -2049,6 +2074,7 @@ class PricingController extends Controller
                 'c1'=> 1, 'c2'=> 1, 'c11'=> 1, 'c22'=> 1, 'c111'=> 1, 'c222'=> 1, 'd1'=> 1, 'd2'=> 1, 'd11'=> 1, 'd22'=> 1, 'd111'=> 1, 'd222'=> 1,
                 'e1'=> 1,'e2'=> 1,'e11'=> 1,'e22'=> 1,'e111'=> 1,'e222'=> 1, 'f1'=> 1,'f2'=> 1,'f11'=> 1,'f22'=> 1,'f111'=> 1,'f222'=> 1,
                 'cuttingData'=> $cuttingData, 'InsoleData'=> $InsoleData, 'LaminationData'=> $LaminationData, 'ClosingData'=> $ClosingData, 'LastingData'=> $LastingData, 'PackingData'=> $PackingData,
+                'F_cuttingData'=> $F_cuttingData, 'F_StitchingData'=> $F_StitchingData, 'F_LaminationData'=> $F_LaminationData, 'F_ClosingData'=> $F_ClosingData, 'F_LastingData'=> $F_LastingData, 'F_PackingData'=> $F_PackingData,
                 'cuttingData_o'=> $cuttingData_o, 'InsoleData_o'=> $InsoleData_o, 'LaminationData_o'=> $LaminationData_o, 'ClosingData_o'=> $ClosingData_o, 'LastingData_o'=> $LastingData_o, 'PackingData_o'=> $PackingData_o,
                 'cuttingData_r'=> $cuttingData_r, 'InsoleData_r'=> $InsoleData_r, 'LaminationData_r'=> $LaminationData_r, 'ClosingData_r'=> $ClosingData_r, 'LastingData_r'=> $LastingData_r, 'PackingData_r'=> $PackingData_r,
                 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'image'=> $userimage, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole,
@@ -2275,6 +2301,7 @@ class PricingController extends Controller
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $connPRL = oci_connect("onsole","s",$wizerp);
             $sono = array();
+            $color = array();
             $id = Auth::user()->id;
             $UserDetail = DB::table("users")->where("id", $id)->pluck('userrole');
             $UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
@@ -2314,9 +2341,15 @@ class PricingController extends Controller
             }
             elseif(isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List'])){
                 if(isset($storeData['Pricing-Sheet List']) == 1){
+                    $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
+                    $result1 = oci_parse($connPRL, $sql1);
+                    oci_execute($result1);
+                    while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
+                    }
                     $data = PlcPricing::orderBy('id','DESC')->get();
                 }
-                return view('pricingsheet.pricing-sheet-table')->with(['data'=> $data, 'i'=> 1]);
+                return view('pricingsheet.pricing-sheet-table')->with(['color'=> $color, 'data'=> $data, 'i'=> 1]);
             } 
             else{
                 $data = PlcPricing::orderBy('id','DESC')->get();
@@ -2354,34 +2387,120 @@ class PricingController extends Controller
         }
     }
 
-    public function Calculate(Request $request)
+    public function Calculate($id,$value)
     {
         try{
-            $id = $request->calculateId;
-            $calculateValue = $request->calculateValue;
+            $id = $id;
+            $calculateValue = $value;
             $total1 = 0; $total2 = 0; $total3 = 0;
             $data1 = PlcPricingDetail::where('costing_id', $id)->pluck('value');
             $data2 = PlcPricingResource::where('costing_id', $id)->pluck('pair');
-            $data3 = PlcPricingOverhead::where('costing_id', $id)->pluck('pair');
+            $formulaData = DB::table('plc_formulas')->where('p_id', $id)->get();
+            foreach($formulaData as $value){
+                if($value->dep == "Cutting"){
+                    $cuttingDataF[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $StitchingDataF[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $LaminationDataF[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $ClosingDataF[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $LastingDataF[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $PackingDataF[] = $value;
+                }
+            }
+
+            $t_oh1_total = 0; $un_a_oh_total = 0;
+            if(!$cuttingDataF){
+                $t_oh1_cut = 0; $un_a_oh_cut = 0;
+            }
+            else{
+                foreach($cuttingDataF as $value){      
+                    $t_oh1_cut = $value->t_oh1;
+                    $un_a_oh_cut = $value->un_a_oh;
+                }
+            }
+            if(!$StitchingDataF){
+                $t_oh1_sti = 0; $un_a_oh_sti = 0;
+            }
+            else{
+                foreach($StitchingDataF as $value){
+                    $t_oh1_sti = $value->t_oh1;
+                    $un_a_oh_sti = $value->un_a_oh;
+                }
+            }
+            if(!$LaminationDataF){
+                $t_oh1_lam = 0; $un_a_oh_lam = 0;
+            }
+            else{
+                foreach($LaminationDataF as $value){
+                    $t_oh1_lam = $value->t_oh1;
+                    $un_a_oh_lam = $value->un_a_oh;
+                }
+            }
+            if(!$ClosingDataF){
+              $t_oh1_clo = 0; $un_a_oh_clo = 0;
+            }
+            else{
+                foreach($ClosingDataF as $value){
+                    $t_oh1_clo = $value->t_oh1;
+                    $un_a_oh_clo = $value->un_a_oh;
+                }
+            }
+            if(!$LastingDataF){
+                $t_oh1_last = 0; $un_a_oh_last = 0;
+            }
+            else{
+                foreach($LastingDataF as $value){
+                    $t_oh1_last = $value->t_oh1;
+                    $un_a_oh_last = $value->un_a_oh;
+                }
+            }
+            if(!$PackingDataF){
+             $t_oh1_p = 0; $un_a_oh_p = 0;
+            }
+            else{
+                foreach($PackingDataF as $value){
+                    $t_oh1_p = $value->t_oh1;
+                    $un_a_oh_p = $value->un_a_oh;
+                }
+            }
+
+            $t_oh1_total = $t_oh1_cut + $t_oh1_sti + $t_oh1_lam + $t_oh1_clo + $t_oh1_last + $t_oh1_p;
+            $un_a_oh_total = $un_a_oh_cut + $un_a_oh_sti + $un_a_oh_lam + $un_a_oh_clo + $un_a_oh_last + $un_a_oh_p;
+
+            $AllData = [ 
+                't_oh1_total' => $t_oh1_total,
+                'un_a_oh_total' => $un_a_oh_total,
+            ];
+            
+            $result1 = 100 + $AllData['t_oh1_total'] + $AllData['un_a_oh_total'];
             foreach($data1 as $value1){
                 $total1 = $total1 + $value1;
             }
             foreach($data2 as $value2){
                 $total2 = $total2 + $value2;
             }
-            foreach($data3 as $value3){
-                $total3 = $total3 + $value3;
-            }
+            $total3 = $result1;
             $result = $total1 + $total2 + $total3;
             $profit = ($result / 100) * $calculateValue;
             $actualPrice = $result;
             $total = $actualPrice + $profit;
-            $updateProfit = DB::table('plc_pricings')->where('id', $id)->update(['profit' => $total]);
-            $updatePrice = DB::table('plc_pricings')->where('id', $id)->update(['price' => $result]);
-            $updateValue = DB::table('plc_pricings')->where('id', $id)->update(['profit_price' => $calculateValue]);
-            DB::table('plc_pricings')->where('id', $id)->update(['progress' => 100]);
-            if($updatePrice && $updateProfit){
-                return response()->json($updatePrice);
+            $input1 = array(
+                'profit' => $actualPrice,
+                'price' => $total,
+                'profit_price' => $calculateValue,
+            );
+            $updateData = PlcPricing::where('id', $id)->update($input1);
+            if($updateData){
+                return response()->json($updateData);
             }
             else{
                 $error = 400;

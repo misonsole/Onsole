@@ -57,20 +57,17 @@
                     <div class="card-body table-responsive p-5">
                         <div class="">
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead class="bg-dark">
                                     <tr>
-                                        <th>#</th>
-                                        <!-- <th>Season</th> -->
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Category</th> -->
-                                        <th data-orderable="false">Design No.</th>
-                                        <th data-orderable="false">Progress</th>
-                                        <th data-orderable="false">Status</th>
-                                        <th data-orderable="false">Remarks</th>
-                                        <th data-orderable="false">Transfer</th>
+                                        <th class="text-white">#</th>
+                                        <th class="text-white" data-orderable="false">Design No.</th>
+                                        <th class="text-white" data-orderable="false">Progress</th>
+                                        <th class="text-white" data-orderable="false">Status</th>
+                                        <th class="text-white" data-orderable="false">Remarks</th>
+                                        <th class="text-white" data-orderable="false">Transfer</th>
                                         <!-- <th>Purpose</th> -->
-                                        <th data-orderable="false">Date & Time</th>
-                                        <th data-orderable="false">Action</th>
+                                        <th class="text-white" data-orderable="false">Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,9 +76,6 @@
                                             <td>{{$i++}}
                                                 <input type="text" value="{{$authName}}" hidden class="Authname">
                                             </td>
-                                            <!-- <td>{{$user->season}}</td> -->
-                                            <!-- <td>{{$user->sequence}}</td> -->
-                                            <!-- <td>{{$user->category}}</td> -->
                                             <td>{{$user->design_no}}</td>
                                             <td>
                                                 <div class="progress" style="box-shadow: none;">

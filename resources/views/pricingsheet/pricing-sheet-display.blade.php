@@ -113,6 +113,9 @@
                         <div class="row p-5">
                             <div class="col-md-7 py-4" style="display: inline-flex;">
                                 <span class="">
+                                    @if($data1->profit_price)
+                                    <h6 class="mb-0 mr-3"><b>Profit Ratio&nbsp;:</b></h6>
+                                    @endif
                                     @if($data1->price)
                                     <h6 class="mb-0 mr-3"><b>Sale Price&nbsp;:</b></h6>
                                     @endif
@@ -135,13 +138,18 @@
                                 </span>
                                 <span class="">
                                     <h6 class="mb-0"> 
+                                        @if($data1->profit_price)
+                                            {{$data1->profit_price}} % 
+                                        @endif
+                                    </h6>
+                                    <h6 class="mb-0"> 
                                         @if($data1->profit)
-                                            {{substr($data1->profit, 0,6)}} PKR 
+                                            {{substr($data1->profit, 0,5)}} PKR 
                                         @endif
                                     </h6>
                                     <h6 class="mb-0"> 
                                         @if($data1->price)
-                                            {{substr($data1->price, 0,6)}} PKR
+                                            {{substr($data1->price, 0,5)}} PKR
                                         @endif
                                     </h6> 
                                     <h6 class="mb-0">{{$data1->design_no}}</h6>
@@ -174,12 +182,12 @@
                                     <h6 class="mb-0 mr-3"><b>Product&nbsp;:</b></h6>
                                 </span>
                                 <span class="">
-                                    <h6 class="mb-0"> {{$data1->date}}</h6>
-                                    <h6 class="mb-0"> {{$data1->status}}</h6>
+                                    <h6 class="mb-0">{{$data1->date}}</h6>
+                                    <h6 class="mb-0">{{$data1->status}}</h6>
                                     <h6 class="mb-0">{{$data1->season}}</h6>
-                                    <h6 class="mb-0"> {{$data1->category}}</h6>
+                                    <h6 class="mb-0">{{$data1->category}}</h6>
                                     <h6 class="mb-0">{{$data1->purpose}}</h6>
-                                    <h6 class="mb-0"> {{$data1->product}}</h6>
+                                    <h6 class="mb-0">{{$data1->product}}</h6>
                                 </span>
                             </div>
                             <div class="col-md-2 col-md-2 py-4 text-center">
@@ -208,7 +216,7 @@
                                                 <th class="text-center text-white">Process <br> Loss %</th>
                                                 <th class="text-center text-white">Total <br> Consumption</th>
                                                 <th class="text-center text-white">Rate/Pair</th>
-                                                <th class="text-center text-white">Total Value</th>
+                                                <th class="text-center text-white">Total <br> Value</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -885,12 +893,12 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @if(!$LaminationDataF)
+                                            @if(!$LastingDataF)
                                             <tr class="no-data text-center" style="border-top: none;">
                                                 <td colspan="12" style="border-top: none;">No Data</td>
                                             </tr>
                                             @else
-                                            @foreach($LaminationDataF as $data)
+                                            @foreach($LastingDataF as $data)
                                             <tr>
                                                 <td class="text-center borderTop">{{$data->pds}}</td>
                                                 <td class="text-center borderTop">{{$data->dloh1}}</td>

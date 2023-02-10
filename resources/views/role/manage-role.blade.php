@@ -263,6 +263,40 @@
                                                                 <input class="form-check-input name Singlecheck221" id="formuladelete1" type="checkbox" name="JobOrder[]">
                                                                 <span id="formuladelete" class="form-check-label"></span>
                                                             </label>
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="plc19" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationlist1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationlist" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc20" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationcreate1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationcreate" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc21" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationedit1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationedit" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc22" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationdelete1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationdelete" class="form-check-label"></span>
+                                                            </label>
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="plc23" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationcosting1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationcosting" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc24" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationsales1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationsales" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc25" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationppc1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationppc" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc26" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationtransfer1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationtransfer" class="form-check-label"></span>
+                                                            </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allCheck221" type="checkbox">
                                                                 <span class="form-check-label">Mark All</span>
@@ -1069,6 +1103,7 @@
                 }
 
                 //JobOrder
+                console.log(data[0].joborder);
                 if(data[0].joborder.length === 0){
                     $("#joblist").html("Job-Order List");
                     $("#joblist1").attr('value', "Job-Order List");
@@ -1106,6 +1141,22 @@
                     $("#formulaedit1").attr('value', "Formula-Sheet Edit");
                     $("#formuladelete").html("Formula-Sheet Delete");
                     $("#formuladelete1").attr('value', "Formula-Sheet Delete");
+                    $("#specificationlist").html("Specification-Sheet List");
+                    $("#specificationlist1").attr('value', "Specification-Sheet List");
+                    $("#specificationcreate").html("Specification-Sheet Create");
+                    $("#specificationcreate1").attr('value', "Specification-Sheet Create");
+                    $("#specificationedit").html("Specification-Sheet Edit");
+                    $("#specificationedit1").attr('value', "Specification-Sheet Edit");
+                    $("#specificationdelete").html("Specification-Sheet Delete");
+                    $("#specificationdelete1").attr('value', "Specification-Sheet Delete");
+                    $("#specificationcosting").html("Specification-Sheet Costing");
+                    $("#specificationcosting1").attr('value', "Specification-Sheet Costing");
+                    $("#specificationsales").html("Specification-Sheet Sales");
+                    $("#specificationsales1").attr('value', "Specification-Sheet Sales");
+                    $("#specificationppc").html("Specification-Sheet PPC");
+                    $("#specificationppc1").attr('value', "Specification-Sheet PPC");
+                    $("#specificationtransfer").html("Specification-Sheet Transfer");
+                    $("#specificationtransfer1").attr('value', "Specification-Sheet Transfer");
                     $("#joborder").show();
                 }
                 else{
@@ -1400,7 +1451,6 @@
                         $("#formuladelete1").attr('value', "Formula-Sheet Delete");
                         $("#formuladelete1").attr('checked', false);
                     }
-
                     if(data[0].joborder[17]){
                         $("#plc18").show();
                         $("#formulaedit").html(data[0].joborder[17].role_name);
@@ -1417,6 +1467,144 @@
                         $("#formulaedit").html("Formula-Sheet Edit");
                         $("#formulaedit1").attr('value', "Formula-Sheet Edit");
                         $("#formulaedit1").attr('checked', false);
+                    }
+                    if(data[0].joborder[18]){
+                        $("#plc19").show();
+                        $("#specificationlist").html(data[0].joborder[18].role_name);
+                        $("#specificationlist1").attr('value', data[0].joborder[18].role_name);
+                        if(data[0].joborder[18].value == 1){
+                            $("#specificationlist1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationlist1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc19").show();
+                        $("#specificationlist").html("Specification-Sheet List");
+                        $("#specificationlist1").attr('value', "Specification-Sheet List");
+                        $("#specificationlist1").attr('checked', false);
+                    }
+                    if(data[0].joborder[19]){
+                        $("#plc20").show();
+                        $("#specificationcreate").html(data[0].joborder[19].role_name);
+                        $("#specificationcreate1").attr('value', data[0].joborder[19].role_name);
+                        if(data[0].joborder[19].value == 1){
+                            $("#specificationcreate1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationcreate1").attr('checked', false);
+                        }
+                    }
+                    else
+                    {
+                        $("#plc20").show();
+                        $("#specificationcreate").html("Specification-Sheet Create");
+                        $("#specificationcreate1").attr('value', "Specification-Sheet Create");
+                        $("#specificationcreate1").attr('checked', false);
+                    }
+                    if(data[0].joborder[20]){
+                        $("#plc21").show();
+                        $("#specificationdelete").html(data[0].joborder[20].role_name);
+                        $("#specificationdelete1").attr('value', data[0].joborder[20].role_name);
+                        if(data[0].joborder[20].value == 1){
+                            $("#specificationdelete1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationdelete1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc21").show();
+                        $("#specificationdelete").html("Specification-Sheet Delete");
+                        $("#specificationdelete1").attr('value', "Specification-Sheet Delete");
+                        $("#specificationdelete1").attr('checked', false);
+                    }
+                    if(data[0].joborder[21]){
+                        $("#plc22").show();
+                        $("#specificationedit").html(data[0].joborder[21].role_name);
+                        $("#specificationedit1").attr('value', data[0].joborder[21].role_name);
+                        if(data[0].joborder[21].value == 1){
+                            $("#specificationedit1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationedit1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc22").show();
+                        $("#specificationedit").html("Specification-Sheet Edit");
+                        $("#specificationedit1").attr('value', "Specification-Sheet Edit");
+                        $("#specificationedit1").attr('checked', false);
+                    }
+                    if(data[0].joborder[22]){
+                        $("#plc23").show();
+                        $("#specificationcosting").html(data[0].joborder[22].role_name);
+                        $("#specificationcosting1").attr('value', data[0].joborder[22].role_name);
+                        if(data[0].joborder[22].value == 1){
+                            $("#specificationcosting1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationcosting1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc23").show();
+                        $("#specificationcosting").html("Specification-Sheet Costing");
+                        $("#specificationcosting1").attr('value', "Specification-Sheet Costing");
+                        $("#specificationcosting1").attr('checked', false);
+                    }
+                    if(data[0].joborder[23]){
+                        $("#plc24").show();
+                        $("#specificationsales").html(data[0].joborder[23].role_name);
+                        $("#specificationsales1").attr('value', data[0].joborder[23].role_name);
+                        if(data[0].joborder[23].value == 1){
+                            $("#specificationsales1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationsales1").attr('checked', false);
+                        }
+                    }
+                    else
+                    {
+                        $("#plc24").show();
+                        $("#specificationsales").html("Specification-Sheet Sales");
+                        $("#specificationsales1").attr('value', "Specification-Sheet Sales");
+                        $("#specificationsales1").attr('checked', false);
+                    }
+                    if(data[0].joborder[24]){
+                        $("#plc25").show();
+                        $("#specificationppc").html(data[0].joborder[24].role_name);
+                        $("#specificationppc1").attr('value', data[0].joborder[24].role_name);
+                        if(data[0].joborder[24].value == 1){
+                            $("#specificationppc1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationppc1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc25").show();
+                        $("#specificationppc").html("Specification-Sheet PPC");
+                        $("#specificationppc1").attr('value', "Specification-Sheet PPC");
+                        $("#specificationppc1").attr('checked', false);
+                    }
+                    if(data[0].joborder[25]){
+                        $("#plc26").show();
+                        $("#specificationtransfer").html(data[0].joborder[25].role_name);
+                        $("#specificationtransfer1").attr('value', data[0].joborder[25].role_name);
+                        if(data[0].joborder[25].value == 1){
+                            $("#specificationtransfer1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationtransfer1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc26").show();
+                        $("#specificationtransfer").html("Specification-Sheet Transfer");
+                        $("#specificationtransfer1").attr('value', "Specification-Sheet Transfer");
+                        $("#specificationtransfer1").attr('checked', false);
                     }
                     $("#joborder").show();
                 }

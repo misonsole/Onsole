@@ -89,806 +89,879 @@
         <div class="col-lg-12 mb-5">
             <div class="card">
                 <div class="card-body p-5">
-                    <form action="{{url('specification-sheet-update')}}" method="post" enctype="multipart/form-data">
+                    <form id="myForm">
                     @csrf
                         <div class="form-group row py-0 mb-0">
                             <div class="col-sm-12 col-md-12">
                                 <span id="StrengthDisp3" style="font-size: 15px !important;" class="badge displayBadgess text-light py-3 mt-2"></span> 
                             </div>
                         </div>
-                        <div class="form-group row py-2 mb-5">
-                            <div class="col-sm-8 col-md-8 py-0">
-                                <div class="form-group row py-0">
+                        <div class="form-group row py-2 mb-5 mt-2">
+                            <div class="col-sm-10 col-md-10 py-0">
+                                <div class="form-group row py-0 mb-0">
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <input type="text" name="id" value="{{$id}}" hidden>
-                                        <label><b style="color: #6c757d">Season</b></label>
-                                        <select id="season" name="season" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Season</option> 
-                                            @foreach($season as $names)
-                                                <option <?php if($names == $userseason) echo 'selected="selected"'; ?> value="{{ $names }}">{{ $names }}</option>
-                                            @endforeach  
-                                        </select>
+                                        <label><b style="color: #6c757d">Season</b></label>      
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$userseason}}</p>                                      
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Category</b></label>
-                                        <select id="category" name="category" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Category</option> 
-                                            @foreach($category as $names)
-                                                <option <?php if($names['description'] == $usercategory) echo 'selected="selected"'; ?> value="{{ $names['description'] }}">{{ $names['description'] }}</option>
-                                            @endforeach  
-                                        </select>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$usercategory}}</p>                                      
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Shape</b></label>
-                                        <select id="shape" name="shape" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Shape</option> 
-                                            @foreach($shape as $names)
-                                                <option <?php if($names['description'] == $usershape) echo 'selected="selected"'; ?> value="{{ $names['description'] }}">{{ $names['description'] }}</option>
-                                            @endforeach  
-                                        </select>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$usershape}}</p>                                      
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Sole</b></label>
-                                        <select id="sole" name="sole" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Sole</option> 
-                                            @foreach($sole as $names)
-                                                <option <?php if($names['description'] == $usersole) echo 'selected="selected"'; ?> value="{{ $names['description'] }}">{{ $names['description'] }}</option>
-                                            @endforeach  
-                                        </select>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$usersole}}</p>                                      
                                     </div>
                                 </div>
-                                <div class="form-group row py-0">
+                                <div class="form-group row py-0 mb-0">
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Project</b></label>
-                                        <select id="project" name="project" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Project</option> 
-                                            @foreach($project as $names)
-                                                <option <?php if($names['description'] == $userproject) echo 'selected="selected"'; ?>  style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
-                                            @endforeach  
-                                        </select>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$userproject}}</p>                                      
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Range</b></label>
-                                        <select id="range" name="range" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Range</option> 
-                                            @foreach($range as $names)
-                                                <option <?php if($names['description'] == $userrange) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
-                                            @endforeach  
-                                        </select>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$userrange}}</p>                                      
                                     </div>
-                                    <div class="col-sm-6 col-md-6 py-1">
+                                    <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Design No</b></label>
-                                        <span style="display: flex;">
-                                            <input value="{{$userdesign}}" type="text" class="form-control py-2 yourclass readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="design" name="design" placeholder="Design No" required>
-                                            <span>
-                                                <a id="selectsequence" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-autorenew"></i></a>                                        
-                                            </span>
-                                        </span>
-                                    <span id="StrengthDisp2" style="font-size: 13px !important;" class="badge displayBadgess text-light py-2 mt-2"></span>                                                          
+                                        <p style="font-family: 'Poppins', sans-serif; text-transform: capitalize;">{{$userdesign}}</p>                                      
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 py-1">
+                                        <label><b style="color: #6c757d">Date</b></label>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$date}}</p>                                      
                                     </div>
                                 </div>
-                                <div class="form-group row py-0">
+                                <div class="form-group row py-0 mb-0">
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Purpose</b></label>
-                                        <input value="{{$userpurpose}}" id="purpose" name="purpose" type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Purpose" required>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$userpurpose}}</p>                                      
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
                                         <label><b style="color: #6c757d">Product</b></label>
-                                        <input value="{{$userproduct}}" id="product" name="product" type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Product Name">
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$userproduct}}</p>                                      
                                     </div>
                                     <div class="col-sm-6 col-md-6 py-1">
                                         <label><b style="color: #6c757d">Design Description</b></label>
-                                        <input value="{{$userdescription}}" type="text" class="form-control py-2 yourclass readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="description" name="description" placeholder="Design Description" required>
+                                        <p style="font-family: 'Poppins', sans-serif; text-transform: capitalize;">{{$userdescription}}</p>                                      
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-md-4 py-1">
-                                <div class="form-group row py-0">
-                                    <div class="col-md-6 py-0">
-                                    <label><b style="color: #6c757d">Last</b></label>
-                                        <select id="last" name="last" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Last</option> 
-                                            @foreach($last as $names)
-                                                <option <?php if($names['last_no'] == $userlast) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['last_no'] }}">{{$names['last_no']}}</option>
-                                            @endforeach  
-                                        </select>
-                                        <div class="row py-3">
-                                            <div class="col-sm-12 py-1">
-                                                <label class="mt-2"><b style="color: #6c757d">Pricing Sheet No</b></label>
-                                                <select id="pricing" name="pricing" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                                    <option selected disabled>Select Pricing Sheet No</option> 
-                                                    @foreach($designNo as $names)
-                                                        <option <?php if($names == $userpricing) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names}}">{{$names}}</option>
-                                                    @endforeach  
-                                                </select>           
+                            <div class="col-sm-2 col-md-2 py-1 text-center">
+                                @if(isset($image) && !empty($image)) 
+                                <img src="{{ asset('uploads/appsetting/' . $image) }}" alt="profile-user" height="100" class="rounded mt-2">
+                                @else
+                                <img src="{{asset('img/photos/10.jpg')}}" alt="profile-user" height="100" class="rounded mt-2">
+                                @endif                                 
+                            </div>
+                        </div>
+                        @foreach($colorCounts as $colordata)
+                        <div id="accordion">
+                            <div class="card">
+                                <div class="card-header collapsed py-2 text-white text-center" style="border: none; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); cursor: pointer; border-radius: 4px;" id="headingOne11{{$colorCountsNo1++}}" data-toggle="collapse" data-target="#collapseOne1233{{$colorCountsNo2++}}" aria-expanded="true" aria-controls="collapseOne">
+                                    <span style="text-transform: capitalize;">{{$colordata['color']}}</span> 
+                                </div>
+                                <div id="collapseOne1233{{$colorCountsNo3++}}" class="collapse" aria-labelledby="headingOne11{{$colorCountsNo4++}}" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="form-group row text-center bg-dark py-1 mx-1" style="border-radius: 4px;">
+                                            <div class="col-sm-2 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Material Code</b></label>
+                                            </div>
+                                            <div class="col-sm-2 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Description</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Unit</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Division</b></label>
+                                            </div>
+                                            <div class="col-sm-2 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Sub Division</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Output</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process <br> Code</b></label>
+                                            </div>                            
+                                            <div class="col-sm-1 py-1" hidden>
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Factor</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1" hidden>
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Quantity</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1">
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process <br> Loss %</b></label>
+                                            </div>
+                                            <div class="col-sm-1 py-1" hidden>
+                                                <label class="mb-0"><b style="color: white; font-weight: 500;">Total Consumption</b></label>
                                             </div>
                                         </div>
-                                        <div class="row py-2">
-                                            <div class="col-sm-12">
-                                                <label><b style="color: #6c757d">Sequence</b></label>
-                                                <input value="{{$sequence}}" id="sequence" name="sequence" type="text" class="form-control yourclass readonly" style="border: 1px solid #bfbfbf;">
+                                        <div class="form-group row mb-0">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">Cutting</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4 w-100 cutting" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="cuttingrow{{$colordata['id']}}">
+                                            @if(!$cuttingData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="cut_item_code1" type="text" name="cut_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code" required>                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'cutting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="u_description1" name="u_description[]" placeholder="Description" required>
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="u_uom1" name="u_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="cut_division" name="cut_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="cut_subdivision" name="cut_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div> 
+                                                <div class="col-sm-2 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_output" name="cut_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_cut_code" name="cut_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_fac" name="cut_fac[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_qty" name="cut_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_process" name="cut_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4 w-100 cutting" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($cuttingData as $data)
+                                                @if($data->color == $colordata['color'])
+                                                <div id="insolerow1{{$a1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="cut_item_code1" value="{{$data->item_code}}" type="text" style="border: 1px solid #bfbfbf;" name="cut_item_code[]" class="form-control py-2" placeholder="Code" required>                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'cutting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description1" name="cut_description[]" placeholder="Description" required>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_uom1" name="cut_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_id1" name="cut_id1[]">
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_color" name="cut_color[]">
+                                                    </div>                               
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="cut_division" name="cut_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivcutting{{$data->id}}">
+                                                        <select id="cut_subdivision" name="cut_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input value="{{$data->output}}" type="text" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_output" name="cut_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_cut_code" name="cut_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_fac" name="cut_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" value="{{$data->total_qty}}" type="number" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_qty" name="cut_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" value="{{$data->process}}" type="number" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_process" name="cut_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" value="{{$data->total}}" type="number" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$a2++}}" data-id="{{$data->id}}" type="button" class="removeRow1 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="cutting">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0 mt-5">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">INSOLE</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="insole" type="button" class="btn btn-outline-primary btn-round px-4 w-100 insole" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="insolerow{{$colordata['id']}}">
+                                            @if(!$InsoleData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="i_item_code1" type="text" name="i_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'insole')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description1" name="i_description[]" placeholder="Description">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom1" name="i_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="i_division" name="i_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="i_subdivision" name="i_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div>                      
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_output" name="i_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_cut_code" name="clo_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_fac" name="i_fac[]" placeholder="Factor">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_qty" name="i_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_process" name="i_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button id="insole" type="button" class="btn btn-outline-danger btn-round px-4 w-100 insole" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($InsoleData as $data)
+                                                @if($data->color == $colordata['color'])
+                                                <div id="insolerow2{{$b1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="i_item_code1" value="{{$data->item_code}}" type="text" style="border: 1px solid #bfbfbf;" name="i_item_code[]" class="form-control py-2" placeholder="Code">                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'insole')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description1" name="i_description[]" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom1" name="i_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_id1" name="i_id1[]">
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_color" name="i_color[]">
+                                                    </div> 
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="i_division" name="i_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="insole{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivinsole{{$data->id}}">
+                                                        <select id="i_subdivision" name="i_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioninsole{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_output" name="i_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_cut_code" name="i_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_fac" name="i_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_qty" name="i_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_process" name="i_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$b2++}}" data-id="{{$data->id}}" type="button" class="removeRow2 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="insole">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0 mt-5">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">Lamination</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="lamination" type="button" class="btn btn-outline-primary btn-round px-4 w-100 lamination" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="laminationrow{{$colordata['id']}}">
+                                            @if(!$LaminationData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="lam_item_code1" type="text" name="lam_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'lamination')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description1" name="lam_description[]" placeholder="Description">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom1" name="lam_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="lam_division" name="lam_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="lam_subdivision" name="lam_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div>                    
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_output" name="lam_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_cut_code" name="clo_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_fac" name="lam_fac[]" placeholder="Factor">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_qty" name="lam_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_process" name="lam_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button type="button" class="btn btn-outline-danger btn-round px-4 w-100 lamination" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($LaminationData as $data)
+                                                @if($data->color == $colordata['color'])                                            
+                                                <div id="insolerow3{{$c1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="lam_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="lam_item_code[]" class="form-control py-2" placeholder="Code">                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'lamination')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description1" name="lam_description[]" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom1" name="lam_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_id1" name="lam_id1[]">
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_color" name="lam_color[]">
+                                                    </div> 
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="lam_division" name="lam_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="lamination{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivlamination{{$data->id}}">
+                                                        <select id="lam_subdivision" name="lam_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionlamination{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_output" name="lam_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_cut_code" name="lam_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_fac" name="lam_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_qty" name="lam_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_process" name="lam_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$c2++}}" data-id="{{$data->id}}" type="button" class="removeRow3 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="lamination">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0 mt-5">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">Closing</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="closing" type="button" class="btn btn-outline-primary btn-round px-4 w-100 closing" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="closingrow{{$colordata['id']}}">
+                                            @if(!$ClosingData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="clo_item_code1" type="text" name="clo_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'closing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description1" name="clo_description[]" placeholder="Description">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom1" name="clo_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="clo_division" name="clo_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="clo_subdivision" name="clo_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div>                      
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_output" name="clo_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_cut_code" name="clo_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_fac" name="clo_fac[]" placeholder="Factor">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_qty" name="clo_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_process" name="clo_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button type="button" class="btn btn-outline-danger btn-round px-4 w-100 closing" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($ClosingData as $data)
+                                                @if($data->color == $colordata['color'])
+                                                <div id="insolerow4{{$d1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="clo_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="clo_item_code[]" class="form-control py-2" placeholder="Code">                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'closing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description1" name="clo_description[]" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom1" name="clo_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_id1" name="clo_id1[]">
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_color" name="clo_color[]">
+                                                    </div> 
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="clo_division" name="clo_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="closing{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivclosing{{$data->id}}">
+                                                        <select id="clo_subdivision" name="clo_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionclosing{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_output" name="clo_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_cut_code" name="clo_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_fac" name="clo_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_qty" name="clo_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_process" name="clo_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$d2++}}" data-id="{{$data->id}}" type="button" class="removeRow4 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="insole">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0 mt-5">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">Lasting</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="lasting" type="button" class="btn btn-outline-primary btn-round px-4 w-100 lasting" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="lastingrow{{$colordata['id']}}">
+                                            @if(!$LastingData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="last_item_code1" type="text" style="border: 1px solid #bfbfbf;" name="last_item_code[]" class="form-control py-2 yourclass" placeholder="Code">                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'lasting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description1" name="last_description[]" placeholder="Description">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom1" name="last_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="last_division" name="last_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="last_subdivision" name="last_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div>                    
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_output" name="last_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_cut_code" name="last_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_fac" name="last_fac[]" placeholder="Factor">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_qty" name="last_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_process" name="last_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button type="button" class="btn btn-outline-danger btn-round px-4 lasting" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($LastingData as $data)
+                                                @if($data->color == $colordata['color'])
+                                                <div id="insolerow5{{$e1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="last_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="last_item_code[]" class="form-control py-2" placeholder="Code">                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'lasting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description1" name="last_description[]" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom1" name="last_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_id1" name="last_id1[]">
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_color" name="last_color[]">
+                                                    </div> 
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="last_division" name="last_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="lasting{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivlasting{{$data->id}}">
+                                                        <select id="last_subdivision" name="last_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionlasting{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_output" name="last_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_cut_code" name="last_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_fac" name="last_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_qty" name="last_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_process" name="last_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$e2++}}" data-id="{{$data->id}}" type="button" class="removeRow5 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="lasting">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row mb-0 mt-5">
+                                            <div class="col-sm-2 text-center py-1">
+                                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                                    <label class="mb-0 text-white" style="font-weight: 600;">Packing</label>
+                                                </div>  
+                                            </div>
+                                            <div class="col-sm-9 text-center">
+                                            </div>
+                                            <div class="col-sm-1 text-center">
+                                                <button id="packing" type="button" class="btn btn-outline-primary btn-round px-4 w-100 packing" data-id="{{$colordata['id']}}" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div id="packingrow{{$colordata['id']}}">
+                                            @if(!$PackingData)
+                                            <div class="form-group row mb-2">
+                                                <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                    <span class="w-100">
+                                                        <input readonly id="p_item_code1" type="text" name="p_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
+                                                    </span>
+                                                    <span>
+                                                        <a data-toggle="modal" onclick="myFunction1('1', 'packing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-2 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description1" name="p_description[]" placeholder="Description">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_uom1" name="p_uom[]" placeholder="Unit">
+                                                </div> 
+                                                <div class="col-sm-1 py-1">
+                                                    <select id="p_division" name="p_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="cutting">
+                                                    <option selected value="null">None</option>
+                                                        @foreach($division as $names)
+                                                            <option style="text-transform: capitalize" value="{{$names['id']}}">{{$names['description']}}</option>
+                                                        @endforeach     
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 py-1" id="divisioncuttingdiv">
+                                                    <select id="p_subdivision" name="p_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisioncutting">  
+                                                        <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                    </select>
+                                                </div>                  
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_output" name="p_output[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_cut_code" name="cut_cut_code[]" placeholder="Code">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_fac" name="p_fac[]" placeholder="Factor">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_qty" name="p_qty[]" placeholder="Quantity">
+                                                </div>
+                                                <div class="col-sm-1 py-1">
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_process" name="p_process[]" placeholder="%">
+                                                </div>
+                                                <div class="col-sm-1 py-1" hidden>
+                                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
+                                                </div>
+                                                <div class="col-sm-1 py-1 text-center">
+                                                    <button type="button" class="btn btn-outline-danger btn-round px-4 w-100 packing" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            @foreach($PackingData as $data)
+                                                @if($data->color == $colordata['color'])
+                                                <div id="insolerow6{{$f1++}}" class="form-group row mb-2">
+                                                    <div class="col-sm-2 py-1" style="display: inline-flex;">
+                                                        <span class="w-100">
+                                                            <input readonly id="p_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="p_item_code[]" class="form-control py-2" placeholder="Code">                                        
+                                                        </span>
+                                                        <span>
+                                                            <a data-toggle="modal" onclick="myFunction1('1', 'packing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1">
+                                                        <input readonly type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description1" name="p_description[]" placeholder="Description">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input readonly type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_uom1" name="p_uom[]" placeholder="Unit">
+                                                        <input hidden readonly type="text" value="{{$data->id}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_id1" name="p_id1[]">                                                        
+                                                        <input hidden readonly type="text" value="{{$colordata['color']}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_color" name="p_color[]">
+                                                    </div> 
+                                                    <div class="col-sm-1 py-1">
+                                                        <select id="p_division" name="p_division[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select division" data-id="packing{{$data->id}}">
+                                                        <option selected value="null">None</option>
+                                                            @foreach($division as $names)
+                                                                <option <?php if($data->division == $names['id']) echo 'selected="selected"'; ?> style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
+                                                            @endforeach     
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 py-1" id="divisiondivpacking{{$data->id}}">
+                                                        <select id="p_subdivision" name="p_subdivision[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select divisionpacking{{$data->id}}">  
+                                                            <option style="text-transform: capitalize" value="{{$data->subdivision}}">{{$data->subdivision}}</option>
+                                                        </select>
+                                                    </div>        
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_output" name="p_output[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input type="text" value="{{$data->cut_code}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_cut_code" name="p_cut_code[]" placeholder="Code">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_fac" name="p_fac[]" placeholder="Factor">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_qty" name="p_qty[]" placeholder="Quantity">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1">
+                                                        <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_process" name="p_process[]" placeholder="%">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1" hidden>
+                                                        <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
+                                                    </div>
+                                                    <div class="col-sm-1 py-1 text-center">
+                                                        <button id="{{$f2++}}" data-id="{{$data->id}}" type="button" class="removeRow6 btn btn-outline-danger btn-round px-4 w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            @endforeach
+                                            @endif
+                                            <div name="packing">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 py-1">
-                                        <label><b style="color: #6c757d">Attachment</b></label><br>
-                                        @if(isset($image) && !empty($image)) 
-                                        <input type="file" name="image" id="input-file-now-custom-1" class="dropify" data-default-file="{{ asset('uploads/appsetting/' . $image) }}"/>
-                                        @else
-                                        <input type="file" name="image" id="input-file-now-custom-1" class="dropify" data-default-file="img/photos/23.jpg" required/>
-                                        @endif
-                                        <br>
-                                        <label><b style="color: #6c757d">Date</b></label>
-                                        <input value="{{$date}}" type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Select Date" id="mdate" name="date">
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row text-center bg-dark py-1 mx-1" style="border-radius: 4px;">
-                            <div class="col-sm-2 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Material Code</b></label>
-                            </div>
-                            <div class="col-sm-3 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Description</b></label>
-                            </div>
-                            <div class="col-sm-1 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Unit</b></label>
-                            </div>
-                            <div class="col-sm-2 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Component</b></label>
-                            </div>
-                            <div class="col-sm-2 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Output</b></label>
-                            </div>
-                            <div class="col-sm-1 py-1" hidden>
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Factor</b></label>
-                            </div>
-                            <div class="col-sm-1 py-1" hidden>
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Consumption Quantity</b></label>
-                            </div>
-                            <div class="col-sm-1 py-1">
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Process Loss %</b></label>
-                            </div>
-                            <div class="col-sm-1 py-1" hidden>
-                                <label class="mb-0"><b style="color: white; font-weight: 500;">Total Consumption</b></label>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">Cutting</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="cuttingrow">
-                            @if(!$cuttingData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="cut_item_code1" type="text" name="cut_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code" required>                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'cutting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="u_description1" name="u_description[]" placeholder="Description" required>
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="u_uom1" name="u_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="cut_component" name="cut_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_output" name="cut_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_fac" name="cut_fac[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_qty" name="cut_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_process" name="cut_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="cutting" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($cuttingData as $data)
-                            <div id="insolerow1{{$a1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="cut_item_code1" value="{{$data->item_code}}" type="text" style="border: 1px solid #bfbfbf;" name="cut_item_code[]" class="form-control py-2" placeholder="Code" required>                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'cutting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description1" name="cut_description[]" placeholder="Description" required>
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_uom1" name="cut_uom[]" placeholder="Unit">
-                                </div>                               
-                                <div class="col-sm-2 py-1">
-                                    <select id="cut_component" name="cut_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input value="{{$data->output}}" type="text" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_output" name="cut_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_fac" name="cut_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" value="{{$data->total_qty}}" type="number" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_qty" name="cut_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" value="{{$data->process}}" type="number" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_process" name="cut_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" value="{{$data->total}}" type="number" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$a2++}}" type="button" class="removeRow1 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="cutting">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0 mt-5">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">INSOLE</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="insole" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="insolerow">
-                            @if(!$InsoleData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="i_item_code1" type="text" name="i_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'insole')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description1" name="i_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom1" name="i_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="i_component" name="i_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach    
-                                    </select>
-                                </div>                      
-                                <div class="col-sm-2 py-1">
-                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_output" name="i_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_fac" name="i_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_qty" name="i_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_process" name="i_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button type="button" class="btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($InsoleData as $data)
-                            <div id="insolerow2{{$b1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="i_item_code1" value="{{$data->item_code}}" type="text" style="border: 1px solid #bfbfbf;" name="i_item_code[]" class="form-control py-2" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'insole')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description1" name="i_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_uom1" name="i_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="i_component" name="i_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_output" name="i_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_fac" name="i_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_qty" name="i_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_process" name="i_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$b2++}}" type="button" class="removeRow2 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="insole">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0 mt-5">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">Lamination</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="lamination" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="laminationrow">
-                            @if(!$LaminationData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="lam_item_code1" type="text" name="lam_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'lamination')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description1" name="lam_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom1" name="lam_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="lam_component" name="lam_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach   
-                                    </select>
-                                </div>                      
-                                <div class="col-sm-2 py-1">
-                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_output" name="lam_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_fac" name="lam_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_qty" name="lam_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_process" name="lam_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button type="button" class="btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($LaminationData as $data)
-                            <div id="insolerow3{{$c1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="lam_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="lam_item_code[]" class="form-control py-2" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'lamination')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description1" name="lam_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_uom1" name="lam_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="lam_component" name="lam_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach 
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_output" name="lam_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_fac" name="lam_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_qty" name="lam_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_process" name="lam_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$c2++}}" type="button" class="removeRow3 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="lamination">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0 mt-5">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">Closing</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="closing" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="closingrow">
-                            @if(!$ClosingData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="clo_item_code1" type="text" name="clo_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'closing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description1" name="clo_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom1" name="clo_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="clo_component" name="clo_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach     
-                                    </select>
-                                </div>                      
-                                <div class="col-sm-2 py-1">
-                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_output" name="clo_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_fac" name="clo_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_qty" name="clo_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_process" name="clo_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button type="button" class="btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($ClosingData as $data)
-                            <div id="insolerow4{{$d1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="clo_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="clo_item_code[]" class="form-control py-2" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'closing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description1" name="clo_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_uom1" name="clo_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="clo_component" name="clo_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach  
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_output" name="clo_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_fac" name="clo_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_qty" name="clo_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_process" name="clo_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$d2++}}" type="button" class="removeRow4 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="insole">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0 mt-5">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">Lasting</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="lasting" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="lastingrow">
-                            @if(!$LastingData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="last_item_code1" type="text" style="border: 1px solid #bfbfbf;" name="last_item_code[]" class="form-control py-2 yourclass" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'lasting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description1" name="last_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom1" name="last_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="last_component" name="last_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach    
-                                    </select>
-                                </div>                      
-                                <div class="col-sm-2 py-1">
-                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_output" name="last_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_fac" name="last_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_qty" name="last_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_process" name="last_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button type="button" class="btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($LastingData as $data)
-                            <div id="insolerow5{{$e1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="last_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="last_item_code[]" class="form-control py-2" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'lasting')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description1" name="last_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_uom1" name="last_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="last_component" name="last_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach 
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_output" name="last_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_fac" name="last_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_qty" name="last_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_process" name="last_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$e2++}}" type="button" class="removeRow5 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="lasting">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-0 mt-5">
-                            <div class="col-sm-2 text-center">
-                                <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                    <label class="mb-0 text-white" style="font-weight: 600;">Packing</label>
-                                </div>  
-                            </div>
-                            <div class="col-sm-9 text-center">
-                            </div>
-                            <div class="col-sm-1 text-center">
-                                <button id="packing" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                            </div>
-                        </div>
-                        <div id="packingrow">
-                            @if(!$PackingData)
-                            <div class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="p_item_code1" type="text" name="p_item_code[]" style="border: 1px solid #bfbfbf;" class="form-control py-2 yourclass" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'packing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description1" name="p_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_uom1" name="p_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="p_component" name="p_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach    
-                                    </select>
-                                </div>                      
-                                <div class="col-sm-2 py-1">
-                                    <input type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_output" name="p_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_fac" name="p_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_qty" name="p_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_process" name="p_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" class="form-control py-2 yourclass yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button type="button" class="btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @else
-                            @foreach($PackingData as $data)
-                            <div id="insolerow6{{$f1++}}" class="form-group row mb-2">
-                                <div class="col-sm-2 py-1" style="display: inline-flex;">
-                                    <span>
-                                        <input id="p_item_code1" value="{{$data->item_code}}" style="border: 1px solid #bfbfbf;" type="text" name="p_item_code[]" class="form-control py-2" placeholder="Code">                                        
-                                    </span>
-                                    <span>
-                                        <a data-toggle="modal" onclick="myFunction1('1', 'packing')" data-id="1" data-target="#exampleModalCenter" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn_l ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-progress-upload"></i></a>                                        
-                                    </span>
-                                </div>
-                                <div class="col-sm-3 py-1">
-                                    <input type="text" value="{{$data->description}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description1" name="p_description[]" placeholder="Description">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input type="text" value="{{$data->uom}}" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_uom1" name="p_uom[]" placeholder="Unit">
-                                </div> 
-                                <div class="col-sm-2 py-1">
-                                    <select id="p_component" name="p_component[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                    <option selected value="null">None</option> 
-                                        @foreach($location as $names)
-                                            <option <?php if ($data->component == $names['location_no']) echo "selected"; ?> style="text-transform: capitalize" value="{{$names['location_no'] }}">{{$names['location_no']}}</option>
-                                        @endforeach 
-                                    </select>
-                                </div>          
-                                <div class="col-sm-2 py-1">
-                                    <input type="text" value="{{$data->output}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_output" name="p_output[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" step=".01" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_fac" name="p_fac[]" placeholder="Factor">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total_qty}}" step=".0001" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_qty" name="p_qty[]" placeholder="Quantity">
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                    <input min="0" type="number" value="{{$data->process}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_process" name="p_process[]" placeholder="%">
-                                </div>
-                                <div class="col-sm-1 py-1" hidden>
-                                    <input min="0" type="number" value="{{$data->total}}" class="form-control py-2" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
-                                </div>
-                                <div class="col-sm-1 py-1 text-center">
-                                    <button id="{{$f2++}}" type="button" class="removeRow6 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                            <div name="packing">
-                            </div>
-                        </div>
-                        <br><br>
+                        @endforeach
+                        <br>
                         <div class="form-group row mt-5">
                             <div class="col-sm-3 mb-1 mb-sm-0">
                             </div>
                             <div class="col-sm-6">
-                                <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">Update</button>
+                                <a id="Check" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); cursor: pointer;" class="btn px-5 py-1 btn-lg btn-block text-white">Update</a>
                             </div>
                             <div class="col-sm-3">
                             </div>
@@ -982,35 +1055,67 @@
 <script>
 $(document).ready(function(){ 
 	$("#loader1").fadeOut(1200);
+    $("body").addClass("enlarge-menu");
+    $("#Check").on('click',function(){
+        if(removeId.length > 0){
+            $.ajax({
+                type: "POST",
+                url: "removeSpec",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "data" : JSON.stringify(removeId),
+                }
+            });
+        }
+        $("#myForm").attr("method", "post");
+        $("#myForm").attr("enctype", "multipart/form-data");
+        $("#myForm").attr("action", "specification-sheet-update");
+        document.getElementById("myForm").submit();
+    }); 
 });
 </script>
 <script>
+    const removeId = [];
     $(document).on('click', '.removeRow1', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow1'+id+'').remove();
     });
     $(document).on('click', '.removeRow2', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow2'+id+'').remove();
     });
     $(document).on('click', '.removeRow3', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow3'+id+'').remove();
     });
     $(document).on('click', '.removeRow4', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow4'+id+'').remove();
     });
     $(document).on('click', '.removeRow5', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow5'+id+'').remove();
     });
     $(document).on('click', '.removeRow6', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow6'+id+'').remove();
     });
     $(document).on('click', '.removeRow7', function(){
         var id = $(this).attr("id"); 
+        var dataId = $(this).attr("data-id"); 
+        removeId.push(dataId);
         $('#insolerow7'+id+'').remove();
     });
 </script>
@@ -1047,8 +1152,6 @@ $(document).ready(function(){
             $("#p_item_code"+count).val(col2);
             code = document.getElementById('p_item_code'+count).value;
         }
-        console.log("Ajax");
-        console.log(code);
         $.ajax({
             type: 'GET',
             url: 'itemcode/'+code,
@@ -1089,7 +1192,7 @@ $(document).ready(function(){
     });
 });
 </script>
-<script src="assets/js/costingsheet.js"></script>
+<script src="assets/js/costingsheetforspec.js"></script>
 <script>
     $(".ModelBtn").click(function(){
         var id = $(this).attr("data-id");
@@ -1098,16 +1201,34 @@ $(document).ready(function(){
 </script>
 <script>
     function myFunction1(value,name12){
-        console.log("Function");
         if(value == 1){
             $("#counter").val(value);
             $("#name21").val(name12);
         }
         else{
             $("#counter").val(value);
-            $("#name21").val(name12.id);
+            $("#name21").val(name12[0].id);
         }
     } 
+</script>
+<script>
+    function getval(input,id,value){
+        id = id[0].id.replace(/(^"|"$)/g, '');
+        $.ajax({
+                type: 'GET',
+                url: 'getSubDivision/'+value,
+                dataType: "json",
+                success: function(data){
+                    if(data){
+                        $("#division"+id+"1div"+input).find('select').find('option').remove();
+                        for(i=0; i<data.length; i++){
+                            var $dataToBeAppended = `<option>`+data[i].description+`</option>`;
+                            $(".division"+id+"1"+input).append($dataToBeAppended);
+                        }
+                    }
+                }
+            });
+    }
 </script>
 <script>
 @if(Session::has('message'))
@@ -1381,5 +1502,26 @@ function autocomplete(inp, arr){
         $('#StrengthDisp2').delay(3000).fadeOut(600);
         $('#StrengthDisp3').delay(4000).fadeOut(600); 
     });
+</script>
+<script>
+$('.division').on('change', function(){
+    var value = $(this).val();
+    var id = $(this).attr("data-id");
+    var name2 = $(this).attr("name2");
+    $.ajax({
+            type: 'GET',
+            url: 'getSubDivision/'+value,
+            dataType: "json",
+            success: function(data){
+                if(data){
+                    $("#divisiondiv"+id).find('select').find('option').remove();
+                    for(i=0; i<data.length; i++){
+                        var $dataToBeAppended = `<option>`+data[i].description+`</option>`;
+                        $(".division"+id).append($dataToBeAppended);
+                    }
+                }
+            }
+        });
+});
 </script>
 @endsection

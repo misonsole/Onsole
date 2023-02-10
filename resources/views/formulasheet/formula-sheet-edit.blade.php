@@ -98,7 +98,6 @@
                         <div class="form-group row py-0">
                         <form action="{{url('formula-sheet-update')}}" method="post" enctype="multipart/form-data">
                         @csrf
-
                             @if(!$cuttingData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tbody style="border-bottom: 20px solid white;">
@@ -109,7 +108,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                  
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="text" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="cutting" id="cut_pcpd_cutting" name="cut_pcpd_cutting">
                                             <input type="text" value="Cutting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_cutting" name="cut_dep_cutting" hidden>
                                             <input type="text" value="{{$id}}" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="id" name="id" hidden>
@@ -212,7 +211,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                  
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="text" value="{{$data->pcpd}}" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="cutting" id="cut_pcpd_cutting" name="cut_pcpd_cutting">
                                             <input type="text" value="Cutting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_cutting" name="cut_dep_cutting" hidden>
                                             <input type="text" value="{{$id}}" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="id" name="id" hidden>
@@ -306,7 +305,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             @if(!$StitchingData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">                            
                                 <tbody style="border-bottom: 20px solid white;">
@@ -317,7 +315,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                      
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="sti" id="cut_pcpd_sti" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_sti">
                                             <input type="text" value="Stitching" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_sti" name="cut_dep_sti" hidden>
                                         </td>
@@ -419,7 +417,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                      
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" value="{{$data->pcpd}}" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="sti" id="cut_pcpd_sti" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_sti">
                                             <input type="text" value="Stitching" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_sti" name="cut_dep_sti" hidden>
                                         </td>
@@ -512,7 +510,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             @if(!$LastingData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tbody style="border-bottom: 20px solid white;">
@@ -523,7 +520,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                               
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="last" id="cut_pcpd_last" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_last">
                                             <input type="text" value="Lasting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_last" name="cut_dep_last" hidden>
                                         </td>
@@ -625,7 +622,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                               
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" value="{{$data->pcpd}}" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="last" id="cut_pcpd_last" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_last">
                                             <input type="text" value="Lasting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_last" name="cut_dep_last" hidden>
                                         </td>
@@ -718,7 +715,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             @if(!$ClosingData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">                                
                                 <tbody style="border-bottom: 20px solid white;">
@@ -729,7 +725,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                          
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="clo" id="cut_pcpd_clo" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_clo">
                                             <input type="text" value="Closing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_clo" name="cut_dep_clo" hidden>
                                         </td>
@@ -831,7 +827,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                          
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" value="{{$data->pcpd}}"  class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="clo" id="cut_pcpd_clo" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_clo">
                                             <input type="text" value="Closing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_clo" name="cut_dep_clo" hidden>
                                         </td>
@@ -924,7 +920,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             @if(!$LaminationData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tbody style="border-bottom: 20px solid white;">
@@ -935,7 +930,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                         
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="lam" id="cut_pcpd_lam" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_lam">
                                             <input type="text" value="Lamination" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_lam" name="cut_dep_lam" hidden>
                                         </td>
@@ -1037,7 +1032,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                         
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" value="{{$data->pcpd}}" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="lam" id="cut_pcpd_lam" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_lam">
                                             <input type="text" value="Lamination" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_lam" name="cut_dep_lam" hidden>
                                         </td>
@@ -1130,7 +1125,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             @if(!$PackingData)
                             <table class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <tbody>
@@ -1141,7 +1135,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                    
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="p" id="cut_pcpd_p" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_p">
                                             <input type="text" value="Packing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_p" name="cut_dep_p" hidden>
                                         </td>
@@ -1243,7 +1237,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                    
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" value="{{$data->pcpd}}" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="p" id="cut_pcpd_p" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_p">
                                             <input type="text" value="Packing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_p" name="cut_dep_p" hidden>
                                         </td>
@@ -1336,7 +1330,6 @@
                             </table>
                             @endforeach
                             @endif
-
                             <div class="form-group row mt-5">
                                 <div class="col-sm-4 mb-1 mb-sm-0">
                                 </div>

@@ -9,7 +9,7 @@ class PlcSpecificationResource extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['specification_id','value-set','description','remarks','pair','material'];
+    protected $fillable = ['costing_id','value-set','description','remarks','pair','material'];
 
     public $timestamps = true;
 }

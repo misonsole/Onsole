@@ -511,17 +511,17 @@
                             </li> 
                             @endif
                         @endif
-                        @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']) || isset($storeData['Pricing-Sheet Production']) && !empty($storeData['Pricing-Sheet Production']) || isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List']) || isset($storeData['Quality-Control']) && !empty($storeData['Quality-Control']) || isset($storeData['Production-Planning-Control']) && !empty($storeData['Production-Planning-Control'])) 
-                            @if(isset($storeData['Pricing-Sheet Sales']) == 1 || isset($storeData['Pricing-Sheet Production']) == 1 || isset($storeData['Pricing-Sheet Costing']) == 1 || isset($storeData['Pricing-Sheet List']) == 1 || isset($storeData['Quality-Control']) == 1 || isset($storeData['Production-Planning-Control']) == 1)
-                            <li hidden class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : '' }}">
+                        @if(isset($storeData['Specification-Sheet List']) && !empty($storeData['Specification-Sheet List']) || isset($storeData['Specification-Sheet Costing']) && !empty($storeData['Specification-Sheet Costing'])) 
+                            @if(isset($storeData['Specification-Sheet List']) == 1 || isset($storeData['Specification-Sheet Costing']) == 1)
+                            <li class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : Request::path() == 'specification-sheet-create-costing' ? 'mm-active active' : '' }}">
                                 <a href="javascript: void(0);" class="{{ Request::path() == 'specification-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>Specification Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
                                     @if(isset($storeData['Pricing-Sheet Create']) && !empty($storeData['Pricing-Sheet Create'])) 
                                         @if(isset($storeData['Pricing-Sheet Create']) == 1)
-                                            <li class="nav-item"><a class="nav-link" href="{{url('specification-sheet')}}"><i class="ti-control-record"></i>Create</a></li> 
+                                            <li hidden class="nav-item"><a class="nav-link" href="{{url('specification-sheet')}}"><i class="ti-control-record"></i>Create</a></li> 
                                         @endif
                                     @endif
-                                    <li class="{{ Request::path() == 'specification-sheet-view' ? 'nav-item active' : Request::path() == 'specification-sheet-edit' ? 'nav-item active' : Request::path() == 'specification-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'specification-sheet-edit' ? 'nav-link active' : Request::path() == 'specification-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('specification-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
+                                    <li class="{{ Request::path() == 'specification-sheet-view' ? 'nav-item active' : Request::path() == 'specification-sheet-edit' ? 'nav-item active' : Request::path() == 'specification-sheet-create-costing' ? 'nav-item active' : Request::path() == 'specification-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'specification-sheet-edit' ? 'nav-link active' : Request::path() == 'specification-sheet-view' ? 'nav-link active' : Request::path() == 'specification-sheet-create-costing' ? 'nav-link active' : 'nav-link' }}" href="{{url('specification-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                                 </ul>
                             </li>  
                             @endif

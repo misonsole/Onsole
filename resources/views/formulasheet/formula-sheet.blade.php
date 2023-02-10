@@ -84,7 +84,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                  
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="text" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="cutting" id="cut_pcpd_cutting" name="cut_pcpd_cutting">
                                             <input type="text" value="Cutting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_cutting" name="cut_dep_cutting" hidden>
                                         </td>
@@ -184,7 +184,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                      
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="sti" id="cut_pcpd_sti" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_sti">
                                             <input type="text" value="Stitching" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_sti" name="cut_dep_sti" hidden>
                                         </td>
@@ -284,7 +284,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                               
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="last" id="cut_pcpd_last" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_last">
                                             <input type="text" value="Lasting" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_last" name="cut_dep_last" hidden>
                                         </td>
@@ -384,7 +384,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                                                                          
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="clo" id="cut_pcpd_clo" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_clo">
                                             <input type="text" value="Closing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_clo" name="cut_dep_clo" hidden>
                                         </td>
@@ -484,7 +484,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                         
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="lam" id="cut_pcpd_lam" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_lam">
                                             <input type="text" value="Lamination" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_lam" name="cut_dep_lam" hidden>
                                         </td>
@@ -584,7 +584,7 @@
                                     </tr> 
                                     <tr id="ccolorDivtr" class="bg-dark">                    
                                         <td style="border-top: none; width: 10%; padding-top: 2%;" class="pl-4">
-                                            <label><b style="color: #ffffff;">Production Capacity <br> Per Day</b></label>
+                                            <label><b style="color: #ffffff;">Production <br> Capacity Daily</b></label>
                                             <input type="number" class="form-control py-2 yourclass text-center calculate" style="border: 1px solid #bfbfbf;" data-id="p" id="cut_pcpd_p" min="0" oninput="this.value = Math.abs(this.value)" name="cut_pcpd_p">
                                             <input type="text" value="Packing" class="form-control py-2 yourclass text-center" style="border: 1px solid #bfbfbf;" id="cut_dep_p" name="cut_dep_p" hidden>
                                         </td>
