@@ -476,6 +476,8 @@
 </div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
+<script src="assets/js/cdn1.min.js"></script>
+<script src="assets/js/cdn2.min.js"></script>
 <script>
 $(document).ready(function(){ 
     $("#loader1").fadeOut(1200);

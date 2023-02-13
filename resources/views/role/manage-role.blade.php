@@ -360,7 +360,7 @@
                                                                 <span id="itemadjustment" class="form-check-label"></span>
                                                             </label>
                                                             <label class="form-check form-check-inline" id="report4" style="display: none;">
-                                                                <input class="form-check-input name reportCheck" id="hepldesk1r" type="checkbox" name="Reports[]">
+                                                                <input class="form-check-input name reportCheck" id="hepldeskr1" type="checkbox" name="Reports[]">
                                                                 <span id="hepldeskr" class="form-check-label"></span>
                                                             </label>
                                                             <label class="form-check form-check-inline" id="report5" style="display: none;">
@@ -460,43 +460,103 @@
 
                 //Report
                 if(data[0].reports.length === 0){
+                    $("#report1").show();
                     $("#rma").html("RMA Report");
                     $("#rma1").attr('value', "RMA Report");
+                    $("#rma1").attr('checked', false);
+
+                    $("#report2").show();
                     $("#salesissue").html("Sales Issue");
                     $("#salesissue1").attr('value', "Sales Issue");
+                    $("#salesissue1").attr('checked', false);
+
+                    $("#report3").show();
                     $("#itemadjustment").html("Item Adjustment");
                     $("#itemadjustment1").attr('value', "Item Adjustment");
+                    $("#itemadjustment1").attr('checked', false);
+
+                    $("#report4").show();
                     $("#hepldeskr").html("Help Desk Report");
                     $("#hepldeskr1").attr('value', "Help Desk Report");
+                    $("#hepldeskr1").attr('checked', false);
+
+
+                    $("#report5").show();
                     $("#joborderr").html("Job Order Report");
                     $("#joborderr1").attr('value', "Job Order Report");
+                    $("#joborderr1").attr('checked', false);
+
+                    $("#report6").show();
                     $("#joborderj").html("Job Order Journey");
                     $("#joborderj1").attr('value', "Job Order Journey");
+                    $("#joborderj1").attr('checked', false);
 
+
+                    $("#report7").show();
                     $("#salesorder").html("Sales Order Report");
                     $("#salesorder1").attr('value', "Sales Order Report");
+                    $("#salesorder1").attr('checked', false);
+
+
+                    $("#report8").show();
                     $("#transferissue").html("Transfer Issue Report");
                     $("#transferissue1").attr('value', "Transfer Issue Report");
+                    $("#transferissue1").attr('checked', false);
+
+
+                    $("#report9").show();
                     $("#itempurchase").html("Item Purchase Report");
                     $("#itempurchase1").attr('value', "Item Purchase Report");
+                    $("#itempurchase1").attr('checked', false);
+
+
+                    $("#report10").show();
                     $("#purchaserate").html("Purchase Rate History");
                     $("#purchaserate1").attr('value', "Purchase Rate History");
+                    $("#purchaserate1").attr('checked', false);
+
+
+                    $("#report11").show();
                     $("#mtransfer").html("M Transfer Against JO");
                     $("#mtransfer1").attr('value', "M Transfer Against JO");
+                    $("#mtransfer1").attr('checked', false);
 
+
+                    $("#report12").show();
                     $("#materialc").html("Material Consumption");
                     $("#materialc1").attr('value', "Material Consumption");
+                    $("#rma1").attr('checked', false);
+
+
+                    $("#report13").show();
                     $("#purchaseorder").html("Purchase Order Report");
                     $("#purchaseorder1").attr('value', "Purchase Order Report");
+                    $("#purchaseorder1").attr('checked', false);
+
+
+                    $("#report14").show();
                     $("#consumptione").html("Consumption Expection");
                     $("#consumptione1").attr('value', "Consumption Expection");
+                    $("#consumptione1").attr('checked', false);
+
+
+                    $("#report15").show();
                     $("#purchaseinovie").html("Purchase Invoice Report");
                     $("#purchaseinovie1").attr('value', "Purchase Invoice Report");
+                    $("#rma1").attr('checked', false);
+
+
+                    $("#report16").show();
                     $("#workorderitem").html("Work Order Item Costing");
                     $("#workorderitem1").attr('value', "Work Order Item Costing");
+                    $("#workorderitem1").attr('checked', false);
 
+
+                    $("#report17").show();
                     $("#consumptionc").html("Consumption Comparison");
                     $("#consumptionc1").attr('value', "Consumption Comparison");
+                    $("#consumptionc1").attr('checked', false);
+
                     $("#reports").show();
                 }
                 else{

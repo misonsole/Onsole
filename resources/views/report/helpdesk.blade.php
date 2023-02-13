@@ -394,14 +394,8 @@
 </div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
-<!-- <script src="plugins/moment/moment.js"></script>
-<script src="plugins/apexcharts/apexcharts.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<script src="plugins/chartjs/chart.min.js"></script>
-<script src="plugins/chartjs/roundedBar.min.js"></script>
-<script src="plugins/lightpick/lightpick.js"></script>
-<script src="assets/pages/jquery.sales_dashboard.init.js"></script> -->
+<script src="assets/js/cdn1.min.js"></script>
+<script src="assets/js/cdn2.min.js"></script>
 <script>
 $(document).ready(function(){ 
     $("#userDiv1").show();

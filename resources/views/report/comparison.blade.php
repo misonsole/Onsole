@@ -183,6 +183,10 @@
                                         <th class="text-white" data-orderable="false">Act <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Act <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Act <br> Amount</th>
+                                        <th class="text-white" data-orderable="false">Prod Qty</th>
+                                        <th class="text-white" data-orderable="false">Cons ASPer PQTY</th>
+                                        <th class="text-white" data-orderable="false">JO Qty</th>
+                                        <th class="text-white" data-orderable="false">Cons Per Pair</th>
                                         <th class="text-white" data-orderable="false">Est <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Est <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Est <br> Amount</th>
@@ -202,207 +206,80 @@
                                             $item_code = array(); $purchinv = array(); $pidate2 = array(); $arrayhe = array(); $sumof = array(0,0,0,0,0,0,0,0,0);  $rmcoarr = array();
                                             $poqtytotal = $poreceivedtotal = $porejectedtotal = $poacceptedtotal = $popendingtotal = $poamounttotal = $postaxtotal = $pototal = 0;
                                             $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = 0;
-                                        ?>                         
-                                        @foreach($data as $row)
-                                        <?php
-                                            $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No;
-                                            if($tempcode != $row->Job_Id){
-                                                if($rem_check == 1){
-                                                     ?>
-                                                    <?php                                     
-                                                    $sql5 = "SELECT ITEM.ITEM_CODE, ITEM.ITEM_DESC, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT
-                                                                FROM ISSUE_MT IM
-                                                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$sono0','%')
-                                                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID
-                                                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
-                                                                JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$department0','%')
-                                                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                                                                GROUP BY ITEM.ITEM_CODE, ITEM.ITEM_DESC
-                                                                ORDER BY ITEM.ITEM_CODE";
-                                                    $result5 = oci_parse($conn,$sql5);
-                                                    oci_execute($result5);
-                                                    while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                                                        if($row5["QUANTITY"] == 0){
-                                                            $rateof = 0;
-                                                        }else{
-                                                            $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
-                                                        }
-                                                        $printok = 1;
-                                                        for($keycode = 0; $keycode < count($item_code); $keycode++){
-                                                            if($row5["ITEM_CODE"] == $item_code[$keycode]) { $printok = 0; }
-                                                        }
-                                                        if($printok == 1) { ?>
-                                                        <tr style="text-align: center;">
-                                                            <td hidden>1</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_CODE"]; ?></strong></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_DESC"]; ?></strong></td>
-                                                            <td><?php echo number_format($row5["QUANTITY"],2); ?></td>
-                                                            <td><?php echo number_format($rateof,2); ?></td>
-                                                            <td><?php echo number_format($row5["AMOUNT"],2); ?></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <?php }
-                                                        } unset($item_code);
-                                                } ?>
-                                                        <tr style="text-align: center; background-color:rgba(0, 0, 0, 0.14); font-size: 14px;">
-                                                            <td hidden>1</td>
-                                                            <td><strong><?php echo $row->Job_Id." <br> ".$row->Date_Created; ?></strong></td>
-                                                            <td><strong><?php echo $row->Cust_Name; ?></strong></td>
-                                                            <td><strong><?php echo $row->So_No; ?></strong></td>
-                                                            <td><strong><?php echo $row->Onsole_Art_No; ?></strong></td>
-                                                            <td>
-                                                                <?php $explode = explode("-",$row->Delivery_Date); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
-                                                            <td><strong><?php echo $row->Department; ?></strong></td>
-                                                            <td>
-                                                                <?php $explode = explode(" ",$row->Season); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
-                                                            <td style="color: #484891;"><strong><?php echo $row->Rm_Code;  $item_code[0] = $row->Rm_Code; ?></strong></td>
-                                                            <td>
-                                                                <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td>  
-                                                                <?php $item_code_now = $row->Rm_Code;
-                                                                    $sql3 = "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
-                                                                                FROM ISSUE_MT IM
-                                                                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                                                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                                                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                                                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                                                                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
-                                                                        $result3 = oci_parse($conn,$sql3);
-                                                                        oci_execute($result3);
-                                                                        while($row3=oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){ 
-                                                                            if($row3["QUANTITY"] != 0){
-                                                                                $rate2 = $row3["AMOUNT"]/$row3["QUANTITY"];
-                                                                            }else{
-                                                                                $rate2 = 0; $amounte = 0;
-                                                                            } ?>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo $row3["QUANTITY"]; $actqty = $row3["QUANTITY"]; ?></td>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($rate2,2);  $actrate = $rate2; ?></td>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($row3["AMOUNT"],2);  $actamt = $row3["AMOUNT"]; ?></td>
-                                                            <?php } ?>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->sum,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($actrate,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->sum),2);  $estamt = $actrate*$row->sum; ?></td>
-                                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
-                                                            if($diffqty == 0) { ?>
-                                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.30);"><?php echo number_format($diffqty,2); ?></td> <?php
-                                                            } else { ?>
-                                                                <td style="color: red; background-color:rgba(0, 0, 255, 0.30);"><?php echo number_format($diffqty,2); ?></td>
-                                                            <?php } ?>
-                                                            <td><?php echo number_format($diffamt,2); ?></td>
-                                                        </tr>
-                                                    <?php $tempcode = $row->Job_Id; $rem_check = 1; $key = 1; } else { ?>
-                                                        <tr style="text-align: center;">
-                                                            <td hidden>1</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td style="color: #484891;"><strong><?php echo $row->Rm_Code; ?></strong></td>
-                                                            <td>
-                                                                <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
-                                                                <?php $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
-                                                                    $sql3 =  "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
-                                                                                FROM ISSUE_MT IM
-                                                                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                                                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                                                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                                                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                                                                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
-                                                                        $result3 = oci_parse($conn,$sql3);
-                                                                        oci_execute($result3);
-                                                                        while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)) { ?>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($row3["QUANTITY"],2);  $actqty = $row3["QUANTITY"]; ?></td>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($row3["RATE"],2);  $actrate = $row3["RATE"]; ?></td>
-                                                            <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($row3["AMOUNT"],2);  $actamt = $row3["AMOUNT"]; ?></td>
-                                                            <?php  } ?>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->sum,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($actrate,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->sum),2);  $estamt = $actrate*$row->sum; ?></td>
-                                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
-                                                            if($diffqty < 00.5 && $diffqty >-0.5) { ?>
-                                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.33);"><?php echo number_format($diffqty,2); ?></td> <?php
-                                                            }else{ ?>
-                                                                <td style="color: red; background-color:rgba(0, 0, 255, 0.33);"><?php echo number_format($diffqty,2); ?></td>
-                                                            <?php } ?>
-                                                            <td><?php echo number_format($diffamt,2); ?></td>
-                                                        </tr>
-                                                    <?php   }  $article0 = $row->Onsole_Art_No; $department0 = $row->Department;  $sono0 = $row->So_No; 
+                                            ?>
 
-                            
-                                                    $sql5 = "SELECT ITEM.ITEM_CODE, ITEM.ITEM_DESC, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT
-                                                                FROM ISSUE_MT IM
-                                                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$sono0','%')
-                                                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID
-                                                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
-                                                                JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$department0','%')
-                                                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                                                                GROUP BY ITEM.ITEM_CODE,ITEM.ITEM_DESC
-                                                                ORDER BY ITEM.ITEM_CODE";
-                                                    $result5 = oci_parse($conn,$sql5);
-                                                    oci_execute($result5);
-                                                    while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                                                        if($row5["QUANTITY"] == 0){
-                                                            $rateof = 0;
-                                                        }else{
-                                                            $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
-                                                        }
-                                                        $printok = 1;
-                                                        for($keycode = 0; $keycode < count($item_code); $keycode++){
-                                                            if($row5["ITEM_CODE"] == $item_code[$keycode]) { $printok = 0; }
-                                                        }
-                                                        if($printok == 1) { ?>
-                                                        <tr style="text-align: center;">
-                                                            <td hidden>1</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_CODE"]; ?></strong></td>
-                                                            <td style="color: maroon;"><strong><?php echo $row5["ITEM_DESC"]; ?></strong></td>
-                                                            <td><?php echo number_format($row5["QUANTITY"],2); ?></td>
-                                                            <td><?php echo number_format($rateof,2); ?></td>
-                                                            <td><?php echo number_format($row5["AMOUNT"],2); ?></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <?php
-                                                        }
-                                                    } 
-                                                    unset($item_code); ?>
+                                        @foreach($data as $row)
+                                        <?php $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code; ?>                         
+                                            <tr class="table_row"> 
+                                                <td>{{$row->Job_Id}} <br> {{$row->Date_Created}}</td>
+                                                <td>{{$row->Cust_Name}}</td>
+                                                <td>{{$row->So_No}}</td>
+                                                <td>{{$row->Onsole_Art_No}}</td>
+                                                <td>{{$row->Delivery_Date}}</td>
+                                                <td>{{$row->Department}}</td>
+                                                <td>{{$row->Season}}</td>
+                                                <td style="color: darkblue;">{{$row->Rm_Code}}</td>
+                                                <td>{{$row->Job_Desc}}</td>
+                                                <?php
+                                                $sql5 = "SELECT T.PROD_QTY, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
+                                                            FROM ISSUE_MT IM
+                                                            JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
+                                                            JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                                            JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                                            JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                                            JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
+                                                            JOIN (  SELECT IMM.SALES_ORDER_ID, SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
+                                                                    FROM ISSUE_MT IMM
+                                                                    JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
+                                                                    JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                                                    JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                                                    JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                                                    JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
+                                                                            
+                                                                    WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                                                                    GROUP BY IMM.SALES_ORDER_ID
+                                                                    
+                                                                ) T ON T.SALES_ORDER_ID = SOM.SALES_ORDER_ID
+                                                            WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                                                            GROUP BY T.PROD_QTY";
+
+                                                $result5 = oci_parse($conn,$sql5);
+                                                oci_execute($result5);
+                                                $row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS);
+                                                if($row5 == NULL){  $diffqty2 = 0; ?>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actqty = 0; ?></td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actrate = 0; ?></td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actamt = 0; ?></td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">0</td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">N/A</td>
+                                                <?php } else { ?>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{$row5["QUANTITY"]}} <?php  $actqty = $row5["QUANTITY"]; ?></td>             
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["RATE"],2)}} <?php $actrate = $row5["RATE"]; ?></td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["AMOUNT"],2)}} <?php $actamt = $row5["AMOUNT"]; ?></td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"],2)}} </td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"]*($row->Qty/$row->sum),2)}} </td>        
+                                                <?php }  ?>
+
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
+                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->sum;                                          
+                                            if($row5 == NULL){
+                                                $diffqty2 = 0; ?>
+                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{number_format($diffqty2,2); }}</td>
+                                            <?php } else {
+                                                $diffqty2 = $row5["QUANTITY"]; ?>
+                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{ $diffqty2 }}</td>
+                                            <?php } ?>                    
+                                            <?php if($diffqty == 0){ ?>
+                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{number_format($diffqty,2) }}</td> <?php
+                                            } else { ?>
+                                                <td style="color: red; background-color:rgba(0, 0, 255,0.2);">{{number_format($diffqty,2) }}</td>
+                                            <?php } ?>
+                                                <td>{{number_format($diffamt,2) }}</td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 @endif
@@ -534,16 +411,8 @@
 </div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
-<!-- <script src="plugins/moment/moment.js"></script>
-<script src="plugins/apexcharts/apexcharts.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<script src="plugins/chartjs/chart.min.js"></script>
-<script src="plugins/chartjs/roundedBar.min.js"></script>
-<script src="plugins/lightpick/lightpick.js"></script>
-<script src="assets/pages/jquery.sales_dashboard.init.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="assets/js/cdn1.min.js"></script>
+<script src="assets/js/cdn2.min.js"></script>
 <script>
 $(document).ready(function(){ 
     $("#loader1").fadeOut(1200);
@@ -671,9 +540,4 @@ $("#reportModel").on('click',function(){
         }
     });
 </script>
-<!-- <script src="plugins/moment/moment.js"></script>
-<script src="plugins/apexcharts/apexcharts.min.js"></script>
-<script src="plugins/apexcharts/irregular-data-series.js"></script>
-<script src="plugins/apexcharts/ohlc.js"></script>
-<script src="assets/pages/jquery.apexcharts.init.js"></script> -->
 @endsection

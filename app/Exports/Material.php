@@ -38,7 +38,6 @@ class Material implements FromCollection, WithHeadings
             'Quantity',
             'Rate',
             'Amount',
-            'Quantity',
             'Category Code',
             'Category Description',
             'Contra A/C Code',

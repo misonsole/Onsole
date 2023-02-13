@@ -5111,8 +5111,7 @@ class ReportController extends Controller
                     'Quantity' => $value['PRIMARY_QTY'],
                     'Rate' => round($rate,2),
                     'Amount' => number_format($value["ISSUE_AMOUNT"],2),
-                    'Quantity' => $value['ISSUE_DATE'],
-                    'Category Code' => number_format($value["ISSUE_AMOUNT"],2),
+                    'Category Code' => $value["CAT_CODE"],
                     'Category Description' => $value['CAT_DESC'],
                     'Contra A/C Code' => $loopData["CODE_VALUE"]." - ".$newcodevalue[0],
                     'Contra A/C DESC' => $loopData["ACCOUNTING_DESC"]." - ".$fromcode[0],
@@ -5536,7 +5535,7 @@ class ReportController extends Controller
             ];
 
             return view('report.material')->with([
-                "i" => 1, "dep" => 0, "data" => $data, "book" => $books, "subcat" => $subcat, "cat" => $cat, "rate2" => $rate2, "Permission" => 1, "sono" => $sono,
+                "i" => 1, "dep" => 0, "data" => $data, "book" => $books, "subcat" => $subcat, "cat" => $cat, "rate2" => $rate2, "rate" => $rate, "Permission" => 1, "sono" => $sono,
                 "locator" => $locator, "enddte2" => $enddte2, "transfer" => $transfers, "strtdte2" => $strtdte2, "strtdte3" => $strtdte3, "strtdte2" => $strtdte2,
                 "sum_qty" => number_format($sum_qty,2), "sum_rate" => number_format($sum_rate,2), "sum_amount" => number_format($sum_amount,2), "artcode" => $artcode,
                 "daterangeVal" => $daterangeVal, "strtdte" => $strtdte, "locator" => $locator, "booksVal" => $books, "strtdte2a" => $strtdte2a, "strtdte3a" => $strtdte3a,
@@ -5841,17 +5840,28 @@ class ReportController extends Controller
                 $enddte = "";
             }
 
-            $Arraydata = DB::table('job_sheet_order_mt')
-                                ->join('job_sheet_order_det', 'job_sheet_order_det.Job_Id', '=', 'job_sheet_order_mt.Job_Id')
-                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_mt.Date_Created','job_sheet_order_det.Rm_Code','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Job_Desc',DB::raw("SUM(job_sheet_order_det.Qty) as sum"))
-                                ->where('job_sheet_order_mt.Department','like',$department.'%')
-                                ->where('job_sheet_order_mt.Cust_Name','like',$customer.'%')
-                                ->where('job_sheet_order_mt.Season','like',$season.'%')
-                                ->where('job_sheet_order_mt.So_No','like',$sono.'%')
-                                ->where('job_sheet_order_mt.Onsole_Art_No','like',$article.'%')
-                                ->where('job_sheet_order_det.Rm_Code','like',$rmcodet.'%')
-                                ->where('job_sheet_order_mt.Date_Created','like',$datecheck.'%')
-                                ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created')->orderBy('job_sheet_order_mt.Job_Id','asc')->get();    
+            // $Arraydata = DB::table('job_sheet_order_mt')
+            //                     ->select('t.totals', 'job_sheet_order_mt.Job_Id', 'job_sheet_order_mt.Cust_Name', 'job_sheet_order_mt.Onsole_Art_No', 'job_sheet_order_mt.So_No', 'job_sheet_order_mt.Season', 'job_sheet_order_mt.Department', 'job_sheet_order_det.Rm_Code', 'job_sheet_order_det.Job_Desc', DB::raw("'SUM'('job_sheet_order_det.Qty') as Quantity"), 'job_sheet_order_mt.Delivery_Date', DB::raw("'DATE_FORMAT'('JSOM.Date_Created', '%d-%b-%Y') as RTTIME"))
+            //                     ->join('job_sheet_order_det','job_sheet_order_det.Job_Id','=','job_sheet_order_mt.Job_Id')
+            //                     ->join(DB::raw("DB::table('job_sheet_order_sbmt')
+            //                         ->select('job_sheet_order_sbmt.Job_Id', DB::raw("'SUM'('job_sheet_order_sbmt.total') as totals"))
+            //                         ->groupBy('job_sheet_order_sbmt.Job_Id')") as t), function($join){
+            //                         $join->on('t.Job_Id','=','job_sheet_order_mt.Job_Id');
+            //                     }
+            //                     ->where('job_sheet_order_mt.Department','like','".$department."%')
+            //                     ->where('job_sheet_order_mt.Cust_Name','like','".$customer."%')
+            //                     ->where('job_sheet_order_mt.Season','like','".$season."%')
+            //                     ->where('job_sheet_order_mt.So_No','like','".$sono."%')
+            //                     ->where('job_sheet_order_mt.Onsole_Art_No','like','".$article."%')
+            //                     ->where('job_sheet_order_det.Rm_Code','like','".$rmcodet."%')
+            //                     ->where('job_sheet_order_mt.Date_Created','like','".$datecheck."%')
+            //                     ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','t.totals')
+            //                     ->orderBy('job_sheet_order_mt.Job_Id','asc')
+            //                     ->orderBy('job_sheet_order_det.Rm_Code','asc')
+            //                     ->limit(50)
+            //                     ->get();
+
+            dd($Arraydata);
 
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
@@ -6406,7 +6416,7 @@ class ReportController extends Controller
             $rmcodef = $request->rmcodef;
             $daterange = $request->daterange;
             $supplier = $request->supplier;
-            $ostatus = $request->ostatus;
+            $ostatus = $request->status;
             $purchaseorder = $request->purchaseorder;
             $rmcodet = $request->rmcodet;
             $daterange = str_replace(" - ", "", $request['daterange']);
@@ -6606,7 +6616,7 @@ class ReportController extends Controller
             $rmcodef = $request->rmcodef;
             $daterange = $request->daterange;
             $supplier = $request->supplier;
-            $ostatus = $request->ostatus;
+            $ostatus = $request->status;
             $purchaseorder = $request->purchaseorder;
             $rmcodet = $request->rmcodet;
             $daterange = str_replace(" - ", "", $request['daterange']);
@@ -6789,7 +6799,7 @@ class ReportController extends Controller
                 'rmcodef' => $request->rmcodef,
                 'supplier' => $request->supplier,
                 'rmcodet' => $request->rmcodet,
-                'ostatus' => $request->ostatus,
+                'ostatus' => $request->status,
                 'purchaseorder' => $request->purchaseorder,
                 'strtdte2a' => $strtdte2a,
                 'strtdte3a' => $strtdte3a,

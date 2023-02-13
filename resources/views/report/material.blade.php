@@ -332,7 +332,7 @@
                                             </td>
                                             <td>{{$row['data']["UOM_SHORT_DESC"]}}</td>
                                             <td>{{$row['data']["PRIMARY_QTY"]}}</td>
-                                            <td>{{$rate2}}</td>
+                                            <td>{{round($rate,2)}}</td>
                                             <td>{{number_format($row['data']["ISSUE_AMOUNT"],2)}}</td>
                                             <td>
                                                 <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
@@ -382,7 +382,7 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
-                                    <thead class="bg-dark text-white my-2">
+                                    <tfoot class="bg-dark my-2">
                                         <tr>
                                             <th class="text-white" hidden>.</th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -405,7 +405,7 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                         </tr>
-                                    </thead>
+                                    </tfoot>
                                 @else
                                     <tbody>
                                     </tbody>
@@ -575,8 +575,8 @@
 <script src="plugins/chartjs/roundedBar.min.js"></script>
 <script src="plugins/lightpick/lightpick.js"></script>
 <script src="assets/pages/jquery.sales_dashboard.init.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="assets/js/cdn1.min.js"></script>
+<script src="assets/js/cdn2.min.js"></script>
 <script>
     $(document).ready(function(){ 
         $("#loader1").fadeOut(1200);
