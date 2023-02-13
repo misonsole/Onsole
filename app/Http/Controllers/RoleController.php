@@ -226,7 +226,7 @@ class RoleController extends Controller
                                     "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", 
                                     "Pricing-Sheet Sales", "Pricing-Sheet Production",  "PDL Master Data", "Formula-Sheet List",  "Formula-Sheet Create", 
                                     "Formula-Sheet Delete", "Formula-Sheet Edit",  "Specification-Sheet List",  "Specification-Sheet Create", "Specification-Sheet Delete", 
-                                    "Specification-Sheet Costing", "Specification-Sheet Sales", "Specification-Sheet PPC", "Specification-Sheet Transfer");
+                                    "Specification-Sheet Edit", "Specification-Sheet Costing", "Specification-Sheet Sales", "Specification-Sheet PPC", "Specification-Sheet Transfer");
             }
 
             if($request->Reports != NULL){
@@ -517,7 +517,7 @@ class RoleController extends Controller
                                     "Pricing-Sheet Create", "Pricing-Sheet Delete", "Pricing-Sheet Edit", "Pricing-Sheet Transfer", "Pricing-Sheet Costing", 
                                     "Pricing-Sheet Sales", "Pricing-Sheet Production",  "PDL Master Data", "Formula-Sheet List",  "Formula-Sheet Create", 
                                     "Formula-Sheet Delete", "Formula-Sheet Edit",  "Specification-Sheet List",  "Specification-Sheet Create", "Specification-Sheet Delete", 
-                                    "Specification-Sheet Costing", "Specification-Sheet Sales", "Specification-Sheet PPC", "Specification-Sheet Transfer");
+                                    "Specification-Sheet Edit", "Specification-Sheet Costing", "Specification-Sheet Sales", "Specification-Sheet PPC", "Specification-Sheet Transfer");
             }
 
             if($request->Reports != NULL){

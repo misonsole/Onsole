@@ -172,7 +172,8 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white">Trans Date</th>
+                                        <th hidden class="text-white">1</th>
+                                        <th class="text-white" data-orderable="false">Trans Date</th>
                                         <th class="text-white" data-orderable="false">Trans No</th>
                                         <th class="text-white" data-orderable="false">From</th>
                                         <th class="text-white" data-orderable="false">To</th>
@@ -191,6 +192,7 @@
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
+                                                <td hidden>1</td>
                                                 <td>{{$row["TRANS_DATE"]}}</td>
                                                 <td>{{$row["TRANS_NO"]}}</td>
                                                 <td>{{$row["FLOC"]}}</td>
@@ -209,7 +211,8 @@
                                     </tbody>
                                     <tfoot class="bg-dark">  
                                         <tr>
-                                            <th></th>
+                                            <th hidden></th>
+                                            <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -296,7 +299,7 @@
                             <label><b style="color: #6c757d">From Locator</b></label>
 							<select id="from_locator" name="from_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                             <option selected value="">Select Locator</option>
-                            @foreach($locator as $value)
+                                @foreach($locator as $value)
                                     @if(!empty($sessionData['storefrom_locator']))
                                         <option <?php if($value == $sessionData['storefrom_locator']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
                                     @else
@@ -309,7 +312,7 @@
                             <label><b style="color: #6c757d">To Locator</b></label>
 							<select id="to_locator" name="to_locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                             <option selected value="">Select Locator</option>
-                            @foreach($locator as $value)
+                                @foreach($locator as $value)
                                     @if(!empty($sessionData['storeto_locator']))
                                         <option <?php if($value == $sessionData['storeto_locator']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
                                     @else
@@ -339,14 +342,6 @@
 @include('model/transfer2')
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
-<!-- <script src="plugins/moment/moment.js"></script>
-<script src="plugins/apexcharts/apexcharts.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<script src="plugins/chartjs/chart.min.js"></script>
-<script src="plugins/chartjs/roundedBar.min.js"></script>
-<script src="plugins/lightpick/lightpick.js"></script>
-<script src="assets/pages/jquery.sales_dashboard.init.js"></script> -->
 <script>
 $(document).ready(function(){ 
     $("#loader1").fadeOut(1200);
@@ -405,51 +400,8 @@ $(document).ready(function(){
     });
 });
 $("#loader2").hide();
-    // $.ajax({
-    //     type: 'GET',
-    //     url: 'transferData',
-    //     dataType: "json",
-    //     beforeSend: function(){
-    //         $("#loader2").show();
-    //     },
-    //     success: function(data){
-    //        var l_no = $("#lNo").val();
-    //        var t_no = $("#tNo").val();
-    //        var b_no = $("#bNo").val();
-    //        console.log(l_no,t_no,b_no);
-    //         $('#books').find('option').remove();
-    //         var staticOption = " <option value='none' selected disabled>Select Book</option>"
-    //         document.getElementById('books').innerHTML += staticOption;
-    //         for(var d=0;d<data.books.length;d++){
-    //             var option = "<option value='" + data.books[d] + "'>" + data.books[d] + "</option>"
-    //             document.getElementById('books').innerHTML += option;
-    //         }
-    //         $('#from_locator').find('option').remove();
-    //         var staticOption = " <option value='none' selected disabled>Select Locator</option>"
-    //         document.getElementById('from_locator').innerHTML += staticOption;
-    //         for(var d=0;d<data.locator.length;d++){
-    //             var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
-    //             document.getElementById('from_locator').innerHTML += option;
-    //         }
-    //         $('#to_locator').find('option').remove();
-    //         var staticOption = " <option value='none' selected disabled>Select Locator</option>"
-    //         document.getElementById('to_locator').innerHTML += staticOption;
-    //         for(var d=0;d<data.locator.length;d++){
-    //             var option = "<option value='" + data.locator[d] + "'>" + data.locator[d] + "</option>"
-    //             document.getElementById('to_locator').innerHTML += option;
-    //         }   
-    //     },
-    //     complete:function(data){
-    //         $("#loader2").hide();
-    //     }
-    // });
 $("#reportModel").on('click',function(){
     $("#exampleModalCenter").modal('show');
 });
 </script>
-<!-- <script src="plugins/moment/moment.js"></script>
-<script src="plugins/apexcharts/apexcharts.min.js"></script>
-<script src="plugins/apexcharts/irregular-data-series.js"></script>
-<script src="plugins/apexcharts/ohlc.js"></script>
-<script src="assets/pages/jquery.apexcharts.init.js"></script> -->
 @endsection
