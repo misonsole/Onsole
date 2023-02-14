@@ -34,10 +34,15 @@ class Comparison implements FromCollection, WithHeadings
             'Act Qty',
             'Act Rate',
             'Act Amount',
+            'Prod Qty',
+            'Cons AS Per QTY',
+            'JO Qty',
+            'Cons Per Pair',
             'Est Qty',
             'Est Rate',
             'Est Amount',
             'Diff Qty',
+            'Diff Qtyy',
             'Diff Amount',
         ];
     }

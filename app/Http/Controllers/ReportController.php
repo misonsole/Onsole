@@ -115,6 +115,8 @@ class ReportController extends Controller
     public function TransferReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $lineData = array();
             $books = $request->books;
             $transfer = $request->transfer;
@@ -200,7 +202,7 @@ class ReportController extends Controller
                     'Amount' => number_format($row["AMOUNT"],2),
                 );
             }              
-            return Excel::download(new Transfer($lineData), 'Transfer Issue Report.xlsx');
+            return Excel::download(new Transfer($lineData), 'Transfer Issue Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -373,6 +375,8 @@ class ReportController extends Controller
     public function HelpdeskReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $permission = 1;
             $present = array();
             $support = array();
@@ -587,7 +591,7 @@ class ReportController extends Controller
                     'Closing Date' => $updated_at,
                 );
             }
-            return Excel::download(new Helpdesk($lineData), 'Help Desk Report.xlsx');
+            return Excel::download(new Helpdesk($lineData), 'Help Desk Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -853,6 +857,8 @@ class ReportController extends Controller
     public function AdjustmentReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $books = array(); $adjustment = array();
@@ -972,7 +978,7 @@ class ReportController extends Controller
                     'Contra A/C Code' => $row['CODE_VALUE'],
                 );
             }
-            return Excel::download(new Adjustment($lineData), 'Item Adjustment Report.xlsx');
+            return Excel::download(new Adjustment($lineData), 'Item Adjustment Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -1169,6 +1175,8 @@ class ReportController extends Controller
     public function WorkorderReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $books = array(); $adjustment = array();
@@ -1392,10 +1400,10 @@ class ReportController extends Controller
                 }
             }
             if($report == "smry"){
-                return Excel::download(new WorkorderSummary($lineData), 'Work Order.xlsx');
+                return Excel::download(new WorkorderSummary($lineData), 'Work Order '.$date.'.xlsx');
             }
             if($report == "detail"){
-                return Excel::download(new WorkorderDetail($lineData), 'Work Order.xlsx');
+                return Excel::download(new WorkorderDetail($lineData), 'Work Order '.$date.'.xlsx');
             }
         }
         catch(Exception $e){
@@ -1679,6 +1687,8 @@ class ReportController extends Controller
     public function PurchaseReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $books = array(); $adjustment = array();
@@ -1774,7 +1784,7 @@ class ReportController extends Controller
                     'Rate' => round($row["RATE"], 2)
                 );
             }
-            return Excel::download(new Purchase($lineData), 'Purchase Rate History Report.xlsx');
+            return Excel::download(new Purchase($lineData), 'Purchase Rate History Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -1972,6 +1982,8 @@ class ReportController extends Controller
     public function SalesReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $books = array(); $adjustment = array();
@@ -2150,7 +2162,7 @@ class ReportController extends Controller
                     'Total Amount' => number_format($total_amount,2),
                 );
             }
-            return Excel::download(new Sales($lineData), 'Sales Report.xlsx');
+            return Excel::download(new Sales($lineData), 'Sales Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -2435,6 +2447,8 @@ class ReportController extends Controller
     public function SalesOrderReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $sum_qty = $sum_amount = $sum_t_amount = $total_amount = $rate = 0;
@@ -2632,7 +2646,7 @@ class ReportController extends Controller
                     'Category Description' => $row["CAT_DESC"],
                 );
             }
-            return Excel::download(new SalesOrder($lineData), 'Sales Order Report.xlsx');
+            return Excel::download(new SalesOrder($lineData), 'Sales Order Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -2945,6 +2959,8 @@ class ReportController extends Controller
     public function PurchaseOrderReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $bookData = array(); $categoryData = array(); $subCategoryData = array();
@@ -3136,7 +3152,7 @@ class ReportController extends Controller
                     'Category Description' => $row["CAT_DESC"],
                 );
             }
-            return Excel::download(new PurchaseOrder($lineData), 'Purchase Order Report.xlsx');
+            return Excel::download(new PurchaseOrder($lineData), 'Purchase Order Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -3401,6 +3417,8 @@ class ReportController extends Controller
     public function JobOrderReportDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $Arraydata = array();
             $bookData = array(); $categoryData = array(); $subCategoryData = array();
@@ -3540,7 +3558,7 @@ class ReportController extends Controller
                     'Qty' => $row->Qty,
                 );
             }
-            return Excel::download(new JobOrder($lineData), 'Job Order Report.xlsx');
+            return Excel::download(new JobOrder($lineData), 'Job Order Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -3753,6 +3771,8 @@ class ReportController extends Controller
     public function RMADownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $data = array();
             $book = $request->book;
             $Storedaterange = $request->daterange;
@@ -3808,7 +3828,7 @@ class ReportController extends Controller
                 );
             }
 
-            return Excel::download(new RMA($lineData), 'RMA Report.xlsx');
+            return Excel::download(new RMA($lineData), 'RMA Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -3921,6 +3941,8 @@ class ReportController extends Controller
     public function consumptionDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $data = array();
             $sum_qty = $sum_amount = 0;
             $Storedaterange = $request->daterange;
@@ -3970,7 +3992,7 @@ class ReportController extends Controller
                     'Contra A/C Desc' => $row["CODE_DESC"],
                 );
             }
-            return Excel::download(new Consumption($lineData), 'Consumption Report.xlsx');
+            return Excel::download(new Consumption($lineData), 'Consumption Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -4074,6 +4096,8 @@ class ReportController extends Controller
     public function JobOrderJourneyDownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $Arraydata = array();
             $statusfrom = $request->statusf;
             $statusto = $request->statust;
@@ -4162,7 +4186,7 @@ class ReportController extends Controller
                     'Transfer Date & Tome' => $row->timed,
                 );
             }
-            return Excel::download(new JobOrderJourney($lineData), 'Job Order Journey Report.xlsx');
+            return Excel::download(new JobOrderJourney($lineData), 'Job Order Journey Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -4323,6 +4347,8 @@ class ReportController extends Controller
     public function TransferAgainstJODownload(Request $request)
     {   
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $Arraydata = array();
             $dataStore =  array();
             $articleno = $request->articleno;
@@ -4481,7 +4507,7 @@ class ReportController extends Controller
                         );
                 }
             }
-            return Excel::download(new TransferAgainst($lineData), 'Transfer Against Job Order.xlsx');
+            return Excel::download(new TransferAgainst($lineData), 'Transfer Against Job Order '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -4740,6 +4766,8 @@ class ReportController extends Controller
     public function MaterialReportDownload(Request $request)
     {
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $bookss = array();
@@ -5117,7 +5145,7 @@ class ReportController extends Controller
                     'Contra A/C DESC' => $loopData["ACCOUNTING_DESC"]." - ".$fromcode[0],
                 );
             }
-            return Excel::download(new Material($lineData), 'Material Consumption Report.xlsx');
+            return Excel::download(new Material($lineData), 'Material Consumption Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -5585,11 +5613,11 @@ class ReportController extends Controller
             foreach($result1 as $data){
                 $customer[] = $data->Cust_Name;
             }
-            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $sql4 = "SELECT ITEM_TYPE_DESC FROM WIZ_ITEM_TYPE_MT";
             $result4 = oci_parse($conn, $sql4);
             oci_execute($result4);
             while($row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                $category[] = $row4["SEGMENT_VALUE_DESC"];
+                $category[] = $row4["ITEM_TYPE_DESC"];
             }
             $result3 = DB::table('job_sheet_order_mt')->get('Season')->unique('Season');
             foreach($result3 as $data){
@@ -5614,6 +5642,8 @@ class ReportController extends Controller
     public function ComparisonDownload(Request $request)
     {
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $Arraydata = array();
             $dataStore =  array();
             $articleno = $request->articleno;
@@ -5688,17 +5718,14 @@ class ReportController extends Controller
                 $enddte = "";
             }
 
-            $Arraydata = DB::table('job_sheet_order_mt')
-                                ->join('job_sheet_order_det', 'job_sheet_order_det.Job_Id', '=', 'job_sheet_order_mt.Job_Id')
-                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_mt.Date_Created','job_sheet_order_det.Rm_Code','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Job_Desc',DB::raw("SUM(job_sheet_order_det.Qty) as sum"))
-                                ->where('job_sheet_order_mt.Department','like',$department.'%')
-                                ->where('job_sheet_order_mt.Cust_Name','like',$customer.'%')
-                                ->where('job_sheet_order_mt.Season','like',$season.'%')
-                                ->where('job_sheet_order_mt.So_No','like',$sono.'%')
-                                ->where('job_sheet_order_mt.Onsole_Art_No','like',$article.'%')
-                                ->where('job_sheet_order_det.Rm_Code','like',$rmcodet.'%')
-                                ->where('job_sheet_order_mt.Date_Created','like',$datecheck.'%')
-                                ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created')->orderBy('job_sheet_order_mt.Job_Id','asc')->get();    
+            $Arraydata = DB::select(DB::raw("SELECT t.totals, jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME
+                            FROM job_sheet_order_mt jsom     
+                            join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
+                            join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
+                            on t.Job_Id = jsom.Job_Id                
+                            WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'                    
+                            group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
+                            order by jsom.Job_Id, jsod.Rm_Code"));
                                 
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
@@ -5711,28 +5738,74 @@ class ReportController extends Controller
             $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = 0;
             
             foreach($Arraydata as $row){
-                    $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No;
+                    $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code;
                     $item_code_now = $row->Rm_Code;
-                    $sql3 = "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
-                                FROM ISSUE_MT IM
-                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
-                    $result3 = oci_parse($conn,$sql3);
-                    oci_execute($result3);
-                    while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){ 
-                        if($row3["QUANTITY"] != 0){
-                            $rate2 = $row3["AMOUNT"]/$row3["QUANTITY"];
-                        }else{
-                            $rate2 = 0; $amounte = 0;
-                        } 
-                        $actrate = $rate2;
-                        $estamt = $actrate*$row->sum;
-                        $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
+                    $sql5 = "SELECT T.PROD_QTY, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
+                            FROM ISSUE_MT IM
+                            JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
+                            JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                            JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                            JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                            JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
+                            JOIN (  SELECT IMM.SALES_ORDER_ID, SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
+                                    FROM ISSUE_MT IMM
+                                    JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
+                                    JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                    JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                    JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                    JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
+                                            
+                                    WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                                    GROUP BY IMM.SALES_ORDER_ID
+                                    
+                                ) T ON T.SALES_ORDER_ID = SOM.SALES_ORDER_ID
+                            WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                            GROUP BY T.PROD_QTY";
+                    $result5 = oci_parse($conn,$sql5);
+                    oci_execute($result5);
+                    $row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS);
+                        if($row5 == NULL){  
+                            $diffqty2 = 0;
+                            $a = 0;
+                            $actqty = 0;
+                            $b = 0;
+                            $actrate = 0;
+                            $c = 0;
+                            $actamt = 0;
+                            $d = 0;
+                            $e = "N/A";
+                        }
+                        else{
+                            $a = $row5["QUANTITY"]; $actqty = $row5["QUANTITY"];
+                            $b = $row5["RATE"]; $actrate = $row5["RATE"];
+                            $c = $row5["AMOUNT"]; $actamt = $row5["AMOUNT"];
+                            $d = $row5["PROD_QTY"];
+                            $e = number_format($row5["PROD_QTY"]*$row->Quantity/$row->totals,2);
+                        }
+                        $f = $row->totals;
+                        $g = $row->Quantity/$row->totals;
+                        $h = $row->Quantity;
+                        $i = $actrate;
+                        $j = $actrate*$row->Quantity;
+                        $estamt = $actrate*$row->Quantity; 
+                        $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->totals;  
+                        if($row5 == NULL){
+                            $diffqty2 = 0;
+                            $k = $diffqty2;
+                        }
+                        else{
+                            $diffqty2 = $row5["QUANTITY"] - ($row5["PROD_QTY"]*($row->Quantity/$totaling));
+                            $k = $diffqty2;
+                        }
+                        if($diffqty == 0){
+                            $l = $diffqty;                    
+                        }
+                        else{
+                            $l = $diffqty;                    
+                        }                        
+                        $m = $diffamt;
                         $lineData[] = array(
-                            'Job Order' => $row->Job_Id." ".$row->Date_Created,
+                            'Job Order' => $row->Job_Id." ".$row->RTTIME,
                             'Customer' => $row->Cust_Name,
                             'Sale Order' => $row->So_No,
                             'Article' => $row->Onsole_Art_No,
@@ -5741,18 +5814,23 @@ class ReportController extends Controller
                             'Season' => $row->Season,
                             'Item Code' => $row->Rm_Code,
                             'Item Desc' => $row->Job_Desc,
-                            'Act Qty' => $row3["QUANTITY"],
-                            'Act Rate' => number_format($rate2,2),
-                            'Act Amount' => number_format($row3["AMOUNT"],2),
-                            'Est Qty' => number_format($row->sum,2),
-                            'Est Rate' => number_format($actrate,2),
-                            'Est Amount' => number_format(($actrate*$row->sum),2),
-                            'Diff Qty' => number_format($diffqty,2),
-                            'Diff Amount' => number_format($diffamt,2),
+                            'Act Qty' => number_format($a,2),
+                            'Act Rate' => number_format($b,2),
+                            'Act Amount' => number_format($c,2),
+                            'Prod Qty' => number_format($d,2),
+                            'Cons AS Per QTY' => $e,
+                            'JO Qty' => number_format($f,2),
+                            'Cons Per Pair' => number_format($g,2),
+                            'Est Qty' => number_format($h,2),
+                            'Est Rate' => number_format($i,2),
+                            'Est Amount' => number_format($j,2),
+                            'Diff Qty' => number_format($k,2),
+                            'Diff Qtyy' => number_format($l,2),
+                            'Diff Amount' => number_format($m,2),
                         );
-                }
+                
             }
-            return Excel::download(new Comparison($lineData), 'Consumption Comparison Report.xlsx');                    
+            return Excel::download(new Comparison($lineData), 'Consumption Comparison Report '.$date.'.xlsx');                    
         }
         catch(Exception $e){
             $notification = array(
@@ -5839,29 +5917,15 @@ class ReportController extends Controller
                 $enddte22 = "";
                 $enddte = "";
             }
-
-            // $Arraydata = DB::table('job_sheet_order_mt')
-            //                     ->select('t.totals', 'job_sheet_order_mt.Job_Id', 'job_sheet_order_mt.Cust_Name', 'job_sheet_order_mt.Onsole_Art_No', 'job_sheet_order_mt.So_No', 'job_sheet_order_mt.Season', 'job_sheet_order_mt.Department', 'job_sheet_order_det.Rm_Code', 'job_sheet_order_det.Job_Desc', DB::raw("'SUM'('job_sheet_order_det.Qty') as Quantity"), 'job_sheet_order_mt.Delivery_Date', DB::raw("'DATE_FORMAT'('JSOM.Date_Created', '%d-%b-%Y') as RTTIME"))
-            //                     ->join('job_sheet_order_det','job_sheet_order_det.Job_Id','=','job_sheet_order_mt.Job_Id')
-            //                     ->join(DB::raw("DB::table('job_sheet_order_sbmt')
-            //                         ->select('job_sheet_order_sbmt.Job_Id', DB::raw("'SUM'('job_sheet_order_sbmt.total') as totals"))
-            //                         ->groupBy('job_sheet_order_sbmt.Job_Id')") as t), function($join){
-            //                         $join->on('t.Job_Id','=','job_sheet_order_mt.Job_Id');
-            //                     }
-            //                     ->where('job_sheet_order_mt.Department','like','".$department."%')
-            //                     ->where('job_sheet_order_mt.Cust_Name','like','".$customer."%')
-            //                     ->where('job_sheet_order_mt.Season','like','".$season."%')
-            //                     ->where('job_sheet_order_mt.So_No','like','".$sono."%')
-            //                     ->where('job_sheet_order_mt.Onsole_Art_No','like','".$article."%')
-            //                     ->where('job_sheet_order_det.Rm_Code','like','".$rmcodet."%')
-            //                     ->where('job_sheet_order_mt.Date_Created','like','".$datecheck."%')
-            //                     ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','t.totals')
-            //                     ->orderBy('job_sheet_order_mt.Job_Id','asc')
-            //                     ->orderBy('job_sheet_order_det.Rm_Code','asc')
-            //                     ->limit(50)
-            //                     ->get();
-
-            dd($Arraydata);
+         
+            $Arraydata = DB::select(DB::raw("SELECT t.totals, jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME
+                            FROM job_sheet_order_mt jsom     
+                            join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
+                            join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
+                            on t.Job_Id = jsom.Job_Id                
+                            WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'                    
+                            group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
+                            order by jsom.Job_Id, jsod.Rm_Code"));
 
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
@@ -5882,11 +5946,11 @@ class ReportController extends Controller
             foreach($result1 as $data){
                 $customerData[] = $data->Cust_Name;
             }
-            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $sql4 = "SELECT ITEM_TYPE_DESC FROM WIZ_ITEM_TYPE_MT";
             $result4 = oci_parse($conn, $sql4);
             oci_execute($result4);
             while($row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                $categoryData[] = $row4["SEGMENT_VALUE_DESC"];
+                $categoryData[] = $row4["ITEM_TYPE_DESC"];
             }
             $result3 = DB::table('job_sheet_order_mt')->get('Season')->unique('Season');
             foreach($result3 as $data){
@@ -5976,6 +6040,8 @@ class ReportController extends Controller
     public function PurchaseInvoiceDownload(Request $request)
     {
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $data = array();
             $bookss = array();
@@ -6145,7 +6211,7 @@ class ReportController extends Controller
                     'Category Description' => $row["CAT_DESC"],
                 );
             }
-            return Excel::download(new PurchaseInvoice($lineData), 'Purchase Invoice Report.xlsx');
+            return Excel::download(new PurchaseInvoice($lineData), 'Purchase Invoice Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(
@@ -6407,6 +6473,8 @@ class ReportController extends Controller
     public function ItemPurchaseDownload(Request $request)
     {
         try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
             $rate2 = 0;
             $tcheck = 0;
             $data = array();
@@ -6593,7 +6661,7 @@ class ReportController extends Controller
                     'Amt Inclu STAX' => number_format($row["STAX_INCLU_AMOUNT"],2),
                 );
             }
-            return Excel::download(new ItemPurchase($lineData), 'Item Purchasing Movement Report.xlsx');
+            return Excel::download(new ItemPurchase($lineData), 'Item Purchasing Movement Report '.$date.'.xlsx');
         }
         catch(Exception $e){
             $notification = array(

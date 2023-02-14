@@ -169,8 +169,7 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                    <th class="text-white" data-orderable="false" hidden>.</th>
-
+                                        <th class="text-white" data-orderable="false" hidden>.</th>
                                         <th class="text-white" data-orderable="false">Job Order</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">Sale <br> Order</th>
@@ -184,12 +183,13 @@
                                         <th class="text-white" data-orderable="false">Act <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Act <br> Amount</th>
                                         <th class="text-white" data-orderable="false">Prod Qty</th>
-                                        <th class="text-white" data-orderable="false">Cons ASPer PQTY</th>
+                                        <th class="text-white" data-orderable="false">Cons <br> AS Per <br> QTY</th>
                                         <th class="text-white" data-orderable="false">JO Qty</th>
                                         <th class="text-white" data-orderable="false">Cons Per Pair</th>
                                         <th class="text-white" data-orderable="false">Est <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Est <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Est <br> Amount</th>
+                                        <th class="text-white" data-orderable="false">Diff <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Diff <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Diff <br> Amount</th>
                                     </tr>
@@ -211,7 +211,8 @@
                                         @foreach($data as $row)
                                         <?php $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code; ?>                         
                                             <tr class="table_row"> 
-                                                <td>{{$row->Job_Id}} <br> {{$row->Date_Created}}</td>
+                                                <td hidden>1</td>
+                                                <td>{{$row->Job_Id}} <br> {{$row->RTTIME}}</td>
                                                 <td>{{$row->Cust_Name}}</td>
                                                 <td>{{$row->So_No}}</td>
                                                 <td>{{$row->Onsole_Art_No}}</td>
@@ -219,7 +220,12 @@
                                                 <td>{{$row->Department}}</td>
                                                 <td>{{$row->Season}}</td>
                                                 <td style="color: darkblue;">{{$row->Rm_Code}}</td>
-                                                <td>{{$row->Job_Desc}}</td>
+                                                <td>
+                                                    <?php $explode = explode(" ",$row->Job_Desc); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td> 
                                                 <?php
                                                 $sql5 = "SELECT T.PROD_QTY, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
                                                             FROM ISSUE_MT IM
@@ -257,20 +263,20 @@
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["RATE"],2)}} <?php $actrate = $row5["RATE"]; ?></td>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["AMOUNT"],2)}} <?php $actamt = $row5["AMOUNT"]; ?></td>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"],2)}} </td>
-                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"]*($row->Qty/$row->sum),2)}} </td>        
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"]*($row->Quantity/$row->totals),2)}} </td>        
                                                 <?php }  ?>
 
-                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
-                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
-                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
-                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
-                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->sum,2)}} </td>
-                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->sum;                                          
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->totals,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->Quantity/$row->totals,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->Quantity,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($actrate,2)}} </td>
+                                                <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($actrate*$row->Quantity,2) }} <?php $estamt = $actrate*$row->Quantity; ?> </td>
+                                            <?php $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->totals;                                          
                                             if($row5 == NULL){
                                                 $diffqty2 = 0; ?>
                                                 <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{number_format($diffqty2,2); }}</td>
                                             <?php } else {
-                                                $diffqty2 = $row5["QUANTITY"]; ?>
+                                                $diffqty2 = $row5["QUANTITY"] - ($row5["PROD_QTY"]*($row->Quantity/$totaling)); ?>
                                                 <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{ $diffqty2 }}</td>
                                             <?php } ?>                    
                                             <?php if($diffqty == 0){ ?>
@@ -282,6 +288,33 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <tfoot class="bg-dark">  
+                                        <tr>
+                                            <th hidden></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                        </tr>
+                                    </tfoot>
                                 @endif
                                 <tbody>
                                 </tbody>
@@ -371,8 +404,8 @@
                                 <select id="rmcat" name="rmcat" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Category</option>
                                     @foreach($category as $value)
-                                        @if(!empty($sessionData['rmcat']))
-                                            <option <?php if($value == $sessionData['rmcat']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
+                                        @if(!empty($sessionData['category']))
+                                            <option <?php if($value == $sessionData['category']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
                                         @else
                                             <option value="{{$value}}">{{$value}}</option>
                                         @endif  
@@ -383,10 +416,17 @@
                                 <label><b style="color: #6c757d">Department</b></label>
                                 <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
                                     <option value="">Select Department</option>
-                                    <option <?php if("Cutting" == isset($sessionData['department'])) echo 'selected="selected"'; ?>  value="Cutting">Cutting</option>
-                                    <option <?php if("Closing" == isset($sessionData['department'])) echo 'selected="selected"'; ?>  value="Closing">Closing</option> 
-                                    <option <?php if("Lasting" == isset($sessionData['department'])) echo 'selected="selected"'; ?>  value="Lasting">Lasting</option>
-                                    <option <?php if("Insole" == isset($sessionData['department'])) echo 'selected="selected"'; ?>  value="Insole">Insole</option>                
+                                    @if(!empty($sessionData['department']))
+                                        <option <?php if("Cutting" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Cutting">Cutting</option>
+                                        <option <?php if("Closing" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Closing">Closing</option> 
+                                        <option <?php if("Lasting" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Lasting">Lasting</option>
+                                        <option <?php if("Insole" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Insole">Insole</option>   
+                                    @else
+                                        <option value="Cutting">Cutting</option>
+                                        <option value="Closing">Closing</option> 
+                                        <option value="Lasting">Lasting</option>
+                                        <option value="Insole">Insole</option>  
+                                    @endif             
                                 </select>
                             </div>
                         </div>                          
