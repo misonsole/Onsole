@@ -464,7 +464,7 @@ class ComplaintController extends Controller
     public function manageComplaints(Request $request)
     {   
         try{
-            $diff = 'empty';
+            $difff = 'empty';
             $lastupdate = Support::orderBy('id','DESC')->limit(1)->get();
             date_default_timezone_set("Asia/karachi");
             $time = date("h:i A");
@@ -475,7 +475,7 @@ class ComplaintController extends Controller
                 $words = explode($delimiter, $month);
                 $datetime3 = new DateTime($lastupdate[0]['created_at']);
                 $interval = $datetime2->diff($datetime3);
-                $diff = $interval->format('%d Day, %h Hour, %i min');
+                $difff = $interval->format('%d Day, %h Hour, %i min');
             }
             $present = array();
             $support = Support::latest()->take(25)->get();
@@ -487,6 +487,16 @@ class ComplaintController extends Controller
                         'name' => $department[0]->emp_name,
                         'data' => $data
                     ]; 
+                }
+            }
+            $closed = Support::orderBy('id','ASC')->where('status', 'final')->where('update_time', '!=', NULL)->get();
+            foreach($closed as $complaint){
+                $update = $complaint['update_time'];
+                $current = date('d-m-Y G:i:s');
+                $start_datetime = new DateTime($current); 
+                $diff = $start_datetime->diff(new DateTime($update)); 
+                if($diff->d >= 1){
+                    $update = DB::table('supports')->where('id', $complaint['id'])->update(['status' => 'closed']);
                 }
             }
             $noAction = Support::orderBy('id','DESC')->where('status', NULL)->get();
@@ -501,7 +511,7 @@ class ComplaintController extends Controller
                     'complete'=> count($complete),
                     'final'=> count($final), 
                     'total'=> count($total),
-                    'diff'=> $diff,
+                    'diff'=> $difff,
                     'i'=> 1
             ]);
         }

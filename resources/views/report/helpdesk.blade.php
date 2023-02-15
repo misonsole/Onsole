@@ -201,6 +201,7 @@
                                         <th class="text-white" data-orderable="false">Date & Time</th>
                                         <th class="text-white" data-orderable="false">Operator</th>
                                         <th class="text-white" data-orderable="false">Closing Date</th>
+                                        <th class="text-white" data-orderable="false">Response Time</th>
                                     </tr>
                                 </thead>
                                 @if($permission == 1)
@@ -241,15 +242,47 @@
                                             @else
                                             <td><i class="mdi mdi-calendar-text-outline"></i> {{$value['data']['date']}} <br> <i class="mdi mdi-timer"></i> {{$value['data']['time']}}</td>
                                             @endif                                            
-                                            <td>{{$value['data']['approve_by']}}</td>
+                                            <td>
+                                                <?php $explode = explode(" ",$value['data']['approve_by']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td> 
                                             <td>
                                                 @if(isset($value['data']['update_time']) && !empty($value['data']['update_time'])) 
                                                     @if($value['data']['updated_at']!=NULL)
-                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); ?>
-                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
+                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); $today1 = date("h:i A", strtotime($words[1])); ?>
+                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$today1}}
                                                     @else
-                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); ?>
-                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
+                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']);  $today1 = date("h:i A", strtotime($words[1]));?>
+                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$today1}}
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($value['data']['update_time']) && !empty($value['data']['update_time'])) 
+                                                    @if($value['data']['updated_at']!=NULL)
+                                                        @if($value['data']['update_time']!=$value['data']['created_at'])
+                                                        <?php 
+                                                            $start_datetime = new DateTime($value['data']['created_at']); 
+                                                            $diff = $start_datetime->diff(new DateTime($value['data']['update_time'])); 
+                                                            if($diff->d != 0){
+                                                                $dataArray = $diff->d." Day ".$diff->d." Hours ".$diff->i." Min"; 
+                                                            }
+                                                            elseif($diff->h != 0){
+                                                                $dataArray = $diff->h." Hours ".$diff->i." Min"; 
+                                                            }
+                                                            elseif($diff->i != 0){
+                                                                $dataArray = $diff->i." Min"; 
+                                                            }
+                                                            else{
+                                                                $dataArray = $diff->s." Sec"; 
+                                                            }
+                                                        ?>
+                                                        {{$dataArray}}
+                                                        @else
+                                                        -
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </td>

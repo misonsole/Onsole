@@ -164,7 +164,7 @@
                                         <tr>
                                             <th class="px-1" data-orderable="false" style="color: aliceblue;"></th>
                                             <th hidden>#</th>
-                                            <th>Complaint No</th>
+                                            <th>No</th>
                                             <th>Employee</th>
                                             <th>Department</th>
                                             <th>Status</th>
@@ -172,6 +172,7 @@
                                             <th>Date & Time</th>
                                             <th>Operator</th>
                                             <th>Closing Date</th>
+                                            <th>Response Time</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -187,22 +188,18 @@
                                             </td>
                                             <td hidden>{{$i++}}</td>
                                             <td>{{$value['data']['id']}}</td>
-                                            <td style="width: 10%;">{{$value['name']}}</td>
-                                            <td style="text-transform: capitalize;">
-                                            <?php
-                                                $pieces = explode(" ", $value['department']);
-                                                echo $pieces[0];
-                                                echo '<br>';
-                                                if(count($pieces) == 2){
-                                                    echo $pieces[1];
-                                                    echo '<br>';
-                                                }
-                                                if(count($pieces) == 3){
-                                                    echo $pieces[2];
-                                                    echo '<br>';
-                                                }
-                                            ?> 
+                                            <td style="width: 10%;">
+                                                <?php $explode = explode(" ",$value['name']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
                                             </td>
+                                            <td style="text-transform: capitalize;">
+                                                <?php $explode = explode(" ",$value['department']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td> 
                                             <td>
                                                 @if($value['data']['status'] == NULL)    
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-100">No Action</span>
@@ -227,23 +224,56 @@
                                             <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
                                             </td>
                                             @else
-                                            <td><i class="mdi mdi-calendar-text-outline"></i> {{$value['data']['date']}} <br> <i class="mdi mdi-timer"></i> {{$value['data']['time']}}</td>
+                                            <?php $today = date("d-m-Y", strtotime($value['data']['date'])); ?>
+                                            <td><i class="mdi mdi-calendar-text-outline"></i> {{$today}} <br> <i class="mdi mdi-timer"></i> {{$value['data']['time']}}</td>
                                             @endif                                            
-                                            <td>{{$value['data']['approve_by']}}</td>
+                                            <td>
+                                                <?php $explode = explode(" ",$value['data']['approve_by']); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td>
                                             <td>
                                                 @if(isset($value['data']['update_time']) && !empty($value['data']['update_time'])) 
                                                     @if($value['data']['updated_at']!=NULL)
-                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); ?>
-                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
+                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); $today1 = date("h:i A", strtotime($words[1])); ?>
+                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$today1}}
                                                     @else
-                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']); ?>
-                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$words[1]}}
+                                                    <?php $delimiter = ' '; $words = explode($delimiter, $value['data']['update_time']);  $today1 = date("h:i A", strtotime($words[1]));?>
+                                                    <i class="mdi mdi-calendar-text-outline"></i> {{$words[0]}} <br><i class="mdi mdi-timer"></i> {{$today1}}
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($value['data']['update_time']) && !empty($value['data']['update_time'])) 
+                                                    @if($value['data']['updated_at']!=NULL)
+                                                        @if($value['data']['update_time']!=$value['data']['created_at'])
+                                                        <?php 
+                                                            $start_datetime = new DateTime($value['data']['created_at']); 
+                                                            $diff = $start_datetime->diff(new DateTime($value['data']['update_time'])); 
+                                                            if($diff->d != 0){
+                                                                $dataArray = $diff->d." Day ".$diff->d." Hours ".$diff->i." Min"; 
+                                                            }
+                                                            elseif($diff->h != 0){
+                                                                $dataArray = $diff->h." Hours ".$diff->i." Min"; 
+                                                            }
+                                                            elseif($diff->i != 0){
+                                                                $dataArray = $diff->i." Min"; 
+                                                            }
+                                                            else{
+                                                                $dataArray = $diff->s." Sec"; 
+                                                            }
+                                                        ?>
+                                                        {{$dataArray}}
+                                                        @else
+                                                        -
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </td>
                                             <td> 
                                                 @if($value['data']['updated_at'] != NULL)
-                                                <a href="complaints-view?id={{$value['data']['complaint']}}&userid={{$value['data']['userid']}}">
+                                                <a href="complaints-view?id={{$value['data']['complaint']}}&userid={{$value['data']['userid']}}" target="_blank">
                                                     <span class="badge cursor-pointer" style="cursor: pointer; font-size: small; font-weight: 500;">
                                                         <i class="align-middle mb-1 mt-1 mx-1 cursor-pointer" style="size:1px;" data-feather="eye"></i>
                                                     </span>

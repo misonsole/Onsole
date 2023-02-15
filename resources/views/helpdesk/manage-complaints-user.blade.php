@@ -211,7 +211,7 @@
                                                 @endif                                                
                                             </td>
                                             <td> 
-                                                <a href="complaints-view-user?id={{$value['data']['id']}}&userid={{$value['data']['userid']}}">
+                                                <a href="complaints-view-user?id={{$value['data']['id']}}&userid={{$value['data']['userid']}}" target="_blank">
                                                     <span class="badge btn-sm badge-secondary p-0 rounded-circle mx-1" style="cursor: pointer"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span>  
                                                 </a>
                                             </td> 

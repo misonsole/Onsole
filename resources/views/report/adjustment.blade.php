@@ -238,7 +238,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Status</b></label>
-                                <select id="status" name="status" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="status" name="status" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
                                         @if(!empty($sessionData['status']))
                                             <option <?php if("Both" == $sessionData['status']) echo 'selected="selected"'; ?> value="Both">Both</option>
                                             <option <?php if("Posted" == $sessionData['status']) echo 'selected="selected"'; ?> value="Posted">Posted</option>
@@ -263,8 +263,8 @@
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Adjustment No</b></label>
-                                <select id="adjustno" name="adjustno" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
-                                    <option value="none" selected>None</option>
+                                <select id="adjustno" name="adjustno" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
+                                    <option value="" selected>None</option>
                                     @foreach($adjustment as $value)                   
                                         @if(!empty($sessionData['adjustno']))
                                             <option <?php if($value == $sessionData['adjustno']) echo 'selected="selected"'; ?> value="{{ $value }}">{{ $value }}</option>
