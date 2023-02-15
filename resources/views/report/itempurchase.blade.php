@@ -365,7 +365,7 @@
                                         <?php } ?>
                                         @endforeach
                                     </tbody>
-                                    <thead class="bg-dark text-white my-2">
+                                    <tfoot class="bg-dark text-white my-2">
                                         <tr>
                                             <th class="text-white" hidden>.</th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -384,7 +384,7 @@
                                             <th class="text-white" data-orderable="false">{{number_format($sumof[6],2)}}</th>
                                             <th class="text-white" data-orderable="false">{{number_format($sumof[7],2)}}</th>
                                         </tr>
-                                    </thead>
+                                    </tfoot>
                                 @endif
                                 <tbody>
                                 </tbody>

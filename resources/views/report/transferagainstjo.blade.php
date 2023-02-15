@@ -96,7 +96,7 @@
                     </div>
                     @if($Permission == 1)
                     <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Date Range</b></h6>                            
                             @if(!empty($sessionData['Storestart1']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['Storestart1']}} - {{$sessionData['Storeend2']}}</p>
@@ -104,7 +104,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div>
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Article Code</b></h6>                            
                             @if(!empty($sessionData['articleno']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['articleno']}}</p>
@@ -112,7 +112,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Sales Order</b></h6>                            
                             @if(!empty($sessionData['salesorder']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['salesorder']}}</p>
@@ -120,7 +120,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-4" style="border-top: 1px solid; border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Job Order</b></h6>                            
                             @if(!empty($sessionData['joborder']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['joborder']}}</p>
@@ -128,7 +128,9 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                    </div>
+                    <div class="row mx-5 text-center py-4" style="border-radius: 5px;">
+                        <div class="col-md-3" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Raw Material Code</b></h6>                            
                             @if(!empty($sessionData['rawmaterial']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['rawmaterial']}}</p>
@@ -136,7 +138,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Season</b></h6>                            
                             @if(!empty($sessionData['season']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['season']}}</p>
@@ -144,7 +146,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Category</b></h6>                            
                             @if(!empty($sessionData['rmcat']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['rmcat']}}</p>
@@ -152,7 +154,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div>  
-                        <div class="col-md-1" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-2" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Department</b></h6>                            
                             @if(!empty($sessionData['department']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['department']}}</p>
@@ -160,7 +162,7 @@
                             <p class="mb-2">-</p>
                             @endif
                         </div> 
-                        <div class="col-md-2" style="border-top: 1px solid; border-bottom: 1px solid;">
+                        <div class="col-md-3" style="border-bottom: 1px solid;">
                             <h6 class="mb-1"><b>Customer</b></h6>                            
                             @if(!empty($sessionData['customer']))
                             <p class="mb-2" style="font-family: 'Poppins';">{{$sessionData['customer']}}</p>
@@ -275,7 +277,7 @@
                                                 } ?>
                                                         <tr style="text-align: center; background-color:rgba(0, 0, 0, 0.14); font-size: 14px;">
                                                             <td hidden>1</td>
-                                                            <td><strong><?php echo $row->Job_Id." <br> ".$row->Date_Created; ?></strong></td>
+                                                            <td><strong><?php echo $row->Job_Id." <br> ".$row->RTTIME; ?></strong></td>
                                                             <td><strong><?php echo $row->Cust_Name; ?></strong></td>
                                                             <td><strong><?php echo $row->So_No; ?></strong></td>
                                                             <td><strong><?php echo $row->Transfer_No_Mt; ?></strong></td>
@@ -313,10 +315,10 @@
                                                             <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($rate2,2);  $actrate = $rate2; ?></td>
                                                             <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($row3["AMOUNT"],2);  $actamt = $row3["AMOUNT"]; ?></td>
                                                             <?php } ?>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->sum,2); ?></td>
+                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->Quantity,2); ?></td>
                                                             <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($actrate,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->sum),2);  $estamt = $actrate*$row->sum; ?></td>
-                                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
+                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->Quantity),2);  $estamt = $actrate*$row->Quantity; ?></td>
+                                                            <?php $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
                                                             if($diffqty == 0) { ?>
                                                                 <td style="color: green; background-color:rgba(0, 0, 255, 0.30);"><?php echo number_format($diffqty,2); ?></td> <?php
                                                             }else { ?>
@@ -369,10 +371,10 @@
                                                             <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($re_rate,2);  $actrate = $re_rate; ?></td>
                                                             <td style="background-color:rgba(255, 0, 0, 0.33);"><?php echo number_format($re_amount,2);  $actamt = $row3["AMOUNT"]; ?></td>
                                                             <?php  } ?>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->sum,2); ?></td>
+                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($row->Quantity,2); ?></td>
                                                             <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format($actrate,2); ?></td>
-                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->sum),2);  $estamt = $actrate*$row->sum; ?></td>
-                                                            <?php $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
+                                                            <td style="background-color:rgba(0, 255, 0, 0.34);"><?php echo number_format(($actrate*$row->Quantity),2);  $estamt = $actrate*$row->Quantity; ?></td>
+                                                            <?php $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
                                                             if($diffqty < 00.5 && $diffqty >-0.5) { ?>
                                                                 <td style="color: green; background-color:rgba(0, 0, 255, 0.30);"><?php echo number_format($diffqty,2); ?></td> <?php
                                                             } else { ?>
@@ -542,11 +544,18 @@
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Department</b></label>
                                 <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
-                                    <option value="">Select Department</option>
-                                    <option <?php if("Cutting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Cutting">Cutting</option>
-                                    <option <?php if("Closing" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Closing">Closing</option> 
-                                    <option <?php if("Lasting" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Lasting">Lasting</option>
-                                    <option <?php if("Insole" == isset($sessionData['department'])) echo 'selected="selected"'; ?> value="Insole">Insole</option>                
+                                    <option value="">Select Department</option> 
+                                    @if(!empty($sessionData['department']))
+                                        <option <?php if("Cutting" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Cutting">Cutting</option>
+                                        <option <?php if("Closing" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Closing">Closing</option> 
+                                        <option <?php if("Lasting" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Lasting">Lasting</option>
+                                        <option <?php if("Insole" == $sessionData['department']) echo 'selected="selected"'; ?>  value="Insole">Insole</option>   
+                                    @else
+                                        <option value="Cutting">Cutting</option>
+                                        <option value="Closing">Closing</option> 
+                                        <option value="Lasting">Lasting</option>
+                                        <option value="Insole">Insole</option>  
+                                    @endif               
                                 </select>
                             </div>
                         </div>

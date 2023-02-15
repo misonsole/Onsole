@@ -175,7 +175,7 @@
                                         <th class="text-white" data-orderable="false">Sale <br> Order</th>
                                         <th class="text-white" data-orderable="false">Article</th>
                                         <th class="text-white" data-orderable="false">Delivery <br> Date</th>
-                                        <th class="text-white" data-orderable="false">Department</th>
+                                        <th class="text-white" data-orderable="false">Deprt</th>
                                         <th class="text-white" data-orderable="false">Season</th>
                                         <th class="text-white" data-orderable="false">Item <br> Code</th>
                                         <th class="text-white" data-orderable="false">Item <br> Desc</th>
@@ -183,14 +183,14 @@
                                         <th class="text-white" data-orderable="false">Act <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Act <br> Amount</th>
                                         <th class="text-white" data-orderable="false">Prod Qty</th>
-                                        <th class="text-white" data-orderable="false">Cons <br> AS Per <br> QTY</th>
-                                        <th class="text-white" data-orderable="false">JO Qty</th>
-                                        <th class="text-white" data-orderable="false">Cons Per Pair</th>
-                                        <th class="text-white" data-orderable="false">Est <br> Qty</th>
-                                        <th class="text-white" data-orderable="false">Est <br> Rate</th>
-                                        <th class="text-white" data-orderable="false">Est <br> Amount</th>
-                                        <th class="text-white" data-orderable="false">Diff <br> Qty</th>
-                                        <th class="text-white" data-orderable="false">Diff <br> Qty</th>
+                                        <th class="text-white" data-orderable="false">Est Qty</th>
+                                        <th class="text-white" data-orderable="false">Job <br> Order <br> Qty</th>
+                                        <th class="text-white" data-orderable="false">Consumption <br> Per Pair</th>
+                                        <th class="text-white" data-orderable="false">Planned <br> Qty </th>
+                                        <th class="text-white" data-orderable="false">Planned <br> Rate</th>
+                                        <th class="text-white" data-orderable="false">Planned <br> Amount</th>
+                                        <th class="text-white" data-orderable="false">Diff <br> P vs A</th>
+                                        <th class="text-white" data-orderable="false">Diff <br> A vs E</th>
                                         <th class="text-white" data-orderable="false">Diff <br> Amount</th>
                                     </tr>
                                 </thead>
@@ -218,7 +218,12 @@
                                                 <td>{{$row->Onsole_Art_No}}</td>
                                                 <td>{{$row->Delivery_Date}}</td>
                                                 <td>{{$row->Department}}</td>
-                                                <td>{{$row->Season}}</td>
+                                                <td>
+                                                    <?php $explode = explode(" ",$row->Season); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>
                                                 <td style="color: darkblue;">{{$row->Rm_Code}}</td>
                                                 <td>
                                                     <?php $explode = explode(" ",$row->Job_Desc); ?>
@@ -227,31 +232,38 @@
                                                     @endforeach
                                                 </td> 
                                                 <?php
-                                                $sql5 = "SELECT T.PROD_QTY, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
-                                                            FROM ISSUE_MT IM
-                                                            JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
-                                                            JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$departmentERP','%')
-                                                            JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                                            JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                                            JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                                                            JOIN (  SELECT IMM.SALES_ORDER_ID, SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
-                                                                    FROM ISSUE_MT IMM
-                                                                    JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
-                                                                    JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
-                                                                    JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                                                    JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                                                    JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
-                                                                            
-                                                                    WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                                                                    GROUP BY IMM.SALES_ORDER_ID
-                                                                    
-                                                                ) T ON T.SALES_ORDER_ID = SOM.SALES_ORDER_ID
-                                                            WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                                                            GROUP BY T.PROD_QTY";
+                                                $sql5 = "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
+                                                FROM ISSUE_MT IM
+          
+                                                JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
+                                                JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                                JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                                JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                                JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
+          
+                                                WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                                                $prodqty = 0; $conspqty = 0;
 
                                                 $result5 = oci_parse($conn,$sql5);
                                                 oci_execute($result5);
                                                 $row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS);
+
+
+                                                $sql4 = "SELECT SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
+                                              FROM ISSUE_MT IMM
+                                              JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
+                                              JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                              JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                              JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                              JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
+                                                         
+                                              WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                                      $prodqty = 0; $conspqty = 0;
+                                  $result4= oci_parse($conn,$sql4);
+                                  oci_execute($result4);
+                                  $row4=oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS);
+
+
                                                 if($row5 == NULL){  $diffqty2 = 0; ?>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actqty = 0; ?></td>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actrate = 0; ?></td>
@@ -262,8 +274,8 @@
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{$row5["QUANTITY"]}} <?php  $actqty = $row5["QUANTITY"]; ?></td>             
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["RATE"],2)}} <?php $actrate = $row5["RATE"]; ?></td>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["AMOUNT"],2)}} <?php $actamt = $row5["AMOUNT"]; ?></td>
-                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"],2)}} </td>
-                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row5["PROD_QTY"]*($row->Quantity/$row->totals),2)}} </td>        
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row4["PROD_QTY"],2)}} </td>
+                                                    <td style="background-color:rgba(255, 0, 0, 0.2);">{{ number_format($row4["PROD_QTY"]*($row->Quantity/$row->totals),2)}} </td>        
                                                 <?php }  ?>
 
                                                 <td style="background-color:rgba(0, 255, 0, 0.2);">{{ number_format($row->totals,2)}} </td>
@@ -274,10 +286,10 @@
                                             <?php $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->totals;                                          
                                             if($row5 == NULL){
                                                 $diffqty2 = 0; ?>
-                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{number_format($diffqty2,2); }}</td>
+                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{ substr(number_format($diffqty2,2), 0, 5); }}</td>
                                             <?php } else {
-                                                $diffqty2 = $row5["QUANTITY"] - ($row5["PROD_QTY"]*($row->Quantity/$totaling)); ?>
-                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{ $diffqty2 }}</td>
+                                                $diffqty2 = $row5["QUANTITY"] - ($row4["PROD_QTY"]*($row->Quantity/$totaling)); ?>
+                                                <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{ substr($diffqty2, 0, 5);  }}</td>
                                             <?php } ?>                    
                                             <?php if($diffqty == 0){ ?>
                                                 <td style="color: green; background-color:rgba(0, 0, 255, 0.2);">{{number_format($diffqty,2) }}</td> <?php

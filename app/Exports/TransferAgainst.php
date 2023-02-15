@@ -35,6 +35,7 @@ class TransferAgainst implements FromCollection, WithHeadings
             'Trans Amount',
             'JO Qty',
             'JO Rate',
+            'JO Amount',
             'Diff Qty',
             'Diff Amount',
         ];

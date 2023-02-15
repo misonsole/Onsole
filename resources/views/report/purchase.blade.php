@@ -189,7 +189,7 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                    <thead class="bg-dark text-white my-2">
+                                    <tfoot class="bg-dark text-white my-2">
                                         <tr>
                                             <th hidden class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
@@ -205,7 +205,7 @@
                                             <th class="text-white" data-orderable="false">{{number_format($total_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                         </tr>
-                                    </thead>
+                                    </tfoot>
                                 @endif
                                 <tbody>
                                 </tbody>

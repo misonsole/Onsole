@@ -506,19 +506,15 @@ class ReportController extends Controller
                 foreach($data as $key){
                     if($request->status != null){
                         if($request->category != 'none' && $request->operator != 'none'){
-                            dd("I1");
                             $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category == 'none' && $request->operator == 'none'){
-                            dd("I2");
                             $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category == 'none' && $request->operator != 'none'){
-                            dd("I3");
                             $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category != 'none' && $request->operator == 'none'){
-                            dd("I4");
                             $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                     }   
@@ -734,19 +730,15 @@ class ReportController extends Controller
                 foreach($data as $key){
                     if($request->status != null){
                         if($request->category != 'none' && $request->operator != 'none'){
-                            dd("I1");
                             $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category == 'none' && $request->operator == 'none'){
-                            dd("I2");
                             $result = Support::orderBy('id','DESC')->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category == 'none' && $request->operator != 'none'){
-                            dd("I3");
                             $result = Support::orderBy('id','DESC')->where('approve_by', $request->operator)->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                         elseif($request->category != 'none' && $request->operator == 'none'){
-                            dd("I4");
                             $result = Support::orderBy('id','DESC')->where('category', $request->category)->where('userid', $key)->where('status', $request->status)->whereBetween('created_at', [$start, $end])->get();
                         }
                     }   
@@ -4369,7 +4361,8 @@ class ReportController extends Controller
             $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
 
             if(!empty($joborder)){
-                $joborder = $joborder;
+                $joborder = explode(" || ",$joborder);
+                $joborder = $joborder[0];
             }else{
                 $joborder = "";
             }
@@ -4388,8 +4381,8 @@ class ReportController extends Controller
             }else{
                 $thedate = "";
             }
-            if(!empty($rmcodet)){
-                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rmcodet));
+            if(!empty($rawmaterial)){
+                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rawmaterial));
                 $rmcodet = $rmcoarrf[0];
             }else{
                 $rmcodet = "";
@@ -4429,84 +4422,224 @@ class ReportController extends Controller
                 $enddte = "";
             }
 
-            $Arraydata = DB::table('job_sheet_order_mt')->join('job_sheet_order_det', 'job_sheet_order_det.Job_Id', '=', 'job_sheet_order_mt.Job_Id')->where('job_sheet_order_mt.Department','!=','Insole')
-                                                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Transfer_No_Mt','job_sheet_order_mt.Transfer_Date_Mt','job_sheet_order_mt.Transfer_Id',DB::raw("SUM(job_sheet_order_det.Qty) as sum"))
-                                                                ->where('job_sheet_order_mt.Unique_Id','like',$joborder.'%')
-                                                                ->where('job_sheet_order_mt.Department','like',$department.'%')
-                                                                ->where('job_sheet_order_mt.Cust_Name','like',$customer.'%')
-                                                                ->where('job_sheet_order_mt.Season','like',$season.'%')
-                                                                ->where('job_sheet_order_mt.So_No','like',$sono.'%')
-                                                                ->where('job_sheet_order_mt.Onsole_Art_No','like',$article.'%')
-                                                                ->where('job_sheet_order_det.Rm_Code','like',$rmcodet.'%')
-                                                                ->where('job_sheet_order_mt.Date_Created','like',$datecheck.'%')
-                                                                ->whereIn('job_sheet_order_mt.Status', ['STORE', 'FINALISED', 'COMPLETE'])
-                                                                ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','job_sheet_order_mt.Transfer_No_Mt','job_sheet_order_mt.Transfer_Date_Mt','job_sheet_order_mt.Transfer_Id')->orderBy('job_sheet_order_mt.Job_Id','asc')->get();
+            $Arraydata = DB::select(DB::raw("SELECT jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id
+                                                FROM job_sheet_order_mt jsom
+                                                JOIN job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id and jsom.Department != 'Insole'
+                                                WHERE jsom.Unique_Id like '".$joborder."%' AND jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%' and jsom.Status IN ('STORE', 'FINALISED', 'COMPLETE')
+                                                group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id, jsom.Delivery_Date, RTTIME
+                                                order by jsom.Job_Id, jsod.Rm_Code"));
+
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
-            $strtdte = $enddte = $strtdte2 = $enddte2 = $sono = $rmcat = $rmcodet = $department = $month_name = $month_name2 = $article = $article0 = $department0 = $sono0 = "";
+            $strtdte = $enddte = $customer = $season = $strtdte2 = $enddte2 = $sono = $rmcat = $rmcodet = $department = $month_name = $month_name2 = $article = $article0 = $department0 = $sono0 = "";
             $item_code = array();
             $actqty = $diffqty = $actrate = $diffamt = $actamt = $estamt = $rem_check = $key = $keycode = $rateof = $amounte = $tno = $tno2 = 0;
-            $strtdte = $enddte = $book = $status = $strtdte2 = $enddte2 = $rate = $rate2 = $month_name = $month_name2 = $item_code_now = $tdt = $joborder = $tdt2 = $tno_check = "";
+            $strtdte = $enddte = $book = $status = $strtdte2 = $enddte2 = $rate = $rate2 = $month_name = $month_name2 = $item_code_now = $tdt = $joborder = $tdt2 = $temporada = $tno_check = "";
             $strtdte3 = $enddte3 = $adjustno = $pino = $pidate = $tempcode = "";
             $sum_rate = $sum_qty = $sum_amount = $poqty = $i = $sumamount = $sumtax = $sumamtinctax = $sumpoqty = $pndgcounter = $tcheck = 0;
-            $re_amount = 0; $re_rate = 0; $re_qty = 0;
             $purchinv = array();
             $pidate2 = array(); $arrayhe = array(); $sumof = array(0,0,0,0,0,0,0,0,0);  $rmcoarr = array(); $tnoBreak = array(); $tnoDate = array();
             $poqtytotal = $poreceivedtotal = $porejectedtotal = $poacceptedtotal = $popendingtotal = $poamounttotal = $postaxtotal = $pototal = 0;
-            $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = 0;
+            $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = $quantitye = 0;
+            $re_amount = 0; $re_rate = 0; $re_qty = 0;
 
             foreach($Arraydata as $row){
                 $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $tno = $row->Transfer_Id; $tdt = $row->Transfer_Date_Mt;
+                if($tempcode != $row->Job_Id){
+                    if($rem_check == 1){
+                        $tnoBreak = explode(',', $tno2);
+                         $sql5 = "SELECT IMT.ITEM_CODE, IMT.ITEM_DESC, SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                                    FROM TRANS_ISSUE_MT TIM
+                                    JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                                    JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID
+                                    WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                                    GROUP BY IMT.ITEM_CODE, IMT.ITEM_DESC";
+                        $result5 = oci_parse($conn,$sql5);
+                        oci_execute($result5);
+                        while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                            if(count($tnoBreak) == 0){
+                                break;
+                            }
+                            if($row5["QUANTITY"] == 0){
+                                $rateof = 0;
+                            } 
+                            else{
+                                $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
+                            }
+                            $printok = 1;
+                            for($keycode = 0; $keycode < count($item_code); $keycode++){
+                                if($row5["ITEM_CODE"] == $item_code[$keycode]){ 
+                                    $printok = 0; 
+                                }
+                            }
+                            if($printok == 1){
+                                $lineData[] = array(
+                                    'Job Order' =>  $temporada,
+                                    'Customer' => $temporada,
+                                    'Sale Order' => $temporada,
+                                    'Article' => $temporada,
+                                    'Department' => $temporada,
+                                    'Season' => $temporada,
+                                    'Item Code' => $row5["ITEM_CODE"],
+                                    'Item Desc' => $row5["ITEM_DESC"],
+                                    'Trans Qty' => number_format($row5["QUANTITY"],2),
+                                    'Trans Rate' => number_format($rateof,2),
+                                    'Trans Amount' => number_format($row5["AMOUNT"],2),
+                                    'JO Qty' => $temporada,
+                                    'JO Rate' => $temporada,
+                                    'JO Amount' => $temporada,
+                                    'Diff Qty' => number_format($row5["QUANTITY"],2), 
+                                    'Diff Amount' => number_format($row5["AMOUNT"],2)
+                                );
+                            }
+                        } 
+                    unset($item_code);
+                    }
+                    $item_code[0] = $row->Rm_Code;
                     $item_code_now = $row->Rm_Code;
-                    $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                    $tnoBreak = explode(',', $tno);
+                    $tno_check = implode("','", $tnoBreak);
+                    $sql2 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
                                 FROM TRANS_ISSUE_MT TIM
                                 JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
                                 JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
                                 WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'";
-                    $result3 = oci_parse($conn,$sql3);
-                    oci_execute($result3);
-                    while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){ 
-                        if($row3["QUANTITY"] != 0){
-                            $rate2 = $row3["AMOUNT"]/$row3["QUANTITY"];
-                        }
+                    $result2 = oci_parse($conn,$sql2);
+                    oci_execute($result2);
+                    while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        if($row2["QUANTITY"] != 0){
+                            $rate2 = $row2["AMOUNT"]/$row2["QUANTITY"];
+                            $amounte = $row2["AMOUNT"];
+                            $quantitye = $row2["QUANTITY"];
+                        } 
                         else{
-                            $rate2 = 0; $amounte = 0;
-                            $diffqty = $row->sum-$actqty;  $diffamt = $estamt-$actamt;
-                                if($diffqty == 0){ 
-                                    number_format($diffqty,2); 
-                                }
-                                else{ 
-                                    number_format($diffqty,2); 
-                                } 
-                                number_format($diffamt,2); 
-                                $tempcode = $row->Job_Id; 
-                                $rem_check = 1; 
-                                $key = 1; 
-                        }   
-                        $article0 = $row->Onsole_Art_No; $department0 = $row->Department;  $sono0 = $row->So_No; $tno2 = $tno; $tdt2 = $tdt;
-
-                        $tnoBreak = explode(',', $tno);
-                        $tno_check = implode("','", $tnoBreak);
-
-                        $lineData[] = array(
-                            'Job Order' =>  $row->Job_Id." ".$row->Date_Created,
-                            'Customer' => $row->Cust_Name,
-                            'Sale Order' => $row->So_No,
-                            'Article' => $row->Transfer_No_Mt,
-                            'Department' => $row->Department,
-                            'Season' => $row->Season,
-                            'Item Code' => $row->Rm_Code,
-                            'Item Desc' => $row->Job_Desc,
-                            'Trans Qty' => $row3["QUANTITY"],
-                            'Trans Rate' => number_format($rate2,2),
-                            'Trans Amount' => number_format($row3["AMOUNT"],2),
-                            'JO Qty' => number_format($row->sum,2),
-                            'JO Rate' => number_format($actrate,2),
-                            'Diff Qty' => number_format(($actrate*$row->sum),2),
-                            'Diff Amount' => number_format($diffqty,2),
-                        );
+                            $rate2 = 0; $amounte = 0; $quantitye = $row2["QUANTITY"];
+                        }
+                        $actqty = $row2["QUANTITY"];
+                        $actrate = $rate2;
+                        $actamt = $row2["AMOUNT"];
+                    }
+                    $estamt = $actrate*$row->Quantity;
+                    $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
+                    $lineData[] = array(
+                        'Job Order' =>  $row->Job_Id." || ".$row->RTTIME,
+                        'Customer' => $row->Cust_Name,
+                        'Sale Order' => $row->So_No,
+                        'Article' => $row->Onsole_Art_No,
+                        'Department' => $row->Department,
+                        'Season' => $row->Season,
+                        'Item Code' => $row->Rm_Code,
+                        'Item Desc' => $row->Job_Desc,
+                        'Trans Qty' => number_format($quantitye,2),
+                        'Trans Rate' => number_format($rate2,2),
+                        'Trans Amount' => number_format($amounte,2),
+                        'JO Qty' => number_format($row->Quantity,2),
+                        'JO Rate' =>  number_format($actrate,2),
+                        'JO Amount' =>  number_format($actrate*$row->Quantity,2),
+                        'Diff Qty' => number_format($diffqty,2), 
+                        'Diff Amount' => number_format($diffamt,2)
+                    );
+                    $tempcode = $row->Job_Id; $rem_check = 1; $key = 1; 
+                }
+                else{  
+                    $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
+                    $tnoBreak = explode(',', $tno);
+                    $tno_check = implode("','", $tnoBreak);
+                    $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                             FROM TRANS_ISSUE_MT TIM
+                             JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                             JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
+                             WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                    $result3= oci_parse($conn,$sql3);
+                    oci_execute($result3);
+                    while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        if($tno == NULL){
+                            $re_amount = 0; $re_rate = 0; $re_qty = 0;
+                        } 
+                        else{
+                            if($row3["QUANTITY"] != 0){
+                                $re_qty = $row3["QUANTITY"];
+                                $re_amount = $row3["AMOUNT"];
+                                $re_rate = $row3["AMOUNT"]/$row3["QUANTITY"];
+                            } 
+                            else{
+                                $re_amount = 0; $re_rate = 0; $re_qty = 0;
+                            }
+                        }
+                        $actqty = $row3["QUANTITY"];  $actrate = $re_rate;  $actamt = $row3["AMOUNT"];
+                    }
+                    $estamt = $actrate*$row->Quantity;
+                    $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
+                    $lineData[] = array(
+                        'Job Order' =>  $temporada,
+                        'Customer' => $temporada,
+                        'Sale Order' => $temporada,
+                        'Article' => $temporada,
+                        'Department' => $temporada,
+                        'Season' => $temporada,
+                        'Item Code' => $row->Rm_Code,
+                        'Item Desc' => $row->Job_Desc,
+                        'Trans Qty' => number_format($re_qty,2),
+                        'Trans Rate' => number_format($re_rate,2),
+                        'Trans Amount' => number_format($re_amount,2),
+                        'JO Qty' => number_format($row->Quantity,2),
+                        'JO Rate' => number_format($actrate,2), 
+                        'JO Amount' => number_format($actrate*$row->Quantity,2), 
+                        'Diff Qty' => number_format($diffqty,2), 
+                        'Diff Amount' => number_format($diffamt,2)
+                    );         
                 }
             }
+
+            $tnoBreak = explode(',', $tno);
+            $tno_check = implode("','", $tnoBreak);
+            $sql5 = "SELECT IMT.ITEM_CODE, IMT.ITEM_DESC, SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                 FROM TRANS_ISSUE_MT TIM
+                 JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                 JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID
+                 WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                 GROUP BY IMT.ITEM_CODE, IMT.ITEM_DESC";
+                            
+            $result5 = oci_parse($conn,$sql5);
+            oci_execute($result5);
+            while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            if(count($tnoBreak) == 0){
+                break;
+            }
+            if($row5["QUANTITY"] == 0){
+                $rateof = 0;
+            } 
+            else{
+                $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
+            }
+            $printok = 1;
+            for($keycode = 0; $keycode < count($item_code); $keycode++) {
+                if($row5["ITEM_CODE"] == $item_code[$keycode]){ 
+                    $printok = 0; 
+                }
+            }
+            if($printok == 1){
+                $lineData[] = array(
+                    'Job Order' => $temporada,
+                    'Customer' => $temporada,
+                    'Sale Order' => $temporada,
+                    'Article' => $temporada,
+                    'Department' => $temporada,
+                    'Season' => $temporada,
+                    'Item Code' => $row5->ITEM_CODE,
+                    'Item Desc' => $row5->ITEM_DESC,
+                    'Trans Qty' => number_format($row5->QUANTITY,2),
+                    'Trans Rate' => number_format($rateof,2),
+                    'Trans Amount' => number_format($row5->AMOUNT,2),
+                    'JO Qty' => $temporada,
+                    'JO Rate' => $temporada,
+                    'JO Amount' => $temporada,
+                    'Diff Qty' => number_format($row5->QUANTITY,2), 
+                    'Diff Amount' => number_format($row5->AMOUNT,2)
+                );
+            }
+        } 
+            unset($item_code);
             return Excel::download(new TransferAgainst($lineData), 'Transfer Against Job Order '.$date.'.xlsx');
         }
         catch(Exception $e){
@@ -4541,7 +4674,8 @@ class ReportController extends Controller
             $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
 
             if(!empty($joborder)){
-                $joborder = $joborder;
+                $joborder = explode(" || ",$joborder);
+                $joborder = $joborder[0];
             }else{
                 $joborder = "";
             }
@@ -4560,8 +4694,8 @@ class ReportController extends Controller
             }else{
                 $thedate = "";
             }
-            if(!empty($rmcodet)){
-                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rmcodet));
+            if(!empty($rawmaterial)){
+                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rawmaterial));
                 $rmcodet = $rmcoarrf[0];
             }else{
                 $rmcodet = "";
@@ -4601,19 +4735,13 @@ class ReportController extends Controller
                 $enddte = "";
             }
 
-            $Arraydata = DB::table('job_sheet_order_mt')->join('job_sheet_order_det', 'job_sheet_order_det.Job_Id', '=', 'job_sheet_order_mt.Job_Id')->where('job_sheet_order_mt.Department','!=','Insole')
-                                                                ->select('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Transfer_No_Mt','job_sheet_order_mt.Transfer_Date_Mt','job_sheet_order_mt.Transfer_Id',DB::raw("SUM(job_sheet_order_det.Qty) as sum"))
-                                                                ->where('job_sheet_order_mt.Unique_Id','like',$joborder.'%')
-                                                                ->where('job_sheet_order_mt.Department','like',$department.'%')
-                                                                ->where('job_sheet_order_mt.Cust_Name','like',$customer.'%')
-                                                                ->where('job_sheet_order_mt.Season','like',$season.'%')
-                                                                ->where('job_sheet_order_mt.So_No','like',$sono.'%')
-                                                                ->where('job_sheet_order_mt.Onsole_Art_No','like',$article.'%')
-                                                                ->where('job_sheet_order_det.Rm_Code','like',$rmcodet.'%')
-                                                                ->where('job_sheet_order_mt.Date_Created','like',$datecheck.'%')
-                                                                ->whereIn('job_sheet_order_mt.Status', ['STORE', 'FINALISED', 'COMPLETE'])
-                                                                ->groupBy('job_sheet_order_mt.Job_Id','job_sheet_order_mt.Cust_Name','job_sheet_order_mt.Onsole_Art_No','job_sheet_order_mt.So_No','job_sheet_order_mt.Season','job_sheet_order_mt.Department','job_sheet_order_det.Rm_Code','job_sheet_order_det.Job_Desc','job_sheet_order_mt.Date_Created','job_sheet_order_mt.Delivery_Date','job_sheet_order_mt.Transfer_No_Mt','job_sheet_order_mt.Transfer_Date_Mt','job_sheet_order_mt.Transfer_Id')->orderBy('job_sheet_order_mt.Job_Id','asc')->get();
-                                          
+            $Arraydata = DB::select(DB::raw("SELECT jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id
+                                                FROM job_sheet_order_mt jsom
+                                                JOIN job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id and jsom.Department != 'Insole'
+                                                WHERE jsom.Unique_Id like '".$joborder."%' AND jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%' and jsom.Status IN ('STORE', 'FINALISED', 'COMPLETE')
+                                                group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id, jsom.Delivery_Date, RTTIME
+                                                order by jsom.Job_Id, jsod.Rm_Code"));
+
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
             $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
@@ -5719,14 +5847,14 @@ class ReportController extends Controller
             }
 
             $Arraydata = DB::select(DB::raw("SELECT t.totals, jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME
-                            FROM job_sheet_order_mt jsom     
-                            join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
-                            join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
-                            on t.Job_Id = jsom.Job_Id                
-                            WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'                    
-                            group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
-                            order by jsom.Job_Id, jsod.Rm_Code"));
-                                
+                                                FROM job_sheet_order_mt jsom                                       
+                                                join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
+                                                join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
+                                                on t.Job_Id = jsom.Job_Id                                        
+                                                WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'                                        
+                                                group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
+                                                order by jsom.Job_Id, jsod.Rm_Code"));
+
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $actqty = $diffqty = $actrate = $diffamt = $actamt = $estamt = $rem_check = $key = $keycode = $rateof = 0;                                        
@@ -5738,97 +5866,89 @@ class ReportController extends Controller
             $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = 0;
             
             foreach($Arraydata as $row){
-                    $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code;
-                    $item_code_now = $row->Rm_Code;
-                    $sql5 = "SELECT T.PROD_QTY, SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
+                $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code; $totaling = (int)$row->totals;
+                $sql3 = "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT
                             FROM ISSUE_MT IM
                             JOIN ISSUE_DETAIL ID ON ID.ISSUE_ID = IM.ISSUE_ID
                             JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$departmentERP','%')
                             JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
                             JOIN ITEMS_MT ITEM ON ITEM.ITEM_ID = ID.ITEM_ID AND ITEM.ITEM_CODE LIKE NVL('$item_code_now','%')
                             JOIN WIZ_SEGMENT03 ARTCODE ON ARTCODE.SEGMENT_ID = ID.SEGMENT_ID AND ARTCODE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                            JOIN (  SELECT IMM.SALES_ORDER_ID, SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
-                                    FROM ISSUE_MT IMM
-                                    JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
-                                    JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
-                                    JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                    JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                    JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article0','%')
-                                            
-                                    WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                                    GROUP BY IMM.SALES_ORDER_ID
-                                    
-                                ) T ON T.SALES_ORDER_ID = SOM.SALES_ORDER_ID
-                            WHERE IM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'
-                            GROUP BY T.PROD_QTY";
-                    $result5 = oci_parse($conn,$sql5);
-                    oci_execute($result5);
-                    $row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS);
-                        if($row5 == NULL){  
-                            $diffqty2 = 0;
-                            $a = 0;
-                            $actqty = 0;
-                            $b = 0;
-                            $actrate = 0;
-                            $c = 0;
-                            $actamt = 0;
-                            $d = 0;
-                            $e = "N/A";
-                        }
-                        else{
-                            $a = $row5["QUANTITY"]; $actqty = $row5["QUANTITY"];
-                            $b = $row5["RATE"]; $actrate = $row5["RATE"];
-                            $c = $row5["AMOUNT"]; $actamt = $row5["AMOUNT"];
-                            $d = $row5["PROD_QTY"];
-                            $e = number_format($row5["PROD_QTY"]*$row->Quantity/$row->totals,2);
-                        }
-                        $f = $row->totals;
-                        $g = $row->Quantity/$row->totals;
-                        $h = $row->Quantity;
-                        $i = $actrate;
-                        $j = $actrate*$row->Quantity;
-                        $estamt = $actrate*$row->Quantity; 
-                        $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt; $totaling = (int)$row->totals;  
-                        if($row5 == NULL){
-                            $diffqty2 = 0;
-                            $k = $diffqty2;
-                        }
-                        else{
-                            $diffqty2 = $row5["QUANTITY"] - ($row5["PROD_QTY"]*($row->Quantity/$totaling));
-                            $k = $diffqty2;
-                        }
-                        if($diffqty == 0){
-                            $l = $diffqty;                    
-                        }
-                        else{
-                            $l = $diffqty;                    
-                        }                        
-                        $m = $diffamt;
-                        $lineData[] = array(
-                            'Job Order' => $row->Job_Id." ".$row->RTTIME,
-                            'Customer' => $row->Cust_Name,
-                            'Sale Order' => $row->So_No,
-                            'Article' => $row->Onsole_Art_No,
-                            'Delivery Date' => $row->Onsole_Art_No,
-                            'Department' => $row->Department,
-                            'Season' => $row->Season,
-                            'Item Code' => $row->Rm_Code,
-                            'Item Desc' => $row->Job_Desc,
-                            'Act Qty' => number_format($a,2),
-                            'Act Rate' => number_format($b,2),
-                            'Act Amount' => number_format($c,2),
-                            'Prod Qty' => number_format($d,2),
-                            'Cons AS Per QTY' => $e,
-                            'JO Qty' => number_format($f,2),
-                            'Cons Per Pair' => number_format($g,2),
-                            'Est Qty' => number_format($h,2),
-                            'Est Rate' => number_format($i,2),
-                            'Est Amount' => number_format($j,2),
-                            'Diff Qty' => number_format($k,2),
-                            'Diff Qtyy' => number_format($l,2),
-                            'Diff Amount' => number_format($m,2),
-                        );
-                
+                            WHERE IM.ISSUE_DATE BETWEEN '$strtdte2' AND '$enddte2'";
+
+                $prodqty = 0; $conspqty = 0;
+                $result3 = oci_parse($conn,$sql3);
+                oci_execute($result3);
+                $row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS);
+
+                $sql4 = "SELECT SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
+                            FROM ISSUE_MT IMM
+                            JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
+                            JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                            JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                            JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                            JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')                                            
+                            WHERE IMM.ISSUE_DATE BETWEEN '$strtdte2' AND '$enddte2'";
+
+                $result4 = oci_parse($conn,$sql4);
+                oci_execute($result4);
+                $row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS);
+
+                if($row3 == NULL){  
+                    $actqty = 0;  $actrate = 0;  $actamt = 0; $prodqty = 0; $conspqty = 0;
+                }
+                else{
+                    if($row3["QUANTITY"] != 0){ 
+                        $rate3 = $row3["AMOUNT"]/$row3["QUANTITY"]; 
+                    } 
+                    else{  
+                        $rate3 = 0; 
+                    }
+                    $actqty = $row3["QUANTITY"];  $actrate = $rate3;  $actamt = $row3["AMOUNT"];
+                    $prodqty = number_format($row4["PROD_QTY"],2);
+                    if($totaling != 0){  
+                        $conspqty = $row4["PROD_QTY"]*($row->Quantity/$totaling); 
+                    } 
+                    else{ 
+                        $conspqty = 0; 
+                    }
+                }
+                $jobqty = number_format($totaling,2);
+                if($totaling != 0){  
+                    $rateperpair = number_format(($row->Quantity/$totaling),2);  
+                } 
+                else{  
+                    $rateperpair = 0;  
+                }
+
+                $estamt = $actrate*$row->Quantity;
+                $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
+                $diffact = $actqty - $conspqty;
+
+                $lineData[] = array(
+                    'Job Order' => $row->Job_Id." ".$row->RTTIME,
+                    'Customer' => $row->Cust_Name,
+                    'Sale Order' => $row->So_No,
+                    'Article' => $row->Onsole_Art_No,
+                    'Delivery Date' => $row->Onsole_Art_No,
+                    'Department' => $row->Department,
+                    'Season' => $row->Season,
+                    'Item Code' => $row->Rm_Code,
+                    'Item Desc' => $row->Job_Desc,
+                    'Job Order Qty' => $jobqty,
+                    'Planned Qty' => number_format($row->Quantity,2),
+                    'Planned Rate' => number_format($actrate,2),
+                    'Planned Amount' => number_format($estamt,2),
+                    'Actual Qty' => number_format($actqty,2),
+                    'Actual Rate' => number_format($actrate,2),
+                    'Actual Amount' => number_format($actamt,2),
+                    'Production Qty' => $prodqty,
+                    'Consumption Per Pair' => number_format($rateperpair,4),
+                    'Est Qty' => number_format($conspqty,4),
+                    'Diff P vs A' => number_format($diffqty,2),
+                    'Diff A vs E' => number_format($diffact,2),
+                    'Diff Amount' => number_format($diffamt,2),
+                );                
             }
             return Excel::download(new Comparison($lineData), 'Consumption Comparison Report '.$date.'.xlsx');                    
         }
@@ -5919,13 +6039,17 @@ class ReportController extends Controller
             }
          
             $Arraydata = DB::select(DB::raw("SELECT t.totals, jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME
-                            FROM job_sheet_order_mt jsom     
-                            join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
-                            join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
-                            on t.Job_Id = jsom.Job_Id                
-                            WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'                    
-                            group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
-                            order by jsom.Job_Id, jsod.Rm_Code"));
+
+            FROM job_sheet_order_mt jsom
+     
+            join job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id
+            join (select sbmt.Job_Id, SUM(sbmt.total) as totals from job_sheet_order_sbmt sbmt GROUP BY sbmt.Job_Id) t
+            on t.Job_Id = jsom.Job_Id
+     
+            WHERE jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'
+     
+            group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, jsom.Date_Created, jsom.Delivery_Date, t.totals
+            order by jsom.Job_Id, jsod.Rm_Code"));
 
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
@@ -7017,7 +7141,7 @@ class ReportController extends Controller
         $search = $request->get('search');
         $result = DB::table('job_sheet_order_mt')->where('Job_Id', 'like', '%'.$search.'%')->skip(0)->take(5)->get()->unique('Job_Id');
         foreach($result as $data){
-            $JobOrder[] = $data->Job_Id . " || " . $data->Department;
+            $JobOrder[] = $data->Unique_Id . " || " . $data->Department;
         }
         return response()->json($JobOrder);
     }
