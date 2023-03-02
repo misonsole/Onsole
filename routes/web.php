@@ -212,7 +212,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('removeColors', [SpecificationController::class, 'removeColors'])->name('removeColors');
     Route::post('removeSpec', [SpecificationController::class, 'removeSpec'])->name('removeSpec');
 
-    //Report
+    //Report    
+    Route::get('transfer-ledger', [ReportController::class, 'TransferLedger'])->name('transfer-ledger');
+    Route::post('transfer-ledger-report', [ReportController::class, 'TransferLedgerDisplay'])->name('transfer-ledger-report');
+    Route::post('transfer-ledger-report-download', [ReportController::class, 'TransferLedgerDownload'])->name('transfer-ledger-report-download');
     Route::get('transfer', [ReportController::class, 'Transfer'])->name('transfer');
     Route::post('transfer-report', [ReportController::class, 'TransferReportDisplay'])->name('transfer-report');
     Route::post('transfer-report-download', [ReportController::class, 'TransferReportDownload'])->name('transfer-report-download');
@@ -288,10 +291,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('job-order-table', [JobOrderController::class, 'All'])->name('job-order-table');
     // Route::get('pricingsheetduplicate/{desgin}/{id}', [JobOrderController::class, 'Duplicate']);
     Route::get('job-order', [JobOrderController::class, 'jobOrder'])->name('job-order');
+    Route::get('createJobOrder/{id}', [JobOrderController::class, 'Create'])->name('createJobOrder');    
+    Route::get('create-job-order', [JobOrderController::class, 'CreateJobOrder'])->name('create-job-order');        
+    Route::get('articleData/{id}/{company}/{sono}', [JobOrderController::class, 'articleData'])->name('articleData');        
     Route::get('joborderdata', [JobOrderController::class, 'joborderdata'])->name('joborderdata');
     Route::get('companydata/{id}', [JobOrderController::class, 'Companydata']);
 
-    Route::get('job-order', [JobOrderController::class, 'jobOrder'])->name('job-order');
     Route::get('job-order-view', [JobOrderController::class, 'Display'])->name('job-order-view');
     Route::get('job-order-print', [JobOrderController::class, 'Display1'])->name('job-order-print');
     Route::get('job-order-edit', [JobOrderController::class, 'Edit'])->name('job-order-edit');

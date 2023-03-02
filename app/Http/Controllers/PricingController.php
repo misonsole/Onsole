@@ -2613,6 +2613,7 @@ class PricingController extends Controller
             $Currenttime = date("h:i A");
             $Currentdate = date("d-m-Y");
             $Userdata = [];
+            $store = array();
             $idddd = Auth::user()->id;
             $name = Auth::user()->emp_name;
             $UserDetail = DB::table("users")->where("id", $idddd)->pluck('userrole');

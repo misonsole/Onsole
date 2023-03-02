@@ -9,7 +9,7 @@ class JobOrder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['season', 'last', 'color', 'status', 'sample', 'article', 'product', 'image', 'sequence', 'date', 'sq_no'];
+    protected $fillable = ['season', 'purpose', 'project', 'profit', 'product', 'progress', 'image', 'sequence', 'date', 'remarks', 'last', 'category', 'status', 'shape', 'sole', 'range_no', 'design_no', 'description', 'sequence', 'pricing'];
 
     public $timestamps = true;
 }

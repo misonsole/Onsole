@@ -10,27 +10,120 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Newrole;
 use App\Models\PlcSole;
+use App\Models\JobOrder;
+use App\Models\Division;
 use App\Models\PlcRange;
 use App\Models\PlcShape;
-use App\Models\PlcManual;
+use App\Models\PlcFormula;
 use App\Models\PlcPurpose;
-use App\Models\PlcPricing;
 use App\Models\PlcProject;
+use App\Models\PlcPricing;
 use App\Models\PlcLocation;
-use App\Models\PlcJobOrder;
 use App\Models\PlcCategory;
 use App\Models\PlcSizeRange;
 use Illuminate\Http\Request;
+use App\Models\notifications; 
 use App\Models\PlcLastNumber;
-use App\Models\notifications;
+use App\Models\JobOrderDetail;
+use App\Models\JobSheetOrderMt;
 use App\Models\PlcPricingDetail;
-use App\Models\PlcPricingProcess;
+use App\Models\PlcSpecification;
+use App\Models\JobSheetOrderLog;
+use App\Models\JobSheetOrderSbmt;
 use App\Models\PlcPricingResource;
-use App\Models\PlcPricingOverhead;
 use App\Models\notification_details;
+use App\Models\PlcSpecificationDetail;
+use App\Models\PlcSpecificationResource;
+use App\Models\PlcSpecificationOverhead;
 
 class JobOrderController extends Controller
 {
+    public function Create(Request $request)
+    {
+        // dd($request->all());
+        date_default_timezone_set("Asia/karachi");
+        $time = date("Y-m-d");
+        $dataArray = array(
+            'Unique_Id' => $request->design_no ? $request->design_no : '-',
+            'Cust_Name' => $request->company ? $request->company : '-',
+            'Cust_Art_No' => $request->customer ? $request->customer : '-',
+            'Onsole_Art_No' => $request->article ? $request->article : '-',
+            'So_No' => $request->sono ? $request->sono : '-',
+            'Po_No' => $request->purchase ? $request->purchase : '-',
+            'cat_type' => $request->category ? $request->category : '-',
+            'Department' => $request->department ? $request->department : '-',
+            'Delivery_Date' => $time,
+            'User_Date' => $time,
+            'Date_Created' => $time,
+            'Status' => "PPC",
+            'Reserved_Status' => "Un-Reserved",
+            'sizerange' => $request->sizeRange ? $request->sizeRange : '-',
+            'image' => $request->image ? $request->image : '-',
+            'Season' => $request->season ? $request->season : '-',
+        );
+        $store = JobSheetOrderMt::create($dataArray);
+
+        // dd($store['id']);
+        dd($request->sequence7,$request->Sizelength);
+        $total = count($request->sequence7) / $request->Sizelength;
+        dd($total);
+        $id = $store['id'];
+        $b = 0;
+        $x = $request->color;
+        $storeRanges = array();
+        for($a=0; $a<$x; $a++){
+            foreach($x as $data){
+                // dd($b,$a);
+                $storeRanges[$b][$a] = $request->sequence7[$a];
+                $b++;
+            }
+        }
+        dd($storeRanges);
+        // $data = count($request->cut_item_code);
+        $z = 0 ;
+        for($i=0; $i<$total; $i++){            
+            $dataArray = array(
+                'Job_id' => $id,
+                'status' => $request->status[$i],
+                'Last_No' => $request->last_no[$i],
+                'Color' => $request->color[$i],
+                's1' => $storeRanges[$z++],
+                's2' => $storeRanges[$z++],
+                's3' => $storeRanges[$z++],
+                's4' => $storeRanges[$z++],
+                's5' => $storeRanges[$z++],
+                's6' => $storeRanges[$z++],
+                's7' => $storeRanges[$z++],
+                's8' => $storeRanges[$z++],
+                's9' => $storeRanges[$z++],
+                's10' => $storeRanges[$z++],
+                'total' => '12345',
+            );
+            $store = JobSheetOrderSbmt::insert($dataArray);
+            $z = 0;
+        }
+        dd("Stored");
+
+        dd($total);
+        $data = PlcSpecification::find($id);
+        $data = $data->toArray();
+        $JobOrder = JobOrder::create($data);
+        $input = array(
+            'status' => "Pending",
+        );
+        $update = JobOrder::where('id', $JobOrder['id'])->update($input);
+        $detailData = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get();
+        foreach($detailData as $dData){
+            $replicatedData = $dData->replicate();
+            $arrayReplicatedData = $replicatedData->toArray();
+            $newCreatedModel = JobOrderDetail::create($arrayReplicatedData);
+            JobOrderDetail::where('id', $newCreatedModel['id'])->update(['costing_id'=> $JobOrder['id']]);
+        }
+        $notification = array(
+            'value' => '1'
+        );
+        return response()->json($notification);
+    }
     public function joborderdata(Request $request)
     {
         $last = array();
@@ -79,107 +172,118 @@ class JobOrderController extends Controller
 
     public function jobOrder(Request $request)
     {
+        $allColor = array();
         $id = $_COOKIE["CID"];
-        $store = 001;
-        $season = array();
-        $season5 = array();
+        $data = JobOrder::find($id);
+        $color = JobOrderDetail::orderBy('id','DESC')->where('costing_id', $data['id'])->get()->unique('color');
+        $getColor = JobOrderDetail::orderBy('id','DESC')->where('costing_id', $data['id'])->get()->unique('color');
+        foreach($getColor as $val){
+            $allColor[] = ucfirst($val['color']);
+        }
+        $count = 0;
+        if(isset($color)){
+            $colorData = array(
+                'color' => count($color),
+                'data' => $data
+            ); 
+        }
         $color = array();
-        $item_code = array();
+        $JobOrderData = array();
+        $article = array();
         $article_code = array();
-        $location = array();
         $last = array();
-        $location = array();
-        $location = array();
         $company = array();
         $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
         $connPRL = oci_connect("onsole","s",$wizerp);
-        $sql = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION";
-        $result = oci_parse($connPRL, $sql);
-        oci_execute($result);
-        while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
-            $season[] = $row['SEASON_DEF_DESC'];
-        }
-        $sql1 = "SELECT COMPANY_NAME FROM CUSTOMER_MT ORDER BY COMPANY_NAME ASC";
-        $result1 = oci_parse($connPRL, $sql1);
-        oci_execute($result1);
-        while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
-            $company[] = $row1['COMPANY_NAME'];
-        }
         $sql2 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26 ORDER BY SEGMENT_VALUE_DESC ASC";
         $result2 = oci_parse($connPRL, $sql2);
         oci_execute($result2);
         while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
             $color[] = ucfirst(strtolower($row2['SEGMENT_VALUE_DESC']));
         }
+        $sql3 = "SELECT BB.COMPANY_NAME, AA.SALES_ORDER_NO, AA.CUST_PO_DATE, DD.ITEM_DESC, DD.OLD_ART_NO, AA.CUST_PO_NO, AA.CUST_PO_DATE, SO_TYPE_MT.SO_TYPE_DESC
+                    FROM SALES_ORDER_MT AA        
+                    JOIN CUSTOMER_MT BB ON BB.CUSTOMER_ID = AA.CUSTOMER_ID             
+                    AND AA.SALES_ORDER_ID = 3487        
+                    JOIN SO_TYPE_MT ON SO_TYPE_MT.SO_TYPE_ID = AA.SO_TYPE_ID             
+                    JOIN SALES_ORDER_DET CC ON CC.SALES_ORDER_ID = AA.SALES_ORDER_ID
+                    JOIN ITEMS_MT DD ON DD.ITEM_ID = CC.ITEM_ID";
+        $result3 = oci_parse($connPRL, $sql3);
+        oci_execute($result3);
+        while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $JobOrderData[] = $row3;
+            $articleCode = explode(" ", $row3['ITEM_DESC']);            
+            $article[] = $articleCode[0];
+        }
+        $JobOrderData = $JobOrderData[0];
+        $article = array_unique($article);
         $sizerange = PlcSizeRange::orderBy('id','DESC')->get();
         $last = PlcLastNumber::orderBy('id','ASC')->get();
         $jobOrder = DB::table('plc_joborders')->where('id',$id)->get();
         return view('joborder.job-order')->with([
-            'season'=> $season,
-            'joborderseason'=> $jobOrder[0]->season,
-            'jobordersono'=> $jobOrder[0]->sono,
-            'location'=> $location, 
-            'company'=> $company, 
-            'sizerange'=> $sizerange, 
-            'last'=> $last,     
-            'color'=> $color, 
-            'itemcode'=> $item_code, 
-            'i'=> 1, 
-            'articlecode'=> $article_code,
-            'z'=> count($article_code), 
-            'j'=> 1, 
-        ]);
-        date_default_timezone_set('Asia/Karachi');
-        $date = date('l d F Y - h:i');
-        $date1 = date('My');
-        $Support = JobOrder::orderBy('id','DESC')->limit(1)->get();
-        if($Support[0]->sq_no == NULL){
-            $sq_no = $store + 0;
-        }
-        else{
-            $sq_no = $store + $Support[0]->sq_no;
-        }
-
-        $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
-        $result1 = oci_parse($connPRL, $sql1);
-        oci_execute($result1);
-        while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
-            $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
-        }
-        $sql2 = "SELECT IM.ITEM_CODE, IM.ITEM_DESC, U.UOM_DESC
-        FROM ITEMS_MT IM, WIZ_UOM_MT U, ITEMS_CATEGORY IC
-               WHERE IM.PRIMARY_UOM = U.UOM_ID
-                     AND IC.ITEM_ID = IM.ITEM_ID AND IC.STRUCTURE_ID = 27";
-        $result2 = oci_parse($connPRL, $sql2);
-        oci_execute($result2);
-        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
-            $item_code[] = $row2;
-        }
-        $sql3 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT03 WHERE STRUCTURE_ID = 26";
-        $result3 = oci_parse($connPRL, $sql3);
-        oci_execute($result3);
-        while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
-            $article_code[] = $row3['SEGMENT_VALUE_DESC'];
-        }
-        $last = LastNumber::orderBy('id','DESC')->get();
-        $location = Location::orderBy('id','DESC')->get();
-        return view('joborder.job-order')->with([
-            'season'=> $season,
-            'location'=> $location, 
-            'last'=> $last,     
-            'color'=> $color, 
-            'itemcode'=> $item_code, 
-            'i'=> 1, 
-            'articlecode'=> $article_code,
-            'z'=> count($article_code), 
-            'j'=> 1, 
-            'date'=> $date, 
-            'date1'=> $date1,
-            'sq_no'=> $sq_no
+            'sizerange' => $sizerange, 'last' => $last, 'color' => $color, 'JobOrderData' => $JobOrderData, 'count' => $colorData['color'],
+            'article' => $article, 'i' => 1, 'articlecode' => $article_code, 'z' => count($article_code), 'j' => 1, 'data' => $colorData, 'allColor' => $allColor
         ]);
     }
 
-    public function Create(Request $request)
+    public function CreateJobOrder(Request $request)
+    {
+        $id = $_GET['id'];
+        $allColor = array();
+        $data = PlcSpecification::find($id);
+        $color = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $data['id'])->get()->unique('color');
+        $getColor = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $data['id'])->get()->unique('color');
+        $materailData = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $data['id'])->get();
+        foreach($getColor as $val){
+            $allColor[] = ucfirst($val['color']);
+        }
+        $count = 0;
+        if(isset($color)){
+            $colorData = array(
+                'color' => count($color),
+                'data' => $data
+            ); 
+        }
+        $color = array();
+        $JobOrderData = array();
+        $article = array();
+        $article_code = array();
+        $last = array();
+        $company = array();
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $sql2 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26 ORDER BY SEGMENT_VALUE_DESC ASC";
+        $result2 = oci_parse($connPRL, $sql2);
+        oci_execute($result2);
+        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $color[] = ucfirst(strtolower($row2['SEGMENT_VALUE_DESC']));
+        }
+        $sql3 = "SELECT BB.COMPANY_NAME, AA.SALES_ORDER_NO, AA.CUST_PO_DATE, DD.ITEM_DESC, DD.OLD_ART_NO, AA.CUST_PO_NO, AA.CUST_PO_DATE, SO_TYPE_MT.SO_TYPE_DESC
+                    FROM SALES_ORDER_MT AA        
+                    JOIN CUSTOMER_MT BB ON BB.CUSTOMER_ID = AA.CUSTOMER_ID             
+                    AND AA.SALES_ORDER_ID = 3487        
+                    JOIN SO_TYPE_MT ON SO_TYPE_MT.SO_TYPE_ID = AA.SO_TYPE_ID             
+                    JOIN SALES_ORDER_DET CC ON CC.SALES_ORDER_ID = AA.SALES_ORDER_ID
+                    JOIN ITEMS_MT DD ON DD.ITEM_ID = CC.ITEM_ID";
+        $result3 = oci_parse($connPRL, $sql3);
+        oci_execute($result3);
+        while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $JobOrderData[] = $row3;
+            $articleCode = explode(" ", $row3['ITEM_DESC']);            
+            $article[] = $articleCode[0];
+        }
+        $JobOrderData = $JobOrderData[0];
+        $article = array_unique($article);
+        $sizerange = PlcSizeRange::orderBy('id','DESC')->get();
+        $last = PlcLastNumber::orderBy('id','ASC')->get();
+        $jobOrder = DB::table('plc_joborders')->where('id',$id)->get();
+        return view('joborder.job-order')->with([
+            'sizerange' => $sizerange, 'last' => $last, 'color' => $color, 'JobOrderData' => $JobOrderData, 'count' => $colorData['color'], 'materailData' => $materailData,
+            'article' => $article, 'i' => 1, 'articlecode' => $article_code, 'z' => count($article_code), 'j' => 1, 'data' => $colorData, 'allColor' => $allColor
+        ]);
+    }
+
+    public function Create1(Request $request)
     {
         $assign_users = User::orderBy('id','ASC')->where('department', 'Product Development')->pluck('id');
         date_default_timezone_set('Asia/Karachi');
@@ -882,13 +986,48 @@ class JobOrderController extends Controller
             }
             if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])){
                 if(isset($storeData['Job-Order Create']) == 1){
-                    $data = DB::table('plc_joborders')->get();
+                    $data = JobOrder::orderBy('id','DESC')->get();                 
+                    $i = 1;
+                    foreach($data as $value){
+                        $color = JobOrderDetail::orderBy('id','DESC')->where('costing_id', $value['id'])->get()->unique('color');
+                        $count = 0;
+                        if(isset($color)){
+                            $colorData[] = [
+                                'color' => count($color),
+                                'data' => $value
+                            ]; 
+                        }
+                        $i++;
+                    }
                 }
-                return view('joborder.job-order-table')->with(['data'=> $data, 'i'=> 1]);
+                return view('joborder.job-order-ppc-table')->with(['data'=> $colorData, 'i'=> 1]);
             }
+            elseif(isset($storeData['Quality-Control']) && !empty($storeData['Quality-Control'])){
+                if(isset($storeData['Quality-Control']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "QC")->Orwhere('status', "Production")->Orwhere('status', "Update")->Orwhere('status', "Final")->get();
+                }
+                return view('specificationsheet.specification-sheet-qc-table')->with(['data'=> $data, 'i'=> 1]);
+            }
+            elseif(isset($storeData['Production-Planning-Control']) && !empty($storeData['Production-Planning-Control'])){
+                if(isset($storeData['Production-Planning-Control']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "PPC")->Orwhere('status', "Costing")->Orwhere('status', "Final")->get();
+                }
+                return view('specificationsheet.specification-sheet-ppc-table')->with(['data'=> $data, 'i'=> 1]);
+            }
+            elseif(isset($storeData['Pricing-Sheet Production']) && !empty($storeData['Pricing-Sheet Production'])){
+                if(isset($storeData['Pricing-Sheet Production']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "Production")->Orwhere('status', "Costing")->Orwhere('status', "Final")->get();
+                }
+                return view('specificationsheet.specification-sheet-ppc-table')->with(['data'=> $data, 'i'=> 1]);
+            }
+            elseif(isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List'])){
+                if(isset($storeData['Pricing-Sheet List']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->get();
+                }
+                return view('specificationsheet.specification-sheet-table')->with(['data'=> $data, 'i'=> 1]);
+            } 
             else{
-                $data = DB::table('plc_joborders')->get();
-                return view('joborder.job-order-table')->with(['data'=> $data, 'i'=> 1]);
+                $data = PlcSpecification::orderBy('id','DESC')->get();
             }
         }
         catch(Exception $e){
@@ -986,6 +1125,41 @@ class JobOrderController extends Controller
         else{
             $error = 400;
             return response()->json($error);
+        }
+    }
+
+    public function articleData($id,$company,$sono)
+    {
+        $data = array();
+        $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+        $connPRL = oci_connect("onsole","s",$wizerp);
+        $sql = "SELECT BB.COMPANY_NAME, AA.SALES_ORDER_NO, AA.CUST_PO_DATE, DD.ITEM_DESC, DD.OLD_ART_NO, AA.CUST_PO_NO, AA.CUST_PO_DATE, SO_TYPE_MT.SO_TYPE_DESC
+                    FROM SALES_ORDER_MT AA        
+                    JOIN CUSTOMER_MT BB ON BB.CUSTOMER_ID = AA.CUSTOMER_ID
+                    AND BB.COMPANY_NAME LIKE '$company'
+                    AND AA.SALES_ORDER_NO = '$sono'        
+                    JOIN SO_TYPE_MT ON SO_TYPE_MT.SO_TYPE_ID = AA.SO_TYPE_ID                
+                    JOIN SALES_ORDER_DET CC ON CC.SALES_ORDER_ID = AA.SALES_ORDER_ID
+                    JOIN ITEMS_MT DD ON DD.ITEM_ID = CC.ITEM_ID
+                    AND CC.ITEM_DESC LIKE '%$id%'";
+        $result = oci_parse($connPRL, $sql);
+        oci_execute($result);
+        while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            $data[] = $row['OLD_ART_NO'];
+        }
+        if(count($data)>0){
+            $data = $data[0];
+            $notification = array(
+                'data' => $data,
+                'value' => '1'
+            );
+            return response()->json($notification);
+        }
+        else{
+            $notification = array(
+                'value' => '2'
+            );
+            return response()->json($notification);
         }
     }
 }

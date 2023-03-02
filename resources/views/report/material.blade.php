@@ -134,10 +134,10 @@
                 <div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('home')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Material Consumption Report</li>
+                        <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Material Consumption Analysis</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Material Consumption Report</h4>
+                <h4 class="page-title">Material Consumption Analysis</h4>
                 <br>
                 <button style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" type="button" class="btn text-white" data-toggle="modal" data-target="#exampleModalCenter">View Report</button>
             </div>
@@ -152,7 +152,7 @@
                             <img src="img/photos/preview.png" alt="logo-small" class="logo-sm mr-2" height="100">
                         </div>
                         <div class="col-md-6 align-self-center text-center">
-                            <h3>Material Consumption Report</h3>
+                            <h3>Material Consumption Analysis</h3>
                         </div>
                     </div>
                     @if($Permission == 1)

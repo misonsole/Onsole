@@ -390,6 +390,11 @@
                                 <li class="{{ Request::path() == 'material-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'material-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('material')}}"><i class="ti-control-record" style="width: 18px;"></i>Material Consumption</a></li>
                             @endif
                         @endif
+                        @if(isset($storeData['Transfer Ledger Report']) && !empty($storeData['Transfer Ledger Report'])) 
+                            @if(isset($storeData['Transfer Ledger Report']) == 1)
+                                <li class="{{ Request::path() == 'transfer-ledger-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'transfer-ledger-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('transfer-ledger')}}"><i class="ti-control-record" style="width: 18px;"></i>Transfer Ledger</a></li>
+                            @endif
+                        @endif
                         @if(isset($storeData['Purchase Order Report']) && !empty($storeData['Purchase Order Report'])) 
                             @if(isset($storeData['Purchase Order Report']) == 1)
                                 <li class="{{ Request::path() == 'purchase-order-report' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'purchase-order-report' ? 'nav-link active' : 'nav-link' }}" href="{{url('purchase-order')}}"><i class="ti-control-record" style="width: 18px;"></i>Purchase Order Report</a></li>
@@ -453,15 +458,15 @@
                         @endif
                         @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']) || isset($storeData['Job-Order List']) && !empty($storeData['Job-Order List'])) 
                             @if(isset($storeData['Job-Order Create']) == 1 || isset($storeData['Job-Order List']) == 1)
-                            <li>
-                                <a href="javascript: void(0);"><i class="ti-control-record"></i>Job Order <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                            <li class="{{ Request::path() == 'create-job-order' ? 'mm-active active' : '' }}">
+                                <a href="javascript: void(0);" class="{{ Request::path() == 'create-job-order' ? 'active' : ''}}"><i class="ti-control-record"></i>Job Order <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
                                     @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])) 
                                         @if(isset($storeData['Job-Order Create']) == 1)
-                                            <li class="nav-item"><a class="nav-link" href="{{url('job-order')}}"><i class="ti-control-record"></i>Create</a></li> 
+                                            <li hidden class="nav-item"><a class="nav-link" href="{{url('job-order')}}"><i class="ti-control-record"></i>Create</a></li> 
                                         @endif
                                     @endif
-                                    <li class="{{ Request::path() == 'job-order-edit' ? 'nav-item active' : Request::path() == 'job-order-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'job-order-edit' ? 'nav-link active' : Request::path() == 'job-order-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
+                                    <li class="{{ Request::path() == 'create-job-order' ? 'nav-item active' : Request::path() == 'job-order-edit' ? 'nav-item active' : Request::path() == 'job-order-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'create-job-order' ? 'nav-link active' : Request::path() == 'job-order-edit' ? 'nav-link active' : Request::path() == 'job-order-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                                 </ul>
                             </li>
                             @endif
@@ -483,7 +488,7 @@
                         @endif
                         @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing']) || isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])) 
                             @if(isset($storeData['Pricing-Sheet Costing']) == 1 || isset($storeData['Job-Order Create']) == 1)
-                            <li class="{{ Request::path() == 'pricing-sheet-view' ? 'mm-active active' : '' }}">
+                            <li hidden class="{{ Request::path() == 'pricing-sheet-view' ? 'mm-active active' : '' }}">
                                 <a href="javascript: void(0);" class="{{ Request::path() == 'pricing-sheet-view' ? 'active' : ''}}"><i class="ti-control-record"></i>Pricing Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
                                     @if(isset($storeData['Pricing-Sheet Create']) && !empty($storeData['Pricing-Sheet Create'])) 

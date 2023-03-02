@@ -56,118 +56,67 @@
                     <div class="card-body table-responsive p-5">
                         <div class="">
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead class="bg-dark">
                                     <tr>
-                                        <th>#</th>
-                                        <!-- <th>Attachment</th> -->
-                                        <!-- <th>Season</th> -->
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Category</th> -->
-                                        <th>Design No.</th>
-                                        <th>Progress</th>
-                                        <th>Status</th>
-                                        <th>Remarks</th>
-                                        <th>Transfer</th>
-                                        <!-- <th>Purpose</th> -->
-                                        <th>Date & Time</th>
-                                        <th>Action</th>
+                                        <th class="text-white">Sr. No</th>
+                                        <th class="text-white" data-orderable="false">Design No.</th>
+                                        <th class="text-white" data-orderable="false">Status</th>
+                                        <th class="text-white" data-orderable="false">Remarks</th>
+                                        <th class="text-white" data-orderable="false">Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Action</th>
+                                        <th class="text-white" data-orderable="false">Colors</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>
-                                            @if($user->image == 0)
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('img/photos/10.jpg')}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @else
-                                            <!-- <td class="text-center" style="width: 10px;"><img id="image321" style="transition: transform .5s;" src="{{asset('uploads/appsetting/' . $user->image)}}" alt="" height="50" class="d-block mt-1 rounded"></td> -->
-                                            @endif
-                                            <!-- <td>{{$user->season}}</td> -->
-                                            <!-- <td>{{$user->sequence}}</td> -->
-                                            <!-- <td>{{$user->category}}</td> -->
-                                            <td>{{$user->design_no}}</td>
-                                            <td>
-                                                <div class="progress" style="box-shadow: none;">
-                                                    @if($user->progress == '25')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '50')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '75')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '80')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '85')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '90')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '100')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @endif
-                                                </div>
-                                            </td>
+                                            <td>{{$user['data']->design_no}}</td>
                                             <td class="text-center" style="width: 10%;">
-                                                @if($user->status == "Costing")
+                                                @if($user['data']->status == "Costing")
                                                 <span class="badge badge-md badge-boxed badge-soft-secondary p-2 w-100">Costing</span>
-                                                @elseif($user->status == "Update")
+                                                @elseif($user['data']->status == "Update")
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-100">Update</span>
-                                                @elseif($user->status == "PD")
+                                                @elseif($user['data']->status == "PD")
                                                 <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">PD</span>
-                                                @elseif($user->status == "Production")
+                                                @elseif($user['data']->status == "Production")
                                                 <span class="badge badge-md badge-boxed badge-soft-warning py-2 px-3 w-100">Production</span>
-                                                @elseif($user->status == "Reject")
+                                                @elseif($user['data']->status == "Reject")
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-100">Rejected</span>
-                                                @elseif($user->status == "QC")
+                                                @elseif($user['data']->status == "QC")
                                                 <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">Quality Control</span>
-                                                @elseif($user->status == "Sales")
+                                                @elseif($user['data']->status == "Sales")
                                                 <span class="badge badge-md badge-boxed badge-soft-success p-2 w-100">Approved</span>
+                                                @elseif($user['data']->status == "PPC")
+                                                <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">PPC</span>
                                                 @else
                                                 <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">-</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if($user->remarks === NULL) 
+                                                @if($user['data']->remarks === NULL) 
                                                     &nbsp;
                                                 @else
-                                                    <span data-id={{$user['remarks']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
+                                                    <span data-id={{$user['data']['remarks']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
                                                 @endif
                                             </td>
-                                            @if(isset($storeData['Pricing-Sheet Production']) && !empty($storeData['Pricing-Sheet Production'])) 
-                                                @if(isset($storeData['Pricing-Sheet Production']) == 1)
-                                                    <td style="width: 10%;">
-                                                        @if($user->status == 'Rejected') 
-                                                        &nbsp;
-                                                        @elseif($user->status == 'Update') 
-                                                        &nbsp;
-                                                        @elseif($user->status == 'Sales') 
-                                                        &nbsp;
-                                                        @else
-                                                        <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
-                                                            @if($user->status == 'Production')                                                    
-                                                                <option <?php if ($user->status == "Production") echo "selected"; ?> value="Production" disabled>Production</option>
-                                                                <option <?php if ($user->status == "PD") echo "selected"; ?> value="PD">Update</option>
-                                                                <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Approve</option>
-                                                            @endif
-                                                        </select>
-                                                        @endif
-                                                    </td>
-                                                @endif
-                                            @else
-                                            <td style="width: 10%;">&nbsp;</td>
-                                            @endif
                                             <div class="modal fade" id="exampleModalCenter9" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
+                                                        <div class="modal-header" style="background: transparent;">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Create Job Order</h5>
+                                                        </div>
                                                         <div class="modal-body">
                                                             <div class="form-group row py-2 text-center">
                                                                 <div class="col-sm-12 mb-1 mb-sm-0">
-                                                                    <label for=""><h4 id="modelline" style="color: #6c757d"></h4></label>
-                                                                    <input type="text" class="form-control py-2 yourclass " style="border: 1px solid #bfbfbf; text-transform: capitalize" id="remarks" name="remarks" placeholder="Remarks">
+                                                                    <label for=""><h4 id="design_no" style="color: #6c757d"></h4></label>
+                                                                    <input hidden type="text" class="form-control py-2 yourclass " style="border: 1px solid #bfbfbf; text-transform: capitalize" id="id_no" name="id_no">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer text-center" style="background-color: transparent">
                                                             <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                            <button type="submit" style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3 joborderstatus">Allow <i class="fas fa-sign-out-alt"></i> </button>
+                                                            <button type="submit" style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3 allowduplicate">Allow <i class="fas fa-sign-out-alt"></i> </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -188,24 +137,37 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <td>{{$user->purpose}}</td> -->
                                             <td>
-                                                <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
+                                                <?php $delimiter = ' '; $words = explode($delimiter, $user['data']->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
                                                 <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$words[0]}} <br><i class="mdi mdi-timer text-dark"></i> {{$newDate}}
                                             </td>
                                             <td class="text-center">
                                                 <form id="myForm">
-                                                    <input type="text" value="{{$user->id}}" name="id" hidden> 
-                                                    @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']))
-                                                        @if(isset($storeData['Pricing-Sheet Sales']) == 1)                                                        
-                                                            <!-- <a href="pricing-sheet-edit-sales?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}}  style="background: none; border: none; margin-right: -2px;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #1eca7b;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="plus"></i></span></button></a> -->
-                                                            <!-- <a href="pricing-sheet-update-sales?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                  -->
+                                                    <input type="text" value="{{$user['data']->id}}" name="id" hidden> 
+                                                    @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create'])) 
+                                                        @if(isset($storeData['Job-Order Create']) == 1)
+                                                            @if($user['data']->status === 'PPC')
+                                                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Create Job Order&nbsp;&nbsp;" class="CreateJobOrder" id="{{$user['data']['id']}}" data-id="{{$user['data']['design_no']}}"><span style="cursor: pointer; background: #07439d;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
+                                                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Create Job Order&nbsp;&nbsp;" href="create-job-order?id={{$user['data']['id']}}" target="_blank"><span style="cursor: pointer; background: #07439d;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
+                                                            @endif
                                                         @endif
                                                     @endif
-                                                    <a href="specification-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
-                                                    <a href="specification-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
+                                                    <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;View&nbsp;&nbsp;" href="specification-sheet-view?id={{$user['data']['id']}}" target="_blank"><span id="view" data-id={{$user['data']['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
+                                                    <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Print&nbsp;&nbsp;" href="specification-sheet-print?id={{$user['data']['id']}}" target="_blank"><button data-id={{$user['data']['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
                                                 </form>
                                             </td>
+                                            <td>
+                                                <div class="avatar-box thumb-xs align-self-center" style="margin-top: 5px;">
+                                                    <span style="background: #202020;" class="avatar-title rounded-circle">{{$user['color']}}</span>
+                                                </div>
+                                                @if(isset($storeData['Specification-Sheet Edit']) && !empty($storeData['Specification-Sheet Edit'])) 
+                                                    @if(isset($storeData['Specification-Sheet Edit']) == 1)
+                                                        @if($user['data']->status == "Pending")
+                                                            <a href="specification-sheet-color-edit?id={{$user['data']['id']}}" target="_blank"><button data-id={{$user['data']['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
+                                                        @endif    
+                                                    @endif
+                                                @endif
+                                            </td>  
                                             <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -273,121 +235,34 @@ $(document).ready(function(){
   @endif
 </script>
 <script>
-    $('.status').on('change', function(){
-        console.log("status Changed");
-        var status = $(this).val();
-        var id = $(this).attr("data-id");
-        if(status == 'Costing'){
-            var line = 'Are you sure Transfer to Costing?';
-            var line1 = 'Transfer';
-        }
-        else if(status == 'Approved'){
-            var line = 'Are you sure to Approved?';
-            var line1 = 'Approved';
-        }
-        else if(status == 'Sales'){
-            var line = 'Are you sure Transfer to Sales Department?';
-            var line1 = 'Transfer';
-        }
-        else if(status == 'Update'){
-            var line = 'Are you sure Transfer to PD Department?';
-            var line1 = 'Transfer';
-        }
-        else if(status == 'Rejected'){
-            var line = 'Are you sure to Rejected?';
-            var line1 = 'Rejected';
-        }
-        else if(status == 'PD'){
-            var line = 'Are you sure Transfer to PD?';
-            var line1 = 'Transfer';
-        }
-        $('#modelline').html(line);
-        $("#remarks").val(line1);
-        $(".joborderstatus").attr("id", id);
-        $(".joborderstatus").attr("data-id", status);
-        $('#exampleModalCenter9').modal('show');
-    }); 
-    // $("#edit").click(function(){
-    //     var id = $(this).attr("data-id");
-    //     $("#myForm").attr("action", "job-order-edit");
-    //     document.getElementById("myForm").submit();
-    // });
-    // $("#printFile").click(function(){
-    //     var id = $(this).attr("data-id");
-    //     $("#myForm").attr("action", "job-order-print");
-    //     document.getElementById("myForm").submit();
-    // });
-    // $("#view").click(function(){
-    //     var id = $(this).attr("data-id");
-    //     $("#myForm").attr("action", "job-order-view");
-    //     document.getElementById("myForm").submit();
-    // });
-    $(".viewweye").click(function(){
-        var id = $(this).attr("data-id");
-        $("#delete-user").attr("data-id", id);
-        $('#exampleModalCenter5').modal('show');
-    });
-    $("#delete-user").click(function(){
-        var id = $(this).attr("data-id");
-        deleteuser(id);
-    });
-    $("#calculate").click(function(){
-        var id = $(this).attr("data-id");
-        $("#calculateId").val(id);
-        $('#exampleModalCenter10').modal('show');
-    });
-    $(".viewweye11").click(function(){
-        var id = $(this).attr("data-id");
-        console.log(id);
-        $('#modelline1').html(id);
-        $('#exampleModalCenter91').modal('show');
-    });
-    function deleteuser(id){
-        $.ajax({
-                type: 'GET',
-                url: 'deletejoborder/'+id,
-                dataType: "json",
-                success: function(data){
-                    if(data == 1){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Job Order Delete Successfully!',
-                        });
-                        location.reload();
-                    }
-                    else if(data == 400){
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Something went wrong!',
-                        });
-                    }
-                }
-            });
-        }
-    $(".joborderstatus").click(function(){
-        var status = $(this).attr("data-id");
+    $(".CreateJobOrder").click(function(){
+        var dataid = $(this).attr("data-id");
         var id = $(this).attr("id");
-        var remarks = null;
-        var remarks = $("#remarks").val();
-        joborderstatus(id,status,remarks);
+        $('#id_no').val(id);
+        $('#design_no').html(dataid);
+        $('#exampleModalCenter9').modal('show');
+    });
+    $(".allowduplicate").click(function(){
+        var id = $("#id_no").val();
+        allowduplicate(id);
         $('#exampleModalCenter9').modal('hide');
     });
-    function joborderstatus(id,status,remarks){
+    function allowduplicate(id){
         $.ajax({
                 type: 'GET',
-                url: 'specificationsheetstatus/'+id+'/'+status+'/'+remarks,
+                url: 'createJobOrder/'+id,
                 dataType: "json",
                 success: function(data){
                     if(data.value == 1){
                         Swal.fire({
                             icon: 'success',
-                            title: data.msg,
+                            title: 'Job Order Created',
                             showConfirmButton: false,
                             timer: 4000
                         });
-                        location.reload();
+                        window.location.href = 'job-order-table';
                     }
-                    else if(data == 400){
+                    else{
                         Swal.fire({
                             icon: 'error',
                             title: 'Something went wrong!',
@@ -395,29 +270,6 @@ $(document).ready(function(){
                     }
                 }
             });
-        }
-</script>
-<script>
-    $(function(){
-        $('.adminForm').on('submit', function (e){
-            e.preventDefault();
-            $('#exampleModalCenter10').modal('hide');
-            $.ajax({
-                type: 'post',
-                url: 'calculate/',
-                data: $('#Chatform').serialize(),
-                success: function()
-                {
-                    Swal.fire({
-                        icon: 'success',
-                        title: "Calculated",
-                        showConfirmButton: false,
-                        timer: 4000
-                    });
-                    location.reload();
-                }
-            });
-        });
-      });
+    }
 </script>
 @endsection

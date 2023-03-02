@@ -407,13 +407,13 @@ class SpecificationController extends Controller
             //Start
             //Overhead
             $cuttingDataF = []; $StitchingDataF = []; $LaminationDataF = []; $ClosingDataF = []; $LastingDataF = []; $PackingDataF = [];
-            $data12 = DB::table('plc_pricings')->where('id', $id)->get();
+            $data12 = DB::table('plc_specifications')->where('id', $id)->get();
             $overhead_id = $data12[0]->overhead_id;
             $DateTime = $data12[0]->created_at;
             $DateTime = explode(' ', $DateTime);
-            $data1 = DB::table('plc_pricing_overheads')->where('costing_id', $id)->get();
-            $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
-            $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
+            $data1 = DB::table('plc_specification_overheads')->where('specification_id', $id)->get();
+            $data2 = DB::table('plc_specification_resources')->where('costing_id', $id)->get();
+            $data3 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
             $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
             $formulaData = PlcFormula::orderBy('id','DESC')->where('p_id', $id)->get();
             foreach($formulaData as $value){
@@ -2433,6 +2433,24 @@ class SpecificationController extends Controller
             foreach($obj as $dataa){
                 $storeData[$dataa->role_name] = $dataa->value; 
             }
+            if(isset($storeData['Specification-Sheet PPC']) && !empty($storeData['Specification-Sheet PPC'])){
+                if(isset($storeData['Specification-Sheet PPC']) == 1){
+                    $data = PlcSpecification::orderBy('id','DESC')->where('status', "PPC")->get();                 
+                    $i = 1;
+                    foreach($data as $value){
+                        $color = PlcSpecificationDetail::orderBy('id','DESC')->where('costing_id', $value['id'])->get()->unique('color');
+                        $count = 0;
+                        if(isset($color)){
+                            $colorData[] = [
+                                'color' => count($color),
+                                'data' => $value
+                            ]; 
+                        }
+                        $i++;
+                    }
+                }
+                return view('specificationsheet.specification-sheet-ppc-table')->with(['data'=> $colorData, 'i'=> 1]);
+            }
             if(isset($storeData['Specification-Sheet List']) && !empty($storeData['Specification-Sheet List'])){
                 if(isset($storeData['Specification-Sheet List']) == 1){
                     $data = PlcSpecification::orderBy('id','DESC')->get();                 
@@ -2451,7 +2469,7 @@ class SpecificationController extends Controller
                 }
                 return view('specificationsheet.specification-sheet-pd-table')->with(['data'=> $colorData, 'i'=> 1]);
             }
-            if(isset($storeData['Specification-Sheet Costing']) && !empty($storeData['Specification-Sheet Costing'])){
+            elseif(isset($storeData['Specification-Sheet Costing']) && !empty($storeData['Specification-Sheet Costing'])){
                 if(isset($storeData['Specification-Sheet Costing']) == 1){
                     $data = PlcSpecification::orderBy('id','DESC')->where('status', "Costing")->get();                 
                     $i = 1;
@@ -2676,9 +2694,12 @@ class SpecificationController extends Controller
         $item_code = array();
         $item_code2 = array();
         $item_code3 = array();
+        $store = array();
+        $get_users = array();
+        $result = array();
         $item = 0;
         $msg = 0; $department = 0;
-        if($status == "Costing"){
+        if($status == "PPC"){
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $connPRL = oci_connect("onsole","s",$wizerp);
             $sql2 = "SELECT IM.ITEM_CODE FROM ITEMS_MT IM, WIZ_UOM_MT U, ITEMS_CATEGORY IC WHERE IM.PRIMARY_UOM = U.UOM_ID AND IC.ITEM_ID = IM.ITEM_ID AND IC.STRUCTURE_ID = 27";
@@ -2708,9 +2729,14 @@ class SpecificationController extends Controller
                 return response()->json($notification);
             }
 
-            $msg = "Transferred to Costing";
+            $msg = "Transferred to PPC";
             $msg1 = "Transferred";
             $progress = 75;
+
+            $ChangeStatus = array(
+                'status' => $status,
+                'remarks' => $remarks
+            );
 
             $Userdata = array(
                 'user_id' => $name,
@@ -2721,7 +2747,7 @@ class SpecificationController extends Controller
             );
             $Insert = DB::table('plc_pricing_process')->insert($Userdata);
 
-            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Specification-Sheet Costing')->where('value', 1)->get()->unique('name');
+            $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Specification-Sheet PPC')->where('value', 1)->get()->unique('name');
             foreach($assign_users as $data){
                 $store[] = $data['name'];
             }
@@ -2732,7 +2758,7 @@ class SpecificationController extends Controller
             foreach($get_users as $value){
                 if(count($value) != 0){
                     foreach($value as $val){
-                        $result[] = $val;
+                            $result[] = $val;
                         }
                     }
                 }       
@@ -2914,7 +2940,7 @@ class SpecificationController extends Controller
         }
 
         notification_details::where('notification_id', $notification_id)->where('assign_users', Auth::user()->id)->delete();
-        $update = DB::table('plc_specifications')->where('id', $id)->update(['status' => $status, 'progress' => $progress, 'remarks' => $remarks]);
+        $update = DB::table('plc_specifications')->where('id', $id)->update($ChangeStatus);
         if($update){
             $notification = array(
                 'msg' => $msg,
@@ -3003,7 +3029,8 @@ class SpecificationController extends Controller
             $color = $request->colors;
             $count = count($color);
             $data = PlcPricing::find($id);
-            $data->replicate()->setTable('plc_specifications')->save();
+            $data = $data->toArray();
+            $PricingId = PlcSpecification::create($data);
             $detailData = PlcPricingDetail::orderBy('id','ASC')->where('costing_id', $id)->get();
             $i = 0;
             do{ 
@@ -3019,7 +3046,8 @@ class SpecificationController extends Controller
                         $string = $color[$i];
                     }
                     DB::table('plc_specification_details')->where('id', $newId)->update(['color'=> $string, 'color_id'=> $newId."".$newId]);
-                    DB::table('plc_specifications')->where('id', $newId)->update(['status'=> "Pending"]);
+                    DB::table('plc_specifications')->where('id', $PricingId['id'])->update(['status'=> "Pending"]);
+                    DB::table('plc_specification_details')->where('id', $newId)->update(['costing_id'=> $PricingId['id']]);
                 }
                 $i++;
             } while($i<$count);

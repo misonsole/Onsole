@@ -274,64 +274,14 @@
                                                     @if(isset($storeData['Specification-Sheet Create']) && !empty($storeData['Specification-Sheet Create'])) 
                                                         @if(isset($storeData['Specification-Sheet Create']) == 1)
                                                             @if($user->status === 'Final')
-                                                                <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Specification Order&nbsp;" data-id={{$user['design_no']}} id={{$user['id']}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #252d66;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                 
+                                                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Create Specification Sheet&nbsp;&nbsp;" href="pricing-sheet-duplicate?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #07439d;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
                                                             @endif
                                                         @endif
                                                     @endif
-                                                    <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Create Specification Order&nbsp;&nbsp;" href="pricing-sheet-duplicate?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #000000;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
                                                     <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;View&nbsp;&nbsp;" href="pricing-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
                                                     <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Print&nbsp;&nbsp;" href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>
                                                 </form>
                                             </td>  
-                                            <div class="modal fade" id="exampleModalCenter99" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header" style="background-color: transparent">
-                                                            <h5>Are you sure to Create Job Order?</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{url('duplicatePS')}}" method="post" enctype="multipart/form-data">
-                                                            @csrf
-                                                                <div class="form-group row text-center">
-                                                                    <div class="col-sm-12 mb-1 mb-sm-0">
-                                                                        <label for=""><h4 style="color: #6c757d">Design No </h4></label>
-                                                                        <br>
-                                                                        <label for=""><h4 id="duplicate99" style="color: #6c757d; font-weight: 400; margin: 0;"></h4></label>
-                                                                        <input hidden readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="modelline99{{$i++}}" name="design_no" placeholder="Remarks">
-                                                                        <input hidden readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="modelline999{{$i++}}" name="pricing_id" placeholder="Remarks">                                                            
-                                                                    </div>
-                                                                </div>
-                                                                <div id="colorrow">
-                                                                    <div class="form-group row px-3">
-                                                                        <div class="col-sm-10 mb-1 mb-sm-0 px-0">
-                                                                            <label><b style="color: #6c757d">Color</b></label>
-                                                                            <select id="colorselect1{{$i++}}" name="colorselect{{$i++}}[]" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select">
-                                                                                <option selected disabled>Select Color</option>
-                                                                                @foreach($color as $names)
-                                                                                    <option style="text-transform: capitalize" value="{{$names}}">{{$names}}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-sm-2 mb-1 mb-sm-0">
-                                                                            <label><b style="color: white;">.</b></label>
-                                                                            <button id="colorbtn{{$i++}}" style="margin-top: -2px;" type="button" class="btn btn-outline-primary w-100" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                                                        </div>                       
-                                                                    </div>    
-                                                                    <div name="color">
-                                                                    </div>                                                  
-                                                                </div>
-                                                                <div class="modal-footer text-center" style="background-color: transparent">
-                                                                    <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3">Duplicate<i class="fas fa-sign-out-alt"></i></button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">

@@ -180,15 +180,7 @@
                                     <h6 class="mb-0 mr-3"><b>Description :</b></h6> 
                                 </span>
                                 <span class="">
-                                    <h6 class="mb-0">
-                                        @if($data1->status == 'Final')
-                                        <span class="badge badge-soft-success text-dark">Finalized</span>
-                                        @elseif($data1->status == 'Approved')
-                                        <span class="badge badge-soft-success text-dark">{{$data1->status}}</span>
-                                        @else
-                                        <span class="badge badge-soft-dark text-dark">{{$data1->status}}</span>
-                                        @endif
-                                    </h6>
+                                    <h6 class="mb-0">{{$data1->status}}</h6>
                                     <h6 class="mb-0">{{$data1->date}}</h6>
                                     <h6 class="mb-0">{{$data1->season}}</h6>
                                     <h6 class="mb-0">{{$data1->design_no}}</h6>

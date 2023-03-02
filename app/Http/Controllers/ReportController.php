@@ -24,6 +24,7 @@ use App\Exports\RMA;
 use App\Exports\Consumption;
 use App\Exports\Comparison;
 use App\Exports\PurchaseInvoice;
+use App\Exports\TransferLedger;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
 use App\Models\Support;
@@ -101,6 +102,331 @@ class ReportController extends Controller
                 "locator" => $locator,
                 "z" => $counttransfer, 
                 "j" => $counttransfer,
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function TransferLedger(Request $request)
+    {
+        try{
+            $booksArray = array();
+            $locatorArray = array();
+            $transferArray = array();
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $sql2 = "SELECT DISTINCT TRANS_DATE, TRANS_NO FROM TRANS_ISSUE_MT ORDER BY TRANS_DATE";
+            $result2 = oci_parse($conn, strtoupper($sql2));
+            oci_execute($result2);
+            while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $transfer[] = $row2["TRANS_NO"]." - ".$row2["TRANS_DATE"];
+            }
+            $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Internal Transfer%' OR INV_BOOK_DESC LIKE '%Transfer Issue%'";
+            $result1 = oci_parse($conn, $sql1);
+            oci_execute($result1);
+            while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $books[] = $row1["INV_BOOK_DESC"];
+            }    
+            $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
+            $result3 = oci_parse($conn, $sql3);
+            oci_execute($result3);
+            while($row3 =oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $locator[] = $row3["CODE_VALUE"]." - ".strtolower($row3["CODE_DESC"]);
+            }
+            $counttransfer = count($transfer);
+            return view('report.transferledger')->with([
+                "i" => 1, 
+                "dep" => 0, 
+                "Permission" => 0, 
+                "transfer" => $transfer,
+                "books" => $books,
+                "locator" => $locator,
+                "z" => $counttransfer, 
+                "j" => $counttransfer,
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function TransferLedgerDownload(Request $request)
+    {   
+        try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
+            $lineData = array();
+            $books = $request->books;
+            $transfer = $request->transfer;
+            $daterange = $request->daterange;
+            $reference = $request->reference;
+            $from_locator = $request->from_locator;
+            $to_locator = $request->to_locator;
+            $daterange = str_replace(" - ", "", $request['daterange']);
+            $strtdte = date("d-m-Y", strtotime(substr($daterange, 0,10)));
+            $enddte = date("d-m-Y", strtotime(substr($daterange, 10)));
+            $month_name = (date("F",strtotime($strtdte)));
+            $month_name2 = (date("F",strtotime($enddte)));  
+            $strtdte2 = substr($strtdte, 0, 3).''.$month_name.''.substr($strtdte, 5, 5);
+            $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
+            if(!empty($books)){
+                $book = $books;
+            }else{
+                $book = $books;
+            }
+            if(!empty($transfer)){
+                $transno = $transfer;
+            }else{
+                $transno = "";
+            }
+            if(!empty($from_locator)){
+                $fromloc = $from_locator;
+            }else{
+                $fromloc = "";
+            }
+            if(!empty($to_locator)){
+                $toloc = $to_locator;
+            }else{
+                $toloc = "";
+            }
+            if(!empty($strtdte2)){
+                $strtdte = $strtdte2;
+            }else{
+                $strtdte = "";
+            }
+            if(!empty($enddte2)){
+                $enddte = $enddte2;
+            }else{
+                $enddte = "";
+            }
+            if(!empty($reference)){
+                $refno = $reference;
+            }else{
+                $refno = "";
+            }
+
+            $fromloc1 = explode(" ", $fromloc);
+            $toloc1 = explode(" ", $toloc);
+            $transno1 = explode(" ", $transfer);    
+
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $sql1 = "SELECT TIM.TRANS_NO, TIM.TRANS_DATE, IBM.INV_BOOK_DESC, IM.ITEM_CODE, IM.ITEM_DESC, TIM.REF_NO,CCV.CODE_VALUE, TID.REMARKS, COALESCE(TID.SECONDARY_QTY, 0) AS VAL, TID.PIRMARY_QTY, TID.AMOUNT, WUM.UOM_SHORT_DESC,TIM.REMARKS AS DETREMARKS, CCV.CODE_VALUE AS FLOC, CCV1.CODE_VALUE AS TLOC
+                        FROM TRANS_ISSUE_MT TIM 
+                        JOIN TRANS_ISSUE_DETAIL TID ON TIM.ISS_TRANS_ID = TID.ISS_TRANS_ID AND TIM.TRANS_NO LIKE NVL('$transno1[0]','%') AND TIM.REF_NO LIKE NVL('$refno','%') 
+                        AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                        JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = TIM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
+                        JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
+                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID  
+                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID AND CCV1.CODE_VALUE = '$fromloc1[0]'                
+
+                    UNION
+            
+                    SELECT TIM.TRANS_NO, TIM.TRANS_DATE, IBM.INV_BOOK_DESC, IM.ITEM_CODE, IM.ITEM_DESC, TIM.REF_NO,CCV.CODE_VALUE, TID.REMARKS, COALESCE(TID.SECONDARY_QTY, 1) AS VAL, TID.PIRMARY_QTY, TID.AMOUNT, WUM.UOM_SHORT_DESC,TIM.REMARKS AS DETREMARKS, CCV.CODE_VALUE AS FLOC, CCV1.CODE_VALUE AS TLOC
+                        FROM TRANS_ISSUE_MT TIM 
+                        JOIN TRANS_ISSUE_DETAIL TID ON TIM.ISS_TRANS_ID = TID.ISS_TRANS_ID AND TIM.TRANS_NO LIKE NVL('$transno1[0]','%') AND TIM.REF_NO LIKE NVL('$refno','%') 
+                        AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                        JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = TIM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
+                        JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
+                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID AND CCV.CODE_VALUE = '$fromloc1[0]'   
+                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID            
+                        ORDER BY ITEM_CODE";
+
+            $result11 = oci_parse($conn,$sql1);
+            oci_execute($result11);                                                                            
+            while($row = oci_fetch_array($result11,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                if($row["VAL"] == 0){
+                    $store = $row["PIRMARY_QTY"];
+                    $store1 = "";
+                }
+                elseif($row["VAL"] == 1){
+                    $store = "";
+                    $store1 = $row["PIRMARY_QTY"];
+                }
+                $lineData[] = array(
+                    'Trans Date' => $row['TRANS_DATE'],
+                    'Trans No' => $row['TRANS_NO'],
+                    'From' => $row['FLOC'],
+                    'To' => $row['TLOC'],
+                    'Item Code' => $row['ITEM_CODE'],
+                    'Item Description' => $row['ITEM_DESC'],
+                    'Reference' => $row['REF_NO'],
+                    'Remarks' => $row['REMARKS'],
+                    'Det Remarks' => $row['DETREMARKS'],
+                    'Unit' => $row['UOM_SHORT_DESC'],
+                    'In' => $store,
+                    'Out' => $store1,
+                    'Rate' => round($row["AMOUNT"]/$row["PIRMARY_QTY"],2),
+                    'Amount' => number_format($row["AMOUNT"],2),
+                );
+            }              
+            return Excel::download(new TransferLedger($lineData), 'Transfer Ledger Report '.$date.'.xlsx');
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function TransferLedgerDisplay(Request $request)
+    {       
+        try{
+            $rate2 = 0;
+            $data = array();
+            $transfersArray = array();
+            $booksArray = array();
+            $locatorArray = array();
+            $sum_rate = $sum_qty = $sum_amount = 0;
+            $books = $request->books;
+            $transfer = $request->transfer;
+            $daterange = $request->daterange;
+            $reference = $request->reference;
+            $from_locator = $request->from_locator;
+            $to_locator = $request->to_locator;
+            $daterange = str_replace(" - ", "", $request['daterange']);
+            $strtdte = date("d-m-Y", strtotime(substr($daterange, 0,10)));
+            $enddte = date("d-m-Y", strtotime(substr($daterange, 10)));
+            $month_name = (date("F",strtotime($strtdte)));
+            $month_name2 = (date("F",strtotime($enddte)));  
+            $strtdte2 = substr($strtdte, 0, 3).''.$month_name.''.substr($strtdte, 5, 5);
+            $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
+            if(!empty($books)){
+                $book = $books;
+            }else{
+                $book = $books;
+            }
+            if(!empty($transfer)){
+                $transno = $transfer;
+            }else{
+                $transno = "";
+            }
+            if(!empty($from_locator)){
+                $fromloc = $from_locator;
+            }else{
+                $fromloc = "";
+            }
+            if(!empty($to_locator)){
+                $toloc = $to_locator;
+            }else{
+                $toloc = "";
+            }
+            if(!empty($strtdte2)){
+                $strtdte = $strtdte2;
+            }else{
+                $strtdte = "";
+            }
+            if(!empty($enddte2)){
+                $enddte = $enddte2;
+            }else{
+                $enddte = "";
+            }
+            if(!empty($reference)){
+                $refno = $reference;
+            }else{
+                $refno = "";
+            }
+
+            $fromloc1 = explode(" ", $fromloc);
+            $toloc1 = explode(" ", $toloc);
+            $transno1 = explode(" ", $transfer);    
+            
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $sql2 = "SELECT DISTINCT TRANS_DATE, TRANS_NO FROM TRANS_ISSUE_MT ORDER BY TRANS_DATE";
+            $result2 = oci_parse($conn, strtoupper($sql2));
+            oci_execute($result2);
+            while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $transfersArray[] = $row2["TRANS_NO"]." - ".$row2["TRANS_DATE"];
+            }
+            $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Internal Transfer%' OR INV_BOOK_DESC LIKE '%Transfer Issue%'";
+            $result1 = oci_parse($conn, $sql1);
+            oci_execute($result1);
+            while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $booksArray[] = $row1["INV_BOOK_DESC"];
+            }    
+            $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
+            $result3 = oci_parse($conn, $sql3);
+            oci_execute($result3);
+            while($row3 =oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $locatorArray[] = $row3["CODE_VALUE"]." - ".strtolower($row3["CODE_DESC"]);
+            }
+
+            $sql14 = "SELECT TIM.TRANS_NO, TIM.TRANS_DATE, IBM.INV_BOOK_DESC, IM.ITEM_CODE, IM.ITEM_DESC, TIM.REF_NO,CCV.CODE_VALUE, TID.REMARKS, COALESCE(TID.SECONDARY_QTY, 0) AS VAL, TID.PIRMARY_QTY, TID.AMOUNT, WUM.UOM_SHORT_DESC,TIM.REMARKS AS DETREMARKS, CCV.CODE_VALUE AS FLOC, CCV1.CODE_VALUE AS TLOC
+                        FROM TRANS_ISSUE_MT TIM 
+                        JOIN TRANS_ISSUE_DETAIL TID ON TIM.ISS_TRANS_ID = TID.ISS_TRANS_ID AND TIM.TRANS_NO LIKE NVL('$transno1[0]','%') AND TIM.REF_NO LIKE NVL('$refno','%') 
+                        AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                        JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = TIM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
+                        JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
+                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID  
+                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID AND CCV1.CODE_VALUE = '$fromloc1[0]'                
+
+                    UNION
+            
+                    SELECT TIM.TRANS_NO, TIM.TRANS_DATE, IBM.INV_BOOK_DESC, IM.ITEM_CODE, IM.ITEM_DESC, TIM.REF_NO,CCV.CODE_VALUE, TID.REMARKS, COALESCE(TID.SECONDARY_QTY, 1) AS VAL, TID.PIRMARY_QTY, TID.AMOUNT, WUM.UOM_SHORT_DESC,TIM.REMARKS AS DETREMARKS, CCV.CODE_VALUE AS FLOC, CCV1.CODE_VALUE AS TLOC
+                        FROM TRANS_ISSUE_MT TIM 
+                        JOIN TRANS_ISSUE_DETAIL TID ON TIM.ISS_TRANS_ID = TID.ISS_TRANS_ID AND TIM.TRANS_NO LIKE NVL('$transno1[0]','%') AND TIM.REF_NO LIKE NVL('$refno','%') 
+                        AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                        JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = TIM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('','%')
+                        JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
+                        JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
+                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID AND CCV.CODE_VALUE = '$fromloc1[0]'   
+                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID            
+                        ORDER BY ITEM_CODE";
+
+            $result11 = oci_parse($conn,$sql14);
+            oci_execute($result11);
+            while($row = oci_fetch_array($result11,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $rate = $row["AMOUNT"]/$row["PIRMARY_QTY"];
+                $rate2 = round($rate,2);
+                $sum_qty = $sum_qty + $row["PIRMARY_QTY"];
+                $sum_amount = $sum_amount + $row["AMOUNT"];
+                $sum_rate = $sum_rate + $rate2;
+                $data[] = $row;
+            }
+
+            $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
+            $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
+            $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
+            $strtdte3a = date("m/d/Y", strtotime(substr($daterange, 10)));
+            $daterangeVal = wordwrap($daterange , 10 , ' ' , true );
+            $counttransfer = count($transfersArray);
+            $Storedaterange = $request->daterange;
+
+            $sessionData = [
+                'storebook' => $books,
+                'storetransfer' => $transno,
+                'storedaterange' => $daterange,
+                'storereference' => $reference,
+                'storefrom_locator' => $from_locator,
+                'storeto_locator' => $to_locator,
+                'strtdte2a' => $strtdte2a,
+                'strtdte3a' => $strtdte3a,
+                'Storestart' => date("d/m/Y", strtotime(substr($Storedaterange, 0,10))),
+                'Storeend' => date("d/m/Y", strtotime(substr($Storedaterange, -10))),
+            ];
+
+            return view('report.transferledger')->with([
+                "i" => 1, "dep" => 0, "data" => $data, "book" => $books, "rate2" => $rate2, "Permission" => 1, "refno" => $refno, "z" => $counttransfer, "j" => $counttransfer,
+                "transno" => $transno, "enddte2" => $enddte2, "strtdte2" => $strtdte2, "strtdte3" => $strtdte3, "strtdte2" => $strtdte2, "to_locator" => $to_locator, "transfer" => $transfersArray,
+                "from_locator" => $from_locator, "sum_qty" => number_format($sum_qty,2), "sum_rate" => number_format($sum_rate,2), "sum_amount" => number_format($sum_amount,2), "transferVal" => $transfer,
+                "daterangeVal" => $daterangeVal, "referenceVal" => $reference, "from_locatorVal" => $from_locator, "to_locatorVal" => $to_locator, "booksVal" => $books, "strtdte2a" => $strtdte2a, "strtdte3a" => $strtdte3a,
+                "sessionData" => $sessionData, "locator" => $locatorArray, "books" => $booksArray, "z1" => 441, "z2" => 36
             ]);
         }
         catch(Exception $e){

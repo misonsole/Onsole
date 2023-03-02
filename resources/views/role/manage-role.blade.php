@@ -418,6 +418,10 @@
                                                                 <input class="form-check-input name reportCheck" id="consumptionc1" type="checkbox" name="Reports[]">
                                                                 <span id="consumptionc" class="form-check-label"></span>
                                                             </label>
+                                                            <label class="form-check form-check-inline" id="report18" style="display: none;">
+                                                                <input class="form-check-input name reportCheck" id="transferL1" type="checkbox" name="Reports[]">
+                                                                <span id="transferL" class="form-check-label"></span>
+                                                            </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allReport" type="checkbox">
                                                                 <span class="form-check-label">Mark All</span>
@@ -556,6 +560,11 @@
                     $("#consumptionc").html("Consumption Comparison");
                     $("#consumptionc1").attr('value', "Consumption Comparison");
                     $("#consumptionc1").attr('checked', false);
+
+                    $("#report18").show();
+                    $("#transferL").html("Transfer Ledger Report");
+                    $("#transferL1").attr('value', "Transfer Ledger Report");
+                    $("#transferL1").attr('checked', false);
 
                     $("#reports").show();
                 }
@@ -848,6 +857,23 @@
                         $("#consumptionc").html("Consumption Comparison");
                         $("#consumptionc1").attr('value', "Consumption Comparison");
                         $("#consumptionc1").attr('checked', false);
+                    }
+                    if(data[0].reports[17]){
+                        $("#report18").show();
+                        $("#transferL").html(data[0].reports[17].role_name);
+                        $("#transferL1").attr('value', data[0].reports[17].role_name);
+                        if(data[0].reports[17].value == 1){
+                            $("#transferL1").attr('checked', true);
+                        }
+                        else{
+                            $("#transferL1").attr('checked', false);
+                        } 
+                    }
+                    else{
+                        $("#report18").show();
+                        $("#transferL").html("Transfer Ledger Report");
+                        $("#transferL1").attr('value', "Transfer Ledger Report");
+                        $("#transferL1").attr('checked', false);
                     }
                     $("#reports").show();
                 }

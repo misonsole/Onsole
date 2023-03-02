@@ -403,6 +403,10 @@
                                                         <input class="form-check-input name reportCheck" type="checkbox" value="Consumption Comparison" name="Reports[]">
                                                         <span class="form-check-label">Consumption Comparison</span>
                                                     </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Transfer Ledger Report" name="Reports[]">
+                                                        <span class="form-check-label">Transfer Ledger Report</span>
+                                                    </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allReport" type="checkbox">
                                                         <span class="form-check-label">Mark All</span>

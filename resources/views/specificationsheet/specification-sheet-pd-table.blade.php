@@ -72,7 +72,7 @@
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark">
                                     <tr>
-                                        <th class="text-white">#</th>
+                                        <th class="text-white">Sr. No</th>
                                         <th class="text-white" data-orderable="false">Design No.</th>
                                         <th class="text-white" data-orderable="false">Status</th>
                                         <th class="text-white" data-orderable="false">Remarks</th>
@@ -105,7 +105,7 @@
                                                 @elseif($user['data']->status == "Final")
                                                     <span class="badge badge-md badge-boxed badge-soft-success p-2 w-100">Finalized</span>
                                                 @else
-                                                    <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">-</span>
+                                                    <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-100">{{$user['data']->status}}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
@@ -128,11 +128,13 @@
                                                         &nbsp;
                                                         @elseif($user['data']->status == 'Final') 
                                                         &nbsp;
+                                                        @elseif($user['data']->status == 'PPC') 
+                                                        &nbsp;
                                                         @else
                                                         <select id="status" data-id="{{$user['data']->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
                                                             @if($user['data']->status == 'Pending')                                                    
                                                                 <option value="PD" selected>PD</option>
-                                                                <option <?php if ($user['data']->status == "Costing") echo "selected"; ?> value="Costing">Costing</option>
+                                                                <option <?php if ($user['data']->status == "PPC") echo "selected"; ?> value="PPC">PPC</option>
                                                             @endif
                                                         </select>
                                                         @endif
@@ -328,8 +330,8 @@ $(document).ready(function(){
     $('.status').on('change', function(){
         var status = $(this).val();
         var id = $(this).attr("data-id");
-        if(status == 'Costing'){
-            var line = 'Are you sure Transfer to Costing?';
+        if(status == 'PPC'){
+            var line = 'Are you sure Transfer to PPC?';
             var line1 = 'Transfer';
             $('#modelline').html(line);
             $("#remarks").val(line1);
@@ -429,6 +431,9 @@ $(document).ready(function(){
                     $("#loader1").show();
                 },
                 success: function(data){
+                    console.log("data");
+                    console.log(data);
+                    console.log("data");
                     if(data.value == 1){
                         Swal.fire({
                             icon: 'success',

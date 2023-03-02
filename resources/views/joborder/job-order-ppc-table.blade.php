@@ -56,85 +56,63 @@
                     <div class="card-body table-responsive p-5">
                         <div class="">
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                <thead>
+                                <thead class="bg-dark">
                                     <tr>
-                                        <th>#</th>
-                                        <!-- <th>Season</th> -->
-                                        <!-- <th>Sequence</th> -->
-                                        <!-- <th>Category</th> -->
-                                        <th data-orderable="false">Design No.</th>
-                                        <th data-orderable="false">Progress</th>
-                                        <th data-orderable="false">Status</th>
-                                        <th data-orderable="false">Remarks</th>
-                                        <th data-orderable="false">Transfer</th>
-                                        <!-- <th>Purpose</th> -->
-                                        <th data-orderable="false">Date & Time</th>
-                                        <th data-orderable="false">Action</th>
+                                        <th class="text-white">Sr. No</th>
+                                        <th class="text-white" data-orderable="false">Design No.</th>
+                                        <th class="text-white" data-orderable="false">Status</th>
+                                        <th class="text-white" data-orderable="false">Remarks</th>
+                                        <th class="text-white" data-orderable="false">Transfer</th>
+                                        <th class="text-white" data-orderable="false">Date & Time</th>
+                                        <th class="text-white" data-orderable="false">Action</th>
+                                        <th class="text-white" data-orderable="false">Colors</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>                         
-                                            <!-- <td>{{$user->season}}</td> -->
-                                            <!-- <td>{{$user->sequence}}</td> -->
-                                            <!-- <td>{{$user->category}}</td> -->
-                                            <td>{{$user->design_no}}</td>
-                                            <td>
-                                                <div class="progress" style="box-shadow: none;">
-                                                    @if($user->progress == '40')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '50')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '60')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '80')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @elseif($user->progress == '100')
-                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
-                                                    @endif
-                                                </div>
-                                            </td>
+                                            <td>{{$user['data']->design_no}}</td>
                                             <td class="text-center" style="width: 10%;">
-                                                @if($user->status == "Costing")
+                                                @if($user['data']->status == "Costing")
                                                 <span class="badge badge-md badge-boxed badge-soft-secondary p-2 w-75">Costing</span>
-                                                @elseif($user->status == "Update")
+                                                @elseif($user['data']->status == "Update")
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-75">Update</span>
-                                                @elseif($user->status == "PD")
+                                                @elseif($user['data']->status == "PD")
                                                 <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-75">PD</span>
-                                                @elseif($user->status == "Reject")
+                                                @elseif($user['data']->status == "Reject")
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-75">Rejected</span>
-                                                @elseif($user->status == "Sales")
+                                                @elseif($user['data']->status == "Sales")
                                                 <span class="badge badge-md badge-boxed badge-soft-success p-2 w-75">Approved</span>
-                                                @elseif($user->status == "Final")
+                                                @elseif($user['data']->status == "Final")
                                                 <span class="badge badge-md badge-boxed badge-soft-success p-2 w-75">Finalized</span>
                                                 @else
-                                                <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-75">$user->status</span>
+                                                <span class="badge badge-md badge-boxed badge-soft-dark p-2 w-75">{{$user['data']->status}}</span>
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if($user->remarks === NULL) 
+                                                @if($user['data']->remarks === NULL) 
                                                     &nbsp;
                                                 @else
-                                                    <span data-id={{$user->remarks}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
+                                                    <span data-id={{$user['data']->remarks}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
                                                 @endif
                                             </td>
                                             @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])) 
                                                 @if(isset($storeData['Pricing-Sheet Sales']) == 1)
                                                     <td style="width: 10%;">
-                                                        @if($user->status == 'Rejected') 
+                                                        @if($user['data']->status == 'Rejected') 
                                                         &nbsp;
-                                                        @elseif($user->status == 'Final') 
+                                                        @elseif($user['data']->status == 'Final') 
                                                         &nbsp;
-                                                        @elseif($user->status == 'Costing') 
+                                                        @elseif($user['data']->status == 'Costing') 
                                                         &nbsp;
                                                         @else
-                                                        <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
-                                                            @if($user->status == 'Sales')                                                    
-                                                                <option <?php if ($user->status == "Sales") echo "selected"; ?> value="Sales">Approved</option>
-                                                                <option <?php if ($user->status == "Final") echo "selected"; ?> value="Final">Finalised</option>
-                                                                <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Update</option>
-                                                                <option <?php if ($user->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>
+                                                        <select id="status" data-id="{{$user['data']->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
+                                                            @if($user['data']->status == 'Sales')                                                    
+                                                                <option <?php if ($user['data']->status == "Sales") echo "selected"; ?> value="Sales">Approved</option>
+                                                                <option <?php if ($user['data']->status == "Final") echo "selected"; ?> value="Final">Finalised</option>
+                                                                <option <?php if ($user['data']->status == "Costing") echo "selected"; ?> value="Costing">Update</option>
+                                                                <option <?php if ($user['data']->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>
                                                             @endif
                                                         </select>
                                                         @endif
@@ -177,24 +155,35 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <td>{{$user->purpose}}</td> -->
                                             <td>
-                                                <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
+                                                <?php $delimiter = ' '; $words = explode($delimiter, $user['data']->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
                                                 <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$words[0]}} <br><i class="mdi mdi-timer text-dark"></i> {{$newDate}}
                                             </td>
                                             <td class="text-center">
                                                 <form id="myForm">
-                                                    <input type="text" value="{{$user->id}}" name="id" hidden> 
+                                                    <input type="text" value="{{$user['data']->id}}" name="id" hidden> 
                                                     @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']))
                                                         @if(isset($storeData['Job-Order Create']) == 1)
-                                                            <a href="{{url('job-order')}}" target="_blank"><span id="view" data-id={{$user->id}} style="cursor: pointer; background: #202020;" class="badge badge-info p-0 rounded-circle cursor-pointer SessionIdC ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
-                                                            <!-- <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Job Order&nbsp;" data-id={{$user->design_no}} id={{$user->id}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                  -->
+                                                            <a href="{{url('job-order')}}" target="_blank"><span id="view" data-id={{$user['data']->id}} style="cursor: pointer; background: #202020;" class="badge badge-info p-0 rounded-circle cursor-pointer SessionIdC ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></a>
+                                                            <!-- <button data-toggle="tooltip" data-placement="top" title="&nbsp;Create Job Order&nbsp;" data-id={{$user['data']->design_no}} id={{$user['data']->id}} class="px-0 duplicate" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button>                  -->
                                                         @endif
                                                     @endif
-                                                    <a href="pricing-sheet-view?id={{$user->id}}" target="_blank"><span id="view" data-id={{$user->id}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
-                                                    <a href="pricing-sheet-print?id={{$user->id}}" target="_blank"><button data-id={{$user->id}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
+                                                    <a href="pricing-sheet-view?id={{$user['data']->id}}" target="_blank"><span id="view" data-id={{$user['data']->id}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
+                                                    <a hidden href="pricing-sheet-print?id={{$user['data']->id}}" target="_blank"><button data-id={{$user['data']->id}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
                                                 </form>
                                             </td>
+                                            <td>
+                                                <div class="avatar-box thumb-xs align-self-center" style="margin-top: 5px;">
+                                                    <span style="background: #202020;" class="avatar-title rounded-circle">{{$user['color']}}</span>
+                                                </div>
+                                                @if(isset($storeData['Specification-Sheet Edit']) && !empty($storeData['Specification-Sheet Edit'])) 
+                                                    @if(isset($storeData['Specification-Sheet Edit']) == 1)
+                                                        @if($user['data']->status == "Pending")
+                                                            <a href="specification-sheet-color-edit?id={{$user['data']['id']}}" target="_blank"><button data-id={{$user['data']['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
+                                                        @endif    
+                                                    @endif
+                                                @endif
+                                            </td>  
                                             <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
