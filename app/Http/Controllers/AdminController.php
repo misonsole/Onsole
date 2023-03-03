@@ -9,6 +9,7 @@ use DateTime;
 use Exception;
 use App\Models\User;
 use App\Models\PlcSole;
+use App\Models\LoginLog;
 use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\PlcShape;
@@ -38,6 +39,24 @@ class AdminController extends Controller
             $dep = Department::orderBy('name','ASC')->get();
             return view('admin.master-data')->with([
                 'data' => $user, 'dep' => $dep, 'i' => 1, 'z' => 1, 'j' => 1, 
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function loginLogs(Request $request)
+    {
+        try{
+            $present = array();
+            $data = LoginLog::orderBy('id','DESC')->get();
+            return view('admin.login-logs')->with([
+                'data' => $data,  'i' => 1
             ]);
         }
         catch(Exception $e){

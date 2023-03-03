@@ -1,5 +1,16 @@
 @extends( (Auth::user()->id == "2") ? 'layouts.admin-layout' : 'layouts.user-layout')
 @section('content')
+<?php
+	$id = Auth::user()->id;
+	$authName = Auth::user()->name;
+	$UserDetail = DB::table("users")->where("id", $id)->pluck('userrole');
+	$UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
+	$obj = json_decode (json_encode ($UserDetail1), FALSE);
+    $storeData = [];
+    foreach($obj as $dataa){
+        $storeData[$dataa->role_name] = $dataa->value; 
+    }
+?>
 <!-- <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 <link href="plugins/lightpick/lightpick.css" rel="stylesheet" /> -->
 <style>
@@ -184,8 +195,12 @@
                                         <th class="text-white" data-orderable="false">Det Remarks</th>
                                         <th class="text-white" data-orderable="false">Unit</th>
                                         <th class="text-white" data-orderable="false">Quantity</th>
-                                        <th class="text-white" data-orderable="false">Rate</th>
-                                        <th class="text-white" data-orderable="false">Amount</th>
+                                        @if(isset($storeData['Transfer Issue Rate']) && !empty($storeData['Transfer Issue Rate']) || Auth::user()->id == 2) 
+                                            @if(isset($storeData['Transfer Issue Rate']) == 1 || Auth::user()->id == 2)
+                                                <th class="text-white" data-orderable="false">Rate</th>
+                                                <th class="text-white" data-orderable="false">Amount</th>
+                                            @endif
+                                        @endif
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
@@ -204,8 +219,12 @@
                                                 <td>{{$row["DETREMARKS"]}}</td>
                                                 <td>{{$row["UOM_SHORT_DESC"]}}</td>
                                                 <td>{{$row["PIRMARY_QTY"]}}</td>
-                                                <td>{{round($row["AMOUNT"]/$row["PIRMARY_QTY"],2)}}</td>
-                                                <td>{{number_format($row["AMOUNT"],2)}}</td>
+                                                @if(isset($storeData['Transfer Issue Rate']) && !empty($storeData['Transfer Issue Rate']) || Auth::user()->id == 2) 
+                                                    @if(isset($storeData['Transfer Issue Rate']) == 1 || Auth::user()->id == 2)
+                                                        <td>{{round($row["AMOUNT"]/$row["PIRMARY_QTY"],2)}}</td>
+                                                        <td>{{number_format($row["AMOUNT"],2)}}</td>
+                                                    @endif
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -223,8 +242,12 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Grand Total</th>
                                             <th class="text-white" data-orderable="false">{{$sum_qty,2}}</th>
-                                            <th class="text-white" data-orderable="false">{{$sum_rate,2}}</th>
-                                            <th class="text-white" data-orderable="false">{{$sum_amount,2}}</th>
+                                            @if(isset($storeData['Transfer Issue Rate']) && !empty($storeData['Transfer Issue Rate']) || Auth::user()->id == 2) 
+                                                @if(isset($storeData['Transfer Issue Rate']) == 1 || Auth::user()->id == 2)
+                                                    <th class="text-white" data-orderable="false">{{$sum_rate,2}}</th>
+                                                    <th class="text-white" data-orderable="false">{{$sum_amount,2}}</th>
+                                                @endif
+                                            @endif
                                         </tr>
                                     </tfoot>
                                 @endif

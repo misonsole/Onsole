@@ -422,6 +422,18 @@
                                                                 <input class="form-check-input name reportCheck" id="transferL1" type="checkbox" name="Reports[]">
                                                                 <span id="transferL" class="form-check-label"></span>
                                                             </label>
+                                                            <label class="form-check form-check-inline" id="report19" style="display: none;">
+                                                                <input class="form-check-input name reportCheck" id="transferLR1" type="checkbox" name="Reports[]">
+                                                                <span id="transferLR" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="report20" style="display: none;">
+                                                                <input class="form-check-input name reportCheck" id="transferIR1" type="checkbox" name="Reports[]">
+                                                                <span id="transferIR" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="report21" style="display: none;">
+                                                                <input class="form-check-input name reportCheck" id="materialcR1" type="checkbox" name="Reports[]">
+                                                                <span id="materialcR" class="form-check-label"></span>
+                                                            </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allReport" type="checkbox">
                                                                 <span class="form-check-label">Mark All</span>
@@ -565,6 +577,21 @@
                     $("#transferL").html("Transfer Ledger Report");
                     $("#transferL1").attr('value', "Transfer Ledger Report");
                     $("#transferL1").attr('checked', false);
+
+                    $("#report19").show();
+                    $("#transferLR").html("Transfer Ledger Rate");
+                    $("#transferLR1").attr('value', "Transfer Ledger Rate");
+                    $("#transferLR1").attr('checked', false);
+
+                    $("#report20").show();
+                    $("#transferIR").html("Transfer Issue Rate");
+                    $("#transferIR1").attr('value', "Transfer Issue Rate");
+                    $("#transferIR1").attr('checked', false);
+
+                    $("#report21").show();
+                    $("#materialcR").html("Material Consumption Rate");
+                    $("#materialcR1").attr('value', "Material Consumption Rate");
+                    $("#materialcR1").attr('checked', false);
 
                     $("#reports").show();
                 }
@@ -874,6 +901,57 @@
                         $("#transferL").html("Transfer Ledger Report");
                         $("#transferL1").attr('value', "Transfer Ledger Report");
                         $("#transferL1").attr('checked', false);
+                    }
+                    if(data[0].reports[18]){
+                        $("#report19").show();
+                        $("#transferLR").html(data[0].reports[18].role_name);
+                        $("#transferLR1").attr('value', data[0].reports[18].role_name);
+                        if(data[0].reports[18].value == 1){
+                            $("#transferLR1").attr('checked', true);
+                        }
+                        else{
+                            $("#transferLR1").attr('checked', false);
+                        } 
+                    }
+                    else{
+                        $("#report19").show();
+                        $("#transferLR").html("Transfer Ledger Report");
+                        $("#transferLR1").attr('value', "Transfer Ledger Report");
+                        $("#transferLR1").attr('checked', false);
+                    }
+                    if(data[0].reports[19]){
+                        $("#report20").show();
+                        $("#transferIR").html(data[0].reports[19].role_name);
+                        $("#transferIR1").attr('value', data[0].reports[19].role_name);
+                        if(data[0].reports[19].value == 1){
+                            $("#transferIR1").attr('checked', true);
+                        }
+                        else{
+                            $("#transferIR1").attr('checked', false);
+                        } 
+                    }
+                    else{
+                        $("#report20").show();
+                        $("#transferIR").html("Transfer Ledger Report");
+                        $("#transferIR1").attr('value', "Transfer Ledger Report");
+                        $("#transferIR1").attr('checked', false);
+                    }
+                    if(data[0].reports[20]){
+                        $("#report21").show();
+                        $("#materialcR").html(data[0].reports[20].role_name);
+                        $("#materialcR1").attr('value', data[0].reports[20].role_name);
+                        if(data[0].reports[20].value == 1){
+                            $("#materialcR1").attr('checked', true);
+                        }
+                        else{
+                            $("#materialcR1").attr('checked', false);
+                        } 
+                    }
+                    else{
+                        $("#report21").show();
+                        $("#materialcR").html("Transfer Ledger Report");
+                        $("#materialcR1").attr('value', "Transfer Ledger Report");
+                        $("#materialcR1").attr('checked', false);
                     }
                     $("#reports").show();
                 }

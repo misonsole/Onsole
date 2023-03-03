@@ -42,6 +42,8 @@ class Material implements FromCollection, WithHeadings
             'Category Description',
             'Contra A/C Code',
             'Contra A/C DESC',
+            'Consumption A/C Code',
+            'Consumption A/C DESC',
         ];
     }
 }

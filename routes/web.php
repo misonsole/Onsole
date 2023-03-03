@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dep-attendance', [AdminController::class, 'DepAttendance'])->name('dep-attendance');
     Route::get('weather', [AdminController::class, 'weather'])->name('weather');
     Route::get('updateJoborder', [AdminController::class, 'updateJoborder'])->name('updateJoborder');
+    Route::get('login-logs', [AdminController::class, 'loginLogs'])->name('login-logs');
 
     //Complaint
     Route::get('manage-complaints', [ComplaintController::class, 'manageComplaints'])->name('manage-complaints');

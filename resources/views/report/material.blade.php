@@ -1,5 +1,16 @@
 @extends( (Auth::user()->id == "2") ? 'layouts.admin-layout' : 'layouts.user-layout')
 @section('content')
+<?php
+	$id = Auth::user()->id;
+	$authName = Auth::user()->name;
+	$UserDetail = DB::table("users")->where("id", $id)->pluck('userrole');
+	$UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
+	$obj = json_decode (json_encode ($UserDetail1), FALSE);
+    $storeData = [];
+    foreach($obj as $dataa){
+        $storeData[$dataa->role_name] = $dataa->value; 
+    }
+?>
 <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 <link href="plugins/lightpick/lightpick.css" rel="stylesheet" />
 <style>
@@ -134,10 +145,10 @@
                 <div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('home')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Material Consumption Analysis</li>
+                        <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Material Consumption Report</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Material Consumption Analysis</h4>
+                <h4 class="page-title">Material Consumption Report</h4>
                 <br>
                 <button style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" type="button" class="btn text-white" data-toggle="modal" data-target="#exampleModalCenter">View Report</button>
             </div>
@@ -152,7 +163,7 @@
                             <img src="img/photos/preview.png" alt="logo-small" class="logo-sm mr-2" height="100">
                         </div>
                         <div class="col-md-6 align-self-center text-center">
-                            <h3>Material Consumption Analysis</h3>
+                            <h3>Material Consumption Report</h3>
                         </div>
                     </div>
                     @if($Permission == 1)
@@ -263,12 +274,19 @@
                                     <th class="text-white" data-orderable="false">Item Code <br> Description</th>
                                     <th class="text-white" data-orderable="false">Unit</th>
                                     <th class="text-white" data-orderable="false">Qty</th>
-                                    <th class="text-white" data-orderable="false">Rate</th>
-                                    <th class="text-white" data-orderable="false">Amount</th>
+                                    @if(isset($storeData['Material Consumption Rate']) && !empty($storeData['Material Consumption Rate']) || Auth::user()->id == 2) 
+                                        @if(isset($storeData['Material Consumption Rate']) == 1 || Auth::user()->id == 2)
+                                            <th class="text-white" data-orderable="false">Rate</th>
+                                            <th class="text-white" data-orderable="false">Amount</th>
+                                        @endif
+                                    @endif
+                                    <th class="text-white" data-orderable="false">Cost <br> Center</th>
                                     <th class="text-white" data-orderable="false">Category <br> Code</th>
                                     <th class="text-white" data-orderable="false">Category <br> Description</th>
                                     <th class="text-white" data-orderable="false">Contra <br> A/C Code</th>
                                     <th class="text-white" data-orderable="false">Contra <br> A/C DESC</th>
+                                    <th class="text-white" data-orderable="false">Consumption <br> A/C Code</th>
+                                    <th class="text-white" data-orderable="false">Consumption <br> A/C DESC</th>
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
@@ -332,8 +350,18 @@
                                             </td>
                                             <td>{{$row['data']["UOM_SHORT_DESC"]}}</td>
                                             <td>{{$row['data']["PRIMARY_QTY"]}}</td>
-                                            <td>{{round($rate,2)}}</td>
-                                            <td>{{number_format($row['data']["ISSUE_AMOUNT"],2)}}</td>
+                                            @if(isset($storeData['Material Consumption Rate']) && !empty($storeData['Material Consumption Rate']) || Auth::user()->id == 2) 
+                                                @if(isset($storeData['Material Consumption Rate']) == 1 || Auth::user()->id == 2)
+                                                    <td>{{round($row['rate'],2)}}</td>
+                                                    <td>{{number_format($row['data']["ISSUE_AMOUNT"],2)}}</td>
+                                                @endif
+                                            @endif
+                                            <td>
+                                                <?php $explode = explode("-",$row['data']["COST_CENTER"]); ?>
+                                                @foreach($explode as $data1)
+                                                    {{$data1}}<br>
+                                                @endforeach
+                                            </td>
                                             <td>
                                                 <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
                                                 @foreach($explode as $data1)
@@ -349,37 +377,71 @@
                                             <?php
                                                 $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
                                                 $conn = oci_connect("onsole","s",$wizerp);
-                                                $newcodevalue = explode("-", $row['data']["CODE_VALUE"]);
-                                                $sql1 = "SELECT DISTINCT IGCC.FROM_CODE, IGCC.PURCH_ACC_CODE FROM INV_GL_CONFIG_CATEGORY IGCC WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10)";
-                                                $result1= oci_parse($conn, strtoupper($sql1));
+                                                $newcodevalue = explode("-", $row['data']["CODE_VALUE"]);     
+                                                $cost_center = explode("-", $row['data']["COST_CENTER"]);
+                                                $only = $newcodevalue[0]."-%";
+                                                $sql1 = "SELECT DISTINCT CCV.CODE_VALUE, CCV.ACCOUNTING_DESC FROM INV_GL_CONFIG_CATEGORY IGCC
+                                                            JOIN CODE_COMBINATION_VALUES CCV ON CCV.CODE_COMBINATION_ID = IGCC.PURCH_ACC_CODE --OR CCV.CODE_COMBINATION_ID = IGCC.COGS_ACC_CODE
+                                                            WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10) AND IGCC.FROM_CODE LIKE NVL('$only','%')";
+                                                $result1 = oci_parse($conn, strtoupper($sql1));
                                                 oci_execute($result1);
-                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                                                    $fromcode = explode("-", $row1["FROM_CODE"]);
-                                                    if($newcodevalue[0] === $fromcode[0]){
-                                                        $newpurchid = $row1["PURCH_ACC_CODE"];
-                                                        $sql2 = "SELECT DISTINCT CCV.CODE_VALUE, CCV.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES CCV WHERE CCV.CODE_COMBINATION_ID = '$newpurchid'";
-                                                        $result2 = oci_parse($conn, strtoupper($sql2));
-                                                        oci_execute($result2);
-                                                        $row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS) ?>
-                                                            <td>
-                                                                <?php $explode = explode("-",$row2["CODE_VALUE"]); ?>
-                                                                @foreach($explode as $data1)
-                                                                    {{$data1}}<br>
-                                                                @endforeach
-                                                                - {{$newcodevalue[0]}}
-                                                            </td>
-                                                            <td>
-                                                                <?php $explode = explode(" ",$row2["ACCOUNTING_DESC"]); ?>
-                                                                @foreach($explode as $data1)
-                                                                    {{$data1}}<br>
-                                                                @endforeach
-                                                                - {{$fromcode[0]}}
-                                                            </td>
-                                                        <?php break; 
+                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){ ?>
+                                                    <td>
+                                                    <?php $explode = explode("-",$row1["CODE_VALUE"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>
+                                                <td>
+                                                    <?php $explode = explode(" ",$row1["ACCOUNTING_DESC"]); ?>
+                                                    @foreach($explode as $data1)
+                                                        {{$data1}}<br>
+                                                    @endforeach
+                                                </td>                                        
+                                                <?php } ?> 
+                                                <?php
+                                                    $sql2 = "SELECT * FROM INV_GL_CONFIG_CC CC WHERE CC.From_Cat_Code LIKE NVL('$only','%') AND CC.CC_STRUCTURE_ID = 29";
+                                                    $result2= oci_parse($conn, strtoupper($sql2));
+                                                    oci_execute($result2 );
+                                                    while($row2=oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)) {
+                                                        $string = strtr($row2["TO_CODE"], ['Z' => '9']);
+                                                        $from_cc = explode("-", $row2["FROM_CODE"]);        
+                                                        $to_cc = explode("-", $string);
+                                                        for($j=0; $j < count($cost_center); $j++){ 
+                                                            if($cost_center[$j] >= $from_cc[$j] && $cost_center[$j] <= $to_cc[$j]){
+                                                                $true = 1;
+                                                            }
+                                                            else{
+                                                                $true = 0;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if($true == 1){
+                                                            $final_code_comb = $row2["CONSUMPTION_ACC_CODE"];
+                                                            $sql3 = "SELECT AA.CODE_VALUE, AA.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES AA WHERE AA.CODE_COMBINATION_ID = $final_code_comb";
+                                                            $result3 = oci_parse($conn, strtoupper($sql3));
+                                                            oci_execute($result3);
+                                                            while($row3=oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)) { ?>
+                                                                <td>
+                                                                    <?php $explode = explode("-",$row3["CODE_VALUE"]); ?>
+                                                                    @foreach($explode as $data1)
+                                                                        {{$data1}}<br>
+                                                                    @endforeach
+                                                                </td>
+                                                                <td>
+                                                                    <?php $explode = explode(" ",$row3["ACCOUNTING_DESC"]); ?>
+                                                                    @foreach($explode as $data1)
+                                                                        {{$data1}}<br>
+                                                                    @endforeach
+                                                                </td>
+                                                            <?php
+                                                            }
+                                                            break; 
+                                                        }
                                                     }
-                                                }
-                                            ?>
+                                                ?>
                                         </tr>
+                                        <?php $i++; ?>
                                         @endforeach
                                     </tbody>
                                     <tfoot class="bg-dark my-2">
@@ -396,10 +458,17 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
+                                            <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Grand Total</th>
                                             <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($sum_rate,2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
+                                            @if(isset($storeData['Material Consumption Rate']) && !empty($storeData['Material Consumption Rate']) || Auth::user()->id == 2) 
+                                                @if(isset($storeData['Material Consumption Rate']) == 1 || Auth::user()->id == 2)
+                                                    <th class="text-white" data-orderable="false">{{number_format($sum_rate,2)}}</th>
+                                                    <th class="text-white" data-orderable="false">{{number_format($sum_amount,2)}}</th>
+                                                @endif
+                                            @endif
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>

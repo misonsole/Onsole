@@ -5318,7 +5318,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
               
@@ -5328,7 +5328,7 @@ class ReportController extends Controller
               
                         JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$sono','%')
                         JOIN TRANSACTION_REASON_MT TRM ON TRM.TRANS_REASON_ID = IM.TRANS_REASON_ID
-                        LEFT JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$department','%')
+                        LEFT JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('','%')
                         JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = IM.ISSUE_ID
                         JOIN WIZ_UOM_MT UPR ON ISD.UOM_ID = UPR.UOM_ID
                         JOIN ITEMS_MT ITM ON ITM.ITEM_ID = ISD.ITEM_ID AND ITM.ITEM_CODE LIKE NVL('$rmcode','%')
@@ -5347,6 +5347,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
               
@@ -5355,7 +5356,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
               
@@ -5365,7 +5366,7 @@ class ReportController extends Controller
               
                         JOIN SALES_ORDER_MT SOM ON SOM.SALES_ORDER_ID = IM.SALES_ORDER_ID AND SOM.SALES_ORDER_NO LIKE NVL('$sono','%')
                         JOIN TRANSACTION_REASON_MT TRM ON TRM.TRANS_REASON_ID = IM.TRANS_REASON_ID
-                        LEFT JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('$department','%')
+                        LEFT JOIN DEPARTMENT_MT DM ON DM.DEPARTMENT_ID = IM.DEPARTMENT_ID AND DM.DESCRIPTION LIKE NVL('','%')
                         JOIN ISSUE_DETAIL ISD ON ISD.ISSUE_ID = IM.ISSUE_ID
                         JOIN WIZ_UOM_MT UPR ON ISD.UOM_ID = UPR.UOM_ID
                         JOIN ITEMS_MT ITM ON ITM.ITEM_ID = ISD.ITEM_ID AND ITM.ITEM_CODE LIKE NVL('$rmcode','%')
@@ -5384,6 +5385,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                     }
@@ -5392,7 +5394,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5421,6 +5423,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                 } 
@@ -5431,7 +5434,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5460,6 +5463,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";              
                     } 
@@ -5468,7 +5472,7 @@ class ReportController extends Controller
                         $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                             DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                             ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                            WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                            WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                             (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                             (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5497,6 +5501,7 @@ class ReportController extends Controller
                             JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                             JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                             LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                            JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                     
                             ORDER BY IM.ISSUE_DATE";
                     }
@@ -5505,7 +5510,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5534,6 +5539,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                 }
@@ -5555,26 +5561,49 @@ class ReportController extends Controller
                 $data[] = $row;
             }
             foreach($data as $value){
-                $loopData = array();
-                $newcodevalue = explode("-", $value["CODE_VALUE"]);
+                $newcodevalue = explode("-", $value["CODE_VALUE"]);     
+                $cost_center = explode("-", $value["COST_CENTER"]);
+                $only = $newcodevalue[0]."-%";
                 $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
                 $conn = oci_connect("onsole","s",$wizerp);
-                $sql1 = "SELECT DISTINCT IGCC.FROM_CODE, IGCC.PURCH_ACC_CODE FROM INV_GL_CONFIG_CATEGORY IGCC WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10)";
+                $sql1 = "SELECT DISTINCT CCV.CODE_VALUE, CCV.ACCOUNTING_DESC FROM INV_GL_CONFIG_CATEGORY IGCC
+                            JOIN CODE_COMBINATION_VALUES CCV ON CCV.CODE_COMBINATION_ID = IGCC.PURCH_ACC_CODE --OR CCV.CODE_COMBINATION_ID = IGCC.COGS_ACC_CODE
+                            WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10) AND IGCC.FROM_CODE LIKE NVL('$only','%')";
                 $result1 = oci_parse($conn, strtoupper($sql1));
                 oci_execute($result1);
                 while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)) {
-                    $fromcode = explode("-", $row1["FROM_CODE"]);
-                    if($newcodevalue[0] === $fromcode[0]){
-                        $newpurchid = $row1["PURCH_ACC_CODE"];
-                        $sql2 = "SELECT DISTINCT CCV.CODE_VALUE, CCV.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES CCV WHERE CCV.CODE_COMBINATION_ID = '$newpurchid'";
-                        $result2 = oci_parse($conn, strtoupper($sql2));
-                        oci_execute($result2);
-                        while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                            $loopData[] = $row2;
-                        }
-                    }
+                    $loopData[] = $row1;                    
                 }
                 $loopData = $loopData[0];
+
+                $sql2 = "SELECT * FROM INV_GL_CONFIG_CC CC WHERE CC.From_Cat_Code LIKE NVL('$only','%') AND CC.CC_STRUCTURE_ID = 29";
+                $result2 = oci_parse($conn, strtoupper($sql2));
+                oci_execute($result2);
+                while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)) {
+                    $string = strtr($row2["TO_CODE"], ['Z' => '9']);
+                    $from_cc = explode("-", $row2["FROM_CODE"]);        
+                    $to_cc = explode("-", $string);
+                    for($j=0; $j < count($cost_center); $j++){ 
+                        if($cost_center[$j] >= $from_cc[$j] && $cost_center[$j] <= $to_cc[$j]){
+                            $true = 1;
+                        }
+                        else{
+                            $true = 0;
+                            break;
+                        }
+                    }
+                    if($true == 1){
+                        $final_code_comb = $row2["CONSUMPTION_ACC_CODE"];
+                        $sql3 = "SELECT AA.CODE_VALUE, AA.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES AA WHERE AA.CODE_COMBINATION_ID = $final_code_comb";
+                        $result3 = oci_parse($conn, strtoupper($sql3));
+                        oci_execute($result3);
+                        while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){ 
+                           $loopData1[] = $row3;                         
+                        }
+                        break; 
+                    }                  
+                }
+                $loopData1 = $loopData1[0];
 
                 $lineData[] = array(
                     'Issue Date' => $value['ISSUE_DATE'],
@@ -5595,8 +5624,10 @@ class ReportController extends Controller
                     'Amount' => number_format($value["ISSUE_AMOUNT"],2),
                     'Category Code' => $value["CAT_CODE"],
                     'Category Description' => $value['CAT_DESC'],
-                    'Contra A/C Code' => $loopData["CODE_VALUE"]." - ".$newcodevalue[0],
-                    'Contra A/C DESC' => $loopData["ACCOUNTING_DESC"]." - ".$fromcode[0],
+                    'Contra A/C Code' => $loopData["CODE_VALUE"],
+                    'Contra A/C DESC' => $loopData["ACCOUNTING_DESC"],
+                    'Consumption A/C Code' => $loopData1["CODE_VALUE"],
+                    'Consumption A/C DESC' => $loopData1["ACCOUNTING_DESC"],
                 );
             }
             return Excel::download(new Material($lineData), 'Material Consumption Report '.$date.'.xlsx');
@@ -5709,7 +5740,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
               
@@ -5738,6 +5769,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
               
@@ -5746,7 +5778,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
               
@@ -5775,6 +5807,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                     }
@@ -5783,7 +5816,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5812,6 +5845,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                 } 
@@ -5822,7 +5856,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5851,6 +5885,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";              
                     } 
@@ -5859,7 +5894,7 @@ class ReportController extends Controller
                         $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                             DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                             ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                            WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                            WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                             (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                             (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5888,6 +5923,7 @@ class ReportController extends Controller
                             JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                             JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                             LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                            JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                     
                             ORDER BY IM.ISSUE_DATE";
                     }
@@ -5896,7 +5932,7 @@ class ReportController extends Controller
                     $sql1 = "SELECT IM.ISSUE_DATE,IM.INV_BOOK_ID,IBM.INV_BOOK_DESC,SOM.SALES_ORDER_NO,IM.ISSUE_NO,TRM.TRANS_REASON_DESC, IM.REMARKS,
                         DM.DESCRIPTION,ISD.PRIMARY_QTY,ISD.ISSUE_AMOUNT,UPR.UOM_SHORT_DESC , ARTCODE.SEGMENT_VALUE_DESC,
                         ITM.ITEM_CODE, ITM.ITEM_DESC , CBV.CODE_VALUE, CBV.ACCOUNTING_DESC, OSD.SEASON_DEF_DESC, IM.PRODUCTION_QTY,
-                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC,
+                        WS1.SEGMENT_VALUE AS WS1_CODE, WS2.SEGMENT_VALUE AS WS2_CODE, WS1.SEGMENT_VALUE_DESC AS WS1_DESC, WS2.SEGMENT_VALUE_DESC AS WS2_DESC, CCV3.CODE_VALUE AS COST_CENTER,
                         (W1.SEGMENT_VALUE || '-' || W2.SEGMENT_VALUE || '-' || W3.SEGMENT_VALUE || '-' || W4.SEGMENT_VALUE || '-' || W5.SEGMENT_VALUE || '-' || W6.SEGMENT_VALUE || '-' || W7.SEGMENT_VALUE) AS CAT_CODE,
                         (W1.SEGMENT_VALUE_DESC || '-' || W2.SEGMENT_VALUE_DESC || '-' || W3.SEGMENT_VALUE_DESC || '-' || W4.SEGMENT_VALUE_DESC || '-' || W5.SEGMENT_VALUE_DESC || '-' || W6.SEGMENT_VALUE_DESC || '-' || W7.SEGMENT_VALUE_DESC) AS CAT_DESC
                       
@@ -5925,6 +5961,7 @@ class ReportController extends Controller
                         JOIN WIZ_SEGMENT05 W5 ON W5.SEGMENT_ID = CC2.SEGMENT_ID05 AND W5.STRUCTURE_ID = CC2.STRUCTURE_ID
                         JOIN WIZ_SEGMENT06 W6 ON W6.SEGMENT_ID = CC2.SEGMENT_ID06 AND W6.STRUCTURE_ID = CC2.STRUCTURE_ID
                         LEFT JOIN WIZ_SEGMENT07 W7 ON W7.SEGMENT_ID = CC2.SEGMENT_ID07 AND W7.STRUCTURE_ID = CC2.STRUCTURE_ID
+                        JOIN CODE_COMBINATION_VALUES CCV3 ON CCV3.CODE_COMBINATION_ID = IM.COST_CENTER_ID
                 
                         ORDER BY IM.ISSUE_DATE";
                 }
@@ -5949,6 +5986,7 @@ class ReportController extends Controller
                     'sum_qty' => $sum_qty,
                     'sum_amount' => $sum_amount,
                     'sum_rate' => $sum_rate,
+                    'rate' => $row["ISSUE_AMOUNT"]/$row["PRIMARY_QTY"]
                 );
             }
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));

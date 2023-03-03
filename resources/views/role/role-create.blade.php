@@ -404,8 +404,20 @@
                                                         <span class="form-check-label">Consumption Comparison</span>
                                                     </label>
                                                     <label class="form-check form-check-inline">
-                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Transfer Ledger Report" name="Reports[]">
+                                                        <input class="form-check-input name reportCheck" type="checkbox" value="Transfer Ledger Report" name="Reports[]">
                                                         <span class="form-check-label">Transfer Ledger Report</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name reportCheck" type="checkbox" value="Transfer Ledger Rate" name="Reports[]">
+                                                        <span class="form-check-label">Transfer Ledger <b>Rate</b></span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name reportCheck" type="checkbox" value="Transfer Issue Rate" name="Reports[]">
+                                                        <span class="form-check-label">Transfer Issue <b>Rate</b></span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name reportCheck" type="checkbox" value="Material Consumption Rate" name="Reports[]">
+                                                        <span class="form-check-label">Material Consumption <b>Rate</b></span>
                                                     </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allReport" type="checkbox">

@@ -1,5 +1,16 @@
 @extends( (Auth::user()->id == "2") ? 'layouts.admin-layout' : 'layouts.user-layout')
 @section('content')
+<?php
+	$id = Auth::user()->id;
+	$authName = Auth::user()->name;
+	$UserDetail = DB::table("users")->where("id", $id)->pluck('userrole');
+	$UserDetail1 = DB::table("newroles")->where("name", $UserDetail)->get();
+	$obj = json_decode (json_encode ($UserDetail1), FALSE);
+    $storeData = [];
+    foreach($obj as $dataa){
+        $storeData[$dataa->role_name] = $dataa->value; 
+    }
+?>
 <!-- <link href="plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
 <link href="plugins/lightpick/lightpick.css" rel="stylesheet" /> -->
 <style>
@@ -177,8 +188,12 @@
                                         <th class="text-white" data-orderable="false">Unit</th>
                                         <th class="text-white" data-orderable="false">In</th>
                                         <th class="text-white" data-orderable="false">Out</th>
-                                        <th class="text-white" data-orderable="false">Rate</th>
-                                        <th class="text-white" data-orderable="false">Amount</th>
+                                        @if(isset($storeData['Transfer Ledger Rate']) && !empty($storeData['Transfer Ledger Rate']) || Auth::user()->id == 2) 
+                                            @if(isset($storeData['Transfer Ledger Rate']) == 1 || Auth::user()->id == 2)
+                                                <th class="text-white" data-orderable="false">Rate</th>
+                                                <th class="text-white" data-orderable="false">Amount</th>
+                                            @endif
+                                        @endif
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
@@ -203,8 +218,12 @@
                                                 <td></td>
                                                 <td>{{$row["PIRMARY_QTY"]}}</td>
                                                 @endif
-                                                <td>{{round($row["AMOUNT"]/$row["PIRMARY_QTY"],2)}}</td>
-                                                <td>{{number_format($row["AMOUNT"],2)}}</td>
+                                                @if(isset($storeData['Transfer Ledger Rate']) && !empty($storeData['Transfer Ledger Rate']) || Auth::user()->id == 2) 
+                                                    @if(isset($storeData['Transfer Ledger Rate']) == 1 || Auth::user()->id == 2)
+                                                        <td>{{round($row["AMOUNT"]/$row["PIRMARY_QTY"],2)}}</td>
+                                                        <td>{{number_format($row["AMOUNT"],2)}}</td>
+                                                    @endif
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -7,6 +7,7 @@ use Hash;
 use Auth;    
 use Exception;
 use App\Models\User;
+use App\Models\LoginLog;
 use App\Models\RoleName;
 use App\Models\UserDetail;
 use App\Models\Objectives;
@@ -147,8 +148,13 @@ class UserController extends Controller
             $user = User::where('name',$request->name)->first();
             if($user){
                 if($user->status == 1){
-                    if(auth()->attempt($credentials)){
-                    return redirect()->route('home');
+                    if(auth()->attempt($credentials)){                  
+                        $data = array(
+                            'user_id' => Auth::user()->id,
+                            'address' => $request->ip(),
+                        );
+                        LoginLog::insert($data);
+                        return redirect()->route('home');
                 }
                 else{
                     $notification = array(

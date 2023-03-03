@@ -74,10 +74,10 @@
                 <div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('home')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Consumption Comparison</li>
+                        <li class="breadcrumb-item active">Material Consumption Analysis</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Consumption Comparison</h4>
+                <h4 class="page-title">Material Consumption Analysis</h4>
                 <br>
                 <button style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" type="button" class="btn text-white" id="reportModel">View Report</button>
             </div>
@@ -91,7 +91,7 @@
                         <div class="col-md-3 align-self-center">
                         </div>
                         <div class="col-md-6 align-self-center text-center">
-                            <h3>Material Consumption Standard Vs Actual Comparison</h3>
+                            <h3>Material Consumption Analysis</h3>
                         </div>
                     </div>
                     @if($Permission == 1)
