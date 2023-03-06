@@ -374,7 +374,7 @@ class ReportController extends Controller
                         JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
                         JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
                         JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID  
-                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID AND CCV1.CODE_VALUE = '$fromloc1[0]'                
+                        JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID AND CCV1.CODE_VALUE LIKE NVL('$fromloc1[0]','%')               
 
                     UNION
             
@@ -385,7 +385,7 @@ class ReportController extends Controller
                         JOIN INV_BOOKS_MT IBM ON IBM.INV_BOOK_ID = TIM.INV_BOOK_ID AND IBM.INV_BOOK_DESC LIKE NVL('','%')
                         JOIN ITEMS_MT IM ON IM.ITEM_ID = TID.ITEM_ID
                         JOIN WIZ_UOM_MT WUM ON WUM.UOM_ID = TID.UOM_ID                    
-                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID AND CCV.CODE_VALUE = '$fromloc1[0]'   
+                        JOIN CODE_COMBINATION_VALUES CCV ON TID.FROM_CODE_COMB_ID = CCV.CODE_COMBINATION_ID AND CCV.CODE_VALUE LIKE NVL('$fromloc1[0]','%')  
                         JOIN CODE_COMBINATION_VALUES CCV1 ON TID.TO_CODE_COMB_ID = CCV1.CODE_COMBINATION_ID            
                         ORDER BY ITEM_CODE";
 

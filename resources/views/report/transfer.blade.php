@@ -183,7 +183,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th hidden class="text-white">1</th>
                                         <th class="text-white" data-orderable="false">Trans Date</th>
                                         <th class="text-white" data-orderable="false">Trans No</th>
                                         <th class="text-white" data-orderable="false">From</th>
@@ -207,7 +206,6 @@
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
-                                                <td hidden>1</td>
                                                 <td>{{$row["TRANS_DATE"]}}</td>
                                                 <td>{{$row["TRANS_NO"]}}</td>
                                                 <td>{{$row["FLOC"]}}</td>
@@ -230,7 +228,6 @@
                                     </tbody>
                                     <tfoot class="bg-dark">  
                                         <tr>
-                                            <th hidden></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>

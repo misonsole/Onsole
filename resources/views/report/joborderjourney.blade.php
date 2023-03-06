@@ -142,7 +142,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" hidden>Job</th>
                                         <th class="text-white" data-orderable="false">Job Order</th>
                                         <th class="text-white" data-orderable="false">Department</th>
                                         <th class="text-white" data-orderable="false">Date Created</th>
@@ -156,7 +155,6 @@
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">                
-                                                <td hidden>1</td>
                                                 <td>{{$row->Job_Id}}</td>                  
                                                 <td>{{$row->Department}}</td>   
                                                 <td>{{$row->User_Date}}</td>                  

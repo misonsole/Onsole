@@ -183,7 +183,6 @@
                             <table id="datatable" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th hidden>.</th>
                                         <th class="text-white" data-orderable="false">Job <br> ID</th>
                                         <th class="text-white" data-orderable="false">Date</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
@@ -220,7 +219,6 @@
                                         <?php $colorchange = ""; ?>
                                         @foreach($data as $row)
                                             <tr class="table_row" style="<?php if($colorchange != $row->Color || $jochange != $row->Job_Id) { ?> background: #d1d1d1; color: black; <?php } ?>">
-                                                <td hidden>1</td>                  
                                                 <td>{{$row->Job_Id}}</td>                  
                                                 <td>
                                                     <?php $explode = explode("-",$row->Date_Created); ?>

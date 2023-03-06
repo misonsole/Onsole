@@ -152,7 +152,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false" hidden>.</th>
                                         <th class="text-white" data-orderable="false">WO <br> No</th>
                                         <th class="text-white" data-orderable="false">WO Date</th>
                                         <th class="text-white" data-orderable="false">Code</th>
@@ -181,7 +180,6 @@
                                         @foreach($data as $row)
                                             @if($tmp == $row['data']["ITEM_CODE"])
                                             <tr class="table_row">
-                                                <td hidden>1</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -225,7 +223,6 @@
                                             </tr>
                                             @else
                                             <tr class="table_row" style="color: black; background: #e7e7e7;">
-                                                <td hidden>1</td>
                                                 <td>{{$row['data']["WO_NO"]}}</td>
                                                 <td>{{$row['data']["WO_DATE"]}}</td>
                                                 <td>{{$row['data']["ITEM_CODE"]}}</td>

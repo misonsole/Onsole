@@ -135,7 +135,6 @@
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false" hidden>.</th>
                                         <th class="text-white" data-orderable="false">SR. No</th>
                                         <th class="text-white" data-orderable="false">Financial <br> Year</th>
                                         <th class="text-white" data-orderable="false">Period</th>
@@ -154,7 +153,6 @@
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
-                                                <td hidden>1</td>
                                                 <td>{{$i++}}</td>
                                                 <td>{{$row["FIN_YEAR"]}}</td>                  
                                                 <td>{{$row["PERIOD"]}}</td>                  
@@ -191,7 +189,6 @@
                                     </tbody>
                                     <tfoot class="bg-dark text-white my-2">
                                         <tr>
-                                            <th hidden class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>

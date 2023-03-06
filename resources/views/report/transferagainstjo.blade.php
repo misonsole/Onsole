@@ -177,7 +177,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false" hidden>.</th>
                                         <th class="text-white" data-orderable="false">Job <br> Order</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">Sale <br> Order</th>
@@ -249,7 +248,6 @@
                                                         }
                                                         if($printok == 1) { ?>
                                                         <tr style="text-align: center;">
-                                                            <td hidden>1</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
@@ -276,7 +274,6 @@
                                                         } unset($item_code);
                                                 } ?>
                                                         <tr style="text-align: center; background-color:rgba(0, 0, 0, 0.14); font-size: 14px;">
-                                                            <td hidden>1</td>
                                                             <td><strong><?php echo $row->Job_Id." <br> ".$row->RTTIME; ?></strong></td>
                                                             <td><strong><?php echo $row->Cust_Name; ?></strong></td>
                                                             <td><strong><?php echo $row->So_No; ?></strong></td>
@@ -328,7 +325,6 @@
                                                         </tr>
                                                     <?php $tempcode = $row->Job_Id; $rem_check = 1; $key = 1; } else {  ?>
                                                         <tr style="text-align: center;">
-                                                            <td hidden>1</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>
@@ -413,7 +409,6 @@
                                                         }
                                                         if($printok == 1) { ?>
                                                         <tr style="text-align: center;">
-                                                            <td hidden>1</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td></td>

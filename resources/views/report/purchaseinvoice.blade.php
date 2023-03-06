@@ -159,7 +159,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th hidden>.</th>
                                         <th class="text-white" data-orderable="false">Book</th>
                                         <th class="text-white" data-orderable="false">P Inv <br> No</th>
                                         <th class="text-white" data-orderable="false">P Inv <br> Date</th>
@@ -187,7 +186,6 @@
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
-                                                <td hidden>1</td>                  
                                                 <td>
                                                     <?php $explode = explode(" ",$row['data']["INV_BOOK_DESC"]); ?>
                                                     @foreach($explode as $data1)
@@ -259,7 +257,6 @@
                                     </tbody>
                                     <tfoot class="bg-dark text-white my-2">
                                         <tr>
-                                            <th class="text-white" hidden>.</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>

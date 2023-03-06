@@ -163,7 +163,6 @@
                             <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th hidden>.</th>
                                         <th class="text-white" data-orderable="false">Item <br> Code</th>
                                         <th class="text-white" data-orderable="false">Item <br> Desc</th>
                                         <th class="text-white" data-orderable="false">UOM</th>
@@ -205,7 +204,6 @@
                                         <?php if($tempcode == $row["ITEM_CODE"]) { ?>
                                         <?php if($temppo != $row["PO_NO"]) { ?>
                                             <tr style="background-color:rgba(0, 0, 0, 0.05);">
-                                                <td hidden>1</td> 
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
                                                 <td class="font-weight-bold" data-orderable="false"></td>
@@ -367,7 +365,6 @@
                                     </tbody>
                                     <tfoot class="bg-dark text-white my-2">
                                         <tr>
-                                            <th class="text-white" hidden>.</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false">Sum of Sums</th>
                                             <th class="text-white" data-orderable="false"></th>

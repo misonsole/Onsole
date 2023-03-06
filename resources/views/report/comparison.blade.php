@@ -169,7 +169,6 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false" hidden>.</th>
                                         <th class="text-white" data-orderable="false">Job Order</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">Sale <br> Order</th>
@@ -211,7 +210,6 @@
                                         @foreach($data as $row)
                                         <?php $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $departmentERP = $row->Department;  $item_code_now = $row->Rm_Code; ?>                         
                                             <tr class="table_row"> 
-                                                <td hidden>1</td>
                                                 <td>{{$row->Job_Id}} <br> {{$row->RTTIME}}</td>
                                                 <td>{{$row->Cust_Name}}</td>
                                                 <td>{{$row->So_No}}</td>
@@ -302,7 +300,6 @@
                                     </tbody>
                                     <tfoot class="bg-dark">  
                                         <tr>
-                                            <th hidden></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
