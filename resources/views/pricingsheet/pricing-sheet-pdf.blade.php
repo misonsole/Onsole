@@ -110,6 +110,9 @@
                                                 <tr>
                                                     <td colspan="4" style="border-top: none; inline-flex;">
                                                         <td colspan="1" class="px-0" style="border-top: none;">
+                                                            @if($data1->profit_price)
+                                                            <h6 class="mb-0" style="font-size: small;"><b>Profit Ratio&nbsp;:</b></h6>
+                                                            @endif
                                                             <h6 class="mb-0" style="font-size: small;"><b>Sale Price :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Actual Cost  :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Desgin No :</b></h6>
@@ -122,16 +125,19 @@
                                                             @endif
                                                         </td>
                                                         <td colspan="1" class="px-0" style="border-top: none;">
+                                                            @if($data1->profit_price)
+                                                            <h6 class="mb-0" style="font-size: small;">{{$data1->profit_price}}  % </h6>
+                                                            @endif
                                                             <h6 style="font-size: small;" class="mb-0">
-                                                                @if($data1->profit)
-                                                                    {{substr($data1->profit, 0,6)}} PKR
+                                                                @if($data1->price)
+                                                                    {{substr($data1->price, 0,6)}} PKR
                                                                 @else
                                                                     &nbsp;
                                                                 @endif
                                                             </h6>
                                                             <h6 style="font-size: small;" class="mb-0">
-                                                                @if($data1->price)
-                                                                    {{substr($data1->price, 0,6)}} PKR
+                                                                @if($data1->profit)
+                                                                    {{substr($data1->profit, 0,6)}} PKR
                                                                 @else
                                                                     &nbsp;
                                                                 @endif
@@ -161,6 +167,7 @@
                                                             <h6 class="mb-0" style="font-size: small;"><b>Season :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Category :</b></h6>
                                                             <h6 class="mb-0" style="font-size: small;"><b>Overhead No :</b></h6>
+                                                            <h6 class="mb-0" style="font-size: small;"><b>Designer :</b></h6>
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else
@@ -179,6 +186,7 @@
                                                                     &nbsp;
                                                                 @endif
                                                             </h6>
+                                                            <h6 class="mb-0" style="font-size: small;">{{$data1->designer}}</h6>
                                                             @if(!empty($manual))
                                                             &nbsp;
                                                             @else

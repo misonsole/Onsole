@@ -24,6 +24,7 @@ use App\Models\PlcCategory;
 use Illuminate\Http\Request;
 use App\Models\PlcLastNumber;
 use App\Models\notifications;
+use App\Models\PlcFormulaDetail;
 use App\Models\PlcSpecification;
 use App\Models\PlcPricingDetail;
 use App\Models\PlcPricingProcess;
@@ -129,7 +130,8 @@ class PricingController extends Controller
             $costing->shape = $request->shape;
             $costing->sole = $request->sole; 
             $costing->range_no = $request->range; 
-            $costing->design_no = $request->design; 
+            $costing->design_no = $request->design;
+            $costing->designer = $request->designer; 
             $costing->description = $request->description;
             $costing->project = $request->project; 
             $costing->product = $request->product; 
@@ -432,7 +434,7 @@ class PricingController extends Controller
             $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
             $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
-            $formulaData = PlcFormula::orderBy('id','DESC')->where('p_id', $id)->get();
+            $formulaData = PlcFormulaDetail::orderBy('id','DESC')->where('oh_id', $id)->get();
             foreach($formulaData as $value){
                 if($value->dep == "Cutting"){
                     $cuttingDataF[] = $value;
@@ -1218,7 +1220,7 @@ class PricingController extends Controller
             //Calculation
             $cuttingDataO = []; $StitchingDataO = []; $LaminationDataO = []; $ClosingDataO = []; $LastingDataO = []; $PackingDataO = [];
             $OverheadId = $data1[0]->overhead_id;
-            $dataOverhead = PlcFormula::orderBy('id','ASC')->where('oh_id', $OverheadId)->get();
+            $dataOverhead = PlcFormulaDetail::orderBy('id','DESC')->where('oh_id', $OverheadId)->get();
             foreach($dataOverhead as $value){
                 if($value->dep == "Cutting"){
                     $cuttingDataO[] = $value;
@@ -1936,12 +1938,11 @@ class PricingController extends Controller
             $F_cuttingData = []; $F_StitchingData = []; $F_LaminationData = []; $F_ClosingData = []; $F_LastingData = []; $F_PackingData = [];
             $cuttingData_o = []; $InsoleData_o = []; $LaminationData_o = []; $ClosingData_o = []; $LastingData_o = []; $PackingData_o = [];
             $cuttingData_r = []; $InsoleData_r = []; $LaminationData_r = []; $ClosingData_r = []; $LastingData_r = []; $PackingData_r = [];
-            $formulaData = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
+            $formulaData = PlcFormula::orderBy('id','DESC')->get();
             $data = DB::table('plc_pricings')->where('id', $id)->get();
-
             $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
-            $data = PlcFormula::orderBy('id','ASC')->where('oh_id', $id)->get();
-            foreach($data as $value){
+            $dataA = PlcFormula::orderBy('id','ASC')->where('id', $id)->get();
+            foreach($dataA as $value){
                 if($value->dep == "Cutting"){
                     $F_cuttingData[] = $value;
                 }
@@ -2207,7 +2208,7 @@ class PricingController extends Controller
             $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
             $data1 = DB::table('plc_pricings')->where('id', $id)->get();
             $data2 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
-            $formulaData = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
+            $formulaData = PlcFormula::orderBy('id','DESC')->get();
             $userseason = $data1[0]->season;
             $userpurpose = $data1[0]->purpose;
             $userimage = $data1[0]->image;
@@ -2223,7 +2224,8 @@ class PricingController extends Controller
             $userdesign = $data1[0]->design_no;
             $userdescription = $data1[0]->description;
             $usercategory = $data1[0]->category;
-            $userprogress = $data1[0]->progress;        
+            $userprogress = $data1[0]->progress;
+            $useroverhead_id = $data1[0]->overhead_id;        
             foreach($data2 as $value){
                 if($value->material == "cutting"){
                     $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
@@ -2275,15 +2277,15 @@ class PricingController extends Controller
             $shape = PlcShape::orderBy('id','DESC')->get();
             $sole = PlcSole::orderBy('id','DESC')->get();
             return view('pricingsheet.pricing-sheet-edit-costing')->with([
-                'id'=> $id,                           
-                'data1'=> $data1[0],
-                'i'=> 1,'j'=> 1,'k'=> 1,'l'=> 1,'m'=> 1,'n'=> 1,
-                'cuttingData'=> $cuttingData, 'InsoleData'=> $InsoleData, 'LaminationData'=> $LaminationData, 'ClosingData'=> $ClosingData, 'LastingData'=> $LastingData, 'PackingData'=> $PackingData,
-                'a1'=> 1,'a2'=> 1, 'b1'=> 1,'b2'=> 1, 'c1'=> 1,'c2'=> 1, 'd1'=> 1,'d2'=> 1, 'e1'=> 1,'e2'=> 1, 'f1'=> 1,'f2'=> 1,
-                'season'=> $season, 'itemcode'=> $item_code, 'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'sequence'=> $sequence, 'date'=> $date,
-                'image'=> $userimage, 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
-                'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory,
-                'userprogress'=> $userprogress, 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'formulaData'=> $formulaData
+                'id' => $id,                           
+                'data1' => $data1[0],
+                'i' => 1,'j' => 1,'k' => 1,'l' => 1,'m' => 1,'n' => 1,
+                'cuttingData' => $cuttingData, 'InsoleData' => $InsoleData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 'LastingData' => $LastingData, 'PackingData'=> $PackingData,
+                'a1' => 1,'a2' => 1, 'b1' => 1,'b2' => 1, 'c1' => 1,'c2' => 1, 'd1' => 1,'d2' => 1, 'e1' => 1,'e2' => 1, 'f1' => 1,'f2' => 1,
+                'season' => $season, 'itemcode' => $item_code, 'userseason' => $userseason, 'userpurpose' => $userpurpose, 'sequence' => $sequence, 'date' => $date,
+                'image' => $userimage, 'articlecode' => $article_code, 'category' => $category, 'usershape' => $usershape, 'usersole' => $usersole, 'userproject' => $userproject, 'useroverhead_id' => $useroverhead_id,
+                'userproduct' => $userproduct, 'userrange' => $userrange, 'userdesign' => $userdesign, 'userdescription' => $userdescription, 'usercategory' => $usercategory,
+                'userprogress' => $userprogress, 'shape' => $shape, 'sole' => $sole, 'project' => $project, 'range' => $range, 'purpose' => $purpose, 'formulaData' => $formulaData
             ]);
         }
         catch(Exception $e){
@@ -2387,15 +2389,16 @@ class PricingController extends Controller
         }
     }
 
-    public function Calculate($id,$value)
+    public function Calculate($id,$value,$over)
     {
         try{
             $id = $id;
             $calculateValue = $value;
+            $overId = $over;
             $total1 = 0; $total2 = 0; $total3 = 0;
             $data1 = PlcPricingDetail::where('costing_id', $id)->pluck('value');
             $data2 = PlcPricingResource::where('costing_id', $id)->pluck('pair');
-            $formulaData = DB::table('plc_formulas')->where('p_id', $id)->get();
+            $formulaData = DB::table('plc_formula_details')->where('oh_id', $overId)->get();
             foreach($formulaData as $value){
                 if($value->dep == "Cutting"){
                     $cuttingDataF[] = $value;
@@ -2497,6 +2500,7 @@ class PricingController extends Controller
                 'profit' => $actualPrice,
                 'price' => $total,
                 'profit_price' => $calculateValue,
+                'progress' => 100,
             );
             $updateData = PlcPricing::where('id', $id)->update($input1);
             if($updateData){

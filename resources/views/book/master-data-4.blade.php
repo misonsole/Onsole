@@ -88,11 +88,11 @@
                     <form action="#">
                         <div class="form-group row py-2">
                             <div class="col-sm-12 mb-1 mb-sm-0">
-                                <label><b style="color: #6c757d">Users</b></label>
+                                <label><b style="color: #6c757d">Roles</b></label>
                                 <select id="name" name="name" class="form-control select.custom-select" style="border: 1px solid #bfbfbf;" required>
                                     <option selected disabled>Select User</option>  
                                     @foreach($data as $name)
-                                        <option id="{{ $name->lastname }}" value="{{ $name->id }} {{ $name->firstname }} {{ $name->lastname }}">{{ $name->firstname }} {{ $name->lastname }}</option>
+                                        <option id="{{$name->name}}" value="{{$name->name}}">{{$name->name}}</option>
                                     @endforeach
                                 </select>
                                 <span id="StrengthDisp2" style="font-size: 13px !important;" class="badge displayBadgess text-light py-2 mt-2"></span>  
@@ -145,7 +145,7 @@
         if(nameEmployee == null){
             strengthBadge2.style.display = 'block'
             strengthBadge2.style.backgroundColor = '#cd3f3f'
-            strengthBadge2.textContent = 'Please Select User'
+            strengthBadge2.textContent = 'Please Select Roles'
             return false;
         }
         const myArray = Employee.split(" ");

@@ -143,13 +143,13 @@
                                         @endif
                                     </h6>
                                     <h6 class="mb-0"> 
-                                        @if($data1->profit)
-                                            {{substr($data1->profit, 0,5)}} PKR 
+                                        @if($data1->price)
+                                            {{substr($data1->price, 0,5)}} PKR 
                                         @endif
                                     </h6>
                                     <h6 class="mb-0"> 
-                                        @if($data1->price)
-                                            {{substr($data1->price, 0,5)}} PKR
+                                        @if($data1->profit)
+                                            {{substr($data1->profit, 0,5)}} PKR
                                         @endif
                                     </h6> 
                                     <h6 class="mb-0">{{$data1->design_no}}</h6>
@@ -180,6 +180,7 @@
                                     <h6 class="mb-0 mr-3"><b>Category&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Purpose&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Product&nbsp;:</b></h6>
+                                    <h6 class="mb-0 mr-3"><b>Designer&nbsp;:</b></h6>
                                 </span>
                                 <span class="">
                                     <h6 class="mb-0">{{$data1->date}}</h6>
@@ -188,6 +189,7 @@
                                     <h6 class="mb-0">{{$data1->category}}</h6>
                                     <h6 class="mb-0">{{$data1->purpose}}</h6>
                                     <h6 class="mb-0">{{$data1->product}}</h6>
+                                    <h6 class="mb-0">{{$data1->designer}}</h6>
                                 </span>
                             </div>
                             <div class="col-md-2 col-md-2 py-4 text-center">

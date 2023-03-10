@@ -471,8 +471,8 @@
                             </li>
                             @endif
                         @endif
-                        @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List'])) 
-                            @if(isset($storeData['Pricing-Sheet Sales']) == 1 || isset($storeData['Pricing-Sheet List']) == 1)
+                        @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List']) || isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
+                            @if(isset($storeData['Pricing-Sheet Sales']) == 1 || isset($storeData['Pricing-Sheet List']) == 1 || isset($storeData['Pricing-Sheet Costing']) == 1)
                             <li>
                                 <a href="javascript: void(0);"><i class="ti-control-record"></i>Pricing Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">

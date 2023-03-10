@@ -72,8 +72,8 @@
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>                    
-                                            <td>Overhead-{{$user->oh_id}}</td>
-                                            <td>{{$user->onwer}}</td>
+                                            <td>Overhead-{{$user->id}}</td>
+                                            <td>{{$user->owner}}</td>
                                             <td>
                                                 <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("d-F-Y", strtotime($words[0])); ?>
                                                 <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$newDate}} 
@@ -84,9 +84,9 @@
                                             </td>
                                             <td>
                                             @if($user->status == 'Active')    
-                                                <span data-id="{{$user->oh_id}}" class="badge badge-md badge-boxed badge-success py-2 px-3 ChangeStatus" name="Deactive">Active</span>
+                                                <span data-id="{{$user->id}}" class="badge badge-md badge-boxed badge-success py-2 px-3 ChangeStatus" name="Deactive">Active</span>
                                             @elseif($user->status == 'Deactive')
-                                                <span data-id="{{$user->oh_id}}" class="badge badge-md badge-boxed badge-danger py-2 px-2 ChangeStatus" name="Active">Deactive</span>
+                                                <span data-id="{{$user->id}}" class="badge badge-md badge-boxed badge-danger py-2 px-2 ChangeStatus" name="Active">Deactive</span>
                                             @endif
                                             </td>
                                             <td class="text-center">
@@ -94,15 +94,15 @@
                                                     <input type="text" value="{{$user->id}}" name="id" hidden> 
                                                     @if(isset($storeData['Formula-Sheet Delete']) && !empty($storeData['Formula-Sheet Delete'])) 
                                                         @if(isset($storeData['Formula-Sheet Delete']) == 1)
-                                                            <span data-id={{$user['oh_id']}} style="cursor: pointer;" class="badge badge-danger p-0 rounded-circle cursor-pointer viewweye mr-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="trash"></i></span>
+                                                            <span data-id={{$user['id']}} style="cursor: pointer;" class="badge badge-danger p-0 rounded-circle cursor-pointer viewweye mr-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="trash"></i></span>
                                                         @endif
                                                     @endif
                                                     @if(isset($storeData['Formula-Sheet Edit']) && !empty($storeData['Formula-Sheet Edit'])) 
                                                         @if(isset($storeData['Formula-Sheet Edit']) == 1)
-                                                            <a href="formula-sheet-edit?id={{$user['oh_id']}}" target="_blank"><button data-id={{$user['oh_id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
+                                                            <a href="formula-sheet-edit?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                 
                                                         @endif
                                                     @endif
-                                                    <a href="formula-sheet-view?id={{$user['oh_id']}}" target="_blank"><span id="view" data-id={{$user['oh_id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
+                                                    <a href="formula-sheet-view?id={{$user['id']}}" target="_blank"><span id="view" data-id={{$user['id']}} style="cursor: pointer; background: #4c82f5;" class="badge badge-info p-0 rounded-circle cursor-pointer viewweye1 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="eye"></i></span></a>
                                                 </form>
                                             </td>  
                                         </tr>

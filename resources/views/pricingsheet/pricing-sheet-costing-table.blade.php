@@ -212,6 +212,7 @@
                                                             <div class="modal-body">
                                                                 <div class="form-group"> 
                                                                     <div class="input-group">
+                                                                        <input hidden type="text" class="form-control yourclass" name="overheadId" id="overheadId">                                                                     
                                                                         <input hidden type="text" class="form-control yourclass" name="calculateId" id="calculateId">                                                                     
                                                                         <input oninput="this.value = Math.abs(this.value)" min="0" type="number" placeholder="Percentage" class="form-control class1 yourclass" id="calculateValue" name="calculateValue" required>
                                                                         <span class="input-group-append">
@@ -267,7 +268,7 @@
                                                                         <input id="sonoNum{{$user['id']}}" name="sonoNum" type="text" value="{{$user['profit_price']}}" class="form-control yourclass text-center" style="border: 1px solid #bfbfbf;" readonly>
                                                                     </span>
                                                                     <span>
-                                                                        <a id="calculate" data-id={{$user['id']}} name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a>
+                                                                        <a id="calculate" data-id={{$user['id']}} overId="{{$user['overhead_id']}}" name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a>
                                                                     </span>                        
                                                                 </span>
                                                                 @else
@@ -404,8 +405,10 @@ $(document).ready(function(){
     $("#calculate").click(function(){
         var id = $(this).attr("data-id");
         var name = $(this).attr("name");
+        var overId = $(this).attr("overId");
         $("#calculateId").val(id);
         $("#calculateValue").val(name);
+        $("#overheadId").val(overId);
         $('#exampleModalCenter10').modal('show');
     });
     // $(".viewweye11").click(function(){
@@ -517,9 +520,10 @@ $(document).ready(function(){
         $('#exampleModalCenter10').modal('hide');
         var id = $("#calculateId").val();
         var value = $("#calculateValue").val();
+        var overId = $("#overheadId").val();        
         $.ajax({
             type: 'GET',
-            url: 'calculate/'+id+'/'+value,
+            url: 'calculate/'+id+'/'+value+'/'+overId,
             dataType: "json",
             success: function(data){
                 console.log("data");

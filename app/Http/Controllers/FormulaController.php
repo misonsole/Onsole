@@ -8,6 +8,7 @@ use Auth;
 use Session;
 use Exception;
 use App\Models\PlcFormula;
+use App\Models\PlcFormulaDetail;
 use Illuminate\Http\Request;
 
 class FormulaController extends Controller
@@ -32,20 +33,20 @@ class FormulaController extends Controller
         try{
             $store = 1;
             $Support = PlcFormula::orderBy('id','DESC')->limit(1)->get();
-            $fetch = DB::table('plc_pricings')->where('id', $request->p_id)->get();
-            if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
-                DB::table('plc_pricings')->where('id', $request->p_id)->update(['progress' => 80]);
-            }
             if(count($Support) == 0){
                 $result = $store + 0;
             }
             else{
-                $result = $store + $Support[0]->oh_id;
+                $result = $store + $Support[0]->id;
             }
+            $input = array(
+                'owner' => Auth::user()->emp_name,
+            );
+            $joborder = PlcFormula::create($input);
+            $id = $joborder['id'];
             if($request->cut_dep_cutting != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
-                $cutting->p_id =  $request->p_id;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_cutting ? $request->cut_dep_cutting : '0';
                 $cutting->pcpd = $request->cut_pcpd_cutting ? $request->cut_pcpd_cutting : '0';
                 $cutting->noe = $request->cut_noe_cutting ? $request->cut_noe_cutting : '0';
@@ -64,13 +65,11 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_cutting ? $request->cut_dlo_b_cutting : '0';
                 $cutting->t_oh2 = $request->cut_toh_cutting ? $request->cut_toh_cutting : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_cutting ? $request->cut_uaOh_cutting : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             if($request->cut_dep_sti != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
-                $cutting->p_id =  $request->p_id;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_sti ? $request->cut_dep_sti : '0';
                 $cutting->pcpd = $request->cut_pcpd_sti ? $request->cut_pcpd_sti : '0';
                 $cutting->noe = $request->cut_noe_sti ? $request->cut_noe_sti : '0';
@@ -89,13 +88,11 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_sti ? $request->cut_dlo_b_sti : '0';
                 $cutting->t_oh2 = $request->cut_toh_sti ? $request->cut_toh_sti : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_sti ? $request->cut_uaOh_sti : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             if($request->cut_dep_last != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
-                $cutting->p_id =  $request->p_id;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_last ? $request->cut_dep_last : '0';
                 $cutting->pcpd = $request->cut_pcpd_last ? $request->cut_pcpd_last : '0';
                 $cutting->noe = $request->cut_noe_last ? $request->cut_noe_last : '0';
@@ -114,13 +111,11 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_last ? $request->cut_dlo_b_last : '0';
                 $cutting->t_oh2 = $request->cut_toh_last ? $request->cut_toh_last : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_last ? $request->cut_uaOh_last : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             if($request->cut_dep_clo != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
-                $cutting->p_id =  $request->p_id;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_clo ? $request->cut_dep_clo : '0';
                 $cutting->pcpd = $request->cut_pcpd_clo ? $request->cut_pcpd_clo : '0';
                 $cutting->noe = $request->cut_noe_clo ? $request->cut_noe_clo : '0';
@@ -139,12 +134,11 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_clo ? $request->cut_dlo_b_clo : '0';
                 $cutting->t_oh2 = $request->cut_toh_clo ? $request->cut_toh_clo : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_clo ? $request->cut_uaOh_clo : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             if($request->cut_dep_lam != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_lam ? $request->cut_dep_lam : '0';
                 $cutting->pcpd = $request->cut_pcpd_lam ? $request->cut_pcpd_lam : '0';
                 $cutting->noe = $request->cut_noe_lam ? $request->cut_noe_lam : '0';
@@ -163,13 +157,11 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_lam ? $request->cut_dlo_b_lam : '0';
                 $cutting->t_oh2 = $request->cut_toh_lam ? $request->cut_toh_lam : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_lam ? $request->cut_uaOh_lam : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             if($request->cut_dep_p != null){
-                $cutting = new PlcFormula();
-                $cutting->oh_id =  $result;
-                $cutting->p_id =  $request->p_id;
+                $cutting = new PlcFormulaDetail();
+                $cutting->oh_id =  $id;
                 $cutting->dep =  $request->cut_dep_p ? $request->cut_dep_p : '0';
                 $cutting->pcpd = $request->cut_pcpd_p ? $request->cut_pcpd_p : '0';
                 $cutting->noe = $request->cut_noe_p ? $request->cut_noe_p : '0';
@@ -188,14 +180,13 @@ class FormulaController extends Controller
                 $cutting->dloh3 = $request->cut_dlo_b_p ? $request->cut_dlo_b_p : '0';
                 $cutting->t_oh2 = $request->cut_toh_p ? $request->cut_toh_p : '0';
                 $cutting->un_a_oh = $request->cut_uaOh_p ? $request->cut_uaOh_p : '0';
-                $cutting->onwer =  Auth::user()->emp_name;
                 $store = $cutting->save();
             }
             $notification = array(
                 'message' => 'Formula Sheet Created',
                 'alert-type' => 'success'
             );
-            return redirect()->route('pricing-sheet-table')->with($notification);
+            return redirect()->route('formula-sheet-table')->with($notification);
         }
         catch(Exception $e){
             $notification = array(
@@ -211,10 +202,6 @@ class FormulaController extends Controller
         date_default_timezone_set('Asia/Karachi');
         $id = $request->id;
         try{
-            $fetch = DB::table('plc_pricings')->where('id', $id)->get();
-            if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
-                DB::table('plc_pricings')->where('id', $id)->update(['progress' => 80]);
-            }
             if($request->cut_dep_cutting != null){
                 $dataArray = array(
                     'dep' =>  $request->cut_dep_cutting ? $request->cut_dep_cutting : '0',
@@ -236,7 +223,7 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_cutting ? $request->cut_toh_cutting : '0',
                     'un_a_oh' => $request->cut_uaOh_cutting ? $request->cut_uaOh_cutting : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Cutting')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Cutting')->update($dataArray);
             }
             if($request->cut_dep_sti != null){
                 $dataArray = array(
@@ -259,7 +246,7 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_sti ? $request->cut_toh_sti : '0',
                     'un_a_oh' => $request->cut_uaOh_sti ? $request->cut_uaOh_sti : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Stitching')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Stitching')->update($dataArray);
             }
             if($request->cut_dep_last != null){
                 $dataArray = array(
@@ -282,7 +269,7 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_last ? $request->cut_toh_last : '0',
                     'un_a_oh' => $request->cut_uaOh_last ? $request->cut_uaOh_last : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Lasting')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Lasting')->update($dataArray);
             }
             if($request->cut_dep_clo != null){
                 $dataArray = array(
@@ -305,7 +292,7 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_clo ? $request->cut_toh_clo : '0',
                     'un_a_oh' => $request->cut_uaOh_clo ? $request->cut_uaOh_clo : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Closing')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Closing')->update($dataArray);
             }
             if($request->cut_dep_lam != null){
                 $dataArray = array(
@@ -328,7 +315,7 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_lam ? $request->cut_toh_lam : '0',
                     'un_a_oh' => $request->cut_uaOh_lam ? $request->cut_uaOh_lam : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Lamination')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Lamination')->update($dataArray);
             }
             if($request->cut_dep_p != null){
                 $dataArray = array(
@@ -351,13 +338,13 @@ class FormulaController extends Controller
                     't_oh2' => $request->cut_toh_p ? $request->cut_toh_p : '0',
                     'un_a_oh' => $request->cut_uaOh_p ? $request->cut_uaOh_p : '0',
                 );
-                $update = PlcFormula::where('oh_id', $id)->where('dep', 'Packing')->update($dataArray);
+                $update = PlcFormulaDetail::where('oh_id', $id)->where('dep', 'Packing')->update($dataArray);
             }
             $notification = array(
                 'message' => 'Formula Sheet Updated',
                 'alert-type' => 'success'
             );
-            return redirect()->route('pricing-sheet-table')->with($notification);
+            return redirect()->route('formula-sheet-table')->with($notification);
         }
         catch(Exception $e){
             $notification = array(
@@ -382,12 +369,12 @@ class FormulaController extends Controller
             $designation = Auth::user()->designation;
             if(isset($storeData['Formula-Sheet List']) && !empty($storeData['Formula-Sheet List'])){
                 if(isset($storeData['Formula-Sheet List']) == 1){
-                    $data = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
+                    $data = PlcFormula::orderBy('id','DESC')->get();
                 }
                 return view('formulasheet.formula-sheet-table')->with(['data'=> $data, 'i'=> 1]);
             }
             elseif($designation == "Super Admin"){
-                $data = PlcFormula::orderBy('id','DESC')->get()->unique('oh_id');
+                $data = PlcFormula::orderBy('id','DESC')->get();
                 return view('formulasheet.formula-sheet-admin-table')->with(['data'=> $data, 'i'=> 1]);
             }
         }
@@ -405,7 +392,7 @@ class FormulaController extends Controller
         try{
             $id = $_GET['id'];
             $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
-            $data = PlcFormula::orderBy('id','ASC')->where('oh_id', $id)->get();
+            $data = PlcFormulaDetail::orderBy('id','ASC')->where('oh_id', $id)->get();
             foreach($data as $value){
                 if($value->dep == "Cutting"){
                     $cuttingData[] = $value;
@@ -444,7 +431,7 @@ class FormulaController extends Controller
         try{
             $id = $_GET['id'];
             $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
-            $data = PlcFormula::orderBy('id','ASC')->where('oh_id', $id)->get();
+            $data = PlcFormulaDetail::orderBy('id','ASC')->where('oh_id', $id)->get();
             foreach($data as $value){
                 if($value->dep == "Cutting"){
                     $cuttingData[] = $value;
@@ -625,8 +612,8 @@ class FormulaController extends Controller
     public function Status($id,$status)
     {
         try{
-            $Deactive = DB::table('plc_formulas')->where('oh_id', '!=', $id)->update(['status' => 'Deactive']);
-            $Active = DB::table('plc_formulas')->where('oh_id', $id)->update(['status' => $status]);
+            $Deactive = DB::table('plc_formulas')->where('id', '!=', $id)->update(['status' => 'Deactive']);
+            $Active = DB::table('plc_formulas')->where('id', $id)->update(['status' => $status]);
             if($Active){
                 $notification = array(
                     'value' => '1'

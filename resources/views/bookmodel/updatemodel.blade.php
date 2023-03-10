@@ -58,10 +58,10 @@
                     <input hidden name="username" type="text" id="username16">
                     <input hidden name="bookname" type="text" id="bookname16">
                     <select class="select2 mb-3 select2-multiple form-control text-dark px-2 py-2 bg-dark" id="mySelect9" name="books[]" style="border: 1px solid #bfbfbf; width: 100%; padding-top: 20px;" multiple="multiple" data-placeholder="   Choose Books" required>             
-                    <?php $count = count($PurchaseReturnsVal); ?>
+                    <?php $count = count($PurchaseReturns); ?>
                     @foreach($PurchaseReturns as $val1)
                         @for($i=0; $i<$count; $i++)
-                            @if($val1[0]['book'] == $PurchaseReturnsVal[$i])
+                            @if($val1[0]['book'] == $PurchaseReturns[$i])
                                 <option selected value="{{$val1[0]['book']}}">{{$val1[0]['book']}}</option>  
                             @else
                                 <option value="{{$val1[0]['book']}}">{{$val1[0]['book']}}</option> 

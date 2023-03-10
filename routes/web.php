@@ -139,10 +139,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     //Book 
-    Route::get('manage-books', [BookController::class, 'manageBook'])->name('manage-books');
-    Route::get('manage-books-2', [BookController::class, 'manageBook2'])->name('manage-books-2');
-    Route::get('manage-books-3', [BookController::class, 'manageBook3'])->name('manage-books-3');
-    Route::get('manage-book', [BookController::class, 'manageBook4'])->name('manage-book');
+    Route::get('manage-book', [BookController::class, 'manageBook'])->name('manage-book');
     Route::post('store-books', [BookController::class, 'store'])->name('store-books');
     Route::post('assign-books', [BookController::class, 'Assign'])->name('assign-books');
     Route::post('get-books', [BookController::class, 'GetBooks'])->name('get-books');
@@ -175,7 +172,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('pricing-sheet-create', [PricingController::class, 'Create'])->name('pricing-sheet-create');
     Route::get('pricing-sheet-table', [PricingController::class, 'All'])->name('pricing-sheet-table');
     Route::get('deletejoborder/{id}', [PricingController::class, 'Delete']);
-    Route::get('calculate{id}/{value}', [PricingController::class, 'Calculate']);
+    Route::get('calculate/{id}/{value}/{over}', [PricingController::class, 'Calculate']);
     Route::get('pricing-sheet-code/{id}', [PricingController::class, 'Detail']);
     Route::get('itemcode/{id}', [PricingController::class, 'ItemCode']);
     Route::get('ArticleCode/{id}', [PricingController::class, 'ArticleCode']);

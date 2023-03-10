@@ -97,10 +97,10 @@
                                 @foreach($data as $name)
                                     @if(isset($check))
                                         @if($check == "Yes")
-                                            <option <?php if($name['firstname'] == $currentuser) echo 'selected="selected"'; ?> id="{{ $name['lastname'] }}" value="{{ $name['id'] }} {{ $name['firstname'] }} {{ $name['lastname'] }}">{{ $name['firstname'] }} {{ $name['lastname'] }}</option>
+                                            <option <?php if($name['firstname'] == $currentuser) echo 'selected="selected"'; ?> id="{{ $name['lastname'] }}" value="{{ $name['id'] }} {{ $name['firstname'] }}">{{ $name['firstname'] }}</option>
                                         @endif
                                     @else
-                                        <option id="{{ $name['lastname'] }}" value="{{ $name['id'] }} {{ $name['firstname'] }} {{ $name['lastname'] }}">{{ $name['firstname'] }} {{ $name['lastname'] }}</option>    
+                                        <option id="{{ $name['lastname'] }}" value="{{$name['id']}} {{$name['firstname']}}">{{ $name['firstname'] }}</option>    
                                     @endif
                                 @endforeach
                             </select>
@@ -155,6 +155,7 @@
         const myArray = name.split(" ");
         var id = myArray[0];
         var username =  myArray[1]+" "+myArray[2];
+        
         sessionStorage.setItem("id", id);
         sessionStorage.setItem("username", username);
     });

@@ -23,6 +23,7 @@ use App\Models\PlcCategory;
 use Illuminate\Http\Request;
 use App\Models\notifications; 
 use App\Models\PlcLastNumber;
+use App\Models\PlcFormulaDetail;
 use App\Models\PlcPricingDetail;
 use App\Models\PlcSpecification;
 use App\Models\PlcPricingResource;
@@ -3051,7 +3052,7 @@ class SpecificationController extends Controller
                 }
                 $i++;
             } while($i<$count);
-            $detailData = PlcFormula::orderBy('id','ASC')->where('p_id', $id)->get();
+            $detailData = PlcFormulaDetail::orderBy('id','ASC')->where('oh_id', $id)->get();
             foreach($detailData as $dData){
                 $dData->replicate()->setTable('plc_specification_formulas')->save();
             }

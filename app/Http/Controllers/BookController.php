@@ -6,11 +6,12 @@ use Auth;
 use Exception;
 use App\Models\User;
 use App\Models\Books;
+use App\Models\RoleName;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function manageBook4(Request $request)
+    public function manageBook(Request $request)
     {
         try{
             $book = array();
@@ -225,7 +226,7 @@ class BookController extends Controller
                     ]);
                 }
             }
-            $user = user::orderBy('id','DESC')->where('id', '!=', 2)->get();
+            $user = RoleName::orderBy('name','ASC')->get();
             return view('book.master-data-4')->with([
                 "book" => $book, "data" => $user, 
                 "SelectedBook" => $SelectedBook[0],
@@ -278,7 +279,7 @@ class BookController extends Controller
             $book = $request->bookname;
             for($i=0; $i<count($request->books); $i++){ 
                 $Roledata[] = [
-                    'userId' => $id,
+                    'role' => $id,
                     'book_type' => $book,
                     'book_name' => $request->books[$i],
                 ];
@@ -937,16 +938,16 @@ class BookController extends Controller
                     ]);
                 }
             }
-            $user = Books::orderBy('id','DESC')->get()->unique('userId')->pluck('userId');
+            $user = Books::orderBy('id','DESC')->get()->unique('role')->pluck('role');
             foreach($user as $data){
-                $res = User::orderBy('id','DESC')->where('id',$data)->pluck('id');
-                $res1 = User::orderBy('id','DESC')->where('id',$data)->pluck('firstname');
-                $res2 = User::orderBy('id','DESC')->where('id',$data)->pluck('lastname');
+                // $res = User::orderBy('id','DESC')->where('id',$data)->pluck('id');
+                // $res1 = User::orderBy('id','DESC')->where('id',$data)->pluck('firstname');
+                // $res2 = User::orderBy('id','DESC')->where('id',$data)->pluck('lastname');
     
                 $Data[] = array(
-                    'id' => $res[0], 
-                    'firstname' => $res1[0],
-                    'lastname' => $res2[0],
+                    'id' => $data, 
+                    'firstname' => $data,
+                    'lastname' => $data,
                 );
             }
             return view('book.manage')->with([

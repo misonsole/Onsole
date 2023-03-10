@@ -64,9 +64,9 @@ class JobOrderController extends Controller
         $store = JobSheetOrderMt::create($dataArray);
 
         // dd($store['id']);
-        dd($request->sequence7,$request->Sizelength);
+        // dd($request->sequence7,$request->Sizelength);
         $total = count($request->sequence7) / $request->Sizelength;
-        dd($total);
+        // dd($total);
         $id = $store['id'];
         $b = 0;
         $x = $request->color;
@@ -74,7 +74,7 @@ class JobOrderController extends Controller
         for($a=0; $a<$x; $a++){
             foreach($x as $data){
                 // dd($b,$a);
-                $storeRanges[$b][$a] = $request->sequence7[$a];
+                $storeRanges[$b] = $request->sequence7[$a];
                 $b++;
             }
         }

@@ -118,22 +118,21 @@
         color: #fdfdfd;
         text-decoration: none;
     }
+    select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
+        font-weight:bold;
+    }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
     .select2-container--default .select2-selection--single .select2-selection__arrow{
         height: 26px;
         position: absolute;
-        top: 4px;
+        top: 5px;
         right: 1px;
         width: 20px;
-    }
-    .select2-container .select2-selection--single{
-        box-sizing: border-box;
-        cursor: pointer;
-        display: block;
-        height: auto;
-        padding-top: 1%;
-        padding-bottom: 1%;
-        user-select: none;
-        -webkit-user-select: none;
     }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
@@ -260,17 +259,17 @@
                         <div class="w-100">
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
-                                    <th class="text-white" data-orderable="false">Issue <br> Date</th>
-                                    <th class="text-white" data-orderable="false">So <br> No</th>
+                                    <th class="text-white" data-orderable="false">Issue Date</th>
+                                    <th class="text-white" data-orderable="false">So No</th>
                                     <th class="text-white" data-orderable="false">Season</th>
-                                    <th class="text-white" data-orderable="false">Issue <br> No</th>
+                                    <th class="text-white" data-orderable="false">Issue No</th>
                                     <th class="text-white" data-orderable="false">Reason</th>
                                     <th class="text-white" data-orderable="false">Dep</th>
-                                    <th class="text-white" data-orderable="false">Prod <br> Qty</th>
+                                    <th class="text-white" data-orderable="false">Prod Qty</th>
                                     <th class="text-white" data-orderable="false">Locator</th>
                                     <th class="text-white" data-orderable="false">Article</th>
-                                    <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                    <th class="text-white" data-orderable="false">Item Code <br> Description</th>
+                                    <th class="text-white" data-orderable="false">Item Code</th>
+                                    <th class="text-white" data-orderable="false">Item Code Description</th>
                                     <th class="text-white" data-orderable="false">Unit</th>
                                     <th class="text-white" data-orderable="false">Qty</th>
                                     @if(isset($storeData['Material Consumption Rate']) && !empty($storeData['Material Consumption Rate']) || Auth::user()->id == 2) 
@@ -279,73 +278,36 @@
                                             <th class="text-white" data-orderable="false">Amount</th>
                                         @endif
                                     @endif
-                                    <th class="text-white" data-orderable="false">Cost <br> Center</th>
-                                    <th class="text-white" data-orderable="false">Category <br> Code</th>
-                                    <th class="text-white" data-orderable="false">Category <br> Description</th>
-                                    <th class="text-white" data-orderable="false">Contra <br> A/C Code</th>
-                                    <th class="text-white" data-orderable="false">Contra <br> A/C DESC</th>
-                                    <th class="text-white" data-orderable="false">Consumption <br> A/C Code</th>
-                                    <th class="text-white" data-orderable="false">Consumption <br> A/C DESC</th>
+                                    <th class="text-white" data-orderable="false">Cost Center</th>
+                                    <th class="text-white" data-orderable="false">Category Code</th>
+                                    <th class="text-white" data-orderable="false">Category Description</th>
+                                    <th class="text-white" data-orderable="false">Contra A/C Code</th>
+                                    <th class="text-white" data-orderable="false">Contra A/C DESC</th>
+                                    <th class="text-white" data-orderable="false">Consumption A/C Code</th>
+                                    <th class="text-white" data-orderable="false">Consumption A/C DESC</th>
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
                                         @foreach($data as $row)
                                         <tr class="table_row">
-                                            <td>
-                                                <?php $explode = explode("-",$row['data']["ISSUE_DATE"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>   
+                                            <td>{{$row['data']["ISSUE_DATE"]}}</td>
                                             <td>{{$row['data']["SALES_ORDER_NO"]}}</td>
-                                            <td>
-                                                <?php $explode = explode(" ",$row['data']["SEASON_DEF_DESC"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td> 
-                                            <td>{{$row['data']["ISSUE_NO"]}}</td>
-                                            <td>
-                                                <?php $explode = explode(" ",$row['data']["TRANS_REASON_DESC"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>  
+                                            <td>{{$row['data']["SEASON_DEF_DESC"]}}</td>
+                                            <td>{{$row['data']["TRANS_REASON_DESC"]}}</td>                                          
+                                            <td>{{$row['data']["ISSUE_NO"]}}</td>                                           
                                             <td>{{$row['data']["DESCRIPTION"]}}</td>
                                             <td>{{$row['data']["PRODUCTION_QTY"]}}</td>
                                             <td>{{$row['data']["WS1_CODE"]}}-{{$row['data']["WS2_CODE"]}}</td>
-                                            <td>
-                                                <?php $explode = explode(" ",$row['data']["SEGMENT_VALUE_DESC"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>
+                                            <td>{{$row['data']["SEGMENT_VALUE_DESC"]}}</td>
                                             <?php $pieces = explode("-", $row['data']["ITEM_CODE"]); ?> 
                                                 @if(count($pieces) == 2)
-                                                    <td>{{$pieces[0]}}-<br>{{$pieces[1]}}</td>
+                                                    <td>{{$pieces[0]}}-{{$pieces[1]}}</td>
                                                 @else
                                                 <td>{{$row["ITEM_CODE"]}}</td>
                                                 @endif
-                                            <td>
-                                                <?php
-                                                    $test = $row['data']["ITEM_DESC"];
-                                                    $explode = explode(" ",$test);
-                                                    $String = '';
-                                                    $newString = '';
-                                                    $maxCharacterCount = 5;
-                                                    foreach($explode as $key => $value){
-                                                        $strlen=strlen($String);
-                                                        if($strlen<=$maxCharacterCount){
-                                                                $String.=' '.$value;
-                                                            }else{
-                                                                $newString.=$String.' '.$value.'<br>';
-                                                                $String='';
-                                                            }
-                                                        }
-                                                    $finalString= $newString.$String;
-                                                    echo $finalString;
-                                                ?>
-                                            </td>
+                                          
+                                            <td>{{$row['data']["ITEM_DESC"]}}</td>                                           
+
                                             <td>{{$row['data']["UOM_SHORT_DESC"]}}</td>
                                             <td>{{$row['data']["PRIMARY_QTY"]}}</td>
                                             @if(isset($storeData['Material Consumption Rate']) && !empty($storeData['Material Consumption Rate']) || Auth::user()->id == 2) 
@@ -354,24 +316,9 @@
                                                     <td>{{number_format($row['data']["ISSUE_AMOUNT"],2)}}</td>
                                                 @endif
                                             @endif
-                                            <td>
-                                                <?php $explode = explode("-",$row['data']["COST_CENTER"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                <?php $explode = explode("-",$row['data']["CAT_DESC"]); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td>
+                                            <td>{{$row['data']["COST_CENTER"]}}</td>
+                                            <td>{{$row['data']["CAT_CODE"]}}</td>
+                                            <td>{{$row['data']["CAT_DESC"]}}</td>
                                             <?php
                                                 $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
                                                 $conn = oci_connect("onsole","s",$wizerp);
@@ -383,19 +330,9 @@
                                                             WHERE IGCC.CAT_STRUC_ID IN (27,88,91) AND IGCC.SUB_INV_ID NOT IN (8, 10) AND IGCC.FROM_CODE LIKE NVL('$only','%')";
                                                 $result1 = oci_parse($conn, strtoupper($sql1));
                                                 oci_execute($result1);
-                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){ ?>
-                                                    <td>
-                                                    <?php $explode = explode("-",$row1["CODE_VALUE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <?php $explode = explode(" ",$row1["ACCOUNTING_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                        
+                                                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){ ?>    
+                                                <td>{{$row1["CODE_VALUE"]}}</td>                               
+                                                <td>{{$row1["ACCOUNTING_DESC"]}}</td>
                                                 <?php } ?> 
                                                 <?php
                                                     $sql2 = "SELECT * FROM INV_GL_CONFIG_CC CC WHERE CC.From_Cat_Code LIKE NVL('$only','%') AND CC.CC_STRUCTURE_ID = 29";
@@ -419,19 +356,9 @@
                                                             $sql3 = "SELECT AA.CODE_VALUE, AA.ACCOUNTING_DESC FROM CODE_COMBINATION_VALUES AA WHERE AA.CODE_COMBINATION_ID = $final_code_comb";
                                                             $result3 = oci_parse($conn, strtoupper($sql3));
                                                             oci_execute($result3);
-                                                            while($row3=oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)) { ?>
-                                                                <td>
-                                                                    <?php $explode = explode("-",$row3["CODE_VALUE"]); ?>
-                                                                    @foreach($explode as $data1)
-                                                                        {{$data1}}<br>
-                                                                    @endforeach
-                                                                </td>
-                                                                <td>
-                                                                    <?php $explode = explode(" ",$row3["ACCOUNTING_DESC"]); ?>
-                                                                    @foreach($explode as $data1)
-                                                                        {{$data1}}<br>
-                                                                    @endforeach
-                                                                </td>
+                                                            while($row3=oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)) { ?>                                                              
+                                                                <td>{{$row3["ACCOUNTING_DESC"]}}</td>
+                                                                <td>{{$row3["ACCOUNTING_DESC"]}}</td>
                                                             <?php
                                                             }
                                                             break; 
@@ -505,7 +432,7 @@
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Select Book</b></label>
-                                <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                     <option selected value="">Select Book</option>   
                                     @foreach($books as $value)
                                         @if(!empty($sessionData['requestbook']))
@@ -527,7 +454,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Select Department</b></label>
-                                <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="department" name="department" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                     <option selected value="NULL">Select Department</option>   
                                     @foreach($department as $value)
                                         @if(!empty($sessionData['requestdepartment']))
@@ -551,7 +478,7 @@
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Locator</b></label>
-                                <select id="locator" name="locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="locator" name="locator" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected value="">Select Locator</option>   
                                     @foreach($locator as $value)
                                         @if(!empty($sessionData['requestlocator']))
@@ -586,7 +513,7 @@
                         <div class="form-group row py-2">
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Category</b></label>
-                                <select id="cat" name="cat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="cat" name="cat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected value="">Select Category</option>   
                                     @foreach($category as $value)
                                         @if(!empty($sessionData['requestcat']))
@@ -599,7 +526,7 @@
                             </div>
                             <div class="col-sm-6 mb-1 mb-sm-0">
                                 <label><b style="color: #6c757d">Sub Category</b></label>
-                                <select id="subcat" name="subcat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="subcat" name="subcat" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected value="">Select Sub Category</option> 
                                     @foreach($subCategory as $value)
                                         @if(!empty($sessionData['requestsubcat']))

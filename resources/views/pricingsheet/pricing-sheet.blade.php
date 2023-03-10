@@ -202,10 +202,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 py-0">                                        
+                                    <div class="col-md-6 py-0">   
                                         <label><b style="color: #6c757d">Attachment</b></label><br>
                                         <input type="file" name="image" id="input-file-now-custom-1" class="dropify" data-default-file="img/photos/23.jpg"/>
-                                        <br>
+                                        <label style="margin-top: 12%;"><b style="color: #6c757d;">Designer</b></label>
+                                        <input type="text" id="designer" name="designer" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Designer">       
                                     </div>
                                 </div>
                             </div>
