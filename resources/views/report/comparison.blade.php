@@ -176,8 +176,8 @@
                                         <th class="text-white" data-orderable="false">Delivery <br> Date</th>
                                         <th class="text-white" data-orderable="false">Deprt</th>
                                         <th class="text-white" data-orderable="false">Season</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Desc</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Desc</th>
                                         <th class="text-white" data-orderable="false">Act <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Act <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Act <br> Amount</th>
@@ -216,19 +216,9 @@
                                                 <td>{{$row->Onsole_Art_No}}</td>
                                                 <td>{{$row->Delivery_Date}}</td>
                                                 <td>{{$row->Department}}</td>
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Season); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
+                                                <td>{{$row->Season}}</td>
                                                 <td style="color: darkblue;">{{$row->Rm_Code}}</td>
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
+                                                <td>{{$row->Job_Desc}}</td> 
                                                 <?php
                                                 $sql5 = "SELECT SUM(ID.PRIMARY_QTY) AS QUANTITY, SUM(ID.ISSUE_AMOUNT) AS AMOUNT, (SUM(ID.ISSUE_AMOUNT)/SUM(ID.PRIMARY_QTY)) AS RATE
                                                 FROM ISSUE_MT IM
@@ -246,22 +236,19 @@
                                                 oci_execute($result5);
                                                 $row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS);
 
-
                                                 $sql4 = "SELECT SUM(IMM.PRODUCTION_QTY) AS PROD_QTY
-                                              FROM ISSUE_MT IMM
-                                              JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
-                                              JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
-                                              JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
-                                              JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
-                                              JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
-                                                         
-                                              WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
-                                      $prodqty = 0; $conspqty = 0;
-                                  $result4= oci_parse($conn,$sql4);
-                                  oci_execute($result4);
-                                  $row4=oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS);
-
-
+                                                            FROM ISSUE_MT IMM
+                                                            JOIN ISSUE_DETAIL IDD ON IDD.ISSUE_ID = IMM.ISSUE_ID
+                                                            JOIN DEPARTMENT_MT DMM ON DMM.DEPARTMENT_ID = IMM.DEPARTMENT_ID AND DMM.DESCRIPTION LIKE NVL('$departmentERP','%')
+                                                            JOIN SALES_ORDER_MT SOMM ON SOMM.SALES_ORDER_ID = IMM.SALES_ORDER_ID AND SOMM.SALES_ORDER_NO LIKE NVL('$SO_NO','%')
+                                                            JOIN ITEMS_MT ITEMM ON ITEMM.ITEM_ID = IDD.ITEM_ID AND ITEMM.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                                            JOIN WIZ_SEGMENT03 ARTCODEE ON ARTCODEE.SEGMENT_ID = IDD.SEGMENT_ID AND ARTCODEE.SEGMENT_VALUE_DESC LIKE NVL('$article','%')
+                                                                        
+                                                            WHERE IMM.ISSUE_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                                                $prodqty = 0; $conspqty = 0;
+                                                $result4 = oci_parse($conn,$sql4);
+                                                oci_execute($result4);
+                                                $row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS);
                                                 if($row5 == NULL){  $diffqty2 = 0; ?>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actqty = 0; ?></td>
                                                     <td style="background-color:rgba(255, 0, 0, 0.2);">0<?php $actrate = 0; ?></td>
@@ -298,32 +285,6 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                    <tfoot class="bg-dark">  
-                                        <tr>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false"></th>
-                                        </tr>
-                                    </tfoot>
                                 @endif
                                 <tbody>
                                 </tbody>

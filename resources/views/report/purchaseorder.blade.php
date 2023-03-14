@@ -52,6 +52,19 @@
     select[id="typefrom"]>option:nth-child(2), select[id="typefrom"]>option:nth-child(3), select[id="typefrom"]>option:nth-child(4), select[id="typefrom"]>option:nth-child(5), select[id="typefrom"]>option:nth-child(6), select[id="typefrom"]>option:nth-child(7) {
         font-weight:bold;
     }
+    .select2-container--default .select2-selection--single{
+        height: 38px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered{
+        padding-top: 3px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        height: 26px;
+        position: absolute;
+        top: 5px;
+        right: 1px;
+        width: 20px;
+    }
 </style>
 <div id="loader1" class="rotate" width="100" height="100"></div>
 <div class="container-fluid px-5">
@@ -151,77 +164,47 @@
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" data-orderable="false">Po <br> No</th>
-                                        <th class="text-white" data-orderable="false">Po <br> Date</th>
-                                        <th class="text-white" data-orderable="false">Supplier <br> Category</th>
+                                        <th class="text-white" data-orderable="false">Po Date</th>
+                                        <th class="text-white" data-orderable="false">Supplier Category</th>
                                         <th class="text-white" data-orderable="false">Supplier</th>
                                         <th class="text-white" data-orderable="false">Purchaser</th>
                                         <th class="text-white" data-orderable="false">Payment <br> Term</th>
                                         <th class="text-white" data-orderable="false">Po <br> Status</th>
                                         <th class="text-white" data-orderable="false">Po <br> Type</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Desc</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Desc</th>
                                         <th class="text-white" data-orderable="false">Qty</th>
                                         <th class="text-white" data-orderable="false">Rate</th>
                                         <th class="text-white" data-orderable="false">Amount</th>
                                         <th class="text-white" data-orderable="false">Sales<br>Tax %</th>
                                         <th class="text-white" data-orderable="false">Sales<br>Tax<br>Amount</th>
                                         <th class="text-white" data-orderable="false">Total <br> Amount</th>
-                                        <th class="text-white" data-orderable="false">Category <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Category <br> Description</th>
+                                        <th class="text-white" data-orderable="false">Category Code</th>
+                                        <th class="text-white" data-orderable="false">Category Description</th>
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
-                                                <td>{{$row['data']["ORDER_NO"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["ORDER_DATE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>              
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["SUPPCAT"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                         
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["COMPANY_NAME"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                  
-                                                <td>{{$row['data']["FIRST_NAME"]}} <br> {{$row['data']["LAST_NAME"]}}</td>                  
+                                                <td>{{$row['data']["ORDER_NO"]}}</td>
+                                                <td>{{$row['data']["ORDER_DATE"]}}</td>                  
+                                                <td>{{$row['data']["SUPPCAT"]}}</td>                  
+                                                <td>{{$row['data']["COMPANY_NAME"]}}</td>                                          
+                                                <td>{{$row['data']["FIRST_NAME"]}} {{$row['data']["LAST_NAME"]}}</td>                  
                                                 <td>{{$row['data']["PAYMENT_TERM_DESC"]}}</td>                  
                                                 <td>{{$row['data']["PO_STATUS_DESC"]}}</td>   
                                                 <td>{{$row['data']["PO_TYPE_DESC"]}}</td>                  
-                                                <td>{{$row['data']["ITEM_CODE"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["ITEM_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                  
+                                                <td>{{$row['data']["ITEM_CODE"]}}</td>   
+                                                <td>{{$row['data']["ITEM_DESC"]}}</td>                                          
                                                 <td>{{number_format($row['data']["PRIMARY_QTY"],2)}}</td>                 
                                                 <td>{{number_format($row['rate'],2)}}</td>  
                                                 <td>{{number_format($row['data']["TC_AMOUNT"],2)}}</td>                 
                                                 <td>{{$row['data']["STAX_GROUP_DESC"]}}</td>   
                                                 <td>{{number_format($row['data']["STAX_TC_AMOUNT"],2)}}</td>               
-                                                <td>{{number_format($row['total_amount'],2)}}</td>                                                
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                   
-                                                <td style="white-space: unset">
-                                                    <?php $explode = explode(" ",$row['data']["CAT_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>   
+                                                <td>{{number_format($row['total_amount'],2)}}</td>          
+                                                <td>{{$row['data']["CAT_CODE"]}}</td>   
+                                                <td>{{$row['data']["CAT_DESC"]}}</td>   
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -289,7 +272,7 @@
                         <div class="form-group row">                            
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Book</b></label>
-                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select" required>
+                                <select id="book" name="book" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                 <option selected value="">Select Book</option>
                                     @foreach($book as $value)
                                         @if(!empty($sessionData['book']))
@@ -318,7 +301,7 @@
                         <div class="form-group row">
                             <div class="col-sm-6">
                             <label><b style="color: #6c757d">Category</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Category</option>
                                     @foreach($category as $value)
                                         @if(!empty($sessionData['category']))
@@ -331,7 +314,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><b style="color: #6c757d">Sub Category</b></label>
-                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="form-control select.custom-select">
+                                <select id="agent" name="agent" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select">
                                 <option selected value="">Select Sub Category</option>
                                     @foreach($subCategory as $value)
                                         @if(!empty($sessionData['subCategory']))

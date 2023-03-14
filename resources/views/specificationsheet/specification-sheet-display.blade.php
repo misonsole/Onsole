@@ -122,8 +122,18 @@
                                     @if($data1->profit)
                                         <h6 class="mb-0 mr-3"><b>Actual Cost :</b></h6>
                                     @endif       
-                                    @if($data1->price)                            
-                                        <h6 class="mb-0 mr-3"><b>Price Variance :</b></h6>
+                                    <h6 class="mb-0 mr-3"><b>Desgin No&nbsp;:</b></h6>
+                                    <h6 class="mb-0 mr-3"><b>Description&nbsp;:</b></h6>
+                                    @if($data1->overhead_id)
+                                        <h6 class="mb-0 mr-3"><b>Formula Sheet No&nbsp;:</b></h6>
+                                    @endif
+                                    @if($data1->sono)
+                                        <h6 class="mb-0 mr-3"><b>Sales Order No&nbsp;:</b></h6>
+                                    @endif
+                                    @if(count($manual) == 0)
+                                        &nbsp;
+                                    @else
+                                        <h6 class="mb-0 mr-3"><b>Pricing Manual :</b></h6>
                                     @endif
                                 </span>
                                 <span class="">
@@ -142,32 +152,23 @@
                                             {{substr($data1->profit, 0,5)}} PKR 
                                         @endif
                                     </h6> 
-                                    @if($data1->price)
-                                    <div class="table-responsive-sm w-75" style="margin-top: 6px;">
-                                        <table class="table table-sm mb-0 text-center">
-                                            <thead class="bg-dark">
-                                                <tr>
-                                                    <th class="text-white px-3" style="font-family: 'Poppins'; font-size: small;">Pricing</th>
-                                                    <th class="text-white px-3" style="font-family: 'Poppins'; font-size: small;">Specification</th>
-                                                    <th class="text-white px-3" style="font-family: 'Poppins'; font-size: small;">Variance</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="badge text-dark">{{substr($data1->price, 0,5)}} PKR</span></td>
-                                                    <td><span class="badge text-dark">{{substr($data1->profit, 0,5)}} PKR</span></td>
-                                                    <?php $total = $data1->price - $data1->profit ?>
-                                                    @if($total > 0)
-                                                    <td><span class="badge badge-soft-success text-dark">{{substr($total, 0,6)}}</span></td>
-                                                    @elseif($total < 0)
-                                                    <td><span class="badge badge-soft-danger text-dark">{{substr($total, 0,6)}}</span></td>
-                                                    @else
-                                                    <td><span class="badge badge-soft-dark text-dark">{{substr($total, 0,6)}}</span></td>
-                                                    @endif
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <h6 class="mb-0">{{$data1->design_no}}</h6>
+                                    <h6 class="mb-0">{{$data1->description}}</h6> 
+                                    <h6 class="mb-0"> 
+                                        @if($data1->overhead_id)
+                                            FMS-{{$data1->overhead_id}}
+                                        @endif
+                                    </h6> 
+                                    <h6 class="mb-0"> 
+                                        @if($data1->sono)
+                                            {{$data1->sono}}
+                                        @endif
+                                    </h6>
+                                    @if(count($manual) == 0)
+                                    &nbsp;
+                                    @else
+                                        <hr style="margin-bottom: -10px; border: 0; border-top: 1px solid white;">
+                                        <span style="cursor: pointer;" class="badge badge-boxed badge-dark py-1 px-2" data-toggle="modal" data-target="#exampleModalCenter">View</span>
                                     @endif
                                 </span>
                             </div>
@@ -178,6 +179,7 @@
                                     <h6 class="mb-0 mr-3"><b>Season :</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Desgin No :</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Description :</b></h6> 
+                                    <h6 class="mb-0 mr-3"><b>Desginer :</b></h6> 
                                 </span>
                                 <span class="">
                                     <h6 class="mb-0">{{$data1->status}}</h6>
@@ -185,6 +187,7 @@
                                     <h6 class="mb-0">{{$data1->season}}</h6>
                                     <h6 class="mb-0">{{$data1->design_no}}</h6>
                                     <h6 class="mb-0">{{$data1->description}}</h6>
+                                    <h6 class="mb-0">{{$data1->designer}}</h6>
                                 </span>
                             </div>
                             <div class="col-md-2 col-md-2 py-4 text-center">

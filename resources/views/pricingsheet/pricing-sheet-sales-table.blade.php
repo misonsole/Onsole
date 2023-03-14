@@ -111,7 +111,7 @@
                                                 @if($user->remarks === NULL) 
                                                     &nbsp;
                                                 @else
-                                                    <span data-id={{$user['remarks']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
+                                                    <span data-id={{$user['id']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
                                                 @endif
                                             </td>
                                             <td style="width: 10%;" class="text-center">
@@ -183,14 +183,28 @@
                                                 </div>
                                             </div>
                                             <div class="modal fade" id="exampleModalCenter91" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                                     <div class="modal-content">
+                                                        <div class="modal-header justify-content-center" style="background-color: transparent">
+                                                            <h4 class="modal-title" id="exampleModalLongTitle">Transfer Status</h4>
+                                                        </div>
                                                         <div class="modal-body">
-                                                            <div class="form-group row py-2 text-center">
-                                                                <div class="col-sm-12 mb-1 mb-sm-0">
-                                                                    <label for=""><h4 id="modelline1" style="color: #6c757d"></h4></label>
+                                                            <div class="form-group row mb-1 text-center">
+                                                                <div class="col-sm-3 mb-1 mb-sm-0">
+                                                                    <h5 style="font-family: system-ui; letter-spacing: 0.4px;">Name</h5>
+                                                                </div>
+                                                                <div class="col-sm-2 mb-1 mb-sm-0">
+                                                                    <h5 style="font-family: system-ui; letter-spacing: 0.4px;">Status</h5>
+                                                                </div>
+                                                                <div class="col-sm-5 mb-1 mb-sm-0">
+                                                                    <h5 style="font-family: system-ui; letter-spacing: 0.4px;">Remarks</h5>
+                                                                </div>
+                                                                <div class="col-sm-2 mb-1 mb-sm-0">                                                                    
+                                                                    <h5 style="font-family: system-ui; letter-spacing: 0.4px;">Date & Time</h5>
                                                                 </div>
                                                             </div>
+                                                                <span id="msg2">                        
+                                                                </span>
                                                         </div>
                                                         <div class="modal-footer text-center" style="background-color: transparent">
                                                             <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -443,9 +457,46 @@ $(document).ready(function(){
     });
     $(".viewweye11").click(function(){
         var id = $(this).attr("data-id");
-        console.log(id);
-        $('#modelline1').html(id);
-        $('#exampleModalCenter91').modal('show');
+        $.ajax({
+            type: 'GET',
+            url: 'remarks/'+id,
+            dataType: "json",
+            success: function(data){
+                if(data.status == 1){
+                    $('#msg2').find('div').remove();
+                    let dataArray = new Array("-", "-", "-");
+                    let statusArray = new Array("-");
+                    for(let i = 0; data.count > i;  i++){
+                        if(data.data[i].date != null){
+                            dataArray = data.data[i].date.split(" ");
+                            statusArray = data.data[i].status;
+                        }
+                        $("#msg2").append('<div class="form-group row mb-1 text-center">'+
+                                            '<div class="col-sm-3 mb-1 mb-sm-0">'+
+                                                '<h5 style="font-family: system-ui; letter-spacing: 0.4px; font-weight: 400;">'+data.data[i].user_id+'</h5>'+
+                                            '</div>'+
+                                            '<div class="col-sm-2 mb-1 mb-sm-0">'+
+                                                '<h5 style="font-family: system-ui; letter-spacing: 0.4px; font-weight: 400;">'+statusArray+'</h5>'+
+                                            '</div>'+
+                                            '<div class="col-sm-5 mb-1 mb-sm-0">'+
+                                                '<h5 style="font-family: system-ui; letter-spacing: 0.4px; font-weight: 400;">'+data.data[i].remarks+'</h5>'+
+                                            '</div>'+
+                                            '<div class="col-sm-2 mb-1 mb-sm-0">'+
+                                                '<i class="mdi mdi-calendar-text-outline"></i> '+dataArray[0]+'<br><i class="mdi mdi-timer"></i> '+dataArray[1]+' '+dataArray[2]+
+                                            '</div>'+
+                                        '</div>');
+                    }
+                    $('#exampleModalCenter91').modal('show');
+                }
+                else if(data == 400){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Something went wrong!',
+                    });
+                }
+            }
+        });
+        // $('#modelline1').html(id);
     });
     function deleteuser(id){
         $.ajax({

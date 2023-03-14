@@ -183,8 +183,8 @@
                                         <th class="text-white" data-orderable="false">Article</th>
                                         <th class="text-white" data-orderable="false">Department</th>
                                         <th class="text-white" data-orderable="false">Season</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Desc</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Desc</th>
                                         <th class="text-white" data-orderable="false">Trans <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Trans <br> Rate</th>
                                         <th class="text-white" data-orderable="false">Trans <br> Amount</th>
@@ -279,19 +279,9 @@
                                                             <td><strong><?php echo $row->So_No; ?></strong></td>
                                                             <td><strong><?php echo $row->Transfer_No_Mt; ?></strong></td>
                                                             <td><strong><?php echo $row->Department; ?></strong></td>
-                                                            <td>
-                                                                <?php $explode = explode(" ",$row->Season); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
+                                                            <td>{{$row->Season}}</td>
                                                             <td style="color: darkblue;"><strong><?php echo $row->Rm_Code;  $item_code[0] = $row->Rm_Code; ?></strong></td>
-                                                            <td style="color: darkblue;">
-                                                                <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
+                                                            <td style="color: darkblue;">{{$row->Job_Desc}}</td> 
                                                                 <?php   $item_code_now = $row->Rm_Code;
                                                                         $tnoBreak = explode(',', $tno);  
                                                                         $tno_check = implode("','", $tnoBreak);
@@ -332,12 +322,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td style="color: darkblue;"><strong><?php echo $row->Rm_Code; ?></strong></td>
-                                                            <td style="color: darkblue;">
-                                                                <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td> 
+                                                            <td style="color: darkblue;">{{$row->Job_Desc}}</td> 
                                                                 <?php                                                                  
                                                                         $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
                                                                         // echo "P 3";
@@ -415,12 +400,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td style="color: maroon;"><strong><?php echo $row5["ITEM_CODE"]; ?></strong></td>
-                                                            <td style="color: maroon;">
-                                                                <?php $explode = explode(" ",$row5["ITEM_DESC"]); ?>
-                                                                @foreach($explode as $data1)
-                                                                   <b>{{$data1}}</b><br>
-                                                                @endforeach
-                                                            </td>
+                                                            <td style="color: maroon;">{{$row5["ITEM_DESC"]}}</td>
                                                             <td><?php echo number_format($row5["QUANTITY"],2); ?></td>
                                                             <td><?php echo number_format($rateof,2); ?></td>
                                                             <td><?php echo number_format($row5["AMOUNT"],2); ?></td>

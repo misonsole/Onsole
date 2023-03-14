@@ -9,7 +9,7 @@ class PlcSpecification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['season', 'purpose', 'project', 'profit', 'product', 'progress', 'image', 'sequence', 'date', 'remarks', 'last', 'category', 'status', 'shape', 'sole', 'range_no', 'design_no', 'description', 'sequence', 'pricing'];
+    protected $fillable = ['overhead_id', 'season', 'purpose', 'profit', 'project', 'remarks', 'product', 'last', 'progress', 'image', 'sequence', 'date', 'category', 'status', 'shape', 'sole', 'range_no', 'design_no', 'designer', 'description', 'sequence', 'profit_price', 'price', 'sono'];
 
     public $timestamps = true;
 }

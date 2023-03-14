@@ -416,7 +416,7 @@ class SpecificationController extends Controller
             $data2 = DB::table('plc_specification_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
             $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
-            $formulaData = PlcFormula::orderBy('id','DESC')->where('p_id', $id)->get();
+            $formulaData = PlcFormulaDetail::orderBy('id','DESC')->where('oh_id', $id)->get();
             foreach($formulaData as $value){
                 if($value->dep == "Cutting"){
                     $cuttingDataF[] = $value;
@@ -580,6 +580,7 @@ class SpecificationController extends Controller
             $data1 = DB::table('plc_specification_overheads')->where('specification_id', $id)->get();
             $data2 = DB::table('plc_specification_resources')->where('costing_id', $id)->get();
             $data3 = DB::table('plc_specification_details')->where('costing_id', $id)->get();
+            $data4 = DB::table('plc_manuals')->where('costing_id', $id)->pluck('manual');
             foreach($data3 as $value){
                 if($value->material == "cutting"){
                     $cuttingData[] = $value;
@@ -883,7 +884,7 @@ class SpecificationController extends Controller
     
             return view('specificationsheet.specification-sheet-display')->with([            
                 'data1' => $data12[0], 'i' => 1,'j' => 1,'k' => 1,'l' => 1,'m' => 1,'n' => 1,  'date' => $DateTime[0], 'GetPricingProfit' => $GetPricingProfit, 'GetPricingPrice' => $GetPricingPrice,
-                'cuttingData' => $cuttingData, 'InsoleData' => $InsoleData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 
+                'cuttingData' => $cuttingData, 'InsoleData' => $InsoleData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 'manual' => $data4,
                 'LastingData' => $LastingData, 'PackingData' => $PackingData,
                 'cuttingData_o' => $cuttingData_o, 'InsoleData_o' => $InsoleData_o, 'LaminationData_o' => $LaminationData_o, 'ClosingData_o' => $ClosingData_o,
                 'LastingData_o' => $LastingData_o, 'PackingData_o' => $PackingData_o,
@@ -3006,17 +3007,17 @@ class SpecificationController extends Controller
     public function ColorEdit(Request $request)
     {
         $id = $_GET['id'];
-        $data1 = PlcPricing::find($id);
+        $data1 = PlcSpecification::find($id);
         $data = PlcSpecificationDetail::orderBy('id','ASC')->where('costing_id', $id)->get()->unique('color');
         $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
         $connPRL = oci_connect("onsole","s",$wizerp);
         $color = array();
         $sql1 = "SELECT SEGMENT_VALUE_DESC FROM WIZ_SEGMENT04 WHERE STRUCTURE_ID = 26";
-                    $result1 = oci_parse($connPRL, $sql1);
-                    oci_execute($result1);
-                    while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
-                        $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
-                    }
+                $result1 = oci_parse($connPRL, $sql1);
+                oci_execute($result1);
+                while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                    $color[] = strtolower($row1['SEGMENT_VALUE_DESC']);
+                }
         return view('specificationsheet.specification-sheet-color-edit')->with([            
             'color' => $color, 'data' => $data, 'data1' => $data1, 'id' => $id, 'id' => $id, 'a1' => 0, 'a2' => 0, 'a3' => 0           
         ]);

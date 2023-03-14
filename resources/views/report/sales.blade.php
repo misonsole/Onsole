@@ -151,7 +151,7 @@
                                         <th class="text-white" data-orderable="false">Agent</th>
                                         <th class="text-white" data-orderable="false">Season</th>
                                         <th class="text-white" data-orderable="false">Region</th>
-                                        <th class="text-white" data-orderable="false">Customer <br> Category</th>
+                                        <th class="text-white" data-orderable="false">Customer Category</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">NTN No</th>
                                         <th class="text-white" data-orderable="false">Invoice <br> No</th>
@@ -161,13 +161,13 @@
                                         <th class="text-white" data-orderable="false">Cust <br> PO <br> No</th>
                                         <th class="text-white" data-orderable="false">Book</th>
                                         <th class="text-white" data-orderable="false">Item Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Description</th>
+                                        <th class="text-white" data-orderable="false">Item Description</th>
                                         <th class="text-white" data-orderable="false">Qty</th>
                                         <th class="text-white" data-orderable="false">Rate</th>
                                         <th class="text-white" data-orderable="false">Tax%</th>
                                         <th class="text-white" data-orderable="false">Amount</th>
                                         <th class="text-white" data-orderable="false">Tax</th>
-                                        <th class="text-white" data-orderable="false">Total <br> Amount</th>
+                                        <th class="text-white" data-orderable="false">Total Amount</th>
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
@@ -175,50 +175,20 @@
                                         @foreach($data as $row)
                                             <tr class="table_row">
                                                 <td>{{$row['data']["SRNO"]}}</td>                  
-                                                <td>{{$row['data']["AGENT"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["SEASON"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                  
-                                                <td>{{$row['data']["REGION"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["CUST_CAT"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>    
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["CUSTOMER"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
+                                                <td>{{$row['data']["AGENT"]}}</td>
+                                                <td>{{$row['data']["SEASON"]}}</td>                                                  
+                                                <td>{{$row['data']["REGION"]}}</td>
+                                                <td>{{$row['data']["CUST_CAT"]}}</td>
+                                                <td>{{$row['data']["CUSTOMER"]}}</td>                  
                                                 <td>{{$row['data']["NTN_NO"]}}</td>                  
-                                                <td>{{$row['data']["INVC_NO"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["INVC_DATE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>    
+                                                <td>{{$row['data']["INVC_NO"]}}</td>  
+                                                <td>{{$row['data']["INVC_DATE"]}}</td>                  
                                                 <td>{{$row['data']["SONO"]}}</td>                  
                                                 <td>{{$row['data']["DC_NO"]}}</td>                  
-                                                <td>{{$row['data']["CUST_PO_NO"]}}</td>                                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["BOOK"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                  
-                                                <td>{{$row['data']["ITEM_CODE"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["ITEM_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
+                                                <td>{{$row['data']["CUST_PO_NO"]}}</td>
+                                                <td>{{$row['data']["BOOK"]}}</td>                                  
+                                                <td>{{$row['data']["ITEM_CODE"]}}</td>
+                                                <td>{{$row['data']["ITEM_DESC"]}}</td>                  
                                                 <td>{{number_format($row['data']["PRIMARY_QTY"],2)}}</td>                 
                                                 <td>{{number_format($row['rate'],2)}}</td>                 
                                                 <td>{{$row['data']["TAX_PRCNTGE"]}}</td>   
@@ -244,7 +214,7 @@
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>
-                                            <th class="text-white" data-orderable="false">Grand<br>Total</th>
+                                            <th class="text-white" data-orderable="false">Grand Total</th>
                                             <th class="text-white" data-orderable="false">{{number_format($sum_qty,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                             <th class="text-white" data-orderable="false"></th>

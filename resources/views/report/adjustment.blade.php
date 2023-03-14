@@ -151,7 +151,7 @@
                                         <th class="text-white">Adj No</th>
                                         <th class="text-white" data-orderable="false">Adj Date</th>
                                         <th class="text-white" data-orderable="false">Remarks</th>
-                                        <th class="text-white" data-orderable="false">SR NO</th>
+                                        <th class="text-white" data-orderable="false">Sr No</th>
                                         <th class="text-white" data-orderable="false">Item Code</th>
                                         <th class="text-white" data-orderable="false">Item Description</th>
                                         <th class="text-white" data-orderable="false">Unit</th>

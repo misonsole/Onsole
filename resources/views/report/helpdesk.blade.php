@@ -209,20 +209,10 @@
                                         @foreach($supportData as $value)
                                         <tr>
                                             <td>{{$value['data']['id']}}</td>
-                                            <td style="width: 10%;">
-                                                <?php $explode = explode(" ",$value['name']); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td> 
-                                            <td style="text-transform: capitalize;">
-                                                <?php $explode = explode(" ",$value['department']); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td> 
-                                            <td style="width: 10%;">{{$value['data']['category']}}</td>
-                                            <td style="width: 10%;">{{$value['data']['subcategory']}}</td>
+                                            <td>{{$value['name']}}</td>
+                                            <td style="text-transform: capitalize;">{{$value['department']}}</td>
+                                            <td>{{$value['data']['category']}}</td>
+                                            <td>{{$value['data']['subcategory']}}</td>
                                             <td>
                                                 @if($value['data']['status'] == NULL)    
                                                 <span class="badge badge-md badge-boxed badge-soft-danger p-2 w-100">No Action</span>
@@ -242,12 +232,7 @@
                                             @else
                                             <td><i class="mdi mdi-calendar-text-outline"></i> {{$value['data']['date']}} <br> <i class="mdi mdi-timer"></i> {{$value['data']['time']}}</td>
                                             @endif                                            
-                                            <td>
-                                                <?php $explode = explode(" ",$value['data']['approve_by']); ?>
-                                                @foreach($explode as $data1)
-                                                    {{$data1}}<br>
-                                                @endforeach
-                                            </td> 
+                                            <td>{{$value['data']['approve_by']}}</td>
                                             <td>
                                                 @if(isset($value['data']['update_time']) && !empty($value['data']['update_time'])) 
                                                     @if($value['data']['updated_at']!=NULL)

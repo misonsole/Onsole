@@ -187,8 +187,8 @@
                                     <tr>
                                         <th class="text-white" data-orderable="false">So <br> No</th>
                                         <th class="text-white" data-orderable="false">Product <br> Category</th>
-                                        <th class="text-white" data-orderable="false">So <br> Date</th>
-                                        <th class="text-white" data-orderable="false">Customer <br> Category</th>
+                                        <th class="text-white" data-orderable="false">So Date</th>
+                                        <th class="text-white" data-orderable="false">Customer Category</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
                                         <th class="text-white" data-orderable="false">Sales <br> Person</th>
                                         <th class="text-white" data-orderable="false">Season</th>
@@ -197,104 +197,44 @@
                                         <th class="text-white" data-orderable="false">Delivery <br> Date</th>
                                         <th class="text-white" data-orderable="false">Status</th>
                                         <th class="text-white" data-orderable="false">Article</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Desc</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Desc</th>
                                         <th class="text-white" data-orderable="false">Qty</th>
                                         <th class="text-white" data-orderable="false">Rate</th>
                                         <th class="text-white" data-orderable="false">Amount</th>
-                                        <th class="text-white" data-orderable="false">Sales<br>Tax %</th>
-                                        <th class="text-white" data-orderable="false">Sales<br>Tax<br>Amount</th>
-                                        <th class="text-white" data-orderable="false">Total <br> Amount</th>
-                                        <th class="text-white" data-orderable="false">Category <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Category <br> Description</th>
+                                        <th class="text-white" data-orderable="false">Sales Tax %</th>
+                                        <th class="text-white" data-orderable="false">Sales Tax Amount</th>
+                                        <th class="text-white" data-orderable="false">Total Amount</th>
+                                        <th class="text-white" data-orderable="false">Category Code</th>
+                                        <th class="text-white" data-orderable="false">Category Description</th>
                                     </tr>
                                 </thead>
                                 @if($Permission == 1)
                                     <tbody>
                                         @foreach($data as $row)
                                             <tr class="table_row">
-                                                <td>{{$row['data']["SALES_ORDER_NO"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["SO_TYPE_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["ORDER_DATE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["CATAGORY_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                  
-                                                <td style="white-space: inherit;">
-                                                    <?php $explode = explode(" ",$row['data']["COMPANY_NAME"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
-                                                <td style="white-space: inherit;">
-                                                    <?php $explode = explode(" ",$row['data']["SALES_PERSON_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["SEASON_DEF_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                 
+                                                <td>{{$row['data']["SALES_ORDER_NO"]}}</td>
+                                                <td>{{$row['data']["SO_TYPE_DESC"]}}</td>                  
+                                                <td>{{$row['data']["ORDER_DATE"]}}</td>                  
+                                                <td>{{$row['data']["CATAGORY_DESC"]}}</td>
+                                                <td>{{$row['data']["COMPANY_NAME"]}}</td>     
+                                                <td>{{$row['data']["SALES_PERSON_DESC"]}}</td>
+                                                <td>{{$row['data']["SEASON_DEF_DESC"]}}</td>
                                                 <td>{{$row['data']["PAYMENT_TERM_DESC"]}}</td>   
-                                                <td>{{$row['data']["CUST_PO_NO"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["DEL_DATE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                  
-                                                <td>{{$row['data']["SO_STATUS_DESC"]}}</td>                                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["ART_CODE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                  
-                                                <td>{{$row['data']["ITEM_CODE"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["ITEM_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
+                                                <td>{{$row['data']["CUST_PO_NO"]}}</td>     
+                                                <td>{{$row['data']["DEL_DATE"]}}</td>                          
+                                                <td>{{$row['data']["SO_STATUS_DESC"]}}</td>            
+                                                <td>{{$row['data']["ART_CODE"]}}</td>                                   
+                                                <td>{{$row['data']["ITEM_CODE"]}}</td>
+                                                <td>{{$row['data']["ITEM_DESC"]}}</td>                  
                                                 <td>{{number_format($row['data']["PRIMARY_QTY"],2)}}</td>                 
                                                 <td>{{number_format($row['rate'],2)}}</td>                 
-                                                <td>{{number_format($row['data']["TC_AMOUNT"],2)}}</td>               
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["STAX_GROUP_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>   
+                                                <td>{{number_format($row['data']["TC_AMOUNT"],2)}}</td> 
+                                                <td>{{$row['data']["STAX_GROUP_DESC"]}}</td>
                                                 <td>{{number_format($row['data']['STAX_AMOUNT'],2)}}</td>    
                                                 <td>{{number_format($row['total_amount'],2)}}</td>   
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["CAT_CODE"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
-                                                <td>
-                                                    <?php $explode = explode("-",$row['data']["CAT_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
+                                                <td>{{$row['data']["CAT_CODE"]}}</td>
+                                                <td>{{$row['data']["CAT_DESC"]}}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -158,12 +158,15 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
-                                        <label><b style="color: #6c757d">{{$date}}</b></label>
-                                        <br>
+                                        <label><b style="color: #6c757d">Date</b></label>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$date}}</p>                                          
+                                        <label class="mt-2"><b style="color: #6c757d">Attachment</b></label>    
+                                        <br>                               
                                         @if(isset($image) && !empty($image)) 
-                                        <label class="mt-2"><b style="color: #6c757d">Attachment</b></label><br>
-                                        <input disabled type="file" name="image" id="input-file-now-custom-1" class="dropify" data-default-file="{{ asset('uploads/appsetting/' . $image) }}"/>
-                                        @endif                                    
+                                        <img src="{{ asset('uploads/appsetting/' . $image) }}" alt="profile-user" height="100" class="rounded mt-2">
+                                        @else
+                                        <img src="{{asset('img/photos/10.jpg')}}" alt="profile-user" height="100" class="rounded mt-2">
+                                        @endif                                 
                                     </div>
                                 </div>
                                 <div class="form-group row text-center bg-dark py-1 mx-1" style="border-radius: 4px;">

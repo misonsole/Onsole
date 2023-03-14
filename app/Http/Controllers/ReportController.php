@@ -5986,9 +5986,10 @@ class ReportController extends Controller
                     'sum_qty' => $sum_qty,
                     'sum_amount' => $sum_amount,
                     'sum_rate' => $sum_rate,
-                    'rate' => $row["ISSUE_AMOUNT"]/$row["PRIMARY_QTY"]
+                    'rate' => $rate
                 );
             }
+            //Change
             $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
             $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
             $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));

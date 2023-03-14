@@ -98,12 +98,10 @@
                                                 <label><b style="color: #6c757d">Design No</b></label>
                                                 <p style="font-family: 'Poppins', sans-serif; text-transform: capitalize;">{{$data1['design_no']}}</p>                                      
                                             </div>
-
                                             <div class="col-sm-6 col-md-6 py-1">
                                                 <label><b style="color: #6c757d">Design Description</b></label>
                                                 <p style="font-family: 'Poppins', sans-serif; text-transform: capitalize;">{{$data1['description']}}</p>                                      
                                             </div>
-                                            
                                             <div class="col-sm-3 col-md-3 py-1">
                                                 <input type="text" name="id" value="{{$id}}" hidden>
                                                 <label><b style="color: #6c757d">Season</b></label>      
@@ -143,12 +141,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2 col-md-2 py-3">                                       
+                                    <div class="col-sm-2 col-md-2 py-0">                             
+                                        <label><b style="color: #6c757d">Category</b></label>
                                         @if(isset($data1['image']) && !empty($data1['image'])) 
                                             <br><img src="{{ asset('uploads/appsetting/' . $data1['image']) }}" alt="profile-user" height="100" class="rounded">
                                         @else
                                             <br><img src="{{asset('img/photos/10.jpg')}}" alt="profile-user" height="100" class="rounded">
                                         @endif                                        
+                                        <br><br>
+                                        <label><b style="color: #6c757d">Designer</b></label>
+                                        <p style="font-family: 'Poppins', sans-serif;">{{$data1['designer']}}</p>  
                                     </div>
                                 </div>
                             </div>
@@ -263,7 +265,6 @@ $(document).ready(function(){
             }
         });
     });
-
     $(document).on('click', '.cutting_remove', function(){
         var id = $(this).attr("id"); 
         $('#cuttingrow'+id+'').remove();

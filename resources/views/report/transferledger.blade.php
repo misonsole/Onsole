@@ -175,11 +175,11 @@
                             <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white">Trans Date</th>
-                                        <th class="text-white">Trans No</th>
-                                        <th class="text-white">From</th>
-                                        <th class="text-white">To</th>
-                                        <th class="text-white">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Trans Date</th>
+                                        <th class="text-white" data-orderable="false">Trans No</th>
+                                        <th class="text-white" data-orderable="false">From</th>
+                                        <th class="text-white" data-orderable="false">To</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
                                         <th class="text-white" data-orderable="false">Item Description</th>
                                         <th class="text-white" data-orderable="false">Reference</th>
                                         <th class="text-white" data-orderable="false">Remarks</th>

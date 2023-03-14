@@ -357,7 +357,7 @@
                                                             $result3 = oci_parse($conn, strtoupper($sql3));
                                                             oci_execute($result3);
                                                             while($row3=oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)) { ?>                                                              
-                                                                <td>{{$row3["ACCOUNTING_DESC"]}}</td>
+                                                                <td>{{$row3["CODE_VALUE"]}}</td>
                                                                 <td>{{$row3["ACCOUNTING_DESC"]}}</td>
                                                             <?php
                                                             }

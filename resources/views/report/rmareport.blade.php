@@ -132,10 +132,10 @@
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" data-orderable="false">RMA <br> No</th>
-                                        <th class="text-white" data-orderable="false">RMA <br> Date</th>
+                                        <th class="text-white" data-orderable="false">RMA Date</th>
                                         <th class="text-white" data-orderable="false">Customer</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Desc</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Desc</th>
                                         <th class="text-white" data-orderable="false">Book</th>
                                         <th class="text-white" data-orderable="false">Invoice</th>
                                         <th class="text-white" data-orderable="false">Date</th>
@@ -150,26 +150,11 @@
                                         @foreach($data as $row)
                                             <tr class="table_row">
                                                 <td>{{$row['data']["RMA_NO"]}}</td>    
-                                                <td>{{$row['data']["RMA_DATE"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["COMPANY_NAME"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>              
-                                                <td>{{$row['data']["ITEM_CODE"]}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["ITEM_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                         
-                                                <td>
-                                                    <?php $explode = explode(" ",$row['data']["INV_BOOK_DESC"]); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                  
+                                                <td>{{$row['data']["RMA_DATE"]}}</td> 
+                                                <td>{{$row['data']["COMPANY_NAME"]}}</td>                                
+                                                <td>{{$row['data']["ITEM_CODE"]}}</td>
+                                                <td>{{$row['data']["ITEM_DESC"]}}</td>  
+                                                <td>{{$row['data']["INV_BOOK_DESC"]}}</td>                                                                   
                                                 <td>{{$row['data']["INVOICE_NO"]}}</td>                  
                                                 <td>{{$row['data']["INVOICE_DATE"]}}</td>   
                                                 <td>{{$row['data']["RMA_QTY"]}}</td>                  

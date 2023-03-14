@@ -426,31 +426,9 @@
             @endif
             @if(isset($storeData['Pricing-Sheet Production']) && !empty($storeData['Pricing-Sheet Production']) || isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']) || isset($storeData['Job-Order List']) && !empty($storeData['Job-Order List']) || isset($storeData['Quality-Control']) && !empty($storeData['Quality-Control']) || isset($storeData['Production-Planning-Control']) && !empty($storeData['Production-Planning-Control']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List']) || isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing']) || isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])) 
                 @if(isset($storeData['Pricing-Sheet Production']) == 1 || isset($storeData['Job-Order Create']) == 1 || isset($storeData['Job-Order List']) == 1 || isset($storeData['Quality-Control']) == 1 || isset($storeData['Production-Planning-Control']) == 1 || isset($storeData['Pricing-Sheet List']) == 1 || isset($storeData['Pricing-Sheet Costing']) == 1 || isset($storeData['Pricing-Sheet Sales']) == 1)
-                <li class="{{ Request::path() == 'specification-sheet-view' ? 'mm-active active' : Request::path() == 'specification-sheet-edit' ? 'mm-active active' : Request::path() == 'pricing-sheet-edit' ? 'mm-active active' : Request::path() == 'obj-department' ? 'mm-active active' : '' }}">
-                    <a href="javascript: void(0);" class="{{ Request::path() == 'specification-sheet-view' ? 'active' : Request::path() == 'specification-sheet-edit' ? 'active' : Request::path() == 'pricing-sheet-edit' ? 'active' : Request::path() == 'obj-department' ? 'active' : '' }}"><i class="fas fa-project-diagram"></i><span>PDL</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                <li class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'mm-active active' : Request::path() == 'specification-sheet-view' ? 'mm-active active' : Request::path() == 'specification-sheet-edit' ? 'mm-active active' : Request::path() == 'pricing-sheet-edit' ? 'mm-active active' : Request::path() == 'obj-department' ? 'mm-active active' : '' }}">
+                    <a href="javascript: void(0);" class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'active' :  Request::path() == 'specification-sheet-view' ? 'active' : Request::path() == 'specification-sheet-edit' ? 'active' : Request::path() == 'pricing-sheet-edit' ? 'active' : Request::path() == 'obj-department' ? 'active' : '' }}"><i class="fas fa-project-diagram"></i><span>PDL</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level p-0" aria-expanded="false">
-                        <!-- @if(isset($storeData['Job-Order Create']) && !empty($storeData['Job-Order Create']))
-                            @if(isset($storeData['Job-Order Create']) == 1)
-                                <li class="nav-item"><a class="nav-link" href="{{url('job-order')}}"><i class="ti-control-record"></i>Specification Sheet</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{{url('pricing-sheet')}}"><i class="ti-control-record"></i>Costing Sheet</a></li>                                  
-                            @endif
-                        @endif
-                        @if(isset($storeData['Job-Order List']) && !empty($storeData['Job-Order List']))
-                            @if(isset($storeData['Job-Order List']) == 1)
-                                <li class="{{ Request::path() == 'job-order-view' ? 'nav-item active' : Request::path() == 'job-order-edit' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'job-order-view' ? 'nav-link active' : Request::path() == 'job-order-edit' ? 'nav-link active' : 'nav-link' }}" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Manage SS</a></li>
-                                <li class="{{ Request::path() == 'pricing-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'pricing-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('pricing-sheet-table')}}"><i class="ti-control-record"></i>Manage CS</a></li>
-                            @endif
-                        @endif -->
-                        <!-- @if(isset($storeData['Quality-Control']) && !empty($storeData['Quality-Control'])) 
-                            @if(isset($storeData['Quality-Control']) == 1)
-                                <li class="nav-item"><a class="nav-link" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Specification Sheet</a></li>
-                            @endif
-                        @endif
-                        @if(isset($storeData['Production-Planning-Control']) && !empty($storeData['Production-Planning-Control'])) 
-                            @if(isset($storeData['Production-Planning-Control']) == 1)
-                                <li class="nav-item"><a class="nav-link" href="{{url('job-order-table')}}"><i class="ti-control-record"></i>Specification Sheet</a></li>
-                            @endif
-                        @endif -->
                         @if(isset($storeData['PDL Master Data']) && !empty($storeData['PDL Master Data'])) 
                             @if(isset($storeData['PDL Master Data']) == 1)
                                 <li class="nav-item"><a class="nav-link"  href="{{url('master-data-plc')}}"><i class="ti-control-record"></i>Master Data</a></li>
@@ -473,15 +451,15 @@
                         @endif
                         @if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales']) || isset($storeData['Pricing-Sheet List']) && !empty($storeData['Pricing-Sheet List']) || isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
                             @if(isset($storeData['Pricing-Sheet Sales']) == 1 || isset($storeData['Pricing-Sheet List']) == 1 || isset($storeData['Pricing-Sheet Costing']) == 1)
-                            <li>
-                                <a href="javascript: void(0);"><i class="ti-control-record"></i>Pricing Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                            <li class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'mm-active active' : '' }}">
+                                <a href="javascript: void(0);" class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'active' : ''}}"><i class="ti-control-record"></i>Pricing Sheet <span class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
                                 <ul class="nav-second-level" aria-expanded="false">
                                     @if(isset($storeData['Pricing-Sheet Create']) && !empty($storeData['Pricing-Sheet Create'])) 
                                         @if(isset($storeData['Pricing-Sheet Create']) == 1)
                                             <li class="nav-item"><a class="nav-link" href="{{url('pricing-sheet')}}"><i class="ti-control-record"></i>Create</a></li> 
                                         @endif
                                     @endif
-                                    <li class="{{ Request::path() == 'pricing-sheet-edit' ? 'nav-item active' : Request::path() == 'pricing-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{  Request::path() == 'pricing-sheet-edit' ? 'nav-link active' : Request::path() == 'pricing-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('pricing-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
+                                    <li class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'nav-item active' : Request::path() == 'pricing-sheet-edit' ? 'nav-item active' : Request::path() == 'pricing-sheet-view' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'pricing-sheet-update-costing' ? 'nav-link active' : Request::path() == 'pricing-sheet-edit' ? 'nav-link active' : Request::path() == 'pricing-sheet-view' ? 'nav-link active' : 'nav-link' }}" href="{{url('pricing-sheet-table')}}"><i class="ti-control-record"></i>Dashboard</a></li>
                                 </ul>
                             </li>
                             @endif

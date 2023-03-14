@@ -179,26 +179,7 @@
                                             <td>{{$row['data']["WO_NO"]}}</td>
                                             <td>{{$row['data']["WO_DATE"]}}</td>
                                             <td>{{$row['data']["ITEM_CODE"]}}</td>
-                                            <td>                                                
-                                                <?php
-                                                    $test = $row['data']["ITEM_DESC"];
-                                                    $explode = explode(" ",$test);
-                                                    $String = '';
-                                                    $newString = '';
-                                                    $maxCharacterCount = 5;
-                                                    foreach($explode as $key => $value){
-                                                        $strlen=strlen($String);
-                                                        if($strlen<=$maxCharacterCount){
-                                                                $String.=' '.$value;
-                                                            }else{
-                                                                $newString.=$String.' '.$value.'<br>';
-                                                                $String='';
-                                                            }
-                                                        }
-                                                    $finalString= $newString.$String;
-                                                    echo $finalString;
-                                                ?>
-                                            </td>
+                                            <td>{{$row['data']["ITEM_DESC"]}}</td>
                                             <td>{{$row['data']["GRN_NO"]}}</td>
                                             <td>{{$row['data']["GRN_DATE"]}}</td>
                                             <td>{{$row['data']["WO_QTY"]}}</td>

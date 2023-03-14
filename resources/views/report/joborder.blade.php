@@ -180,7 +180,7 @@
                     @endif
                     <div class="row p-3">
                         <div class="w-100">
-                            <table id="datatable" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th class="text-white" data-orderable="false">Job <br> ID</th>
@@ -199,17 +199,17 @@
                                         <th class="text-white" data-orderable="false">Dep</th>
                                         <th class="text-white" data-orderable="false">Onsole <br> Article</th>
                                         <th class="text-white" data-orderable="false">Cust <br> Article</th>
+                                        <th class="text-white" data-orderable="false">Location</th>
                                         <th class="text-white" data-orderable="false">Season</th>
+                                        <th class="text-white" data-orderable="false">Item Code</th>
+                                        <th class="text-white" data-orderable="false">Item Description</th>
                                         <th class="text-white" data-orderable="false">Color</th>
                                         <th class="text-white" data-orderable="false">Size</th>
-                                        <th class="text-white" data-orderable="false">Last<br>No</th>
+                                        <th class="text-white" data-orderable="false">Last No</th>
                                         <th class="text-white" data-orderable="false">Status</th>
                                         <th class="text-white" data-orderable="false">Qty</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Description</th>
-                                        <th class="text-white" data-orderable="false">Location</th>
                                         <th class="text-white" data-orderable="false">Tool</th>
-                                        <th class="text-white" data-orderable="false">Die <br> No</th>
+                                        <th class="text-white" data-orderable="false">Die No</th>
                                         <th class="text-white" data-orderable="false">Uom</th>
                                         <th class="text-white" data-orderable="false">Qty</th>
                                     </tr>
@@ -219,25 +219,10 @@
                                         <?php $colorchange = ""; ?>
                                         @foreach($data as $row)
                                             <tr class="table_row" style="<?php if($colorchange != $row->Color || $jochange != $row->Job_Id) { ?> background: #d1d1d1; color: black; <?php } ?>">
-                                                <td>{{$row->Job_Id}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode("-",$row->Date_Created); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>              
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Cust_Name); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                                              
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->cat_type); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td> 
+                                                <td>{{$row->Job_Id}}</td>
+                                                <td>{{$row->Date_Created}}</td>
+                                                <td>{{$row->Cust_Name}}</td> 
+                                                <td>{{$row->cat_type}}</td>                                                                                                                                           
                                                 @if($Permission == 1)                  
                                                 <?php if($sessionData['department'] == "Insole") { ?>
                                                 <td>{{$row->Work_Order}}</td>
@@ -247,70 +232,25 @@
                                                 <td>{{$row->So_No}}</td>    
                                                 <td>{{$row->Po_No}}</td>                  
                                                 <td>{{$row->Status}}</td>
-                                                <td>{{$row->Department}}</td>                                                                                                
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Onsole_Art_No); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                   
-                                                <td style="white-space: unset">
-                                                    <?php $explode = explode(" ",$row->Cust_Art_No); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>   
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Season); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>        
-                                                <td>{{$row->Color}}</td>   
-                                                <td>
-                                                    <?php $explode = explode("-",$row->sizerange); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>  
-                                                <td>
-                                                    <?php $explode = explode("-",$row->Last_No); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                    
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->status); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>  
-                                                <?php if ($colorchange != $row->Color || $jochange != $row->Job_Id) { ?>
+                                                <td>{{$row->Department}}</td>
+                                                <td>{{$row->Onsole_Art_No}}</td>
+                                                <td style="white-space: unset">{{$row->Cust_Art_No}}</td>  
+                                                <td>{{$row->Location}}</td>                    
+                                                <td>{{$row->Season}}</td>
+                                                <td>{{$row->Rm_Code}}</td> 
+                                                <td>{{$row->Job_Desc}}</td>
+                                                <td>{{$row->Color}}</td> 
+                                                <td>{{$row->sizerange}}</td>   
+                                                <td>{{$row->Last_No}}</td>   
+                                                <td>{{$row->status}}</td>          
+                                                <?php if($colorchange != $row->Color || $jochange != $row->Job_Id) { ?>
                                                 <td>{{$row->total}}</td>                  
-                                                <?php  } else { ?>
+                                                <?php } else { ?>
                                                 <td></td>
                                                 <?php } ?>
-                                                <td>{{$row->Rm_Code}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Job_Desc); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                   
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Location); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>     
                                                 <td>{{$row->Tool}}</td>                  
-                                                <td>{{$row->Dye_No}}</td>                  
-                                                <td>
-                                                    <?php $explode = explode(" ",$row->Um); ?>
-                                                    @foreach($explode as $data1)
-                                                        {{$data1}}<br>
-                                                    @endforeach
-                                                </td>                  
+                                                <td>{{$row->Dye_No}}</td>  
+                                                <td>{{$row->Um}}</td>                  
                                                 <td>{{$row->Qty}}</td>                                    
                                             </tr>
                                             <?php $colorchange = $row->Color; $jochange = $row->Job_Id; ?>

@@ -132,15 +132,15 @@
                     @endif
                     <div class="row p-3">
                         <div class="w-100">
-                            <table id="datatable2" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <table id="datatable-buttons" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th class="text-white" data-orderable="false">SR. No</th>
+                                        <th class="text-white" data-orderable="false">Sr. No</th>
                                         <th class="text-white" data-orderable="false">Financial <br> Year</th>
                                         <th class="text-white" data-orderable="false">Period</th>
                                         <th class="text-white" data-orderable="false">Item Code</th>
-                                        <th class="text-white" data-orderable="false">Item <br> Description</th>
-                                        <th class="text-white" data-orderable="false">Purchase <br> Date</th>
+                                        <th class="text-white" data-orderable="false">Item Description</th>
+                                        <th class="text-white" data-orderable="false">Purchase Date</th>
                                         <th class="text-white" data-orderable="false">Amount</th>
                                         <th class="text-white" data-orderable="false">Primary <br> Qty</th>
                                         <th class="text-white" data-orderable="false">Pro <br> Expense</th>
@@ -156,27 +156,8 @@
                                                 <td>{{$i++}}</td>
                                                 <td>{{$row["FIN_YEAR"]}}</td>                  
                                                 <td>{{$row["PERIOD"]}}</td>                  
-                                                <td>{{$row["ITEM_CODE"]}}</td>                  
-                                                <td>
-                                                <?php
-                                                    $test = $row["ITEM_DESC"];
-                                                    $explode = explode(" ",$test);
-                                                    $String = '';
-                                                    $newString = '';
-                                                    $maxCharacterCount = 4;
-                                                    foreach($explode as $key => $value){
-                                                        $strlen=strlen($String);
-                                                        if($strlen<=$maxCharacterCount){
-                                                                $String.=' '.$value;
-                                                            }else{
-                                                                $newString.=$String.' '.$value.'<br>';
-                                                                $String='';
-                                                            }
-                                                        }
-                                                    $finalString= $newString.$String;
-                                                    echo $finalString;
-                                                ?>
-                                            </td>                  
+                                                <td>{{$row["ITEM_CODE"]}}</td>
+                                                <td>{{$row["ITEM_DESC"]}}</td>                                                                                 
                                                 <td>{{$row["PURCH_INVOICE_DATE"]}}</td>                  
                                                 <td>{{$row["AMOUNT"]}}</td>                  
                                                 <td>{{$row["PRIMARY_QTY"]}}</td>                  
@@ -197,8 +178,8 @@
                                             <th class="text-white" data-orderable="false">Total</th>
                                             <th class="text-white" data-orderable="false">{{number_format($t_am,2)}}</th>
                                             <th class="text-white" data-orderable="false">{{number_format($p_qty,2)}}</th>
-                                            <th class="text-white" data-orderable="false">{{number_format($stax_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false">{{number_format($pro_qty,2)}}</th>
+                                            <th class="text-white" data-orderable="false">{{number_format($stax_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false">{{number_format($total_amount,2)}}</th>
                                             <th class="text-white" data-orderable="false"></th>
                                         </tr>
@@ -234,7 +215,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-sm-12 mt-3">
                                 <label><b style="color: #6c757d">Financial Year</b></label>
-                                <select id="finyr" name="finyr" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="form-control select.custom-select">
+                                <select id="finyr" name="finyr" style="border: 1px solid #bfbfbf; text-transform: capitalize;" class="select2 form-control mb-3 custom-select">
                                     <option selected value="all">All</option>   
                                     @foreach($financial as $value)
                                         @if(!empty($sessionData['finyr']))
