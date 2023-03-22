@@ -434,6 +434,11 @@
                                                                 <input class="form-check-input name reportCheck" id="materialcR1" type="checkbox" name="Reports[]">
                                                                 <span id="materialcR" class="form-check-label"></span>
                                                             </label>
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="report22" style="display: none;">
+                                                                <input class="form-check-input name reportCheck" id="mtransferall1" type="checkbox" name="Reports[]">
+                                                                <span id="mtransferall" class="form-check-label"></span>
+                                                            </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allReport" type="checkbox">
                                                                 <span class="form-check-label">Mark All</span>
@@ -592,6 +597,11 @@
                     $("#materialcR").html("Material Consumption Rate");
                     $("#materialcR1").attr('value', "Material Consumption Rate");
                     $("#materialcR1").attr('checked', false);
+
+                    $("#report22").show();
+                    $("#mtransferall").html("M Transfer Against All JO");
+                    $("#mtransferall1").attr('value', "M Transfer Against All JO");
+                    $("#mtransferall1").attr('checked', false);
 
                     $("#reports").show();
                 }
@@ -952,6 +962,23 @@
                         $("#materialcR").html("Transfer Ledger Report");
                         $("#materialcR1").attr('value', "Transfer Ledger Report");
                         $("#materialcR1").attr('checked', false);
+                    }
+                    if(data[0].reports[21]){
+                        $("#report22").show();
+                        $("#mtransferall").html(data[0].reports[21].role_name);
+                        $("#mtransferall1").attr('value', data[0].reports[21].role_name);
+                        if(data[0].reports[21].value == 1){
+                            $("#mtransferall1").attr('checked', true);
+                        }
+                        else{
+                            $("#mtransferall1").attr('checked', false);
+                        } 
+                    }
+                    else{
+                        $("#report22").show();
+                        $("#mtransferall").html("M Transfer Against All JO");
+                        $("#mtransferall1").attr('value', "M Transfer Against All JO");
+                        $("#mtransferall1").attr('checked', false);
                     }
                     $("#reports").show();
                 }

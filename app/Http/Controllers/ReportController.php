@@ -5133,6 +5133,513 @@ class ReportController extends Controller
         }
     }
 
+    public function TransferAgainstallJO(Request $request)
+    {
+        try{
+            $customer = array(); $category = array(); $season = array();
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $result1 = DB::table('job_sheet_order_mts')->orderBy('Cust_Name', 'asc')->get()->unique('Cust_Name');
+            foreach($result1 as $data){
+                $customer[] = $data->Cust_Name;
+            }
+            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $result4 = oci_parse($conn, $sql4);
+            oci_execute($result4);
+            while($row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $category[] = $row4["SEGMENT_VALUE_DESC"];
+            }
+            $result3 = DB::table('job_sheet_order_mts')->get('Season')->unique('Season');
+            foreach($result3 as $data){
+                $season[] = $data->Season;
+            }
+            return view('report.transferagainstalljo')->with([
+                "Permission" => 0, 
+                "customer" => $customer, 
+                "category" => $category, 
+                "season" => $season, 
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function TransferAgainstallJODownload(Request $request)
+    {   
+        try{
+            date_default_timezone_set("Asia/karachi");
+            $date = date("d-m-Y");
+            $Arraydata = array();
+            $dataStore =  array();
+            $articleno = $request->articleno;
+            $sono = $request->salesorder;
+            $daterange = $request->daterange;
+            $Storedaterange = $request->daterange;
+            $season = $request->season;
+            $rawmaterial = $request->rawmaterial;
+            $customer = $request->customer;
+            $department = $request->department;
+            $joborder = $request->joborder;
+            $daterange = str_replace(" - ", "", $request['daterange']);
+            $strtdte = date("d-m-Y", strtotime(substr($daterange, 0,10)));
+            $enddte = date("d-m-Y", strtotime(substr($daterange, 10)));
+            $month_name = (date("F",strtotime($strtdte)));
+            $month_name2 = (date("F",strtotime($enddte)));  
+            $strtdte2 = substr($strtdte, 0, 3).''.$month_name.''.substr($strtdte, 5, 5);
+            $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
+
+            if(!empty($joborder)){
+                $joborder = explode(" || ",$joborder);
+                $joborder = $joborder[0];
+            }else{
+                $joborder = "";
+            }
+            if(!empty($customer)){
+                $customer = $customer;
+            }else{
+                $customer = "";
+            }
+            if(!empty($department)){
+                $department = $department;
+            }else{
+                $department = "";
+            }
+            if(!empty($thedate)){
+                $thedate = $thedate;
+            }else{
+                $thedate = "";
+            }
+            if(!empty($rawmaterial)){
+                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rawmaterial));
+                $rmcodet = $rmcoarrf[0];
+            }else{
+                $rmcodet = "";
+            }
+            if(!empty($article)){
+                $article = $article;
+            }else{
+                $article = "";
+            }
+            if(!empty($sono)){
+                $sono = $sono;
+            }else{
+                $sono = "";
+            }
+            if(!empty($season)){
+                $season = $season;
+            }else{
+                $season = "";
+            }
+            if(empty($customer) && empty($department) && empty($season) && empty($sono) && empty($article) && empty($rmcodet)){
+                $datecheck = "2025-01-01";
+            }else{
+                $datecheck = "";
+            }
+            if(!empty($strtdte2)){
+                $strtdte = $strtdte2;
+                $strtdte22 = $strtdte2;
+            }else{
+                $strtdte22 = "";
+                $strtdte = "";
+            }
+            if(!empty($enddte2)){
+                $enddte = $enddte2;
+                $enddte22 = $enddte2;
+            }else{
+                $enddte22 = "";
+                $enddte = "";
+            }
+
+            $Arraydata = DB::select(DB::raw("SELECT jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id
+                                                FROM job_sheet_order_mts jsom
+                                                JOIN job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id and jsom.Department != 'Insole'
+                                                WHERE jsom.Unique_Id like '".$joborder."%' AND jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'
+                                                group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id, jsom.Delivery_Date, RTTIME
+                                                order by jsom.Job_Id, jsod.Rm_Code"));
+
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $strtdte = $enddte = $customer = $season = $strtdte2 = $enddte2 = $sono = $rmcat = $rmcodet = $department = $month_name = $month_name2 = $article = $article0 = $department0 = $sono0 = "";
+            $item_code = array();
+            $actqty = $diffqty = $actrate = $diffamt = $actamt = $estamt = $rem_check = $key = $keycode = $rateof = $amounte = $tno = $tno2 = 0;
+            $strtdte = $enddte = $book = $status = $strtdte2 = $enddte2 = $rate = $rate2 = $month_name = $month_name2 = $item_code_now = $tdt = $joborder = $tdt2 = $temporada = $tno_check = "";
+            $strtdte3 = $enddte3 = $adjustno = $pino = $pidate = $tempcode = "";
+            $sum_rate = $sum_qty = $sum_amount = $poqty = $i = $sumamount = $sumtax = $sumamtinctax = $sumpoqty = $pndgcounter = $tcheck = 0;
+            $purchinv = array();
+            $pidate2 = array(); $arrayhe = array(); $sumof = array(0,0,0,0,0,0,0,0,0);  $rmcoarr = array(); $tnoBreak = array(); $tnoDate = array();
+            $poqtytotal = $poreceivedtotal = $porejectedtotal = $poacceptedtotal = $popendingtotal = $poamounttotal = $postaxtotal = $pototal = 0;
+            $sumpoqtytotal = $sumporcvtotal = $sumporejtotal = $sumpoacctotal = $sumpopentotal = $sumpoamttotal = $sumpostaxtotal = $sumpototal = $pendingme = $quantitye = 0;
+            $re_amount = 0; $re_rate = 0; $re_qty = 0;
+
+            foreach($Arraydata as $row){
+                $jobid = $row->Job_Id;  $SO_NO = $row->So_No; $article = $row->Onsole_Art_No; $tno = $row->Transfer_Id; $tdt = $row->Transfer_Date_Mt;
+                if($tempcode != $row->Job_Id){
+                    if($rem_check == 1){
+                        $tnoBreak = explode(',', $tno2);
+                         $sql5 = "SELECT IMT.ITEM_CODE, IMT.ITEM_DESC, SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                                    FROM TRANS_ISSUE_MT TIM
+                                    JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                                    JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID
+                                    WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte2' AND '$enddte2'
+                                    GROUP BY IMT.ITEM_CODE, IMT.ITEM_DESC";
+                        $result5 = oci_parse($conn,$sql5);
+                        oci_execute($result5);
+                        while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                            if(count($tnoBreak) == 0){
+                                break;
+                            }
+                            if($row5["QUANTITY"] == 0){
+                                $rateof = 0;
+                            } 
+                            else{
+                                $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
+                            }
+                            $printok = 1;
+                            for($keycode = 0; $keycode < count($item_code); $keycode++){
+                                if($row5["ITEM_CODE"] == $item_code[$keycode]){ 
+                                    $printok = 0; 
+                                }
+                            }
+                            if($printok == 1){
+                                $lineData[] = array(
+                                    'Job Order' =>  $temporada,
+                                    'Customer' => $temporada,
+                                    'Sale Order' => $temporada,
+                                    'Article' => $temporada,
+                                    'Department' => $temporada,
+                                    'Season' => $temporada,
+                                    'Item Code' => $row5["ITEM_CODE"],
+                                    'Item Desc' => $row5["ITEM_DESC"],
+                                    'Trans Qty' => number_format($row5["QUANTITY"],2),
+                                    'Trans Rate' => number_format($rateof,2),
+                                    'Trans Amount' => number_format($row5["AMOUNT"],2),
+                                    'JO Qty' => $temporada,
+                                    'JO Rate' => $temporada,
+                                    'JO Amount' => $temporada,
+                                    'Diff Qty' => number_format($row5["QUANTITY"],2), 
+                                    'Diff Amount' => number_format($row5["AMOUNT"],2)
+                                );
+                            }
+                        } 
+                    unset($item_code);
+                    }
+                    $item_code[0] = $row->Rm_Code;
+                    $item_code_now = $row->Rm_Code;
+                    $tnoBreak = explode(',', $tno);
+                    $tno_check = implode("','", $tnoBreak);
+                    $sql2 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                                FROM TRANS_ISSUE_MT TIM
+                                JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                                JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
+                                WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                    $result2 = oci_parse($conn,$sql2);
+                    oci_execute($result2);
+                    while($row2 = oci_fetch_array($result2,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        if($row2["QUANTITY"] != 0){
+                            $rate2 = $row2["AMOUNT"]/$row2["QUANTITY"];
+                            $amounte = $row2["AMOUNT"];
+                            $quantitye = $row2["QUANTITY"];
+                        } 
+                        else{
+                            $rate2 = 0; $amounte = 0; $quantitye = $row2["QUANTITY"];
+                        }
+                        $actqty = $row2["QUANTITY"];
+                        $actrate = $rate2;
+                        $actamt = $row2["AMOUNT"];
+                    }
+                    $estamt = $actrate*$row->Quantity;
+                    $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
+                    $lineData[] = array(
+                        'Job Order' =>  $row->Job_Id." || ".$row->RTTIME,
+                        'Customer' => $row->Cust_Name,
+                        'Sale Order' => $row->So_No,
+                        'Article' => $row->Onsole_Art_No,
+                        'Department' => $row->Department,
+                        'Season' => $row->Season,
+                        'Item Code' => $row->Rm_Code,
+                        'Item Desc' => $row->Job_Desc,
+                        'Trans Qty' => number_format($quantitye,2),
+                        'Trans Rate' => number_format($rate2,2),
+                        'Trans Amount' => number_format($amounte,2),
+                        'JO Qty' => number_format($row->Quantity,2),
+                        'JO Rate' =>  number_format($actrate,2),
+                        'JO Amount' =>  number_format($actrate*$row->Quantity,2),
+                        'Diff Qty' => number_format($diffqty,2), 
+                        'Diff Amount' => number_format($diffamt,2)
+                    );
+                    $tempcode = $row->Job_Id; $rem_check = 1; $key = 1; 
+                }
+                else{  
+                    $item_code[$key] = $row->Rm_Code; $key++; $item_code_now = $row->Rm_Code;
+                    $tnoBreak = explode(',', $tno);
+                    $tno_check = implode("','", $tnoBreak);
+                    $sql3 = "SELECT SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                             FROM TRANS_ISSUE_MT TIM
+                             JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                             JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID AND IMT.ITEM_CODE LIKE NVL('$item_code_now','%')
+                             WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'";
+                    $result3= oci_parse($conn,$sql3);
+                    oci_execute($result3);
+                    while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                        if($tno == NULL){
+                            $re_amount = 0; $re_rate = 0; $re_qty = 0;
+                        } 
+                        else{
+                            if($row3["QUANTITY"] != 0){
+                                $re_qty = $row3["QUANTITY"];
+                                $re_amount = $row3["AMOUNT"];
+                                $re_rate = $row3["AMOUNT"]/$row3["QUANTITY"];
+                            } 
+                            else{
+                                $re_amount = 0; $re_rate = 0; $re_qty = 0;
+                            }
+                        }
+                        $actqty = $row3["QUANTITY"];  $actrate = $re_rate;  $actamt = $row3["AMOUNT"];
+                    }
+                    $estamt = $actrate*$row->Quantity;
+                    $diffqty = $row->Quantity-$actqty;  $diffamt = $estamt-$actamt;
+                    $lineData[] = array(
+                        'Job Order' =>  $temporada,
+                        'Customer' => $temporada,
+                        'Sale Order' => $temporada,
+                        'Article' => $temporada,
+                        'Department' => $temporada,
+                        'Season' => $temporada,
+                        'Item Code' => $row->Rm_Code,
+                        'Item Desc' => $row->Job_Desc,
+                        'Trans Qty' => number_format($re_qty,2),
+                        'Trans Rate' => number_format($re_rate,2),
+                        'Trans Amount' => number_format($re_amount,2),
+                        'JO Qty' => number_format($row->Quantity,2),
+                        'JO Rate' => number_format($actrate,2), 
+                        'JO Amount' => number_format($actrate*$row->Quantity,2), 
+                        'Diff Qty' => number_format($diffqty,2), 
+                        'Diff Amount' => number_format($diffamt,2)
+                    );         
+                }
+            }
+
+            $tnoBreak = explode(',', $tno);
+            $tno_check = implode("','", $tnoBreak);
+            $sql5 = "SELECT IMT.ITEM_CODE, IMT.ITEM_DESC, SUM(TID.PIRMARY_QTY) AS QUANTITY, SUM(TID.AMOUNT) AS AMOUNT
+                 FROM TRANS_ISSUE_MT TIM
+                 JOIN TRANS_ISSUE_DETAIL TID ON TID.ISS_TRANS_ID = TIM.ISS_TRANS_ID
+                 JOIN ITEMS_MT IMT ON IMT.ITEM_ID = TID.ITEM_ID
+                 WHERE TIM.ISS_TRANS_ID IN ('$tno_check') AND TIM.INV_BOOK_ID = 77 AND TIM.TRANS_DATE BETWEEN '$strtdte22' AND '$enddte22'
+                 GROUP BY IMT.ITEM_CODE, IMT.ITEM_DESC";
+                            
+            $result5 = oci_parse($conn,$sql5);
+            oci_execute($result5);
+            while($row5 = oci_fetch_array($result5,  OCI_ASSOC+OCI_RETURN_NULLS)){
+            if(count($tnoBreak) == 0){
+                break;
+            }
+            if($row5["QUANTITY"] == 0){
+                $rateof = 0;
+            } 
+            else{
+                $rateof = $row5["AMOUNT"]/$row5["QUANTITY"];
+            }
+            $printok = 1;
+            for($keycode = 0; $keycode < count($item_code); $keycode++) {
+                if($row5["ITEM_CODE"] == $item_code[$keycode]){ 
+                    $printok = 0; 
+                }
+            }
+            if($printok == 1){
+                $lineData[] = array(
+                    'Job Order' => $temporada,
+                    'Customer' => $temporada,
+                    'Sale Order' => $temporada,
+                    'Article' => $temporada,
+                    'Department' => $temporada,
+                    'Season' => $temporada,
+                    'Item Code' => $row5->ITEM_CODE,
+                    'Item Desc' => $row5->ITEM_DESC,
+                    'Trans Qty' => number_format($row5->QUANTITY,2),
+                    'Trans Rate' => number_format($rateof,2),
+                    'Trans Amount' => number_format($row5->AMOUNT,2),
+                    'JO Qty' => $temporada,
+                    'JO Rate' => $temporada,
+                    'JO Amount' => $temporada,
+                    'Diff Qty' => number_format($row5->QUANTITY,2), 
+                    'Diff Amount' => number_format($row5->AMOUNT,2)
+                );
+            }
+        } 
+            unset($item_code);
+            return Excel::download(new TransferAgainst($lineData), 'Transfer Against Job Order '.$date.'.xlsx');
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function TransferAgainstallJODisplay(Request $request)
+    {        
+        try{
+            $Arraydata = array();
+            $dataStore =  array();
+            $articleno = $request->articleno;
+            $sono = $request->salesorder;
+            $daterange = $request->daterange;
+            $Storedaterange = $request->daterange;
+            $season = $request->season;
+            $rawmaterial = $request->rawmaterial;
+            $customer = $request->customer;
+            $department = $request->department;
+            $joborder = $request->joborder;
+            $daterange = str_replace(" - ", "", $request['daterange']);
+            $strtdte = date("d-m-Y", strtotime(substr($daterange, 0,10)));
+            $enddte = date("d-m-Y", strtotime(substr($daterange, 10)));
+            $month_name = (date("F",strtotime($strtdte)));
+            $month_name2 = (date("F",strtotime($enddte)));  
+            $strtdte2 = substr($strtdte, 0, 3).''.$month_name.''.substr($strtdte, 5, 5);
+            $enddte2 = substr($enddte, 0, 3).''.$month_name2.''.substr($enddte, 5, 5);
+
+            if(!empty($joborder)){
+                $joborder = explode(" || ",$joborder);
+                $joborder = $joborder[0];
+            }else{
+                $joborder = "";
+            }
+            if(!empty($customer)){
+                $customer = $customer;
+            }else{
+                $customer = "";
+            }
+            if(!empty($department)){
+                $department = $department;
+            }else{
+                $department = "";
+            }
+            if(!empty($thedate)){
+                $thedate = $thedate;
+            }else{
+                $thedate = "";
+            }
+            if(!empty($rawmaterial)){
+                $rmcoarrf = explode(" || ",mysqli_real_escape_string($link,$rawmaterial));
+                $rmcodet = $rmcoarrf[0];
+            }else{
+                $rmcodet = "";
+            }
+            if(!empty($article)){
+                $article = $article;
+            }else{
+                $article = "";
+            }
+            if(!empty($sono)){
+                $sono = $sono;
+            }else{
+                $sono = "";
+            }
+            if(!empty($season)){
+                $season = $season;
+            }else{
+                $season = "";
+            }
+            if(empty($customer) && empty($department) && empty($season) && empty($sono) && empty($article) && empty($rmcodet)){
+                $datecheck = "2025-01-01";
+            }else{
+                $datecheck = "";
+            }
+            if(!empty($strtdte2)){
+                $strtdte = $strtdte2;
+                $strtdte22 = $strtdte2;
+            }else{
+                $strtdte22 = "";
+                $strtdte = "";
+            }
+            if(!empty($enddte2)){
+                $enddte = $enddte2;
+                $enddte22 = $enddte2;
+            }else{
+                $enddte22 = "";
+                $enddte = "";
+            }
+
+            $Arraydata = DB::select(DB::raw("SELECT jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, SUM(jsod.Qty) As Quantity, jsom.Delivery_Date, DATE_FORMAT(JSOM.Date_Created, '%d-%b-%Y') as RTTIME, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id
+                                                FROM job_sheet_order_mt jsom
+                                                JOIN job_sheet_order_det jsod on jsod.Job_Id = jsom.Job_Id and jsom.Department != 'Insole'
+                                                WHERE jsom.Unique_Id like '".$joborder."%' AND jsom.Department LIKE '".$department."%' and jsom.Cust_Name LIKE '".$customer."%' and jsom.Season LIKE '".$season."%' and jsom.So_No LIKE '".$sono."%' and jsom.Onsole_Art_No LIKE '".$article."%' and jsod.Rm_Code LIKE '".$rmcodet."%' and jsom.Date_Created like '".$datecheck."%'
+                                                group by jsom.Job_Id, jsom.Cust_Name, jsom.Onsole_Art_No, jsom.So_No, jsom.Season, jsom.Department, jsod.Rm_Code, jsod.Job_Desc, JSOM.Transfer_No_Mt, JSOM.Transfer_Date_Mt, JSOM.Transfer_Id, jsom.Delivery_Date, RTTIME
+                                                order by jsom.Job_Id, jsod.Rm_Code"));
+
+            $strtdte2 = date("m/d/Y", strtotime(substr($daterange, 0,10)));
+            $strtdte3 = date("m/d/Y", strtotime(substr($daterange, 10)));
+            $strtdte2a = date("m/d/Y", strtotime(substr($daterange, 0,10)));
+            $strtdte3a = date("m/d/Y", strtotime(substr($daterange, 10)));
+
+            $daterangeVal = wordwrap($daterange , 10 , ' ' , true );
+            $customerData = array(); $categoryData = array(); $seasonData = array();
+            $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
+            $conn = oci_connect("onsole","s",$wizerp);
+            $result1 = DB::table('job_sheet_order_mt')->orderBy('Cust_Name', 'asc')->get()->unique('Cust_Name');
+            foreach($result1 as $data){
+                $customerData[] = $data->Cust_Name;
+            }
+            $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
+            $result4 = oci_parse($conn, $sql4);
+            oci_execute($result4);
+            while($row4 = oci_fetch_array($result4,  OCI_ASSOC+OCI_RETURN_NULLS)){
+                $categoryData[] = $row4["SEGMENT_VALUE_DESC"];
+            }
+            $result3 = DB::table('job_sheet_order_mt')->get('Season')->unique('Season');
+            foreach($result3 as $data){
+                $seasonData[] = $data->Season;
+            }
+
+            $sessionData = [
+                'articleno' => $request->articleno,
+                'salesorder' => $request->salesorder,
+                'season' => $request->season,
+                'rawmaterial' => $request->rawmaterial,
+                'customer' => $request->customer,
+                'department' => $request->department,
+                'joborder' => $request->joborder,
+                'strtdte2a' => $strtdte2a,
+                'strtdte3a' => $strtdte3a,
+                'Storestart' => date("d/m/Y", strtotime(substr($Storedaterange, 0,10))),
+                'Storeend' => date("d/m/Y", strtotime(substr($Storedaterange, -10))),
+                'Storestart1' => date("d-M-Y", strtotime(substr($Storedaterange, 0,10))),
+                'Storeend2' => date("d-M-Y", strtotime(substr($Storedaterange, -10))),
+            ];
+
+            return view('report.transferagainstalljo')->with([
+                "data" => $Arraydata, "Permission" => 1, "sessionData" => $sessionData, "i" => 1,
+                "customer" => $customerData, "category" => $categoryData, "season" => $seasonData, 
+                'articleno' => $request->articleno,
+                'salesorder' => $request->salesorder,
+                'rawmaterial' => $request->rawmaterial,
+                'department' => $request->department,
+                'strtdte2a' => $strtdte2a,
+                'strtdte3a' => $strtdte3a,
+                'sono' => $sono,
+                'enddte' => $enddte,
+                'strtdte' => $enddte,
+                'strtdte22' => $strtdte22,
+                'enddte22' => $enddte22
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function MaterialData()
     {
         $books = array(); $locator = array();

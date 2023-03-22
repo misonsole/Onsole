@@ -419,6 +419,11 @@
                                                         <input class="form-check-input name reportCheck" type="checkbox" value="Material Consumption Rate" name="Reports[]">
                                                         <span class="form-check-label">Material Consumption <b>Rate</b></span>
                                                     </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name reportCheck" type="checkbox" value="M Transfer Against All JO" name="Reports[]">
+                                                        <span class="form-check-label">M Transfer Against All JO</span>
+                                                    </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allReport" type="checkbox">
                                                         <span class="form-check-label">Mark All</span>

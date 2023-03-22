@@ -244,6 +244,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('transferagainst', [ReportController::class, 'TransferAgainstJO'])->name('transferagainst');
     Route::post('transferagainst-report', [ReportController::class, 'TransferAgainstJODisplay'])->name('transferagainst-report');
     Route::post('transferagainst-report-download', [ReportController::class, 'TransferAgainstJODownload'])->name('transferagainst-report-download');
+    Route::get('transferagainstall', [ReportController::class, 'TransferAgainstallJO'])->name('transferagainstall');
+    Route::post('transferagainstall-report', [ReportController::class, 'TransferAgainstallJODisplay'])->name('transferagainstall-report');
+    Route::post('transferagainstall-report-download', [ReportController::class, 'TransferAgainstallJODownload'])->name('transferagainstall-report-download');
     Route::get('rma', [ReportController::class, 'RMA'])->name('rma');
     Route::post('rma-report', [ReportController::class, 'RMADisplay'])->name('rma-report');
     Route::post('rma-report-download', [ReportController::class, 'RMADownload'])->name('rma-report-download');

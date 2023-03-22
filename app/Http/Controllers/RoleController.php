@@ -109,7 +109,7 @@ class RoleController extends Controller
             $Reports = array("RMA Report" => 0, "Sales Issue" => 0, "Item Adjustment" => 0, "Help Desk Report" => 0, "Job Order Report" => 0, "Job Order Journey" => 0, "Sales Order Report" => 0, 
                             "Transfer Issue Report" => 0, "Item Purchase Report" => 0, "Purchase Rate History" => 0, "M Transfer Against JO" => 0, "Material Consumption" => 0, 
                             "Purchase Order Report" => 0, "Consumption Expection" => 0, "Purchase Invoice Report" => 0, "Work Order Item Costing" => 0, "Consumption Comparison" => 0, "Transfer Ledger Report" => 0,
-                            "Transfer Ledger Rate" => 0, "Transfer Issue Rate" => 0, "Material Consumption Rate" => 0);
+                            "Transfer Ledger Rate" => 0, "Transfer Issue Rate" => 0, "Material Consumption Rate" => 0, "M Transfer Against All JO" => 0);
 
             if($request->Reports != NULL){
                 for($i=0; $i<count($request->Reports); $i++){ 
@@ -134,13 +134,14 @@ class RoleController extends Controller
                     if($request['Reports'][$i] == "Transfer Ledger Rate") $Reports['Transfer Ledger Rate'] = 1;
                     if($request['Reports'][$i] == "Transfer Issue Rate") $Reports['Transfer Issue Rate'] = 1;
                     if($request['Reports'][$i] == "Material Consumption Rate") $Reports['Material Consumption Rate'] = 1;
+                    if($request['Reports'][$i] == "M Transfer Against All JO") $Reports['M Transfer Against All JO'] = 1;
                 }
             }
             else{
                 $Reportss = array("RMA Report", "Sales Issue", "Item Adjustment", "Help Desk Report", "Job Order Report", "Job Order Journey", "Sales Order Report", 
                                 "Transfer Issue Report", "Item Purchase Report", "Purchase Rate History", "M Transfer Against JO", "Material Consumption", 
                                 "Purchase Order Report", "Consumption Expection", "Purchase Invoice Report", "Work Order Item Costing", "Consumption Comparison", "Transfer Ledger Report",
-                                "Transfer Ledger Rate", "Transfer Issue Rate", "Material Consumption Rate");
+                                "Transfer Ledger Rate", "Transfer Issue Rate", "Material Consumption Rate", "M Transfer Against All JO");
             }
     
             if($request->Others != NULL){
@@ -246,7 +247,7 @@ class RoleController extends Controller
                 }
             }
             else{
-                for($i=0; $i<21; $i++){
+                for($i=0; $i<22; $i++){
                     $Reportdata[] = [
                         'name' => $name,
                         'role_name' => $Reportss[$i],
@@ -407,7 +408,7 @@ class RoleController extends Controller
             $Reports = array("RMA Report" => 0, "Sales Issue" => 0, "Item Adjustment" => 0, "Help Desk Report" => 0, "Job Order Report" => 0, "Job Order Journey" => 0, "Sales Order Report" => 0, 
                             "Transfer Issue Report" => 0, "Item Purchase Report" => 0, "Purchase Rate History" => 0, "M Transfer Against JO" => 0, "Material Consumption" => 0, 
                             "Purchase Order Report" => 0, "Consumption Expection" => 0, "Purchase Invoice Report" => 0, "Work Order Item Costing" => 0, "Consumption Comparison" => 0, "Transfer Ledger Report" => 0,
-                            "Transfer Ledger Rate" => 0, "Transfer Issue Rate" => 0, "Material Consumption Rate" => 0);
+                            "Transfer Ledger Rate" => 0, "Transfer Issue Rate" => 0, "Material Consumption Rate" => 0, "M Transfer Against All JO" => 0);
 
             if($request->Reports != NULL){
                 for($i=0; $i<count($request->Reports); $i++){ 
@@ -432,13 +433,14 @@ class RoleController extends Controller
                     if($request['Reports'][$i] == "Transfer Ledger Rate") $Reports['Transfer Ledger Rate'] = 1;
                     if($request['Reports'][$i] == "Transfer Issue Rate") $Reports['Transfer Issue Rate'] = 1;
                     if($request['Reports'][$i] == "Material Consumption Rate") $Reports['Material Consumption Rate'] = 1;
+                    if($request['Reports'][$i] == "M Transfer Against All JO") $Reports['M Transfer Against All JO'] = 1;
                 }
             }
             else{
                 $Reportss = array("RMA Report", "Sales Issue", "Item Adjustment", "Help Desk Report", "Job Order Report", "Job Order Journey", "Sales Order Report", 
                                 "Transfer Issue Report", "Item Purchase Report", "Purchase Rate History", "M Transfer Against JO", "Material Consumption", 
                                 "Purchase Order Report", "Consumption Expection", "Purchase Invoice Report", "Work Order Item Costing", "Consumption Comparison", "Transfer Ledger Report",
-                                "Transfer Ledger Rate", "Transfer Issue Rate", "Material Consumption Rate");
+                                "Transfer Ledger Rate", "Transfer Issue Rate", "Material Consumption Rate", "M Transfer Against All JO");
             }
     
             if($request->Others != NULL){
@@ -543,7 +545,7 @@ class RoleController extends Controller
                 }
             }
             else{
-                for($i=0; $i<21; $i++){
+                for($i=0; $i<22; $i++){
                     $Reportdata[] = [
                         'name' => $name,
                         'role_name' => $Reportss[$i],
