@@ -297,6 +297,15 @@
                                                                 <input class="form-check-input name Singlecheck221" id="specificationtransfer1" type="checkbox" name="JobOrder[]">
                                                                 <span id="specificationtransfer" class="form-check-label"></span>
                                                             </label>
+                                                            <br>
+                                                            <label class="form-check form-check-inline" id="plc27" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="pricingie1" type="checkbox" name="JobOrder[]">
+                                                                <span id="pricingie" class="form-check-label"></span>
+                                                            </label>
+                                                            <label class="form-check form-check-inline" id="plc28" style="display: none;">
+                                                                <input class="form-check-input name Singlecheck221" id="specificationie1" type="checkbox" name="JobOrder[]">
+                                                                <span id="specificationie" class="form-check-label"></span>
+                                                            </label>
                                                             <label class="form-check form-check-inline" style="float: right;">
                                                                 <input class="form-check-input" id="allCheck221" type="checkbox">
                                                                 <span class="form-check-label">Mark All</span>
@@ -1348,6 +1357,10 @@
                     $("#specificationppc1").attr('value', "Specification-Sheet PPC");
                     $("#specificationtransfer").html("Specification-Sheet Transfer");
                     $("#specificationtransfer1").attr('value', "Specification-Sheet Transfer");
+                    $("#pricingie").html("Pricing-Sheet IE");
+                    $("#pricingie1").attr('value', "Pricing-Sheet IE");
+                    $("#specificationie").html("Specification-Sheet IE");
+                    $("#specificationie1").attr('value', "Specification-Sheet IE");
                     $("#joborder").show();
                 }
                 else{
@@ -1796,6 +1809,40 @@
                         $("#specificationtransfer").html("Specification-Sheet Transfer");
                         $("#specificationtransfer1").attr('value', "Specification-Sheet Transfer");
                         $("#specificationtransfer1").attr('checked', false);
+                    }
+                    if(data[0].joborder[26]){
+                        $("#plc27").show();
+                        $("#pricingie").html(data[0].joborder[26].role_name);
+                        $("#pricingie1").attr('value', data[0].joborder[26].role_name);
+                        if(data[0].joborder[26].value == 1){
+                            $("#pricingie1").attr('checked', true);
+                        }
+                        else{
+                            $("#pricingie1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc27").show();
+                        $("#pricingie").html("Pricing-Sheet IE");
+                        $("#pricingie1").attr('value', "Pricing-Sheet IE");
+                        $("#pricingie1").attr('checked', false);
+                    }
+                    if(data[0].joborder[27]){
+                        $("#plc28").show();
+                        $("#specificationie").html(data[0].joborder[27].role_name);
+                        $("#specificationie1").attr('value', data[0].joborder[27].role_name);
+                        if(data[0].joborder[27].value == 1){
+                            $("#specificationie1").attr('checked', true);
+                        }
+                        else{
+                            $("#specificationie1").attr('checked', false);
+                        }
+                    }
+                    else{
+                        $("#plc28").show();
+                        $("#specificationie").html("Specification-Sheet IE");
+                        $("#specificationie1").attr('value', "Specification-Sheet IE");
+                        $("#specificationie1").attr('checked', false);
                     }
                     $("#joborder").show();
                 }

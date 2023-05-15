@@ -9,7 +9,12 @@ class PlcPricing extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['overhead_id', 'season', 'purpose', 'profit', 'project', 'remarks', 'product', 'last', 'progress', 'image', 'sequence', 'date', 'category', 'status', 'shape', 'sole', 'range_no', 'design_no', 'designer', 'description', 'sequence', 'profit_price'];
+    protected $fillable = ['overhead_id', 'season', 'purpose', 'profit', 'project', 'remarks', 'product', 'last', 'progress', 'image', 'sequence', 'date', 'category', 'status', 'shape', 'sole', 'range_no', 'design_no', 'designer', 'description', 'sequence', 'profit_price', 'subcategory', 'type'];
 
     public $timestamps = true;
+
+    public function Category()
+    {
+        return $this->belongsTo('App\Models\PlcCategory', 'category', 'id');
+    }
 }

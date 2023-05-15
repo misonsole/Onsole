@@ -27,7 +27,9 @@ use App\Exports\PurchaseInvoice;
 use App\Exports\TransferLedger;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\User;
+use App\Models\Books;
 use App\Models\Support;
+use App\Models\Allbook;
 use App\Models\Category;
 use App\Models\RoleName;
 use App\Models\LastNumber;
@@ -69,9 +71,7 @@ class ReportController extends Controller
     public function Transfer(Request $request)
     {
         try{
-            $booksArray = array();
-            $locatorArray = array();
-            $transferArray = array();
+            $booksArray = array(); $locatorArray = array(); $transferArray = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql2 = "SELECT DISTINCT TRANS_DATE, TRANS_NO FROM TRANS_ISSUE_MT ORDER BY TRANS_DATE";
@@ -86,6 +86,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $books[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $books));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            }  
             $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
             $result3 = oci_parse($conn, $sql3);
             oci_execute($result3);
@@ -102,6 +126,7 @@ class ReportController extends Controller
                 "locator" => $locator,
                 "z" => $counttransfer, 
                 "j" => $counttransfer,
+                "assignbook" => $assignbook,            
             ]);
         }
         catch(Exception $e){
@@ -116,9 +141,7 @@ class ReportController extends Controller
     public function TransferLedger(Request $request)
     {
         try{
-            $booksArray = array();
-            $locatorArray = array();
-            $transferArray = array();
+            $booksArray = array(); $locatorArray = array(); $transferArray = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql2 = "SELECT DISTINCT TRANS_DATE, TRANS_NO FROM TRANS_ISSUE_MT ORDER BY TRANS_DATE";
@@ -133,6 +156,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $books[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $books));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            }  
             $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
             $result3 = oci_parse($conn, $sql3);
             oci_execute($result3);
@@ -149,6 +196,7 @@ class ReportController extends Controller
                 "locator" => $locator,
                 "z" => $counttransfer, 
                 "j" => $counttransfer,
+                "assignbook" => $assignbook,
             ]);
         }
         catch(Exception $e){
@@ -1142,7 +1190,7 @@ class ReportController extends Controller
     public function Adjustment(Request $request)
     {
         try{
-            $books = array(); $adjustment = array();
+            $books = array(); $adjustment = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Item Adjustment%' OR INV_BOOK_DESC = 'Item_adjustment-SS'";
@@ -1151,6 +1199,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $books[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $books));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            } 
             $sql2 = "SELECT DISTINCT ADJUSTMENT_NO FROM ITEM_ADJUSTMENT_MT ORDER BY ADJUSTMENT_NO";
             $result2 = oci_parse($conn, $sql2);
             oci_execute($result2);
@@ -1161,6 +1233,7 @@ class ReportController extends Controller
                 "Permission" => 0, 
                 "books" => $books,
                 "adjustment" => $adjustment,
+                "assignbook" => $assignbook,
             ]);
         }
         catch(Exception $e){
@@ -1460,7 +1533,7 @@ class ReportController extends Controller
     public function Workorder(Request $request)
     {
         try{
-            $books = array(); $adjustment = array();
+            $books = array(); $adjustment = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Item Adjustment%' OR INV_BOOK_DESC = 'Item_adjustment-SS'";
@@ -1469,6 +1542,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $books[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $books));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            } 
             $sql2 = "SELECT DISTINCT ADJUSTMENT_NO FROM ITEM_ADJUSTMENT_MT ORDER BY ADJUSTMENT_NO";
             $result2 = oci_parse($conn, $sql2);
             oci_execute($result2);
@@ -1479,6 +1576,7 @@ class ReportController extends Controller
                 "Permission" => 0, 
                 "books" => $books,
                 "adjustment" => $adjustment,
+                "assignbook" => $assignbook,
             ]);
         }
         catch(Exception $e){
@@ -2260,7 +2358,7 @@ class ReportController extends Controller
     public function Sales(Request $request)
     {
         try{
-            $book = array(); $season = array(); $agent = array();
+            $book = array(); $season = array(); $agent = array(); $supportData = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE 'Sales Invoice%' OR  INV_BOOK_DESC LIKE 'Sales Return%' OR  INV_BOOK_DESC LIKE 'Sales Tax%' ";
@@ -2269,6 +2367,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            }                        
             $sql2 = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION";
             $result2 = oci_parse($conn, $sql2);
             oci_execute($result2);
@@ -2286,6 +2408,7 @@ class ReportController extends Controller
                 "agent" => $agent, 
                 "book" => $book,
                 "season" => $season,
+                "assignbook" => $assignbook,            
             ]);
         }
         catch(Exception $e){
@@ -2711,7 +2834,7 @@ class ReportController extends Controller
     public function SalesOrder(Request $request)
     {
         try{
-            $book = array(); $season = array(); $agent = array(); $category = array(); $subCategory = array();
+            $book = array(); $season = array(); $agent = array(); $category = array(); $subCategory = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE 'Sales Order%'";
@@ -2720,6 +2843,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            } 
             $sql2 = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION";
             $result2 = oci_parse($conn, $sql2);
             oci_execute($result2);
@@ -2751,6 +2898,7 @@ class ReportController extends Controller
                 "season" => $season,
                 "category" => $category,
                 "subCategory" => $subCategory,
+                "assignbook" => $assignbook,
             ]);
         }
         catch(Exception $e){
@@ -3237,7 +3385,7 @@ class ReportController extends Controller
     public function PurchaseOrder(Request $request)
     {
         try{
-            $book = array(); $category = array(); $subCategory = array();
+            $book = array(); $category = array(); $subCategory = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE 'Purchase Order%'";
@@ -3246,6 +3394,30 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row1["INV_BOOK_DESC"];
             }    
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            } 
             $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1";
             $result4 = oci_parse($conn, $sql4);
             oci_execute($result4);
@@ -3263,6 +3435,7 @@ class ReportController extends Controller
                 "book" => $book, 
                 "category" => $category,
                 "subCategory" => $subCategory,
+                "assignbook" => $assignbook,
             ]);
         }
         catch(Exception $e){
@@ -4063,7 +4236,7 @@ class ReportController extends Controller
     public function RMA(Request $request)
     {
         try{
-            $book = array(); $season = array(); $agent = array(); $category = array(); $subCategory = array();
+            $book = array(); $season = array(); $agent = array(); $category = array(); $subCategory = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%RMA Inward%'";
@@ -4072,9 +4245,34 @@ class ReportController extends Controller
             while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row1["INV_BOOK_DESC"];
             }
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            }
             return view('report.rmareport')->with([
                 "Permission" => 0, 
                 "book" => $book, 
+                "assignbook" => $assignbook, 
             ]);
         }
         catch(Exception $e){
@@ -5642,7 +5840,7 @@ class ReportController extends Controller
 
     public function MaterialData()
     {
-        $books = array(); $locator = array();
+        $books = array(); $locator = array(); $assignbook = array();
         $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
         $conn = oci_connect("onsole","s",$wizerp);
         $sql1 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE '%Internal Transfer%' OR INV_BOOK_DESC LIKE '%Transfer Issue%'";
@@ -5651,6 +5849,30 @@ class ReportController extends Controller
         while($row1 = oci_fetch_array($result1,  OCI_ASSOC+OCI_RETURN_NULLS)){
             $books[] = $row1["INV_BOOK_DESC"];
         }    
+        $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+        $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+        if(count($bookdata) != 0){
+            $value = str_replace('[', '', $bookdata[0]);
+            $value = str_replace(']', '', $value);
+            $str_arr = explode (",", $value);
+            foreach($str_arr as $val){
+                $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                if(count($userbook1) == 0){
+                    $notification = array(
+                        'message' => "Books are not defined to this Role",
+                        'alert-type' => 'error'
+                    );
+                    return back()->with($notification);
+                }
+                else{
+                    $supportData[] = $userbook1[0];
+                }
+            }
+            $assignbook = (array_intersect($supportData, $books));
+        }
+        elseif(count($bookdata) == 0){
+            $assignbook = [];
+        }
         $sql3 = "SELECT CODE_VALUE, CODE_DESC FROM CODE_COMBINATION_VALUES WHERE STRUCTURE_ID = 30";
         $result3 = oci_parse($conn, $sql3);
         oci_execute($result3);
@@ -5659,7 +5881,8 @@ class ReportController extends Controller
         }
         $data = array(
             "books" => $books, 
-            "locator" => $locator
+            "locator" => $locator,
+            "assignbook" => $assignbook,
         );
         return response()->json($data);
     }
@@ -6996,7 +7219,7 @@ class ReportController extends Controller
     public function PurchaseInvoice(Request $request)
     {
         try{
-            $book = array(); $subCategory = array(); $category = array();
+            $book = array(); $subCategory = array(); $category = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql3 = "SELECT INV_BOOK_DESC FROM INV_BOOKS_MT WHERE INV_BOOK_DESC LIKE 'Purchase Inv%' ";
@@ -7004,6 +7227,30 @@ class ReportController extends Controller
             oci_execute($result3);
             while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row3["INV_BOOK_DESC"];
+            }
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
             }
             $sql4 = "SELECT W1.SEGMENT_VALUE_DESC FROM WIZ_SEGMENT01 W1 ORDER BY W1.SEGMENT_VALUE_DESC";
             $result4 = oci_parse($conn, $sql4);
@@ -7022,6 +7269,7 @@ class ReportController extends Controller
                 "book" => $book, 
                 "category" => $category, 
                 "subCategory" => $subCategory, 
+                "assignbook" => $assignbook, 
             ]);
         }
         catch(Exception $e){
@@ -7443,7 +7691,7 @@ class ReportController extends Controller
     public function ItemPurchase(Request $request)
     {
         try{
-            $book = array();
+            $book = array(); $assignbook = array();
             $wizerp = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $conn = oci_connect("onsole","s",$wizerp);
             $sql3 = "SELECT IBM.INV_BOOK_DESC FROM INV_BOOKS_MT IBM WHERE IBM.INV_DOC_TYPE_ID = 3";
@@ -7452,9 +7700,34 @@ class ReportController extends Controller
             while($row3 = oci_fetch_array($result3,  OCI_ASSOC+OCI_RETURN_NULLS)){
                 $book[] = $row3["INV_BOOK_DESC"];
             }
+            $userbook = RoleName::orderBy('id','ASC')->where('name', Auth::user()->userrole)->pluck('id');
+            $bookdata = Books::orderBy('id','ASC')->where('role', $userbook[0])->pluck('book_name');
+            if(count($bookdata) != 0){
+                $value = str_replace('[', '', $bookdata[0]);
+                $value = str_replace(']', '', $value);
+                $str_arr = explode (",", $value);
+                foreach($str_arr as $val){
+                    $userbook1 = Allbook::orderBy('id','ASC')->where('id', $val)->pluck('book');
+                    if(count($userbook1) == 0){
+                        $notification = array(
+                            'message' => "Books are not defined to this Role",
+                            'alert-type' => 'error'
+                        );
+                        return back()->with($notification);
+                    }
+                    else{
+                        $supportData[] = $userbook1[0];
+                    }
+                }
+                $assignbook = (array_intersect($supportData, $book));
+            }
+            elseif(count($bookdata) == 0){
+                $assignbook = [];
+            }
             return view('report.itempurchase')->with([
                 "Permission" => 0,
                 "book" => $book, 
+                "assignbook" => $assignbook, 
             ]);
         }
         catch(Exception $e){

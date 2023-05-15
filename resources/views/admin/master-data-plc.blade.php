@@ -437,6 +437,67 @@
             <div class="card h-100">
                 <div class="card-body p-5">
                     <div class="text-center mt-1">
+                        <h3 class="py-3">Create Sub Category</h3>
+                    </div>
+                    <form action="{{url('add-sub-categoryy')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                        <div class="form-group row py-2">
+                            <div class="col-sm-12">
+                                <label><b style="color: #6c757d">Category</b></label>
+                                <select style="border: 1px solid #bfbfbf;" id="category" name="category" class="form-control select.custom-select" required>
+                                    <option selected disabled>Select Category</option>                                            
+                                    @foreach($categoryPlc as $name)
+                                        <option value="{{ $name->id }}">{{ $name->description }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row py-2">
+                            <div class="col-sm-9">
+                                <label><b style="color: #6c757d">Sub Category</b></label>
+                                <input type="text" class="form-control py-0 yourclass" style="border: 1px solid #bfbfbf;" id="subcategory" name="subcategory" placeholder="Enter Sub Category" required>
+                            </div>
+                            <div class="col-sm-3 py-4">
+                                <button type="submit" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn py-2 btn-lg btn-block text-white">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group row py-2 px-2">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr class="text-center">
+                                        <th>#</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($subcategory as $num)
+                                    <tr class="text-center">
+                                        <td>{{$k++}}</td>
+                                        <td>{{$num['result']}}</td>
+                                        <td>{{$num['data']['description']}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group row py-2">
+                        <div class="col-sm-12">
+                            <button data-toggle="modal" data-target="#exampleModalCenterSubCategory" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">View All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 mb-5">
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body p-5">
+                    <div class="text-center mt-1">
                         <h3 class="py-3">Create Size Range</h3>
                     </div>
                     <form action="{{url('add-sizerange-plc')}}" method="post" enctype="multipart/form-data">
@@ -479,8 +540,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-2 mb-5">
         <div class="col-lg-4 mb-5">
             <div class="card h-100">
                 <div class="card-body p-5">
@@ -581,6 +640,54 @@
                     <div class="form-group row py-2">
                         <div class="col-sm-12">
                             <button data-toggle="modal" data-target="#exampleModalCenterSubDivision" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">View All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 mb-5">
+        <div class="col-lg-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body p-5">
+                    <div class="text-center mt-1">
+                        <h3 class="py-3">Create Type</h3>
+                    </div>
+                    <form action="{{url('add-type')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                        <div class="form-group row py-2">
+                            <div class="col-sm-9">
+                                <label><b style="color: #6c757d">Type</b></label>
+                                <input type="text" class="form-control py-0 yourclass" style="border: 1px solid #bfbfbf;" id="type" name="type" placeholder="Enter Type" required>
+                            </div>
+                            <div class="col-sm-3 py-4">
+                                <button type="submit" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn py-2 btn-lg btn-block text-white">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-group row py-2 px-2">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead class="thead-dark">
+                                    <tr class="text-center">
+                                        <th>#</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($type as $num)
+                                    <tr class="text-center">
+                                        <td>{{$m++}}</td>
+                                        <td>{{$num['description']}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group row py-2">
+                        <div class="col-sm-12">
+                            <button data-toggle="modal" data-target="#exampleModalCenterSizeRange" style="margin-top: 5px; border: none; font-size: 15px; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6));" class="btn px-5 py-1 btn-lg btn-block text-white">View All</button>
                         </div>
                     </div>
                 </div>
@@ -981,6 +1088,52 @@
         </div>
     </div>
 </div>
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenterSubCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header" style="background: none;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Sub Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="row_callback" class="table dt-responsive nowrap text-center" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Category</th>
+                            <th class="text-center">Sub Category</th>
+                            <th class="text-center">Action</th>
+                            <th hidden></th>
+                            <th hidden></th>
+                            <th hidden></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for($i=0; $i<$subcategorycount; $i++)
+                        <tr>
+                            <td class="text-center py-0">{{$ll++}}</td>
+                            <td class="py-0"><input readonly class="form-control form-control-sm py-0 text-center" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$Allsubcategory[$i]['result']}}"></td>
+                            <td class="py-0"><input readonly class="form-control form-control-sm py-0 text-center" id="subcategory{{$Allsubcategory[$i]['data']['id']}}" style="border: none; background: transparent; margin-left: auto; margin-right: auto;" type="text" value="{{$Allsubcategory[$i]['data']['description']}}"></td>
+                            <td hidden>Edinburgh</td>
+                            <td hidden></td>
+                            <td hidden></td>
+                            <td class="py-0">                                                       
+                                <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Edit&nbsp;&nbsp;" data-id="{{$Allsubcategory[$i]['data']['id']}}" class="mr-1 subcategoryEdit" style="cursor: pointer;"><i class="fas fa-edit text-info font-13"></i></a>
+                                <a hidden data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;Delete&nbsp;&nbsp;" data-id="{{$Allsubcategory[$i]['data']['id']}}" class="mr-1 subcategoryDel" style="cursor: pointer;"><i class="fas fa-trash-alt text-danger font-13"></i></a>
+                            </td>
+                        </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer" style="background: none;">
+                <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade bd-example-modal-lg" id="exampleModalCenterSizeRange" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-3">
@@ -1311,6 +1464,28 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModalCenter9SubCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{url('subcategory')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group row py-2 text-center">
+                    <div class="col-sm-12 mb-1 mb-sm-0">
+                        <label for=""><h4 style="color: #6c757d">Edit Sub Category</h4></label>
+                        <input id="subcategoryId" name="subcategoryId" class="form-control py-0" type="text" hidden>
+                        <input id="subcategoryNum" name="subcategoryNum" class="form-control py-0 text-center" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center" style="background-color: transparent">
+                <button type="submit" style="box-shadow: none;" class="btn btn-success">Update</button>
+                <button type="button" style="box-shadow: none;" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script src="assets/js/customjquery.min.js"></script>
 <script src="assets/js/sweetalert.min.js"></script>
 <script>
@@ -1394,6 +1569,42 @@
         $.ajax({
                 type: 'GET',
                 url: 'subdivisiondel/'+id,
+                dataType: "json",
+                success: function(data){
+                    if(data == 1){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Deleted',
+                        });
+                        location.reload();
+                    }
+                    else if(data == 400){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong!',
+                        });
+                    }
+                }
+            })
+    });
+
+    //SubCategory
+    $(".subcategoryEdit").click(function(){
+        var id = $(this).attr("data-id");
+        var last = $('#subcategory'+id).val();
+        console.log("Id, last");
+        console.log(id, last);
+        console.log("Id, last");
+        $('#subcategoryId').val(id);
+        $('#subcategoryNum').val(last);
+        $('#exampleModalCenter9SubCategory').modal('show');
+        $('#exampleModalCenterSubCategory').modal('hide');
+    });
+    $(".subcategoryDel").click(function(){
+        var id = $(this).attr("data-id");
+        $.ajax({
+                type: 'GET',
+                url: 'subcategorydel/'+id,
                 dataType: "json",
                 success: function(data){
                     if(data == 1){

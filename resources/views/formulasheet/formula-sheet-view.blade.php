@@ -81,7 +81,7 @@
                 <div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('home')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{url('pricing-sheet-table')}}">Pricing Sheet</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('formula-sheet-table')}}">Manage Formula Sheet</a></li>
                         <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Formula Sheet</li>
                     </ol>
                 </div>
@@ -93,6 +93,10 @@
         <div class="col-lg-12 mb-5">
             <div class="card">
                 <div class="card-body p-5">
+                    <div class="text-center">
+                        <h4>{{$seq}}</h4>
+                    </div>
+                    <br>
                     <div class="form-group row py-0">
                         <div class="col-lg-12">
                             <div class="table-responsive">

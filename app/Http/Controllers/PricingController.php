@@ -10,6 +10,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Newrole;
 use App\Models\PlcSole;
+use App\Models\PlcType;
 use App\Models\PlcRange;
 use App\Models\PlcShape;
 use App\Models\PlcManual;
@@ -24,6 +25,7 @@ use App\Models\PlcCategory;
 use Illuminate\Http\Request;
 use App\Models\PlcLastNumber;
 use App\Models\notifications;
+use App\Models\PlcSubCategory;
 use App\Models\PlcFormulaDetail;
 use App\Models\PlcSpecification;
 use App\Models\PlcPricingDetail;
@@ -48,7 +50,7 @@ class PricingController extends Controller
             $date = date('d F Y');
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $connPRL = oci_connect("onsole","s",$wizerp);
-            $sql = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION";
+            $sql = "SELECT SEASON_DEF_DESC FROM ONSOLE_SEASON_DEFINITION AA ORDER BY AA.SEASON_DEF_DESC";
             $result = oci_parse($connPRL, $sql);
             oci_execute($result);
             while($row = oci_fetch_array($result,  OCI_ASSOC+OCI_RETURN_NULLS)){
@@ -77,12 +79,13 @@ class PricingController extends Controller
             }
             $last = PlcLastNumber::orderBy('id','DESC')->get();
             $location = PlcLocation::orderBy('location_no','ASC')->get();
-            $category = PlcCategory::orderBy('id','DESC')->get();
-            $project = PlcProject::orderBy('id','DESC')->get();
+            $category = PlcCategory::orderBy('description','ASC')->get();
+            $project = PlcProject::orderBy('description','ASC')->get();
             $purpose = PlcPurpose::orderBy('id','DESC')->get();
-            $range = PlcRange::orderBy('id','DESC')->get();
-            $shape = PlcShape::orderBy('id','DESC')->get();
-            $sole = PlcSole::orderBy('id','DESC')->get();
+            $range = PlcRange::orderBy('description','ASC')->get();
+            $shape = PlcShape::orderBy('description','ASC')->get();
+            $sole = PlcSole::orderBy('description','ASC')->get();
+            $type = PlcType::orderBy('description','ASC')->get();
             $division = Division::orderBy('id','DESC')->get();
             $Support = PlcPricing::orderBy('id','DESC')->limit(1)->get();
             if(count($Support) == 0){
@@ -92,7 +95,7 @@ class PricingController extends Controller
                 $result = $store + $Support[0]->sequence;
             }
             return view('pricingsheet.pricing-sheet')->with([
-                'i'=> 1, 'j'=> 1, 'last'=> $last, 'date'=> $date, 'sole'=> $sole, 'range'=> $range,'range'=> $range, 'shape'=> $shape, 'season'=> $season,
+                'i'=> 1, 'j'=> 1, 'last'=> $last, 'date'=> $date, 'sole'=> $sole, 'type'=> $type, 'range'=> $range,'range'=> $range, 'shape'=> $shape, 'season'=> $season,
                 'project'=> $project, 'purpose'=> $purpose, 'sequence'=> $result, 'location'=> $location, 'category'=> $category, 'itemcode'=> $item_code, 
                 'articlecode'=> $article_code, 'division'=> $division, 
             ]);
@@ -126,6 +129,8 @@ class PricingController extends Controller
             $costing->purpose = $request->purpose;
             $costing->sequence = $request->sequence; 
             $costing->category = $request->category;
+            $costing->subcategory = 'Sub Category';
+            $costing->type = $request->type;
             $costing->last = $request->last;
             $costing->shape = $request->shape;
             $costing->sole = $request->sole; 
@@ -426,7 +431,7 @@ class PricingController extends Controller
 
             //Overhead
             $cuttingDataF = []; $StitchingDataF = []; $LaminationDataF = []; $ClosingDataF = []; $LastingDataF = []; $PackingDataF = [];
-            $data12 = DB::table('plc_pricings')->where('id', $id)->get();
+            $data12 = PlcPricing::where('id', $id)->with('Category')->get();
             $overhead_id = $data12[0]->overhead_id;
             $DateTime = $data12[0]->created_at;
             $DateTime = explode(' ', $DateTime);
@@ -1622,7 +1627,7 @@ class PricingController extends Controller
     {
         try{
             $id = $request->id;
-            DB::table('plc_pricings')->where('id', $id)->update(['progress' => 50]);
+            DB::table('plc_pricings')->where('id', $id)->update(['progress' => 60]);
             if(isset($request->cut_item_code[0]) != null){
                 $start = 0;
                 foreach($request->cut_id as $dataId){
@@ -1795,7 +1800,7 @@ class PricingController extends Controller
             $id = $request->id;
             $fetch = DB::table('plc_pricings')->where('id', $id)->get();
             if($fetch[0]->progress != 80 && $fetch[0]->progress != 100){
-                DB::table('plc_pricings')->where('id', $id)->update(['progress' => 60]);
+                DB::table('plc_pricings')->where('id', $id)->update(['progress' => 40]);
             }
             PlcPricingResource::where('costing_id', $id)->delete();
             if($request->cut_value_r[0] != null){
@@ -1886,7 +1891,7 @@ class PricingController extends Controller
                 'message' => 'Pricing Sheet Resources Updated',
                 'alert-type' => 'success'
             );
-            return back()->with($notification);
+            return redirect()->route('pricing-sheet-table')->with($notification); 
         }
         catch(Exception $e){
             $notification = array(
@@ -2068,6 +2073,168 @@ class PricingController extends Controller
                 }
             }
             return view('pricingsheet.pricing-sheet-update-costing')->with([
+                'id'=> $id,
+                'data'=> $data[0],
+                'i'=> 1,'j'=> 1,'k'=> 1,'l'=> 1,'m'=> 1,'n'=> 1,
+                'a1'=> 1, 'a2'=> 1, 'a11'=> 1, 'a22'=> 1, 'a111'=> 1, 'a222'=> 1, 'b1'=> 1, 'b2'=> 1, 'b11'=> 1, 'b22'=> 1, 'b111'=> 1, 'b222'=> 1,
+                'c1'=> 1, 'c2'=> 1, 'c11'=> 1, 'c22'=> 1, 'c111'=> 1, 'c222'=> 1, 'd1'=> 1, 'd2'=> 1, 'd11'=> 1, 'd22'=> 1, 'd111'=> 1, 'd222'=> 1,
+                'e1'=> 1,'e2'=> 1,'e11'=> 1,'e22'=> 1,'e111'=> 1,'e222'=> 1, 'f1'=> 1,'f2'=> 1,'f11'=> 1,'f22'=> 1,'f111'=> 1,'f222'=> 1,
+                'cuttingData'=> $cuttingData, 'InsoleData'=> $InsoleData, 'LaminationData'=> $LaminationData, 'ClosingData'=> $ClosingData, 'LastingData'=> $LastingData, 'PackingData'=> $PackingData,
+                'F_cuttingData'=> $F_cuttingData, 'F_StitchingData'=> $F_StitchingData, 'F_LaminationData'=> $F_LaminationData, 'F_ClosingData'=> $F_ClosingData, 'F_LastingData'=> $F_LastingData, 'F_PackingData'=> $F_PackingData,
+                'cuttingData_o'=> $cuttingData_o, 'InsoleData_o'=> $InsoleData_o, 'LaminationData_o'=> $LaminationData_o, 'ClosingData_o'=> $ClosingData_o, 'LastingData_o'=> $LastingData_o, 'PackingData_o'=> $PackingData_o,
+                'cuttingData_r'=> $cuttingData_r, 'InsoleData_r'=> $InsoleData_r, 'LaminationData_r'=> $LaminationData_r, 'ClosingData_r'=> $ClosingData_r, 'LastingData_r'=> $LastingData_r, 'PackingData_r'=> $PackingData_r,
+                'userseason'=> $userseason, 'userpurpose'=> $userpurpose, 'image'=> $userimage, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole,
+                'userproject'=> $userproject, 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription,
+                'usercategory'=> $usercategory, 'sequence'=> $sequence, 'date'=> $date, 'progress'=> $progress, 'formulaData'=> $formulaData, 'overhead_id' => $overhead_id
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function UpdateIe(Request $request)
+    {
+        try{
+            $id = $_GET['id'];
+            $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $F_cuttingData = []; $F_StitchingData = []; $F_LaminationData = []; $F_ClosingData = []; $F_LastingData = []; $F_PackingData = [];
+            $cuttingData_o = []; $InsoleData_o = []; $LaminationData_o = []; $ClosingData_o = []; $LastingData_o = []; $PackingData_o = [];
+            $cuttingData_r = []; $InsoleData_r = []; $LaminationData_r = []; $ClosingData_r = []; $LastingData_r = []; $PackingData_r = [];
+            $formulaData = PlcFormula::orderBy('id','DESC')->get();
+            $data = DB::table('plc_pricings')->where('id', $id)->get();
+            $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $dataA = PlcFormula::orderBy('id','ASC')->where('id', $id)->get();
+            foreach($dataA as $value){
+                if($value->dep == "Cutting"){
+                    $F_cuttingData[] = $value;
+                }
+                elseif($value->dep == "Stitching"){
+                    $F_StitchingData[] = $value;
+                }
+                elseif($value->dep == "Lamination"){
+                    $F_LaminationData[] = $value;
+                }
+                elseif($value->dep == "Closing"){
+                    $F_ClosingData[] = $value;
+                }
+                elseif($value->dep == "Lasting"){
+                    $F_LastingData[] = $value;
+                }
+                elseif($value->dep == "Packing"){
+                    $F_PackingData[] = $value;
+                }
+            }
+
+            $userseason = $data[0]->season;
+            $userpurpose = $data[0]->purpose;
+            $userimage = $data[0]->image;
+            Session::put('image', $userimage);
+            $sequence = $data[0]->sequence;
+            $date = $data[0]->date;
+            $category = $data[0]->category;
+            $usershape = $data[0]->shape;
+            $usersole = $data[0]->sole;
+            $userproject = $data[0]->project;
+            $userproduct = $data[0]->product;
+            $userrange = $data[0]->range_no;
+            $userdesign = $data[0]->design_no;
+            $userdescription = $data[0]->description;
+            $usercategory = $data[0]->category;
+            $progress = $data[0]->progress;
+            $overhead_id = $data[0]->overhead_id;
+            $data1 = DB::table('plc_pricing_overheads')->where('costing_id', $id)->get();
+            $data2 = DB::table('plc_pricing_resources')->where('costing_id', $id)->get();
+            $data3 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
+            foreach($data3 as $value){
+                if($value->material == "cutting"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $cuttingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "insole"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $InsoleData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "lamination"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LaminationData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "closing"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $ClosingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "lasting"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LastingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "packing"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $PackingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+            }
+            foreach($data1 as $value){
+                if($value->material == "cutting"){
+                    $cuttingData_o[] = $value;
+                }
+                elseif($value->material == "insole"){
+                    $InsoleData_o[] = $value;
+                }
+                elseif($value->material == "lamination"){
+                    $LaminationData_o[] = $value;
+                }
+                elseif($value->material == "closing"){
+                    $ClosingData_o[] = $value;
+                }
+                elseif($value->material == "lasting"){
+                    $LastingData_o[] = $value;
+                }
+                elseif($value->material == "packing"){
+                    $PackingData_o[] = $value;
+                }
+            }
+            foreach($data2 as $value){
+                if($value->material == "cutting"){
+                    $cuttingData_r[] = $value;
+                }
+                elseif($value->material == "insole"){
+                    $InsoleData_r[] = $value;
+                }
+                elseif($value->material == "lamination"){
+                    $LaminationData_r[] = $value;
+                }
+                elseif($value->material == "closing"){
+                    $ClosingData_r[] = $value;
+                }
+                elseif($value->material == "lasting"){
+                    $LastingData_r[] = $value;
+                }
+                elseif($value->material == "packing"){
+                    $PackingData_r[] = $value;
+                }
+            }
+            return view('pricingsheet.pricing-sheet-update-ie')->with([
                 'id'=> $id,
                 'data'=> $data[0],
                 'i'=> 1,'j'=> 1,'k'=> 1,'l'=> 1,'m'=> 1,'n'=> 1,
@@ -2297,6 +2464,103 @@ class PricingController extends Controller
         }
     }
 
+    public function EditIe(Request $request)
+    {
+        try{
+            $id = $_GET['id'];
+            $season = []; $item_code = []; $article_code = [];
+            $cuttingData = []; $InsoleData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $data1 = DB::table('plc_pricings')->where('id', $id)->get();
+            $data2 = DB::table('plc_pricing_details')->where('costing_id', $id)->get();
+            $formulaData = PlcFormula::orderBy('id','DESC')->get();
+            $userseason = $data1[0]->season;
+            $userpurpose = $data1[0]->purpose;
+            $userimage = $data1[0]->image;
+            Session::put('image', $userimage);
+            $sequence = $data1[0]->sequence;
+            $date = $data1[0]->date;
+            $category = $data1[0]->category;
+            $usershape = $data1[0]->shape;
+            $usersole = $data1[0]->sole;
+            $userproject = $data1[0]->project;
+            $userproduct = $data1[0]->product;
+            $userrange = $data1[0]->range_no;
+            $userdesign = $data1[0]->design_no;
+            $userdescription = $data1[0]->description;
+            $usercategory = $data1[0]->category;
+            $userprogress = $data1[0]->progress;
+            $useroverhead_id = $data1[0]->overhead_id;        
+            foreach($data2 as $value){
+                if($value->material == "cutting"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $cuttingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "insole"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $InsoleData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "lamination"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LaminationData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "closing"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $ClosingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "lasting"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $LastingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+                elseif($value->material == "packing"){
+                    $result1 = Division::orderBy('id','DESC')->where('id',$value->division)->get();
+                    $PackingData[] = array(
+                        'value' => $value,
+                        'result' => $result1[0]['description'],
+                    );
+                }
+            }
+            $category = PlcCategory::orderBy('id','DESC')->get();
+            $project = PlcProject::orderBy('id','DESC')->get();
+            $purpose = PlcPurpose::orderBy('id','DESC')->get();
+            $range = PlcRange::orderBy('id','DESC')->get();
+            $shape = PlcShape::orderBy('id','DESC')->get();
+            $sole = PlcSole::orderBy('id','DESC')->get();
+            return view('pricingsheet.pricing-sheet-edit-ie')->with([
+                'id' => $id,                           
+                'data1' => $data1[0],
+                'i' => 1,'j' => 1,'k' => 1,'l' => 1,'m' => 1,'n' => 1,
+                'cuttingData' => $cuttingData, 'InsoleData' => $InsoleData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 'LastingData' => $LastingData, 'PackingData'=> $PackingData,
+                'a1' => 1,'a2' => 1, 'b1' => 1,'b2' => 1, 'c1' => 1,'c2' => 1, 'd1' => 1,'d2' => 1, 'e1' => 1,'e2' => 1, 'f1' => 1,'f2' => 1,
+                'season' => $season, 'itemcode' => $item_code, 'userseason' => $userseason, 'userpurpose' => $userpurpose, 'sequence' => $sequence, 'date' => $date,
+                'image' => $userimage, 'articlecode' => $article_code, 'category' => $category, 'usershape' => $usershape, 'usersole' => $usersole, 'userproject' => $userproject, 'useroverhead_id' => $useroverhead_id,
+                'userproduct' => $userproduct, 'userrange' => $userrange, 'userdesign' => $userdesign, 'userdescription' => $userdescription, 'usercategory' => $usercategory,
+                'userprogress' => $userprogress, 'shape' => $shape, 'sole' => $sole, 'project' => $project, 'range' => $range, 'purpose' => $purpose, 'formulaData' => $formulaData
+            ]);
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function All(Request $request)
     {
         try{
@@ -2317,6 +2581,12 @@ class PricingController extends Controller
                     $data = PlcPricing::orderBy('id','DESC')->where('status', '!=', "Pending")->where('status', '!=', "PD")->get();
                 }
                 return view('pricingsheet.pricing-sheet-costing-table')->with(['data'=> $data, 'i'=> 1]);
+            }
+            elseif(isset($storeData['Pricing-Sheet IE']) && !empty($storeData['Pricing-Sheet IE'])){
+                if(isset($storeData['Pricing-Sheet IE']) == 1){
+                    $data = PlcPricing::orderBy('id','DESC')->where('status', "IE")->get();
+                }
+                return view('pricingsheet.pricing-sheet-ie-table')->with(['data'=> $data, 'i'=> 1]);
             }
             elseif($id == 2){
                 $data = PlcPricing::orderBy('id','DESC')->get();
@@ -2562,6 +2832,27 @@ class PricingController extends Controller
         }
     }
 
+    public function GetSubCategory($value)
+    {
+        try{
+            $result = PlcSubCategory::where('category_id', $value)->get();
+            if($result){
+                return response()->json($result);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function GetDivision()
     {
         try{
@@ -2679,6 +2970,69 @@ class PricingController extends Controller
                 }
                 $Insert = DB::table('plc_pricing_process')->insert($Userdata[0]);
                 $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet Costing')->where('value', 1)->get()->unique('name');
+                foreach($assign_users as $data){
+                    $store[] = $data['name'];
+                }
+                foreach($store as $data){
+                    $get_users[] = User::orderBy('id','ASC')->where('userrole', $data)->pluck('id');
+                    $get_users[] = $get_users[0];
+                } 
+                foreach($get_users as $value){
+                    if(count($value) != 0){
+                        foreach($value as $val){
+                            $result[] = $val;
+                            }
+                        }
+                    }       
+                $result = array_unique($result);
+            }
+            if($status == "IE"){
+                $msg = "Transferred to IE";
+                $msg1 = "Transferred";
+                if(isset($storeData['Pricing-Sheet Sales']) && !empty($storeData['Pricing-Sheet Sales'])){
+                    if(isset($storeData['Pricing-Sheet Sales']) == 1){
+                        $ChangeStatus = array(
+                            'status' => $status,
+                            'remarks' => $remarks,
+                        );
+                        $Userdata[] = [
+                            'user_id' => $name,
+                            'remarks' => $remarks,
+                            'ps_id' => $id,
+                            'status' => $status,
+                            'date' => $Currentdate." ".$Currenttime,
+                        ];
+                    }
+                }
+                elseif($getremarks[0] == 100){
+                    $ChangeStatus = array(
+                        'status' => $status,
+                        'remarks' => $remarks,
+                    );
+                    $Userdata[] = [
+                        'user_id' => $name,
+                        'remarks' => $remarks,
+                        'ps_id' => $id,
+                        'status' => $status,
+                        'date' => $Currentdate." ".$Currenttime,
+                    ];
+                }
+                else{
+                    $ChangeStatus = array(
+                        'status' => $status,
+                        'remarks' => $remarks,
+                        'progress' => 20,
+                    );
+                    $Userdata[] = [
+                        'user_id' => $name,
+                        'remarks' => $remarks,
+                        'ps_id' => $id,
+                        'status' => $status,
+                        'date' => $Currentdate." ".$Currenttime,
+                    ];
+                }
+                $Insert = DB::table('plc_pricing_process')->insert($Userdata[0]);
+                $assign_users = Newrole::orderBy('id','ASC')->where('role_name', 'Pricing-Sheet IE')->where('value', 1)->get()->unique('name');
                 foreach($assign_users as $data){
                     $store[] = $data['name'];
                 }

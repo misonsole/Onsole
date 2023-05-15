@@ -46,7 +46,7 @@
                             <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Manage Pricing Sheet</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Manage Pricing Sheet</h4>
+                    <h4 class="page-title">Manage Pricing Sheet (Engineering)</h4>
                 </div>
             </div>
         </div>
@@ -64,10 +64,8 @@
                                         <th class="text-white" data-orderable="false">Progress</th>
                                         <th class="text-white" data-orderable="false">Remarks</th>
                                         <th class="text-white" data-orderable="false">Transfer</th>
-                                        <!-- <th>Purpose</th> -->
                                         <th class="text-white" data-orderable="false">Date & Time</th>
                                         <th class="text-white" data-orderable="false">Action</th>
-                                        <th class="text-white" data-orderable="false">Evaluate Cost</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,7 +75,9 @@
                                             <td>{{$user->design_no}}</td>             
                                             <td>
                                                 <div class="progress" style="box-shadow: none;">
-                                                    @if($user->progress == '40')
+                                                    @if($user->progress == '20')
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
+                                                    @elseif($user->progress == '40')
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
                                                     @elseif($user->progress == '50')
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{$user->progress}}%</div>
@@ -114,8 +114,8 @@
                                                     <span data-id={{$user['id']}} style="cursor: pointer;" class="p-0 cursor-pointer viewweye11 ml-1"><i class="align-middle mb-1 mt-1 mx-1 w-50" style="font-size: small;" data-feather="eye"></i></span>
                                                 @endif
                                             </td>
-                                            @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
-                                                @if(isset($storeData['Pricing-Sheet Costing']) == 1)
+                                            @if(isset($storeData['Pricing-Sheet IE']) && !empty($storeData['Pricing-Sheet IE'])) 
+                                                @if(isset($storeData['Pricing-Sheet IE']) == 1)
                                                     <td style="width: 10%;">
                                                         @if($user->status == 'Rejected') 
                                                         &nbsp;
@@ -129,25 +129,14 @@
                                                         &nbsp;
                                                         @elseif($user->progress == 40) 
                                                         <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
-                                                            <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing" disabled>Costing</option>
+                                                            <option <?php if ($user->status == "IE") echo "selected"; ?> value="IE" disabled>IE</option>
                                                             <option <?php if ($user->status == "PD") echo "selected"; ?> value="PD">Update</option>
+                                                            <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Costing</option>
                                                             <option <?php if ($user->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>
                                                         </select>
                                                         @elseif($user->progress == 20 || $user->progress == 50 || $user->progress == 60 || $user->progress == 80) 
                                                         &nbsp;
                                                         @else
-                                                        <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
-                                                            @if($user->status == 'Costing' && $user->progress == 40 || $user->progress == 50 || $user->progress == 60 || $user->progress == 80)                                                    
-                                                                <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing" disabled>Costing</option>
-                                                                <option <?php if ($user->status == "PD") echo "selected"; ?> value="PD">Update</option>
-                                                                <option <?php if ($user->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>
-                                                            @elseif($user->status == 'Costing' && $user->progress == '100' || $user->progress == '45' )                                                    
-                                                                <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing" disabled>Costing</option>
-                                                                <option <?php if ($user->status == "PD") echo "selected"; ?> value="PD">Update</option>
-                                                                <option <?php if ($user->status == "Sales") echo "selected"; ?> value="Sales">Approve</option>
-                                                                <option <?php if ($user->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>
-                                                            @endif
-                                                        </select>
                                                         @endif
                                                     </td>
                                                 @endif
@@ -208,27 +197,25 @@
                                                         <div class="modal-header" style="background-color: transparent">
                                                             <h5 class="modal-title" id="exampleModalLongTitle">Percentage</h5>
                                                         </div>
-                                                       
-                                                            <div class="modal-body">
-                                                                <div class="form-group"> 
-                                                                    <div class="input-group">
-                                                                        <input hidden type="text" class="form-control yourclass" name="overheadId" id="overheadId">                                                                     
-                                                                        <input hidden type="text" class="form-control yourclass" name="calculateId" id="calculateId">                                                                     
-                                                                        <input oninput="this.value = Math.abs(this.value)" min="0" type="number" placeholder="Percentage" class="form-control class1 yourclass" id="calculateValue" name="calculateValue" required>
-                                                                        <span class="input-group-append">
-                                                                            <button style="box-shadow: none; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" class="btn btn-dark" data-dismiss="modal">%</button>
-                                                                        </span>
-                                                                    </div>                                                    
-                                                                </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group"> 
+                                                                <div class="input-group">
+                                                                    <input hidden type="text" class="form-control yourclass" name="overheadId" id="overheadId">                                                                     
+                                                                    <input hidden type="text" class="form-control yourclass" name="calculateId" id="calculateId">                                                                     
+                                                                    <input oninput="this.value = Math.abs(this.value)" min="0" type="number" placeholder="Percentage" class="form-control class1 yourclass" id="calculateValue" name="calculateValue" required>
+                                                                    <span class="input-group-append">
+                                                                        <button style="box-shadow: none; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); border: none;" class="btn btn-dark" data-dismiss="modal">%</button>
+                                                                    </span>
+                                                                </div>                                                    
                                                             </div>
-                                                            <div class="modal-footer text-center" style="background-color: transparent">
-                                                                <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
-                                                                <button style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3 submitCalculate">Calculate </button>
-                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer text-center" style="background-color: transparent">
+                                                            <button type="button" style="box-shadow: none;" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                                            <button style="box-shadow: none; border: none;" class="btn btn-success mx-1 py-2 px-3 submitCalculate">Calculate </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <td>{{$user->purpose}}</td> -->
                                             <td>
                                                 <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("h:i A", strtotime($words[1]));  ?>
                                                 <i class="mdi mdi-calendar-text-outline text-dark"></i> {{$words[0]}} <br><i class="mdi mdi-timer text-dark"></i> {{$newDate}}
@@ -236,12 +223,19 @@
                                             <td class="text-center">
                                                 <form id="myForm">
                                                     <input type="text" value="{{$user->id}}" name="id" hidden> 
-                                                    @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
-                                                        @if(isset($storeData['Pricing-Sheet Costing']) == 1)
-                                                            @if($user->progress == '40' || $user->progress == '50' || $user->progress == '60')
+                                                    @if(isset($storeData['Pricing-Sheet IE']) && !empty($storeData['Pricing-Sheet IE'])) 
+                                                        @if(isset($storeData['Pricing-Sheet IE']) == 1)
+                                                            @if($user->progress == '20' || $user->progress == '50' || $user->progress == '60')
                                                                 @if($user->status != "Update")
-                                                                    @if($user->status != "Rejected")                                                          
-                                                                        <a href="pricing-sheet-edit-costing?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} style="background: none; border: none; margin-right: -4px;" type="button"><span class="badge btn-sm badge-success p-0 rounded-circle" type="submit" style="background: #1eca7b;"><i class="align-middle mb-1 mt-1 mx-1 w-50"  style="font-size: samll !important;" data-feather="edit"></i></span></button></a>
+                                                                    @if($user->status != "Rejected")  
+                                                                        <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;PD Edit&nbsp;&nbsp;" href="pricing-sheet-edit-ie?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                                                                                                                                             
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                            @if($user->progress == '40')
+                                                                @if($user->status != "Update")
+                                                                    @if($user->status != "Rejected")  
+                                                                        <a data-toggle="tooltip" data-placement="top" title="&nbsp;&nbsp;PD Update&nbsp;&nbsp;" href="pricing-sheet-update-ie?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-0" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" type="submit" style="background: #202020;"><i class="align-middle mb-1 mt-1 mx-1 w-50" data-feather="edit"></i></span></button></a>                                                                                                                                             
                                                                     @endif
                                                                 @endif
                                                             @endif
@@ -257,30 +251,6 @@
                                                     <a href="pricing-sheet-print?id={{$user['id']}}" target="_blank"><button data-id={{$user['id']}} class="btn-sm px-1" style="background: none; border: none;" type="button"><span class="badge btn-sm badge-dark p-0 rounded-circle" style="background: #019faf;"><i class="align-middle mb-1 mt-1 mx-1 w-50 text-white" data-feather="file-text"></i></span></button></a>              
                                                 </form>
                                             </td>
-                                            <td style="width: 12%;" class="text-center">
-                                                @if(isset($storeData['Pricing-Sheet Costing']) && !empty($storeData['Pricing-Sheet Costing'])) 
-                                                    @if(isset($storeData['Pricing-Sheet Costing']) == 1)
-                                                        @if($user->status != "Sales")
-                                                            @if($user->status != "Rejected")
-                                                                @if($user->status != "Final")
-                                                                    @if($user->progress == '80' || $user->progress == '100')
-                                                                        <span class="py-1" style="display: inline-flex;">
-                                                                            <span class="w-100">
-                                                                                <input id="sonoNum{{$user['id']}}" name="sonoNum" type="text" value="{{$user['profit_price']}}" class="form-control yourclass text-center" style="border: 1px solid #bfbfbf;" readonly>
-                                                                            </span>
-                                                                            <span>
-                                                                                <a id="calculate" data-id={{$user['id']}} overId="{{$user['overhead_id']}}" name="{{$user['profit_price']}}" style="font-size: small; cursor: pointer; border: none; box-shadow:none;" class="btn ModelBtn ml-2 py-0 px-2 rounded-circle"> <i style="font-size: x-large;" class="mdi mdi-finance"></i></a>
-                                                                            </span>                        
-                                                                        </span>
-                                                                    @endif
-                                                                @else
-                                                                    {{$user['profit_price']}}
-                                                                @endif   
-                                                            @endif   
-                                                        @endif
-                                                    @endif
-                                                @endif
-                                            </td>  
                                             <div class="modal fade" id="exampleModalCenter5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -335,7 +305,7 @@ $(document).ready(function(){
             icon: 'success',
             title: "{{ session('message') }}",
             showConfirmButton: false,
-			timer: 3000
+			timer: 2000
         });
         break;
         case 'error':
@@ -374,6 +344,10 @@ $(document).ready(function(){
         }
         else if(status == 'PD'){
             var line = 'Are you sure to Update?';
+            var line1 = 'Update';
+        }
+        else if(status == 'IE'){
+            var line = 'Are you sure Transfer to IE Department?';
             var line1 = 'Update';
         }
         $('#modelline').html(line);

@@ -152,7 +152,7 @@
                                                         @else
                                                         <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
                                                             @if($user->status == 'Sales')                                                    
-                                                                <option <?php if ($user->status == "Sales") echo "selected"; ?> value="Sales">Approved</option>
+                                                                <option <?php if ($user->status == "Sales") echo "selected"; ?> value="Sales" disabled>Approved</option>
                                                                 <option <?php if ($user->status == "Final") echo "selected"; ?> value="Final">Finalised</option>
                                                                 <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Update</option>
                                                                 <option <?php if ($user->status == "Rejected") echo "selected"; ?> value="Rejected">Reject</option>

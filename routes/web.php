@@ -43,12 +43,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('add-shape', [AdminController::class, 'addShape'])->name('add-shape');
     Route::post('add-range', [AdminController::class, 'addRange'])->name('add-range');
     Route::post('add-sole', [AdminController::class, 'addSole'])->name('add-sole');
+    Route::post('add-type', [AdminController::class, 'addType'])->name('add-type');
     Route::post('add-purpose', [AdminController::class, 'addPurpose'])->name('add-purpose');
     Route::post('add-project', [AdminController::class, 'addProject'])->name('add-project');
     Route::post('add-category-plc', [AdminController::class, 'addCategory'])->name('add-category-plc');
     Route::post('add-sizerange-plc', [AdminController::class, 'addSizeRange'])->name('add-sizerange-plc');
     Route::post('add-division', [AdminController::class, 'addDivision'])->name('add-division');
     Route::post('add-sub-division', [AdminController::class, 'addSubDivision'])->name('add-sub-division');
+    Route::post('add-sub-categoryy', [AdminController::class, 'addSubCategory'])->name('add-sub-categoryy');
     Route::post('last', [AdminController::class, 'Last'])->name('last');
     Route::post('location', [AdminController::class, 'Location'])->name('location');
     Route::post('shape', [AdminController::class, 'Shape'])->name('shape');
@@ -61,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('cat', [AdminController::class, 'Category'])->name('cat');
     Route::post('division', [AdminController::class, 'Division'])->name('division');
     Route::post('subdivision', [AdminController::class, 'SubDivision'])->name('subdivision');
+    Route::post('subcategory', [AdminController::class, 'subCategory'])->name('subcategory');
     Route::get('lastdel/{id}', [AdminController::class, 'lastDel']);
     Route::get('locdel/{id}', [AdminController::class, 'locDel']);
     Route::get('shapedel/{id}', [AdminController::class, 'shapeDel']);
@@ -71,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('purposedel/{id}', [AdminController::class, 'purposeDel']);
     Route::get('divisiondel/{id}', [AdminController::class, 'divisionDel']);
     Route::get('subdivisiondel/{id}', [AdminController::class, 'subdivisionDel']);
+    Route::get('subcategorydel/{id}', [AdminController::class, 'subcategoryDel']);
     Route::get('UserAttendance', [AdminController::class, 'Attendance'])->name('UserAttendance');
     Route::post('get-attendance', [AdminController::class, 'GetAttendance'])->name('get-attendance');
     Route::post('get-user-attendance', [AdminController::class, 'GetUserAttendance'])->name('get-user-attendance');
@@ -138,14 +142,15 @@ Route::group(['middleware' => 'auth'], function () {
         return view('home1');
     });
 
-    //Book 
-    Route::get('manage-book', [BookController::class, 'manageBook'])->name('manage-book');
-    Route::post('store-books', [BookController::class, 'store'])->name('store-books');
-    Route::post('assign-books', [BookController::class, 'Assign'])->name('assign-books');
-    Route::post('get-books', [BookController::class, 'GetBooks'])->name('get-books');
-    Route::post('assign-books-update', [BookController::class, 'AssignUpdate'])->name('assign-books-update');
-    Route::get('manageuserbook', [BookController::class, 'UserBook'])->name('manageuserbook');
-    Route::get('books/{id}', [BookController::class, 'books']);
+    //Book   
+    Route::get('assign-book', [BookController::class, 'Index'])->name('assign-book');
+    Route::post('add-book', [BookController::class, 'Store'])->name('add-book');
+    Route::get('manage-book', [BookController::class, 'Manage'])->name('manage-book');
+    Route::get('check/{id}', [BookController::class, 'Check']);
+    Route::get('deleteBook/{id}', [BookController::class, 'Delete']);
+    Route::get('book-edit', [BookController::class, 'Edit'])->name('book-edit');
+    Route::post('update-book', [BookController::class, 'Update'])->name('update-book');    
+    Route::get('updateorcreate', [BookController::class, 'Updateorcreate']);    
 
     //Formula
     Route::get('formula-sheet', [FormulaController::class, 'Formula'])->name('formula-sheet');
@@ -163,7 +168,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pricing-sheet-print', [PricingController::class, 'Print'])->name('pricing-sheet-print');
     Route::get('pricing-sheet-edit', [PricingController::class, 'Edit'])->name('pricing-sheet-edit');
     Route::get('pricing-sheet-edit-costing', [PricingController::class, 'EditCosting'])->name('pricing-sheet-edit-costing');
+    Route::get('pricing-sheet-edit-ie', [PricingController::class, 'EditIe'])->name('pricing-sheet-edit-ie');
     Route::get('pricing-sheet-update-costing', [PricingController::class, 'UpdateCosting'])->name('pricing-sheet-update-costing');
+    Route::get('pricing-sheet-update-ie', [PricingController::class, 'UpdateIe'])->name('pricing-sheet-update-ie');
     Route::post('pricing-sheet-update', [PricingController::class, 'Update'])->name('pricing-sheet-update');
     Route::post('pricing-sheet-update-material', [PricingController::class, 'UpdateMaterial'])->name('pricing-sheet-update-material');
     Route::post('pricing-sheet-update-material-edit', [PricingController::class, 'UpdateEditMaterial'])->name('pricing-sheet-update-material-edit');
@@ -181,6 +188,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('remarks/{id}', [PricingController::class, 'Remarks']);
     Route::get('storesono/{value}/{id}', [PricingController::class, 'StoreSono']);
     Route::get('getSubDivision/{value}', [PricingController::class, 'GetSubDivision']);
+    Route::get('getSubCategory/{value}', [PricingController::class, 'GetSubCategory']);
     Route::get('GetDivision', [PricingController::class, 'GetDivision']);
 
     //Specification

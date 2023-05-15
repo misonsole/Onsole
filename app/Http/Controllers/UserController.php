@@ -271,7 +271,7 @@ class UserController extends Controller
             $userrole = User::where('id', $id)->pluck('userrole');
             $userdepartment = User::where('id', $id)->pluck('department');
             $userdesignation = User::where('id', $id)->pluck('designation');
-            $roles = RoleName::orderBy('id','DESC')->get();
+            $roles = RoleName::orderBy('name','ASC')->get();
             $department = Department::orderBy('id','DESC')->get();
             $userrole = $userrole[0];
             $userdepartment = $userdepartment[0];

@@ -15,7 +15,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_remarks_r" name="cut_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate_r" name="cut_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate_r" name="cut_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 cutting_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+
@@ -43,7 +43,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_remarks_r" name="i_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate_r" name="i_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate_r" name="i_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 insole_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+
@@ -71,7 +71,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_remarks_r" name="lam_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate_r" name="lam_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate_r" name="lam_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 lam_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+
@@ -99,7 +99,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_remarks_r" name="clo_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate_r" name="clo_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate_r" name="clo_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 clo_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+
@@ -127,7 +127,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_remarks_r" name="last_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate_r" name="last_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate_r" name="last_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 last_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+
@@ -155,7 +155,7 @@ $(document).ready(function(){
                                     '<input type="text" step=".01" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_remarks_r" name="p_remarks_r[]" placeholder="Remarks">'+
                                 '</div>'+
                                 '<div class="col-sm-2 py-1">'+
-                                    '<input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate_r" name="p_rate_r[]" placeholder="Rate">'+
+                                    '<input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate_r" name="p_rate_r[]" placeholder="Rate">'+
                                 '</div>'+
                                 '<div class="col-sm-1 py-1 text-center">'+
                                     '<button id="'+i+'" type="button" class="btn btn-outline-danger btn-round px-4 p_remove1" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>'+

@@ -62,7 +62,7 @@
                         <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Pricing Sheet Update</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Pricing Sheet Update</h4>
+                <h4 class="page-title">Pricing Sheet Update (Engineering)</h4>
             </div>
         </div>
     </div>
@@ -72,21 +72,17 @@
                 <div class="card-body p-5">
                     <ul class="nav nav-pills nav-justified" role="tablist">
                         <li class="nav-item waves-effect waves-light" style="border-radius: 16px; background: transparent;">
-                            <a class="nav-link active" data-toggle="tab" href="#home-1" role="tab">Materials</a>
+                            <a class="nav-link" data-toggle="tab" href="#home-1" role="tab">Materials</a>
                         </li>
-                        @if($progress != 60 || $progress != 80)
                         <li class="nav-item waves-effect waves-light" style="border-radius: 16px; background: transparent;"> 
-                            <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab">Resources</a>
+                            <a class="nav-link active" data-toggle="tab" href="#profile-1" role="tab">Resources</a>
                         </li>
-                        @endif
-                        @if($progress != 60 || $progress != 80)
                         <li class="nav-item waves-effect waves-light" style="border-radius: 16px; background: transparent;">
                             <a class="nav-link" data-toggle="tab" href="#settings-1" role="tab">Overheads</a>
                         </li>
-                        @endif
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active p-3" id="home-1" role="tabpanel">
+                        <div class="tab-pane p-3" id="home-1" role="tabpanel">
                             <form action="{{url('pricing-sheet-update-material-edit')}}" method="post" enctype="multipart/form-data">
                             @csrf
                                 <div class="form-group row py-2 mb-5 mt-5">
@@ -249,7 +245,7 @@
                                             <input hidden value="{{$data['value']->total}}" type="number" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_total_con" name="cut_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate" name="cut_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate" name="cut_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -317,7 +313,7 @@
                                             <input hidden type="number" value="{{$data['value']->total}}" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_total_con" name="i_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate" name="i_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate" name="i_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -386,7 +382,7 @@
                                             <input hidden type="number" value="{{$data['value']->total}}" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_total_con" name="lam_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate" name="lam_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate" name="lam_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -455,7 +451,7 @@
                                             <input hidden type="number" value="{{$data['value']->total}}" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_total_con" name="clo_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate" name="clo_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate" name="clo_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -524,7 +520,7 @@
                                             <input hidden type="number" value="{{$data['value']->total}}" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_total_con" name="last_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate" name="last_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate" name="last_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -593,7 +589,7 @@
                                             <input hidden type="number" value="{{$data['value']->total}}" class="form-control py-2 readonly" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_total_con" name="p_total_con[]" placeholder="Total">
                                         </div>
                                         <div class="col-sm-1 py-1">
-                                            <input step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate" name="p_rate[]" placeholder="Rate">
+                                            <input hidden step="0.1" min="0" value="{{$data['value']->rate}}" type="number" class="form-control py-2 text-center" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate" name="p_rate[]" placeholder="Rate">
                                         </div>
                                         <div class="col-sm-1 py-1">
                                             <p class="py-2" style="font-family: 'Poppins', sans-serif;">{{$data['value']->value}}</p> 
@@ -603,46 +599,377 @@
                                     @endforeach
                                     @endif
                                 </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane p-3 active" id="profile-1" role="tabpanel">
+                            <div class="form-group row text-center bg-dark py-1 mx-1 mt-5" style="border-radius: 4px;">
+                                <div class="col-sm-2 py-1">
+                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Values Set</b></label>
+                                </div>
+                                <div class="col-sm-5 py-1">
+                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Description</b></label>
+                                </div>
+                                <div class="col-sm-2 py-1">
+                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Remarks</b></label>
+                                </div>
+                                <div class="col-sm-2 py-1">
+                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Rate/Paiar</b></label>
+                                </div>
+                                <div class="col-sm-1 py-1">
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <div class="col-sm-2 text-center">
+                                    <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                        <label class="mb-0 text-white" style="font-weight: 500;">Cutting</label>
+                                    </div>  
+                                </div>
+                                <div class="col-sm-9 text-center">
+                                </div>
+                                <div class="col-sm-1 text-center">
+                                    <button id="cutting1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                </div>
+                            </div>
+                            <form action="{{url('pricing-sheet-update-resource')}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                                <div id="cuttingrow1">
+                                    @if(!$cuttingData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_value_r" name="cut_value_r[]" placeholder="Item Codes">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description_r" name="cut_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_remarks_r" name="cut_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate_r" name="cut_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="cutting1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($cuttingData_r as $data)
+                                    <div id="insole1row1{{$a11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_value_r" name="cut_value_r[]" placeholder="Item Coded">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description_r" name="cut_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_remarks_r" name="cut_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate_r" name="cut_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$a22++}}" type="button" class="remove1Row1 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="cutting1">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0 mt-5">
+                                    <div class="col-sm-2 text-center">
+                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                            <label class="mb-0 text-white" style="font-weight: 500;">INSOLE</label>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-9 text-center">
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="insole1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div id="insolerow1">
+                                    @if(!$InsoleData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_value_r" name="i_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description_r" name="i_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_remarks_r" name="i_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate_r" name="i_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="insole1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($InsoleData_r as $data)
+                                    <div id="insole1row2{{$b11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_value_r" name="i_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description_r" name="i_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_remarks_r" name="i_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate_r" name="i_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$b22++}}" type="button" class="remove1Row2 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="insole1">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0 mt-5">
+                                    <div class="col-sm-2 text-center">
+                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                            <label class="mb-0 text-white" style="font-weight: 500;">Lamination</label>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-9 text-center">
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="lamination1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div id="laminationrow1">
+                                    @if(!$LaminationData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_value_r" name="lam_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description_r" name="lam_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_remarks_r" name="lam_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" oninput="this.value = Math.abs(this.value)" min="0.0001" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate_r" name="lam_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="lamination1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($LaminationData_r as $data)
+                                    <div id="insole1row3{{$c11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_value_r" name="lam_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description_r" name="lam_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_remarks_r" name="lam_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate_r" name="lam_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$c22++}}" type="button" class="remove1Row3 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="lamination1">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0 mt-5">
+                                    <div class="col-sm-2 text-center">
+                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                            <label class="mb-0 text-white" style="font-weight: 500;">Closing</label>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-9 text-center">
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="closing1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div id="closingrow1">
+                                    @if(!$ClosingData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_value_r" name="clo_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description_r" name="clo_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_remarks_r" name="clo_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate_r" name="clo_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="closing1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($ClosingData_r as $data)
+                                    <div id="insole1row4{{$d11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_value_r" name="clo_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description_r" name="clo_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_remarks_r" name="clo_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate_r" name="clo_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$d22++}}" type="button" class="remove1Row4 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="closing1">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0 mt-5">
+                                    <div class="col-sm-2 text-center">
+                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                            <label class="mb-0 text-white" style="font-weight: 500;">Lasting</label>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-9 text-center">
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="lasting1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div id="lastingrow1">
+                                    @if(!$LastingData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_value_r" name="last_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description_r" name="last_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_remarks_r" name="last_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate_r" name="last_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="lasting1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($LastingData_r as $data)
+                                    <div id="insole1row5{{$e11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_value_r" name="last_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description_r" name="last_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_remarks_r" name="last_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate_r" name="last_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$e22++}}" type="button" class="remove1Row5 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="lasting1">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-0 mt-5">
+                                    <div class="col-sm-2 text-center">
+                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
+                                            <label class="mb-0 text-white" style="font-weight: 500;">Packing</label>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-9 text-center">
+                                    </div>
+                                    <div class="col-sm-1 text-center">
+                                        <button id="packing1" type="button" class="btn btn-outline-primary btn-round px-4 mb-2" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div id="packingrow1">
+                                    @if(!$PackingData_r)
+                                    <div class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_value_r" name="p_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description_r" name="p_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_remarks_r" name="p_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate_r" name="p_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="packing1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    @else
+                                    @foreach($PackingData_r as $data)
+                                    <div id="insole1row6{{$f11++}}" class="form-group row mb-2">
+                                        <div class="col-sm-2 py-1">
+                                            <input type="text" name="id" value="{{$id}}" hidden>
+                                            <input value="{{$data->value_set}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_value_r" name="p_value_r[]" placeholder="Item Code">
+                                        </div>
+                                        <div class="col-sm-5 py-1">
+                                            <input value="{{$data->description}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description_r" name="p_description_r[]" placeholder="Description">
+                                        </div> 
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->remarks}}" type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_remarks_r" name="p_remarks_r[]" placeholder="Remarks">
+                                        </div>
+                                        <div class="col-sm-2 py-1">
+                                            <input value="{{$data->pair}}" type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate_r" name="p_rate_r[]" placeholder="Rate">
+                                        </div>
+                                        <div class="col-sm-1 py-1 text-center">
+                                            <button id="{{$f22++}}" type="button" class="remove1Row6 btn btn-outline-danger btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                    <div name="packing1">
+                                    </div>
+                                </div>
                                 <br><br>
                                 <div class="form-group row mt-5">
                                     <div class="col-sm-3 mb-1 mb-sm-0">
                                     </div>
                                     <div class="col-sm-6">
-                                        <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); font-size: larger;" class="btn px-5 py-1 btn-lg btn-block text-white">Update Material</button>
+                                        <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); font-size: larger;" class="btn px-5 py-1 btn-lg btn-block text-white">Update Resources</button>
                                     </div>
                                     <div class="col-sm-3">
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">
-                        </div>
                         <div class="tab-pane p-3" id="settings-1" role="tabpanel">                            
-                            <form action="{{url('pricing-sheet-update-overhead')}}" method="post" enctype="multipart/form-data">
-                            @csrf
-                                <div class="form-group row mt-5">
-                                    <div class="col-sm-3 mb-1 mb-sm-0">
-                                        <input hidden type="text" value="{{$id}}" class="form-control py-2" id="id" name="id">
-                                        <select id="overhead" name="overhead" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
-                                            <option selected value="">Select Formula Sheet</option>   
-                                            @foreach($formulaData as $data)
-                                                <option <?php if($data->id == $overhead_id) echo 'selected="selected"'; ?> value="{{$data->id}}">{{$data->sequence}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-5">
-                                    <div class="col-sm-3 mb-1 mb-sm-0">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); font-size: larger;" class="btn px-5 py-1 btn-lg btn-block text-white">Update Overheads</button>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    </div>
-                                </div>
-                            </from>
                         </div>
                     </div>    
                 </div>

@@ -278,9 +278,9 @@
                     <div class="form-group row py-2">
                         <div class="col-sm-6 mb-1 mb-sm-0">
                             <label><b style="color: #6c757d">Select Book</b></label>
-                            <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select required">
+                            <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select required" required>
                             <option selected value="">Select Book</option>
-                                @foreach($books as $value)
+                                @foreach($assignbook as $value)
                                     @if(!empty($sessionData['storebook']))
                                         <option <?php if($value == $sessionData['storebook']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
                                     @else

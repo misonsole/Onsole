@@ -113,6 +113,12 @@
                         <div class="row p-5">
                             <div class="col-md-7 py-4" style="display: inline-flex;">
                                 <span class="">
+                                    @if($data1->type)
+                                    <h6 class="mb-0 mr-3"><b>Type&nbsp;:</b></h6>
+                                    @endif
+                                    @if($data1->sono)
+                                    <h6 class="mb-0 mr-3"><b>SO No&nbsp;:</b></h6>
+                                    @endif
                                     @if($data1->profit_price)
                                     <h6 class="mb-0 mr-3"><b>Profit Ratio&nbsp;:</b></h6>
                                     @endif
@@ -127,9 +133,7 @@
                                     @if($data1->overhead_id)
                                     <h6 class="mb-0 mr-3"><b>Overhead No&nbsp;:</b></h6>
                                     @endif
-                                    @if($data1->sono)
-                                    <h6 class="mb-0 mr-3"><b>Sales Order No&nbsp;:</b></h6>
-                                    @endif
+
                                     @if(count($manual) == 0)
                                     &nbsp;
                                     @else
@@ -137,6 +141,16 @@
                                     @endif
                                 </span>
                                 <span class="">
+                                    <h6 class="mb-0"> 
+                                        @if($data1->type)
+                                            {{$data1->type}}
+                                        @endif
+                                    </h6>
+                                    <h6 class="mb-0"> 
+                                        @if($data1->sono)
+                                            {{$data1->sono}}
+                                        @endif
+                                    </h6>
                                     <h6 class="mb-0"> 
                                         @if($data1->profit_price)
                                             {{$data1->profit_price}} % 
@@ -159,11 +173,7 @@
                                             Overhead-{{$data1->overhead_id}}
                                         @endif
                                     </h6> 
-                                    <h6 class="mb-0"> 
-                                        @if($data1->sono)
-                                            {{$data1->sono}}
-                                        @endif
-                                    </h6>
+                                  
                                     @if(count($manual) == 0)
                                     &nbsp;
                                     @else
@@ -177,19 +187,21 @@
                                     <h6 class="mb-0 mr-3"><b>Date&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Status&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Season&nbsp;:</b></h6>
-                                    <h6 class="mb-0 mr-3"><b>Category&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Purpose&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Product&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Designer&nbsp;:</b></h6>
+                                    <h6 class="mb-0 mr-3"><b>Category&nbsp;:</b></h6>
+                                    <h6 class="mb-0 mr-3"><b>Sub Category&nbsp;:</b></h6>
                                 </span>
                                 <span class="">
                                     <h6 class="mb-0">{{$data1->date}}</h6>
                                     <h6 class="mb-0">{{$data1->status}}</h6>
                                     <h6 class="mb-0">{{$data1->season}}</h6>
-                                    <h6 class="mb-0">{{$data1->category}}</h6>
                                     <h6 class="mb-0">{{$data1->purpose}}</h6>
                                     <h6 class="mb-0">{{$data1->product}}</h6>
                                     <h6 class="mb-0">{{$data1->designer}}</h6>
+                                    <h6 class="mb-0">{{$data1->Category->description}}</h6>
+                                    <h6 class="mb-0">{{$data1->subcategory}}</h6>
                                 </span>
                             </div>
                             <div class="col-md-2 col-md-2 py-4 text-center">

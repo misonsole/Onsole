@@ -9,5 +9,10 @@ class Books extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['role', 'book_type', 'book_name'];
+    protected $fillable = ['role', 'book_name'];
+
+    public function Role()
+    {
+        return $this->belongsTo('App\Models\RoleName', 'role', 'id');
+    }
 }

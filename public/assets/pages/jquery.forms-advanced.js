@@ -73,10 +73,14 @@
         //colorpicker start
         $('#b_color-default, #b_color_rgb, #b_color_hsl').colorpicker();
 
+        //current date        
+        var fullDate = new Date()
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var currentDate = fullDate.getDate() + " " + monthNames[fullDate.getMonth()] + " " + fullDate.getFullYear();
 
         // MAterial Date picker    
         $('#mdate').bootstrapMaterialDatePicker({
-            weekStart : 0, time: false, format : 'DD MMMM YYYY' 
+            weekStart : 0, time: false, format : 'DD MMMM YYYY', maxDate: currentDate
         });
         $('#timepicker').bootstrapMaterialDatePicker({ 
             format : 'HH:mm', time: true, date: false 

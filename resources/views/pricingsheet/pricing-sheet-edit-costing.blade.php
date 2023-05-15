@@ -62,7 +62,7 @@
                         <li class="breadcrumb-item active" style="font-family: 'Poppins', sans-serif;">Create Pricing Sheet</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Create Pricing Sheet</h4>
+                <h4 class="page-title">Create Pricing Sheet (Costing)</h4>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
                             @if($userprogress != '50' && $userprogress != '60')
                                 <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab">Resources</a>
                             @else
-                                <a class="nav-link active" data-toggle="tab" href="#profile-1" role="tab">Resources</a>
+                                <a class="nav-link" data-toggle="tab" href="#profile-1" role="tab">Resources</a>
                             @endif
                         </li>
                         @endif
@@ -633,209 +633,7 @@
                                 </div>
                             </form>
                         </div>
-                        @if($userprogress === '50')
-                        <div class="tab-pane p-3 active" id="profile-1" role="tabpanel">
-                        @else
-                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">
-                        @endif
-                            <div class="form-group row text-center bg-dark py-1 mx-1 mt-5" style="border-radius: 4px;">
-                                <div class="col-sm-2 py-1">
-                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Values Set</b></label>
-                                </div>
-                                <div class="col-sm-5 py-1">
-                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Description</b></label>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Remarks</b></label>
-                                </div>
-                                <div class="col-sm-2 py-1">
-                                    <label class="mb-0"><b style="color: white; font-weight: 500;">Rate/Pair</b></label>
-                                </div>
-                                <div class="col-sm-1 py-1">
-                                </div>
-                            </div>
-                            <div class="form-group row mb-0">
-                                <div class="col-sm-2 text-center">
-                                    <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                        <label class="mb-0 text-white" style="font-weight: 500;">Cutting</label>
-                                    </div>  
-                                </div>
-                            </div>
-                            <form action="{{url('pricing-sheet-update-resource')}}" method="post" enctype="multipart/form-data">
-                            @csrf
-                                <div id="cuttingrow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" name="id" value="{{$id}}" hidden>
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_value_r" name="cut_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_description_r" name="cut_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_remarks_r" name="cut_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="cut_rate_r" name="cut_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="cutting1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="cutting1">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0 mt-5">
-                                    <div class="col-sm-2 text-center">
-                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                            <label class="mb-0 text-white" style="font-weight: 500;">INSOLE</label>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div id="insolerow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_value_r" name="i_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_description_r" name="i_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_remarks_r" name="i_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="i_rate_r" name="i_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="insole1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="insole1">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0 mt-5">
-                                    <div class="col-sm-2 text-center">
-                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                            <label class="mb-0 text-white" style="font-weight: 500;">Lamination</label>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div id="laminationrow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_value_r" name="lam_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_description_r" name="lam_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_remarks_r" name="lam_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="lam_rate_r" name="lam_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="lamination1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="lamination1">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0 mt-5">
-                                    <div class="col-sm-2 text-center">
-                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                            <label class="mb-0 text-white" style="font-weight: 500;">Closing</label>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div id="closingrow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_value_r" name="clo_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_description_r" name="clo_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_remarks_r" name="clo_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="clo_rate_r" name="clo_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="closing1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="closing1">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0 mt-5">
-                                    <div class="col-sm-2 text-center">
-                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                            <label class="mb-0 text-white" style="font-weight: 500;">Lasting</label>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div id="lastingrow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_value_r" name="last_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_description_r" name="last_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_remarks_r" name="last_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="last_rate_r" name="last_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="lasting1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="lasting1">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-0 mt-5">
-                                    <div class="col-sm-2 text-center">
-                                        <div class="alert alert-secondary border-0 py-1" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important;" role="alert">
-                                            <label class="mb-0 text-white" style="font-weight: 500;">Packing</label>
-                                        </div>  
-                                    </div>
-                                </div>
-                                <div id="packingrow1">
-                                    <div class="form-group row mb-2">
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_value_r" name="p_value_r[]" placeholder="Item Code">
-                                        </div>
-                                        <div class="col-sm-5 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_description_r" name="p_description_r[]" placeholder="Description">
-                                        </div> 
-                                        <div class="col-sm-2 py-1">
-                                            <input type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_remarks_r" name="p_remarks_r[]" placeholder="Remarks">
-                                        </div>
-                                        <div class="col-sm-2 py-1">
-                                            <input type="number" step="0.1" min="0" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="p_rate_r" name="p_rate_r[]" placeholder="Rate">
-                                        </div>
-                                        <div class="col-sm-1 py-1 text-center">
-                                            <button id="packing1" type="button" class="btn btn-outline-primary btn-round px-4" aria-haspopup="true" aria-expanded="false"><i style="font-size: 15px;" class="mdi mdi-plus"></i></button>
-                                        </div>
-                                    </div>
-                                    <div name="packing1">
-                                    </div>
-                                </div>
-                                <br><br>
-                                <div class="form-group row mt-5">
-                                    <div class="col-sm-3 mb-1 mb-sm-0">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <button type="submit" style="background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)); font-size: larger;" class="btn px-5 py-1 btn-lg btn-block text-white">Create Resources</button>
-                                    </div>
-                                    <div class="col-sm-3">
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="tab-pane p-3" id="profile-1" role="tabpanel">                           
                         </div>
                         @if($userprogress === '60')
                         <div class="tab-pane p-3 active" id="settings-1" role="tabpanel">
@@ -850,7 +648,7 @@
                                         <select id="overhead" name="overhead" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                             <option selected value="">Select Formula Sheet</option>   
                                             @foreach($formulaData as $data)
-                                                <option <?php if($data->id == $useroverhead_id) echo 'selected="selected"'; ?> value="{{$data->id}}">Overhead-{{$data->id}}</option>
+                                                <option <?php if($data->id == $useroverhead_id) echo 'selected="selected"'; ?> value="{{$data->id}}">{{$data->sequence}}</option>
                                             @endforeach
                                         </select>
                                     </div>

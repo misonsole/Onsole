@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-lg-12">  
                 <div class="row">
-                    <div class="col-lg-2">
+                    <div class="col-lg">
                         <div class="card dash-data-card text-center" style="max-height: 86%;">
                             <div class="card-body"> 
                                 <div class="icon-info mb-3">
@@ -68,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg">
                         <div class="card dash-data-card text-center" style="max-height: 86%;">
                             <div class="card-body"> 
                                 <div class="icon-info mb-3">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg">
                         <div class="card dash-data-card text-center" style="max-height: 86%;">
                             <div class="card-body"> 
                                 <div class="icon-info mb-3">
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg">
                         <div class="card dash-data-card text-center" style="max-height: 86%;">
                             <div class="card-body"> 
                                 <div class="icon-info mb-3">
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg">
                         <div class="card dash-data-card text-center" style="max-height: 86%;">
                             <div class="card-body"> 
                                 <div class="icon-info mb-3">
@@ -111,18 +111,7 @@
                                 <h6 class="font-14 text-dark">Total</h6>                                                                                                                            
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="card dash-data-card text-center" style="max-height: 86%;">
-                            <div class="card-body">   
-                                <div class="row py-2">
-                                    <div class="apexchart-wrapper">
-                                        <div id="ana_device" class="apex-charts mt-2"></div>
-                                    </div>
-                                </div>      
-                            </div>                     
-                        </div>                     
-                    </div>                     
+                    </div>                  
                 </div>                                                                         
             </div>
         </div>
@@ -301,7 +290,7 @@ $(document).ready(function(){
 	$("#loader1").fadeOut(1200);
     $("body").addClass("enlarge-menu");
 });
-setInterval(myTimer, 90000);
+setInterval(myTimer, 80000);
 function myTimer() 
 {
     location.reload();

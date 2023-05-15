@@ -126,10 +126,10 @@
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1" >
                                         <label><b style="color: #6c757d">Category</b></label>
-                                        <select id="category" name="category" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
+                                        <select id="category" name="category" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select category" required>
                                             <option selected disabled>Select Category</option> 
                                             @foreach($category as $names)
-                                                <option style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
+                                                <option style="text-transform: capitalize" value="{{$names['id'] }}">{{$names['description']}}</option>
                                             @endforeach  
                                         </select>
                                     </div>
@@ -153,6 +153,26 @@
                                             @endforeach  
                                         </select>
                                     </div>
+                                    <div class="col-sm-3 col-md-3 py-1">
+                                        <label><b style="color: #6c757d">Sole</b></label>
+                                        <select id="sole" name="sole" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
+                                            <option selected disabled>Select Sole</option> 
+                                            @foreach($sole as $names)
+                                                <option style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
+                                            @endforeach  
+                                        </select>
+                                    </div> 
+                                    <div class="col-sm-3 col-md-3 py-1">                               
+                                        <label><b style="color: #6c757d">Type</b></label>
+                                        <select id="type" name="type" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
+                                            <option selected disabled>Select Type</option> 
+                                            @foreach($type as $names)
+                                                <option style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
+                                            @endforeach  
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row py-0">                                    
                                     <div class="col-sm-6 col-md-6 py-1">
                                         <label><b style="color: #6c757d">Design No</b></label>
                                         <span style="display: flex;">
@@ -161,19 +181,19 @@
                                                 <a id="selectsequence" style="font-size: small; cursor: pointer; background: linear-gradient(14deg, #1761fd 0%, rgba(23, 97, 253, 0.6)) !important; border: none;" class="btn text-white ModelBtn ml-2 py-0 px-2"><i style="font-size: 20px;" class="mdi mdi-autorenew"></i></a>                                        
                                             </span>
                                         </span>
-                                    <span id="StrengthDisp2" style="font-size: 13px !important;" class="badge displayBadgess text-light py-2 mt-2"></span>                                                          
-                                    </div>
-                                </div>
-                                <div class="form-group row py-0">
-                                    <div class="col-sm-3 col-md-3 py-1">
+                                        <span id="StrengthDisp2" style="font-size: 13px !important;" class="badge displayBadgess text-light py-2 mt-2"></span>                                                          
+                                    </div>                                  
+                                    <div class="col-sm-3 col-md-3 py-1">                                                                           
                                         <label><b style="color: #6c757d">Purpose</b></label>
                                         <input id="purpose" name="purpose" type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Purpose" required>
                                     </div>
                                     <div class="col-sm-3 col-md-3 py-1">
-                                        <label><b style="color: #6c757d">Product</b></label>
+                                    <label><b style="color: #6c757d">Product</b></label>
                                         <input id="product" name="product" type="text" class="form-control yourclass" style="border: 1px solid #bfbfbf;" placeholder="Product" required>
                                     </div>
-                                    <div class="col-sm-6 col-md-6 py-1">
+                                </div>
+                                <div class="form-group row py-0">
+                                    <div class="col-sm-9 col-md-9 py-1">
                                         <label><b style="color: #6c757d">Design Description</b></label>
                                         <input readonly type="text" class="form-control py-2 yourclass" style="border: 1px solid #bfbfbf; text-transform: capitalize" id="description" name="description" placeholder="Design Description" required>
                                     </div>
@@ -182,13 +202,13 @@
                             <div class="col-sm-4 col-md-4 py-1">
                                 <div class="form-group row py-0">
                                     <div class="col-md-6 py-0">
-                                        <label><b style="color: #6c757d">Sole</b></label>
-                                        <select id="sole" name="sole" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
-                                            <option selected disabled>Select Sole</option> 
-                                            @foreach($sole as $names)
-                                                <option style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
-                                            @endforeach  
-                                        </select>
+                                        <div class="row py-0">
+                                            <div class="col-sm-12" id="subcategorydiv">
+                                            <label><b style="color: #6c757d">Sub Category</b></label>
+                                                <select id="cut_subcategory" name="cut_subcategory" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select subcategorycutting">                                         
+                                                </select>
+                                            </div>                                            
+                                        </div>
                                         <div class="row py-4">
                                             <div class="col-sm-12 py-1">
                                                 <label><b style="color: #6c757d">Sequence</b></label>
@@ -956,19 +976,6 @@ function autocomplete(inp, arr){
     });
 }
 </script>
-<!-- <script>
-$(document).ready(function(){
-    $.ajax({
-        type: 'GET',
-        url: 'FetchUser',
-        dataType: "json",
-        success: function(data){
-            console.log("Article Code");
-            console.log(data);
-        }
-    });
-});
-</script> -->
 <script>
     $('.division').on('change', function(){
         var value = $(this).val();
@@ -988,6 +995,23 @@ $(document).ready(function(){
                 }
             });
     });
+    $('.category').on('change', function(){
+        var value = $(this).val();
+        $.ajax({
+                type: 'GET',
+                url: 'getSubCategory/'+value,
+                dataType: "json",
+                success: function(data){
+                    if(data){
+                        $("#subcategorydiv").find('select').find('option').remove();
+                        for(i=0; i<data.length; i++){
+                            var $dataToBeAppended = `<option>`+data[i].description+`</option>`;
+                            $(".subcategorycutting").append($dataToBeAppended);
+                        }
+                    }
+                }
+            });
+    });
     $('#design').on('change', function(){
         var design = $(this).val();
         $("#description").val(design);
@@ -995,7 +1019,7 @@ $(document).ready(function(){
     let strengthBadge2 = document.getElementById('StrengthDisp2')
     let strengthBadge3 = document.getElementById('StrengthDisp3')
     $("#selectsequence").on('click',function(){
-        var first, seclast, istlast, range, rangefirst, project, projectfirst, category, categoryfirst, solefirst, shapefirst, seasonspace = 0;
+        var first, seclast, istlast, range, rangefirst, project, projectfirst, category, categoryfirst, type, typefirst, solefirst, shapefirst, seasonspace = 0;
         var season = $('#season').val();
         var range = $('#range').val();
         var category = $('#category').val();
@@ -1003,6 +1027,7 @@ $(document).ready(function(){
         var shape = $('#shape').val();
         var project = $('#project').val();
         var sequence = $('#sequence').val();
+        var type = $('#type').val();
         if(season!=null){
             first = season.charAt(0);
             seasonspace = season.split(' ').join('')
@@ -1014,25 +1039,29 @@ $(document).ready(function(){
             rangefirst = rangefirst.toUpperCase();
         }
         if(category!=null){
-            categoryfirst = category. slice(0, 3);
+            categoryfirst = category.slice(0, 3);
             categoryfirst = categoryfirst.toUpperCase();
         }
+        if(type!=null){
+            typefirst = type.slice(0, 1);
+            typefirst = typefirst.toUpperCase();
+        }
         if(shape!=null){
-            shapefirst = shape. slice(0, 2);
+            shapefirst = shape.slice(0, 2);
             shapefirst = shapefirst.toUpperCase();
         }
         if(sole!=null){
-            solefirst = sole. slice(0, 2);
+            solefirst = sole.slice(0, 2);
             solefirst = solefirst.toUpperCase();
         }
         if(project!=null){
-            projectfirst = project. slice(0, 3);
+            projectfirst = project.slice(0, 3);
             projectfirst = projectfirst.toUpperCase();
         }
-        if(season == null && range == null && category == null && shape == null && sole == null && project == null){
+        if(season == null && range == null && category == null && shape == null && sole == null && project == null && type == null){
             strengthBadge3.style.display = 'block'
             strengthBadge3.style.backgroundColor = '#cd3f3f'
-            strengthBadge3.textContent = 'Please Select Season, Range, Category, Shape, Sole, Project for Generate Design No'
+            strengthBadge3.textContent = 'Please Select Season, Range, Category, Shape, Sole, Type Project for Generate Design No'
             var timer;
             clearTimeout(timer);
             var self = $('#season');
@@ -1041,6 +1070,7 @@ $(document).ready(function(){
             var sole = $('#sole');
             var shape = $('#shape');
             var project = $('#project');
+            var project = $('#type');
             
             self.css('border-color', 'red');
             range.css('border-color', 'red');
@@ -1069,6 +1099,18 @@ $(document).ready(function(){
             strengthBadge2.style.display = 'block'
             strengthBadge2.style.backgroundColor = '#cd3f3f'
             strengthBadge2.textContent = 'Please Select Season'
+        }
+        else if(type == null){
+            var timer;
+            clearTimeout(timer);
+            var self = $('#type');
+            self.css('border-color', 'red');
+            timer = setTimeout(function(){
+                self.css('border-color', '#bfbfbf');
+            }, 3000);
+            strengthBadge2.style.display = 'block'
+            strengthBadge2.style.backgroundColor = '#cd3f3f'
+            strengthBadge2.textContent = 'Please Select type'
         }
         else if(category == null){
             var timer;
@@ -1130,10 +1172,10 @@ $(document).ready(function(){
             strengthBadge2.style.backgroundColor = '#cd3f3f'
             strengthBadge2.textContent = 'Please Select Range'
         }
-        else if(season && range && category && shape && sole && project){
+        else if(season && range && category && shape && sole && project && type){
             strengthBadge2.style.display = 'none'
-            $("#design").val(first+seclast+istlast+"-"+rangefirst+"-"+projectfirst+"-"+categoryfirst+"-"+solefirst+"-"+shapefirst+"-"+sequence);
-            $("#description").val(seasonspace+"-"+range+"-"+project+"-"+category+"-"+sole+"-"+shape+"-"+sequence);
+            $("#design").val(first+seclast+istlast+"-"+rangefirst+"-"+projectfirst+"-"+categoryfirst+"-"+solefirst+"-"+shapefirst+"-"+sequence+"-"+typefirst);
+            $("#description").val(seasonspace+"-"+range+"-"+project+"-"+category+"-"+sole+"-"+shape+"-"+sequence+"-"+type);
         }
         $('#StrengthDisp2').delay(3000).fadeOut(600);
         $('#StrengthDisp3').delay(4000).fadeOut(600); 

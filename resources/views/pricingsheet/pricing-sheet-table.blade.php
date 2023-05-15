@@ -148,13 +148,17 @@
                                                         &nbsp;
                                                         @elseif($user->status == 'Costing')
                                                         &nbsp;
+                                                        @elseif($user->status == 'IE')
+                                                        &nbsp;
                                                         @else  
                                                             <select id="status" data-id="{{$user->id}}" name="status" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control status custom-select text-center">
                                                                 @if($user->status == 'Pending')                                 
                                                                     <option <?php if ($user->status == "Pending") echo "selected"; ?> value="Pending">Pending</option>
-                                                                    <option <?php if ($user->status == "Costing") echo "selected"; ?> value="Costing">Costing</option>
+                                                                    <option <?php if ($user->status == "IE") echo "selected"; ?> value="IE">IE</option>
                                                                 @elseif($user->status == 'Costing')                                                                                                        
                                                                     <option selected disabled value="Costing">Costing</option>
+                                                                @elseif($user->status == 'IE')                                                                                                        
+                                                                    <option selected disabled value="Costing">IE</option>
                                                                 @elseif($user->status == 'Rejected')                                                                                                        
                                                                     <option selected disabled value="Rejected">Rejected</option>
                                                                 @elseif($user->status == 'PD')                                                                                                        
@@ -422,6 +426,10 @@ $(document).ready(function(){
         else if(status == 'Rejected'){
             var line = 'Are you sure to Rejected?';
             var line1 = 'Rejected';
+        }
+        else if(status == 'IE'){
+            var line = 'Are you sure Transfer to IE Department?';
+            var line1 = 'Transfer';
         }
         $('#modelline').html(line);
         $(".remarks").val(line1);

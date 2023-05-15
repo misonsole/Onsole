@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlcCategory extends Model
+class PlcSubCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['description'];
+    protected $fillable = ['description', 'category_id'];
 
     public $timestamps = true;
 
-    public function subdivisions()
+    public function divisions()
     {
-        return $this->hasMany(PlcSubCategory::class);
+        return $this->belongsTo(Category::class);
     }
 }

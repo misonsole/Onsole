@@ -51,7 +51,7 @@ class HomeController extends Controller
                     FROM WIZ_ATT_STATUS_MT WASM
                     JOIN ATT_REGISTER_DET ARD ON ARD.WIZ_ATT_STATUS_ID = WASM.WIZ_ATT_STATUS_ID
                     JOIN ATT_REGISTER_MT ARM ON ARM.ATT_REGISTER_ID = ARD.ATT_REGISTER_ID
-                    JOIN PERIOD_DETAILS PD ON PD.PERIOD_ID = ARM.PERIOD_ID AND PD.PERIOD_ID = 315
+                    JOIN PERIOD_DETAILS PD ON PD.PERIOD_ID = ARM.PERIOD_ID AND PD.PERIOD_ID = 316
                     JOIN PAY_EMPLOYEE_MT PEM ON PEM.PAY_EMP_ID = ARM.EMPLOYEE_ID AND PEM.EMP_CODE = '$emp_code'
                     ORDER BY ARD.ATT_DATE DESC";
             $result1 = oci_parse($connPRL, strtoupper($sql1));

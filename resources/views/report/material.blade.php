@@ -434,7 +434,7 @@
                                 <label><b style="color: #6c757d">Select Book</b></label>
                                 <select id="books" name="books" style="border: 1px solid #bfbfbf;" class="select2 form-control mb-3 custom-select" required>
                                     <option selected value="">Select Book</option>   
-                                    @foreach($books as $value)
+                                    @foreach($assignbook as $value)
                                         @if(!empty($sessionData['requestbook']))
                                             <option <?php if($value == $sessionData['requestbook']) echo 'selected="selected"'; ?> value="{{$value}}">{{$value}}</option>
                                         @else

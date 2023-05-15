@@ -60,7 +60,7 @@
                                 <thead>
                                     <tr>
                                         <th>Sr No.</th>            
-                                        <th>Overhead No.</th>
+                                        <th>Sequence</th>
                                         <th>Created By</th>                               
                                         <th>Date</th>
                                         <th>Time</th>
@@ -72,7 +72,7 @@
                                     @foreach($data as $user) 
                                         <tr class="table_row">
                                             <td>{{$i++}}</td>                    
-                                            <td>Overhead-{{$user->id}}</td>
+                                            <td>{{$user->sequence}}</td>
                                             <td>{{$user->owner}}</td>
                                             <td>
                                                 <?php $delimiter = ' '; $words = explode($delimiter, $user->created_at); $newDate = date("d-F-Y", strtotime($words[0])); ?>

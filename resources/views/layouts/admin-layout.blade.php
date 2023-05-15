@@ -284,11 +284,11 @@
                     </li>  
                 </ul>
             </li>
-            <li class="{{ Request::path() == 'get-books' ? 'mm-active active' : '' }}">
-                <a href="javascript: void(0);" class="{{ Request::path() == 'get-books' ? 'active' : '' }}"><i class="ti-book"></i><span>Books</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+            <li class="{{ Request::path() == 'book-edit' ? 'mm-active active' : '' }}">
+                <a href="javascript: void(0);" class="{{ Request::path() == 'book-edit' ? 'active' : '' }}"><i class="ti-book"></i><span>Books</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                 <ul class="nav-second-level" aria-expanded="false">
-                <li class="nav-item"><a class="nav-link" href="{{url('manage-book')}}"><i class="ti-control-record"></i>Assign Book</a></li>
-                    <li class="{{ Request::path() == 'get-books' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'get-books' ? 'nav-link active' : 'nav-link' }}" href="{{url('manageuserbook')}}"><i class="ti-control-record"></i>Manage Book</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{url('assign-book')}}"><i class="ti-control-record"></i>Assign Book</a></li>
+                    <li class="{{ Request::path() == 'book-edit' ? 'nav-item active' : 'nav-item' }}"><a class="{{ Request::path() == 'book-edit' ? 'nav-link active' : 'nav-link' }}" href="{{url('manage-book')}}"><i class="ti-control-record"></i>Manage Book</a></li>
                 </ul>
             </li>
             <li>

@@ -282,6 +282,15 @@
                                                         <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet Transfer" name="JobOrder[]">
                                                         <span class="form-check-label">Specification-Sheet Transfer</span>
                                                     </label>
+                                                    <br>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Pricing-Sheet IE" name="JobOrder[]">
+                                                        <span class="form-check-label">Pricing-Sheet IE</span>
+                                                    </label>
+                                                    <label class="form-check form-check-inline">
+                                                        <input class="form-check-input name Singlecheck222" type="checkbox" value="Specification-Sheet IE" name="JobOrder[]">
+                                                        <span class="form-check-label">Specification-Sheet IE</span>
+                                                    </label>
                                                     <label class="form-check form-check-inline" style="float: right;">
                                                         <input class="form-check-input" id="allCheck4" type="checkbox">
                                                         <span class="form-check-label">Mark All</span>

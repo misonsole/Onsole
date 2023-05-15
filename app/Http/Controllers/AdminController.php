@@ -9,6 +9,7 @@ use DateTime;
 use Exception;
 use App\Models\User;
 use App\Models\PlcSole;
+use App\Models\PlcType;
 use App\Models\LoginLog;
 use App\Models\Division;
 use App\Models\SubDivision;
@@ -25,6 +26,7 @@ use App\Models\PlcCategory;
 use App\Models\PlcSizeRange;
 use Illuminate\Http\Request;
 use App\Models\PlcLastNumber;
+use App\Models\PlcSubCategory;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -73,6 +75,8 @@ class AdminController extends Controller
         try{
             $subdivisionA = array();
             $AllsubdivisionA = array();
+            $subcategoryA = array();
+            $AllsubdcategoryA = array();
             $last = PlcLastNumber::orderBy('id','DESC')->limit(5)->get();
             $Alllast = PlcLastNumber::orderBy('id','DESC')->get();
             $location = PlcLocation::orderBy('id','DESC')->limit(5)->get();
@@ -81,6 +85,8 @@ class AdminController extends Controller
             $Allrange = PlcRange::orderBy('id','DESC')->get();
             $sole = PlcSole::orderBy('id','DESC')->limit(5)->get();
             $Allsole = PlcSole::orderBy('id','DESC')->get();
+            $type = PlcType::orderBy('id','DESC')->limit(5)->get();
+            $Alltype = PlcType::orderBy('id','DESC')->get();
             $shape = PlcShape::orderBy('id','DESC')->limit(5)->get();
             $Allshape = PlcShape::orderBy('id','DESC')->get();
             $purpose = PlcPurpose::orderBy('id','DESC')->limit(5)->get();
@@ -95,6 +101,8 @@ class AdminController extends Controller
             $AlldivisionPlc = Division::orderBy('id','DESC')->get();
             $subdivision = SubDivision::orderBy('id','DESC')->limit(5)->get();
             $Allsubdivision = SubDivision::orderBy('id','DESC')->get();
+            $subcategory = PlcSubCategory::orderBy('id','DESC')->limit(5)->get();
+            $Allsubcategory = PlcSubCategory::orderBy('id','DESC')->get();
             foreach($subdivision as $data){
                 $result = Division::orderBy('id','DESC')->where('id',$data->division_id)->get();
                 $subdivisionA[] = array(
@@ -105,6 +113,20 @@ class AdminController extends Controller
             foreach($Allsubdivision as $data){
                 $result = Division::orderBy('id','DESC')->where('id',$data->division_id)->get();
                 $AllsubdivisionA[] = array(
+                    'data' => $data,
+                    'result' => $result[0]['description'],
+                );
+            }
+            foreach($subcategory as $data){
+                $result = PlcCategory::orderBy('id','DESC')->where('id',$data->category_id)->get();
+                $subcategoryA[] = array(
+                    'data' => $data,
+                    'result' => $result[0]['description'],
+                );
+            }
+            foreach($Allsubcategory as $data){
+                $result = PlcCategory::orderBy('id','DESC')->where('id',$data->category_id)->get();
+                $AllsubdcategoryA[] = array(
                     'data' => $data,
                     'result' => $result[0]['description'],
                 );
@@ -123,10 +145,13 @@ class AdminController extends Controller
                 'i' => 1, 'ii' => 1, 'iii' => 1, 
                 'j' => 1, 'jj' => 1, 'jjj' => 1, 
                 'k' => 1, 'kk' => 1, 'kkk' => 1, 
+                'l' => 1, 'll' => 1, 'lll' => 1, 
+                'm' => 1, 'mm' => 1, 'mmm' => 1, 
                 'last'=> $last,'allLast'=> $Alllast, 
                 'location' => $location,'Alllocation' => $Alllocation, 
                 'range' => $range,'Allrange' => $Allrange, 
                 'sole' => $sole,'Allsole' => $Allsole, 
+                'type' => $type,'Alltype' => $Alltype,                 
                 'shape' => $shape,'Allshape' => $Allshape, 
                 'purpose'=> $purpose,'Allpurpose' => $Allpurpose, 
                 'categoryPlc' => $categoryPlc,'AllcategoryPlc' => $AllcategoryPlc, 
@@ -134,6 +159,7 @@ class AdminController extends Controller
                 'project' => $project,'Allproject' => $Allproject, 
                 'divisionPlc' => $divisionPlc,'AlldivisionPlc' => $AlldivisionPlc,
                 'subdivision' => $subdivisionA,'Allsubdivision' => $AllsubdivisionA,
+                'subcategory' => $subcategoryA,'Allsubcategory' => $AllsubdcategoryA,
                 'lastcount' => count($Alllast),
                 'locationcount' => count($Alllocation),
                 'rangecount' => count($Allrange),
@@ -145,6 +171,7 @@ class AdminController extends Controller
                 'categoryPlccount' => count($AllcategoryPlc),
                 'divisionPlccount' => count($AlldivisionPlc),
                 'subdivisioncount' => count($Allsubdivision),
+                'subcategorycount' => count($Allsubcategory),
             ]);
         }
         catch(Exception $e){
@@ -392,6 +419,36 @@ class AdminController extends Controller
         }
     }
 
+    public function addSubCategory(Request $request)
+    {
+        try{
+            $Add = new PlcSubCategory();
+            $Add->category_id = $request->category;
+            $Add->description = $request->subcategory; 
+            $result = $Add->save();
+            if($result){
+                $notification = array(
+                    'message' => 'Sub Category Added',
+                    'alert-type' => 'success'
+                );
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed. Please try again!',
+                    'alert-type' => 'danger'
+                );
+            }
+            return redirect()->route('master-data-plc')->with($notification); 
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function addShape(Request $request)
     {
         try{
@@ -432,6 +489,36 @@ class AdminController extends Controller
             if($Add){
                 $notification = array(
                     'message' => 'Sole Added',
+                    'alert-type' => 'success'
+                );
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed. Please try again!',
+                    'alert-type' => 'danger'
+                );
+            }
+            return redirect()->route('master-data-plc')->with($notification); 
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        } 
+    }
+
+    public function addType(Request $request)
+    {
+        try{
+            $data = array([
+                'description' => $request->type,
+            ]);
+            $Add = PlcType::insert($data);
+            if($Add){
+                $notification = array(
+                    'message' => 'Type Added',
                     'alert-type' => 'success'
                 );
             }
@@ -2201,6 +2288,36 @@ class AdminController extends Controller
         }
     }
 
+    public function SubCategory(Request $request) 
+    {
+        try{
+            $id = $request->subcategoryId;
+            $last = $request->subcategoryNum;
+            $update = DB::table('plc_sub_categories')->where('id', $id)->update(['description' => $last]);
+            if($update){
+                $notification = array(
+                    'message' => 'Updated',
+                    'alert-type' => 'success'
+                );
+                return back()->with($notification); 
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notification);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
     public function lastDel($id) 
     {
         try{
@@ -2381,6 +2498,28 @@ class AdminController extends Controller
     {
         try{
             $update = SubDivision::where('id', $id)->delete();
+            if($update){
+                $update = 1;
+                return response()->json($update);
+            }
+            else{
+                $error = 400;
+                return response()->json($error);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function subcategoryDel($id) 
+    {
+        try{
+            $update = PlcSubCategory::where('id', $id)->delete();
             if($update){
                 $update = 1;
                 return response()->json($update);

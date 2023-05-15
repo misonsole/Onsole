@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlcFormula extends Model
+class Allbook extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['owner','sequence'];
-
-    public $timestamps = true;
+    protected $fillable = ['book_id', 'book', 'key_id'];
 }

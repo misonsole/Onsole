@@ -39,8 +39,10 @@ class FormulaController extends Controller
             else{
                 $result = $store + $Support[0]->id;
             }
+            $date = date("m-y");
             $input = array(
                 'owner' => Auth::user()->emp_name,
+                'sequence' => "CAT-V/".$result.".1-".$date,
             );
             $joborder = PlcFormula::create($input);
             $id = $joborder['id'];
@@ -431,6 +433,8 @@ class FormulaController extends Controller
         try{
             $id = $_GET['id'];
             $cuttingData = []; $StitchingData = []; $LaminationData = []; $ClosingData = []; $LastingData = []; $PackingData = [];
+            $seq = PlcFormula::orderBy('id','ASC')->where('id', $id)->get();
+            $seq = $seq[0]->sequence;
             $data = PlcFormulaDetail::orderBy('id','ASC')->where('oh_id', $id)->get();
             foreach($data as $value){
                 if($value->dep == "Cutting"){
@@ -576,7 +580,7 @@ class FormulaController extends Controller
 
             return view('formulasheet.formula-sheet-view')->with([
                 'cuttingData' => $cuttingData, 'StitchingData' => $StitchingData, 'LaminationData' => $LaminationData, 'ClosingData' => $ClosingData, 
-                'LastingData' => $LastingData, 'PackingData' => $PackingData, 'id' => $id, 'AllData' => $AllData
+                'LastingData' => $LastingData, 'PackingData' => $PackingData, 'id' => $id, 'AllData' => $AllData, 'seq' => $seq
             ]);
         }
         catch(Exception $e){
