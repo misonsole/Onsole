@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('add-range', [AdminController::class, 'addRange'])->name('add-range');
     Route::post('add-sole', [AdminController::class, 'addSole'])->name('add-sole');
     Route::post('add-type', [AdminController::class, 'addType'])->name('add-type');
+    Route::post('add-designer', [AdminController::class, 'addDesigner'])->name('add-designer');
     Route::post('add-purpose', [AdminController::class, 'addPurpose'])->name('add-purpose');
     Route::post('add-project', [AdminController::class, 'addProject'])->name('add-project');
     Route::post('add-category-plc', [AdminController::class, 'addCategory'])->name('add-category-plc');
@@ -57,6 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('sole', [AdminController::class, 'Sole'])->name('sole');
     Route::post('range', [AdminController::class, 'Range'])->name('range');
     Route::post('sizerange', [AdminController::class, 'sizeRange'])->name('sizerange');
+    Route::post('designer', [AdminController::class, 'Designer'])->name('designer');
     Route::post('project', [AdminController::class, 'Project'])->name('project');
     Route::get('export', [AdminController::class, 'exportData'])->name('export');
     Route::post('purpose', [AdminController::class, 'Purpose'])->name('purpose');

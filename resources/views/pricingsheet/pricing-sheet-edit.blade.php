@@ -212,7 +212,14 @@
                                         @else
                                         <input type="file" name="image" id="input-file-now-custom-1" class="dropify" data-default-file="img/photos/23.jpg"/>
                                         @endif  
-                                        <br>                            
+                                        <br>    
+                                        <label><b style="color: #6c757d">Designer</b></label>
+                                        <select id="designer" name="designer" style="border: 1px solid #bfbfbf; text-transform: capitalize" class="form-control select.custom-select" required>
+                                            <option selected disabled>Select Designer</option> 
+                                            @foreach($designer as $names)
+                                                <option <?php if($names['description'] == $userdesigner) echo 'selected="selected"'; ?>  style="text-transform: capitalize" value="{{$names['description'] }}">{{$names['description']}}</option>
+                                            @endforeach  
+                                        </select>                        
                                     </div>
                                 </div>
                             </div>

@@ -23,6 +23,7 @@ use App\Models\SubDivision;
 use App\Models\PlcLocation;
 use App\Models\PlcCategory;
 use Illuminate\Http\Request;
+use App\Models\PlcDesigner;
 use App\Models\PlcLastNumber;
 use App\Models\notifications;
 use App\Models\PlcSubCategory;
@@ -87,6 +88,7 @@ class PricingController extends Controller
             $sole = PlcSole::orderBy('description','ASC')->get();
             $type = PlcType::orderBy('description','ASC')->get();
             $division = Division::orderBy('id','DESC')->get();
+            $designer = PlcDesigner::orderBy('id','DESC')->get();
             $Support = PlcPricing::orderBy('id','DESC')->limit(1)->get();
             if(count($Support) == 0){
                 $result = $store + 0;
@@ -97,7 +99,7 @@ class PricingController extends Controller
             return view('pricingsheet.pricing-sheet')->with([
                 'i'=> 1, 'j'=> 1, 'last'=> $last, 'date'=> $date, 'sole'=> $sole, 'type'=> $type, 'range'=> $range,'range'=> $range, 'shape'=> $shape, 'season'=> $season,
                 'project'=> $project, 'purpose'=> $purpose, 'sequence'=> $result, 'location'=> $location, 'category'=> $category, 'itemcode'=> $item_code, 
-                'articlecode'=> $article_code, 'division'=> $division, 
+                'articlecode'=> $article_code, 'division'=> $division, 'designer'=> $designer,
             ]);
         }
         catch(Exception $e){
@@ -1451,10 +1453,11 @@ class PricingController extends Controller
             $last = $request->last;
             $project = $request->project; 
             $product = $request->product; 
+            $designer = $request->designer; 
             $date = isset($request->date) ? $request->date : $date;
             $costingImage = DB::table('plc_pricings')->where('id', $id)->pluck('image');
             $data = array(
-                'season' => $season, 'purpose' => $purpose, 'image' => $filename, 'category' => $category, 'date' => $date, 'shape' => $shape,
+                'season' => $season, 'purpose' => $purpose, 'image' => $filename, 'category' => $category, 'date' => $date, 'shape' => $shape, 'designer' => $designer,
                 'sole' => $sole, 'range_no' => $range_no, 'design_no' => $design_no, 'description' => $description, 'project' => $project, 'product' => $product, 'last' => $last,
             );
             $update = PlcPricing::where('id', $id)->update($data);
@@ -2292,6 +2295,7 @@ class PricingController extends Controller
             $userdescription = $data1[0]->description;
             $usercategory = $data1[0]->category;
             $userlast = $data1[0]->last;
+            $userdesigner = $data1[0]->designer;
     
             $wizerp  = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.70.250)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = WIZERP)))";
             $connPRL = oci_connect("onsole","s",$wizerp);
@@ -2345,6 +2349,7 @@ class PricingController extends Controller
             $sole = PlcSole::orderBy('id','DESC')->get();
             $last = PlcLastNumber::orderBy('id','DESC')->get();
             $division = Division::orderBy('id','DESC')->get();
+            $designer = PlcDesigner::orderBy('id','DESC')->get();
             return view('pricingsheet.pricing-sheet-edit')->with([
                 'id'=> $id,
                 'data1'=> $data1[0], "manual" => $data4,
@@ -2355,7 +2360,7 @@ class PricingController extends Controller
                 'articlecode'=> $article_code, 'category'=> $category, 'usershape'=> $usershape, 'usersole'=> $usersole, 'userproject'=> $userproject,
                 'userproduct'=> $userproduct, 'userrange'=> $userrange, 'userdesign'=> $userdesign, 'userdescription'=> $userdescription, 'usercategory'=> $usercategory,
                 'shape'=> $shape, 'sole'=> $sole, 'project'=> $project, 'range'=> $range, 'purpose'=> $purpose, 'last'=> $last, 'userlast'=> $userlast, 'check'=> $check, 'location'=> $location,
-                'division'=> $division
+                'division'=> $division, 'designer'=> $designer, 'userdesigner'=> $userdesigner
             ]);
         }
         catch(Exception $e){
@@ -2666,6 +2671,7 @@ class PricingController extends Controller
             $calculateValue = $value;
             $overId = $over;
             $total1 = 0; $total2 = 0; $total3 = 0;
+            $cuttingDataF = []; $StitchingDataF = []; $LaminationDataF = []; $ClosingDataF = []; $LastingDataF = []; $PackingDataF = [];
             $data1 = PlcPricingDetail::where('costing_id', $id)->pluck('value');
             $data2 = PlcPricingResource::where('costing_id', $id)->pluck('pair');
             $formulaData = DB::table('plc_formula_details')->where('oh_id', $overId)->get();

@@ -15,6 +15,7 @@ use App\Models\Division;
 use App\Models\SubDivision;
 use App\Models\PlcShape;
 use App\Models\PlcRange;
+use App\Models\PlcDesigner;
 use App\Models\RoleName;
 use App\Models\PlcProject;
 use App\Models\PlcPurpose;
@@ -103,6 +104,8 @@ class AdminController extends Controller
             $Allsubdivision = SubDivision::orderBy('id','DESC')->get();
             $subcategory = PlcSubCategory::orderBy('id','DESC')->limit(5)->get();
             $Allsubcategory = PlcSubCategory::orderBy('id','DESC')->get();
+            $designer = PlcDesigner::orderBy('id','DESC')->limit(5)->get();
+            $Alldesigner = PlcDesigner::orderBy('id','DESC')->get();
             foreach($subdivision as $data){
                 $result = Division::orderBy('id','DESC')->where('id',$data->division_id)->get();
                 $subdivisionA[] = array(
@@ -147,6 +150,7 @@ class AdminController extends Controller
                 'k' => 1, 'kk' => 1, 'kkk' => 1, 
                 'l' => 1, 'll' => 1, 'lll' => 1, 
                 'm' => 1, 'mm' => 1, 'mmm' => 1, 
+                'n' => 1, 'nn' => 1, 'nnn' => 1, 
                 'last'=> $last,'allLast'=> $Alllast, 
                 'location' => $location,'Alllocation' => $Alllocation, 
                 'range' => $range,'Allrange' => $Allrange, 
@@ -160,6 +164,7 @@ class AdminController extends Controller
                 'divisionPlc' => $divisionPlc,'AlldivisionPlc' => $AlldivisionPlc,
                 'subdivision' => $subdivisionA,'Allsubdivision' => $AllsubdivisionA,
                 'subcategory' => $subcategoryA,'Allsubcategory' => $AllsubdcategoryA,
+                'designer' => $designer,'Alldesigner' => $Alldesigner,
                 'lastcount' => count($Alllast),
                 'locationcount' => count($Alllocation),
                 'rangecount' => count($Allrange),
@@ -172,6 +177,8 @@ class AdminController extends Controller
                 'divisionPlccount' => count($AlldivisionPlc),
                 'subdivisioncount' => count($Allsubdivision),
                 'subcategorycount' => count($Allsubcategory),
+                'subcategorycount' => count($Allsubcategory),
+                'designercount' => count($Alldesigner),
             ]);
         }
         catch(Exception $e){
@@ -639,6 +646,36 @@ class AdminController extends Controller
             if($Add){
                 $notification = array(
                     'message' => 'Purpose Added',
+                    'alert-type' => 'success'
+                );
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed. Please try again!',
+                    'alert-type' => 'danger'
+                );
+            }
+            return redirect()->route('master-data-plc')->with($notification); 
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function addDesigner(Request $request)
+    {
+        try{
+            $data = array([
+                'description' => $request->designer,
+            ]);
+            $Add = PlcDesigner::insert($data);
+            if($Add){
+                $notification = array(
+                    'message' => 'Designer Added',
                     'alert-type' => 'success'
                 );
             }
@@ -2114,6 +2151,36 @@ class AdminController extends Controller
             $id = $request->sizerangeId;
             $last = $request->sizerangeNum;
             $update = DB::table('plc_size_ranges')->where('id', $id)->update(['description' => $last]);
+            if($update){
+                $notification = array(
+                    'message' => 'Updated',
+                    'alert-type' => 'success'
+                );
+                return back()->with($notification); 
+            }
+            else{
+                $notification = array(
+                    'message' => 'Operation Failed',
+                    'alert-type' => 'error'
+                );
+                return back()->with($notification);
+            }
+        }
+        catch(Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
+        }
+    }
+
+    public function Designer(Request $request) 
+    {
+        try{
+            $id = $request->designerId;
+            $last = $request->designerNum;
+            $update = DB::table('plc_designers')->where('id', $id)->update(['description' => $last]);
             if($update){
                 $notification = array(
                     'message' => 'Updated',

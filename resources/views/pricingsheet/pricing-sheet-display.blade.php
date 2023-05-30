@@ -190,7 +190,9 @@
                                     <h6 class="mb-0 mr-3"><b>Purpose&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Product&nbsp;:</b></h6>
                                     <h6 class="mb-0 mr-3"><b>Designer&nbsp;:</b></h6>
+                                    @if($data1->Category != null)
                                     <h6 class="mb-0 mr-3"><b>Category&nbsp;:</b></h6>
+                                    @endif
                                     <h6 class="mb-0 mr-3"><b>Sub Category&nbsp;:</b></h6>
                                 </span>
                                 <span class="">
@@ -200,7 +202,9 @@
                                     <h6 class="mb-0">{{$data1->purpose}}</h6>
                                     <h6 class="mb-0">{{$data1->product}}</h6>
                                     <h6 class="mb-0">{{$data1->designer}}</h6>
+                                    @if($data1->Category != null)
                                     <h6 class="mb-0">{{$data1->Category->description}}</h6>
+                                    @endif
                                     <h6 class="mb-0">{{$data1->subcategory}}</h6>
                                 </span>
                             </div>
